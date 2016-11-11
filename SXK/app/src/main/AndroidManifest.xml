@@ -22,7 +22,6 @@
             android:name=".BaseAC.BaseAC"
             android:theme="@style/AppTheme" />
         <activity android:name=".BaseAC.MainAC" />
-        <activity android:name=".Section.MineNC.testAC"></activity>
     </application>
 
 </manifest>
