@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/table_shape">
+        <LinearLayout
+            android:id="@+id/navi_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:gravity="center_horizontal|center_vertical">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/back"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/navi_title"
+            android:layout_width="100dp"
+            android:layout_height="44dp"
+            android:text="标题"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/navi_right"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="站位字"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
