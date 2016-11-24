@@ -23,6 +23,11 @@ public class SharedPreferencesUtils {
 	public static final String USER_INFO_NAME = "user_info_name";
 	public static final String USER_INFO_PHONE = "user_info_phone";
 
+
+
+
+
+
 	/**
 	 * 保存数据的方法，我们�?��拿到保存数据的具体类型，然后根据类型调用不同的保存方�?
 	 * 

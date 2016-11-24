@@ -1,16 +1,14 @@
 package com.example.cfwifine.sxk.BaseAC;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -19,10 +17,10 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.ClassifyFC;
 import com.example.cfwifine.sxk.Section.CommunityNC.CommunFC;
 import com.example.cfwifine.sxk.Section.HomeNC.HomeFC;
-import com.example.cfwifine.sxk.Section.MineNC.MineFC;
-import com.example.cfwifine.sxk.Section.PublishNC.PublishFC;
-import com.example.cfwifine.sxk.Section.PublishNC.PublishPupWindow;
-import com.example.cfwifine.sxk.View.BlurBehind;
+import com.example.cfwifine.sxk.Section.LoginAC.LoginFC;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
 
 public class MainAC extends BaseAC  {
 
@@ -35,7 +33,7 @@ public class MainAC extends BaseAC  {
             ClassifyFC.class,
             PublishFC.class,
             CommunFC.class,
-            MineFC.class
+            LoginFC.class
             };
 
     private int images[]={
@@ -113,6 +111,7 @@ public class MainAC extends BaseAC  {
             switch (v.getId()) {
                 case R.id.publish_lay:
                     Log.e("点击了发布",""+v.getId());
+                    startActivity(PublishPublishAC.class);
                     break;
                 case R.id.care_lay:
                     Log.e("点击了养护",""+v.getId());
@@ -131,20 +130,26 @@ public class MainAC extends BaseAC  {
 
 
     private View getTabItemView(int i){
-//        if(i!=2) {
+        if(i!=2) {
             View view = inflater.inflate(R.layout.tabitem, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             imageView.setImageResource(images[i]);
             TextView textView = (TextView) view.findViewById(R.id.text);
             textView.setText(texts[i]);
             return view;
-//        }else{
-//            ImageView imageView=new ImageView(this);
-//            imageView.setMaxHeight(100);
-//            imageView.setMaxHeight(100);
-//            imageView.setImageResource(images[i]);
-//            return imageView;
-//        }
+        }else{
+//            ImageView imageView = (ImageView)findViewById(R.id.main_image_center);
+            ImageView imageView=new ImageView(this);
+            imageView.setMaxHeight(100);
+            imageView.setMaxHeight(100);
+            imageView.setImageResource(images[i]);
+            return imageView;
+        }
+    }
+
+    private void startActivity(Class<?> cls) {
+        Intent intent = new Intent(MainAC.this, cls);
+        startActivity(intent);
     }
 
 

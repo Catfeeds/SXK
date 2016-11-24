@@ -42,7 +42,7 @@ public class BaseAC extends AppCompatActivity {
 
 
 
-    private void translucentStatusBar() {
+    private  void translucentStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

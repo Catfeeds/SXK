@@ -4,8 +4,21 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- the following two permissions are required if you want to take photo in selector -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:resizeable="true"
+        android:anyDensity="true"/>
 
     <application
+        android:name=".BaseAC.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,6 +35,33 @@
             android:name=".BaseAC.BaseAC"
             android:theme="@style/AppTheme" />
         <activity android:name=".BaseAC.MainAC" />
+        <activity
+            android:name=".Section.LoginAC.LoginUseBoobeAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.LoginAC.RegisterNowAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.LoginAC.ForgetPawAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.PublishNC.AC.PublishPublishAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
+            android:theme="@style/AppThemeHasBlackTitle" />
+        <activity
+            android:name=".Section.PublishNC.AC.PublishCateoryAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.PublishNC.AC.PublishBrandAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.PublishNC.AC.PublishMaterialAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.AC.CheckRecycleViewAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
+
 
 </manifest>

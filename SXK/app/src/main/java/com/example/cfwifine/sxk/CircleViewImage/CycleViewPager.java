@@ -367,11 +367,11 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener {
 	private void setIndicator(int selectedPosition) {
 		for (int i = 0; i < indicators.length; i++) {
 			indicators[i]
-					.setBackgroundResource(R.drawable.point_select);
+					.setBackgroundResource(R.drawable.point_nomal);
 		}
 		if (indicators.length > selectedPosition)
 			indicators[selectedPosition]
-					.setBackgroundResource(R.drawable.point_normal);
+					.setBackgroundResource(R.drawable.point_selected);
 	}
 
 	/**

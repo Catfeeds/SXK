@@ -8,9 +8,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
     </style>
     <!--// AppThemeNoTitle-->
     <style name="AppThemeNoTitle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:fitsSystemWindows">false</item>-->
+
+        <!--<item name="android:windowTranslucentNavigation"></item>-->
         <!-- Customize your theme here. -->
         <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
@@ -35,6 +41,20 @@
             <!--backward-compatibility can go here.-->
         <!--&ndash;&gt;-->
     <!--</style>-->
+    <style name="AppThemeHasTitle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+    <style name="AppThemeHasBlackTitle" parent="Theme.AppCompat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
 
 
 </resources>

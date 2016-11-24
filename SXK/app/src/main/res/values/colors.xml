@@ -151,4 +151,14 @@
     <color name="navy">#000080</color> <!-- 海军色 -->
     <color name="black">#000000</color> <!-- 黑色 -->
     <color name="lowgray">#999999</color>
+
+    // 登录页面相关颜色
+    <color name="login_turquoise">#16a6ae</color>
+    <color name="navi_title_color">#2c2c2c</color>
+    <color name="login_phone_numbercolor">#a1a1a1</color>
+    <color name="login_line_color">#dcdcdc</color>
+    <color name="login_turquoisex">#16a5af</color>
+    <color name="home_bg">#f7f7f7</color>
+    <color name="grrray">#dcdcdc</color>
+
 </resources>

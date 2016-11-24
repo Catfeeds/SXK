@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+                <FrameLayout
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:layout_weight="1"/>
+
+                <android.support.v4.app.FragmentTabHost
+                    android:id="@+id/tabhost"
+                    android:layout_width="match_parent"
+                    android:layout_height="160px"
+                    android:background="@color/black">
+
+                        <FrameLayout
+                            android:id="@+id/tab"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0">
+
+                        </FrameLayout>
+                </android.support.v4.app.FragmentTabHost>
+        </LinearLayout>
+
+    <ImageView
+        android:id="@+id/main_image_center"
+        android:layout_width="180px"
+        android:layout_height="200px"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/main_centers"
+        android:layout_centerInParent="true"
+        android:src="@drawable/nav_button_finance_default" />
+
+
+
+
+</RelativeLayout>
