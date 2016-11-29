@@ -2,12 +2,163 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.ClassifyFC">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC">
 
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="分类"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+            <include layout="@layout/nav_title_no_line" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/login_line_color"></View>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="11dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/classfiy_search"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:background="@color/navi_title_color"-->
+            <!--android:orientation="horizontal">-->
+            <!--<ImageButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background=""/>-->
+        <!--</LinearLayout>-->
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="22dp"
+           android:orientation="horizontal"
+           android:gravity="center_horizontal|center_vertical">
+           <FrameLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_gravity="center_horizontal"
+               android:layout_weight="3"
+               android:background="@color/classify">
+               <android.support.v7.widget.RecyclerView
+                   android:id="@+id/classify_left_recycleview"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:overScrollMode="never">
+               </android.support.v7.widget.RecyclerView>
+           </FrameLayout>
+
+
+           <FrameLayout
+               android:id="@+id/classify_brand_frame"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:visibility="gone"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentEnd="true">
+
+
+                   <!--<com.example.cfwifine.sxk.View.MyGridView-->
+                       <!--android:id="@+id/classify_gridView"-->
+                       <!--android:layout_width="match_parent"-->
+                       <!--android:layout_height="wrap_content"-->
+                       <!--android:horizontalSpacing="0dp"-->
+                       <!--android:listSelector="@null"-->
+                       <!--android:numColumns="3"-->
+                       <!--android:scrollbars="none"-->
+                       <!--android:stretchMode="columnWidth"-->
+                       <!--android:verticalSpacing="0dp">-->
+                   <!--</com.example.cfwifine.sxk.View.MyGridView>-->
+
+               <RelativeLayout
+                   android:id="@+id/classify_header"
+                   android:layout_width="match_parent"
+                   android:layout_height="150dp"
+                   android:background="@color/aliceblue">
+               </RelativeLayout>
+               <android.support.v7.widget.RecyclerView
+                       android:id="@+id/classify_right_recycleview"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                   android:layout_marginTop="150dp"
+                       android:background="@null"
+                       android:overScrollMode="never">
+                   </android.support.v7.widget.RecyclerView>
+
+
+
+
+                   <com.mcxtzhang.indexlib.IndexBar.widget.IndexBar
+                       android:id="@+id/indexBar"
+                       android:layout_width="30dp"
+                       android:paddingRight="15dp"
+                       android:layout_marginTop="74dp"
+                       android:layout_marginBottom="40dp"
+                       android:layout_height="match_parent"
+                       android:layout_gravity="right"
+                       app:indexBarPressBackground="@color/white"
+                       app:indexBarTextSize="11sp" />
+
+                   <TextView
+                       android:id="@+id/tvSideBarHint"
+                       android:layout_width="80dp"
+                       android:layout_height="80dp"
+                       android:layout_gravity="center"
+                       android:background="@drawable/shape_side_bar_bg"
+                       android:gravity="center"
+                       android:textColor="@android:color/white"
+                       android:textSize="48sp"
+                       android:visibility="gone"
+                       tools:text="A"
+                       tools:visibility="visible"/>
+
+
+           </FrameLayout>
+           <FrameLayout
+               android:id="@+id/classify_brand_frames"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:background="@color/antiquewhite"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentEnd="true">
+
+
+
+
+           </FrameLayout>
+
+
+
+
+       </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
 
 </FrameLayout>

@@ -59,7 +59,7 @@ public class BaseAC extends AppCompatActivity {
 
     public void initImageLoader(){
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
+//                .cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)    //设置图片的质量
                 .imageScaleType(ImageScaleType.IN_SAMPLE_INT)    //设置图片的缩放类型，该方法可以有效减少内存的占用
                 .cacheOnDisc(true).build();

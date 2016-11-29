@@ -2,11 +2,8 @@ package com.example.cfwifine.sxk.Section.LoginAC;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.ClassifyFC;
-import com.example.cfwifine.sxk.Utils.XToast;
 
 /**
  * Created by cfwifine on 16/10/28.

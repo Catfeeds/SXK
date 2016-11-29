@@ -160,5 +160,16 @@
     <color name="login_turquoisex">#16a5af</color>
     <color name="home_bg">#f7f7f7</color>
     <color name="grrray">#dcdcdc</color>
+    <color name="classify">#eeeeee</color>
+
+    <color name="colorBlue">#69b3e0</color>
+    <color name="textBlueDark">#1379d6</color>
+    <color name="textWhite">#ffffff</color>
+    <color name="textBlack">#333333</color>
+    <color name="textGray">#999999</color>
+    <color name="textLightGray">#bbbbbb</color>
+    <color name="comment">#eeeeee</color>
+    <color name="raise">#5f9bbd</color>
+
 
 </resources>

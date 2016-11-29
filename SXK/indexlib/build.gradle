@@ -25,5 +25,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
+//    compile files('libs/android-support-v7-recyclerview.jar')
     compile 'com.github.promeg:tinypinyin:1.0.0' // ~80KB
 }

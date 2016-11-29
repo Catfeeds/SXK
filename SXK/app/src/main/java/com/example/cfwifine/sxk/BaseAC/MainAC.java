@@ -14,8 +14,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.ClassifyFC;
-import com.example.cfwifine.sxk.Section.CommunityNC.CommunFC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC;
+import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunFC;
 import com.example.cfwifine.sxk.Section.HomeNC.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.LoginFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;

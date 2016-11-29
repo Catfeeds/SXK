@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/NineLayout/NineLayout.iml" filepath="$PROJECT_DIR$/NineLayout/NineLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/SXK.iml" filepath="$PROJECT_DIR$/SXK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/haorefresh/haorefresh.iml" filepath="$PROJECT_DIR$/haorefresh/haorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/indexlib/indexlib.iml" filepath="$PROJECT_DIR$/indexlib/indexlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/multiple-images-selector/multiple-images-selector.iml" filepath="$PROJECT_DIR$/multiple-images-selector/multiple-images-selector.iml" />
     </modules>

@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.CheckRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.Utils.ToastUtil;
 import com.example.cfwifine.sxk.Utils.XToast;
 
@@ -111,8 +113,21 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             SharedPreferencesUtils.setParam(this, "RESULT", value);
             finish();
         }else {
-            XToast.show(CheckRecycleViewAC.this,"您还没有选择哦！");
-
+//            XToast.show(CheckRecycleViewAC.this,"您还没有选择哦！");
+            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+//            SnackbarUtils.showIndefiniteSnackbar(getWindow().getDecorView(), "您还没有选择哦!", 5000, Color.WHITE, Color.parseColor("#16a6ae"), "OK", Color.WHITE, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    SnackbarUtils.dismissSnackbar();
+//                }
+//            });
+//            SnackbarUtils.showLongSnackbar(getWindow().getDecorView(), "short snackbar", Color.WHITE, Color.BLUE,
+//                    "Short", Color.YELLOW, new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            XToast.show(CheckRecycleViewAC.this,"您还没有选择哦！");
+//                        }
+//                    });
         }
 
     }

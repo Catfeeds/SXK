@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,19 +68,18 @@ public class HomeFC extends Fragment {
             init();
             initHotTopic();
         }
-
-
-
-
-
-
         return view;
 
     }
     // TODO ***************************************初始化热门专题***************************************
     private void initHotTopic() {
         hotcycleView = (RecyclerView)view.findViewById(R.id.home_hot_recycleView);
-        LinearLayoutManager layoutManagers = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManagers = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
         hotcycleView.setLayoutManager(layoutManagers);
         hotAdapter = new HotTopicAdapter(listData,getActivity());
@@ -99,8 +99,12 @@ public class HomeFC extends Fragment {
         }
 
         recyclerView = (RecyclerView)view.findViewById(R.id.recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -228,4 +232,6 @@ public class HomeFC extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+
 }

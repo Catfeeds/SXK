@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.Utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 public class ToastUtil {
@@ -14,7 +15,7 @@ public class ToastUtil {
 	 * @param applicationContext
 	 * @param msg
 	 */
-	public static void show(Context applicationContext, String msg) {
+	public static void show(View.OnClickListener applicationContext, String msg) {
 		if (Global.getApplicationContext() == null) {
 			return;
 		}

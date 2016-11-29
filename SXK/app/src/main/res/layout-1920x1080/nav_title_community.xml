@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/table_shape_no_line">
+        <LinearLayout
+            android:id="@+id/navi_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:gravity="center_horizontal|center_vertical">
+            <ImageView
+                android:id="@+id/left_pic"
+                android:layout_width="10dp"
+                android:layout_height="17dp"
+                android:background="@drawable/back"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/navi_title"
+            android:layout_width="100dp"
+            android:layout_height="44dp"
+            android:text="标题"
+            android:textAlignment="center"
+            android:textColor="@color/navi_title_color"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/navi_right_pic_click_lay"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+            <ImageView
+                android:id="@+id/right_pic"
+                android:layout_width="25dp"
+                android:layout_height="19dp"
+                android:background="@drawable/com_pubfriendmoment"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

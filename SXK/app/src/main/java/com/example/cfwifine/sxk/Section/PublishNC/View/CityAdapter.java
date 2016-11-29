@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.PublishNC.View;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CityBean;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 
 import java.util.List;
 
@@ -51,7 +53,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(mContext, "pos:" + position, Toast.LENGTH_SHORT).show();
 //                holder.frameLayout.setBackgroundColor(Color.TRANSPARENT);
 
 

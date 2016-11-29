@@ -30,9 +30,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/gson-2.8.0.jar')
     compile 'com.zhy:okhttputils:2.6.2'
-    compile files('libs/android-support-v7-recyclerview.jar')
+    compile 'com.android.support:recyclerview-v7:24.0.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':multiple-images-selector')
     compile project(':indexlib')
     compile 'com.android.support:design:24.0.0'
+    compile 'com.wang.avi:library:1.0.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    //    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile project(':NineLayout')
+    compile project(':haorefresh')
+//    compile 'com.bartoszlipinski.recyclerviewheader:library:1.2.0'
 }

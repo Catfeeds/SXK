@@ -1,1 +1,1 @@
-include ':app', ':multiple-images-selector', ':indexlib'
+include ':app', ':multiple-images-selector', ':indexlib', ':haorefresh', ':NineLayout'

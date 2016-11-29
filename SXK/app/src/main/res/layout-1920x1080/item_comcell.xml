@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/textWhite"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <!--<TextView-->
+        <!--android:id="@+id/tag_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/layout_bg"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingBottom="2dp"-->
+        <!--android:text="热门问答"-->
+        <!--android:textColor="@color/tag_text_color"-->
+        <!--android:textSize="14sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/title_text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="2dp"-->
+        <!--android:paddingBottom="5dp"-->
+        <!--android:background="@drawable/title_text_bg"-->
+        <!--android:text="百度和Google的搜索技术是一个数量级吗？"-->
+        <!--android:textColor="@color/title_text_color"-->
+        <!--android:textSize="16sp" />-->
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/content_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/layout_bg"-->
+        <!--android:paddingBottom="15dp"-->
+        <!--android:paddingTop="5dp">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/num_text_bg"-->
+            <!--android:gravity="center"-->
+            <!--android:text="6.0K"-->
+            <!--android:textColor="@color/num_text_color"-->
+            <!--android:textSize="12sp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dip"-->
+            <!--android:text="很多答案是从使用上讲的，我加两个技术方面的。搜索引擎需要对抓取到的结果进行管理。当索引结果越来越多时，保证存储和查询速度"-->
+            <!--android:textColor="@color/content_text_color"-->
+            <!--android:lineSpacingExtra="5dp"-->
+            <!--android:textSize="13sp" />-->
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/commentHeaderView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="219dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="219dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/home_placeholder"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/imageView2" />
+                </RelativeLayout>
+                <HorizontalScrollView
+                    android:id="@+id/com_horscrollview_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="78dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:scrollbars="none" >
+
+                    <LinearLayout
+                        android:id="@+id/id_gallerys"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/commentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/com_user"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="好肥一只鱼"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@android:color/black"
+                android:text="麻烦大家帮我看下这个神奇的包包谁不是真的，快来快来。错过今天，再等一年。"
+                />
+            <com.w4lle.library.NineGridlayout
+                android:id="@+id/iv_ngrid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:layout_marginTop="12dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:textColor="@color/gray"
+                        android:text="2016-08-26   18：00"
+                        android:textSize="12sp"/>
+
+               <ImageButton
+                   android:layout_width="14dp"
+                   android:layout_height="14dp"
+                   android:layout_marginRight="20dp"
+                   android:background="@drawable/com_raise"/>
+                <ImageButton
+                    android:layout_width="14dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/com_comments"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/comment_trangle"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/comment"
+                android:orientation="vertical">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/raise_recycleview"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comment_recycleview"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
