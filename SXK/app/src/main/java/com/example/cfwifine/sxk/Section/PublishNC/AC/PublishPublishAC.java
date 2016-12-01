@@ -1,8 +1,10 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,7 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridViewAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout;
+import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.ImageBrowseActivity;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.multiple_images_selector.SelectorSettings;
 
@@ -25,6 +32,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     TextView cateoryTxt;
     private static final int REQUEST_CODE = 732;
     private ArrayList<String> mResults = new ArrayList<>();
+    ArrayList<String> dataSource;
+    FourGridlayout nineGridlayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +59,10 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         material.setOnClickListener(this);
         suitpersonal.setOnClickListener(this);
         file.setOnClickListener(this);
-
         cateoryTxt = (TextView)findViewById(R.id.cateory_txt);
 
+
+        nineGridlayout = (FourGridlayout)findViewById(R.id.results);
     }
 
 
@@ -66,20 +76,27 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         rights.setOnClickListener(this);
     }
     // TODO*********************************点击发布商品**********************************************
-    private void addPic() {
+    private void addPic(int s) {
         Intent intent = new Intent(PublishPublishAC.this, ImagesSelectorActivity.class);
         // 选择数量
         intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 9);
         // min size of image which will be shown; to filter tiny images (mainly icons)
         intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 100000);
-        // show camera or not
-        intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
+        if (s == 9){
+            // show camera or not
+            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
+        }else {
+            // show camera or not
+            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
+        }
         // pass current selected images as the initial value
         intent.putStringArrayListExtra(SelectorSettings.SELECTOR_INITIAL_SELECTED_LIST, mResults);
         // start the selector
         startActivityForResult(intent, REQUEST_CODE);
 
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // get selected images from selector
@@ -95,10 +112,71 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                     sb.append(result).append("\n");
                 }
             }
+        }else if (requestCode == 777){
+            if (resultCode == -1){
+                mResults = data.getStringArrayListExtra("images");
+                Log.e("回电的数据",""+mResults);
+            }
         }
+
+        if (mResults.size()!=0){
+            nineGridlayout.setVisibility(View.VISIBLE);
+            addPic.setVisibility(View.GONE);
+            howtoAdd.setVisibility(View.GONE);
+
+            dataSource = new ArrayList<>();
+            for (int i = 0; i<mResults.size();i++){
+                dataSource.add(mResults.get(i));
+            }
+            dataSource.add(mResults.size(),"TAG");
+            dataSource.add(mResults.size()+1,"MORE");
+            // 初始化九宫格
+            initFourGridView();
+        }else {
+            nineGridlayout.setVisibility(View.GONE);
+            addPic.setVisibility(View.VISIBLE);
+            howtoAdd.setVisibility(View.VISIBLE);
+        }
+
+
         super.onActivityResult(requestCode, resultCode, data);
     }
-    // TODO*******************************************************************************
+    // TODO***********************************点击选择照片********************************************
+    private  void  initFourGridView(){
+        FourGridAdapter nineGridAdapter = new FourGridViewAdapter(this,dataSource);
+
+        nineGridlayout.setAdapter(nineGridAdapter);
+        nineGridlayout.setOnItemClickListerner(new FourGridlayout.OnItemClickListerner() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.e("点击了",""+position);
+//                ImageBrowseActivity.startActivity(PublishPublishAC.this,dataSource,position);
+                Log.e("dataSource",""+dataSource);
+                int s = dataSource.size()-2;
+                if (position == s){
+                    addPic(s);
+                }else if (position == s+1){
+                    SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                } else{
+                    PreviewPic(position);
+                }
+            }
+        });
+
+    }
+    // TODO***********************************点击预览照片********************************************
+    private void PreviewPic(int position) {
+//        Intent intent = new Intent(PublishPublishAC.this, ImageBrowseActivity.class);
+//        // 选择数量
+//        intent.putExtra("dataSource", dataSource);
+//        startActivityForResult(intent, 777);
+
+        Intent intent = new Intent(PublishPublishAC.this,ImageBrowseActivity.class);
+        intent.putStringArrayListExtra("images",dataSource);
+        intent.putExtra("position",position);
+        startActivityForResult(intent,777);
+    }
+
 
     // TODO*********************************点击如何传图**********************************************
     private void howToPublish() {
@@ -115,7 +193,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.publish_publish_add_pic_imageview:
-                addPic();
+                addPic(0);
                 break;
             case R.id.publish_publish_howto_pic_imageview:
                 howToPublish();

@@ -72,6 +72,8 @@ public class ImagesSelectorActivity extends AppCompatActivity
 
     private File mTempImageFile;
     private static final int CAMERA_REQUEST_CODE = 694;
+    // num 用来控制九张图之后不能点击摄像头
+    int num = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class ImagesSelectorActivity extends AppCompatActivity
         ImageListContent.SELECTED_IMAGES.clear();
         if(selected != null && selected.size() > 0) {
             ImageListContent.SELECTED_IMAGES.addAll(selected);
+            num = ImageListContent.SELECTED_IMAGES.size();
         }
 
         // initialize widgets in custom actionbar
@@ -310,6 +313,7 @@ public class ImagesSelectorActivity extends AppCompatActivity
         if(ImageListContent.SELECTED_IMAGES.size() == 0) {
             mButtonConfirm.setEnabled(false);
         } else {
+            num = ImageListContent.SELECTED_IMAGES.size();
             mButtonConfirm.setEnabled(true);
         }
 
@@ -327,6 +331,7 @@ public class ImagesSelectorActivity extends AppCompatActivity
 
             ImageListContent.IMAGES.clear();
             ImageListContent.IMAGES.addAll(folder.mImages);
+            num = ImageListContent.IMAGES.size();
             recyclerView.getAdapter().notifyDataSetChanged();
         } else {
             Log.d(TAG, "OnFolderChange: " + "Same folder selected, skip loading.");
@@ -347,9 +352,22 @@ public class ImagesSelectorActivity extends AppCompatActivity
             Toast.makeText(ImagesSelectorActivity.this, hint, Toast.LENGTH_SHORT).show();
             ImageListContent.bReachMaxNumber = false;
         }
-
         if(item.isCamera()) {
-            requestCameraRuntimePermissions();
+//            if (ImageListContent.bReachMaxNumber){
+//                String hint = getResources().getString(R.string.selector_reach_max_image_hint, SelectorSettings.mMaxImageNumber);
+//                Toast.makeText(ImagesSelectorActivity.this, hint, Toast.LENGTH_SHORT).show();
+//                return;
+//            }else {
+            if (num == 9){
+                String hint = getResources().getString(R.string.selector_reach_max_image_hint, SelectorSettings.mMaxImageNumber);
+                Toast.makeText(ImagesSelectorActivity.this, hint, Toast.LENGTH_SHORT).show();
+            }else {
+                requestCameraRuntimePermissions();
+            }
+
+
+//            }
+
         }
 
         updateDoneButton();

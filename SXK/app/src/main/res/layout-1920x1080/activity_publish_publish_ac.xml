@@ -42,12 +42,19 @@
 
                     android:scrollbars="vertical"/>
                 <LinearLayout
+                    android:id="@+id/publish_add_pic_lay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
+                    <com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout
+                        android:id="@+id/results"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout>
                     <ImageView
                         android:id="@+id/publish_publish_add_pic_imageview"
                         android:layout_width="111dp"
@@ -61,13 +68,12 @@
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_publish_howtophoto" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="必须9张图"
-                        android:textSize="12sp"
-                        android:textColor="#b6b6b6" />
+                    <ImageView
+                        android:layout_width="111dp"
+                        android:layout_height="111dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/publish_must_nine" />
+
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"

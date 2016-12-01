@@ -61,6 +61,7 @@
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.PublishNC.AC.CheckRecycleViewAC"
             android:theme="@style/AppThemeHasTitle"></activity>
+        <activity android:name=".Section.PublishNC.View.PreviewPicView.ImageBrowseActivity"/>
     </application>
 
 
