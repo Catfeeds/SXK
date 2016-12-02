@@ -3,17 +3,26 @@ package com.example.cfwifine.sxk.Section.LoginAC;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.View.CircleImageView;
 
-
+import java.util.ArrayList;
 
 
 public class LoginFC extends Fragment implements View.OnClickListener, PopupWindow.OnDismissListener {
@@ -21,6 +30,25 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     LoginPupWindow loginPupWindow;
     LinearLayout layouts,layoutx;
     CircleImageView circleImageView;
+    RecyclerView mRecycles;
+    ArrayList<String> applicationName = new ArrayList<>();
+    ArrayList<Integer> imageView = new ArrayList<>();
+    String[] applicationNames = {"我的钱包", "我的积分", "分享奖励", "我的信用", "服务中心",
+            "我的买卖", "我的收藏", "联系客服", "设置"};
+    int[] imageViews = {R.drawable.mine_vallet, R.drawable.mine_integral, R.drawable.mine_share,
+            R.drawable.mine_credit, R.drawable.mine_service_center, R.drawable.mine_business,
+            R.drawable.mine_collection, R.drawable.mine_customer_service, R.drawable.mine_setting};
+    private ImageView mHeadportrait;
+    private ImageView mSex;
+    private TextView mPerssonaldata;
+    private TextView mFollow;
+    private TextView mIdentity;
+    private RelativeLayout mPublishs;
+    private RelativeLayout mRents;
+    private RelativeLayout mCare;
+    private RelativeLayout mRecognize;
+    RelativeLayout loginView;
+    ScrollView loginSucView;
 
 
     @Override
@@ -33,11 +61,21 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login_fc, container, false);
+        initView();
         initLoginBtn();
+        initLoginOk();
 
 
         return view;
     }
+    // TODO**************************************初始化界面******************************************
+    private void initView() {
+        loginView = (RelativeLayout)view.findViewById(R.id.login_view);
+        loginSucView = (ScrollView)view.findViewById(R.id.login_success_view);
+        loginView.setVisibility(View.VISIBLE);
+        loginSucView.setVisibility(View.GONE);
+    }
+
     // TODO**************************************登录按钮******************************************
     private void initLoginBtn() {
         circleImageView = (CircleImageView)view.findViewById(R.id.circleImageView);
@@ -46,6 +84,76 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         layoutx = (LinearLayout)view.findViewById(R.id.login_lay);
 
     }
+
+    // TODO**************************************登录成功******************************************
+    private void initLoginOk() {
+        mRecycles = (RecyclerView) view.findViewById(R.id.mine_recycleView);
+
+        mSex = (ImageView) view.findViewById(R.id.mine_sex);
+        mHeadportrait = (ImageView) view.findViewById(R.id.headportrait);
+        mPerssonaldata = (TextView) view.findViewById(R.id.mine_perssonal_data);
+        mFollow = (TextView) view.findViewById(R.id.mine_follow);
+        mIdentity = (TextView) view.findViewById(R.id.mine_id_auth);
+        mPublishs = (RelativeLayout) view.findViewById(R.id.mine_publishs);
+        mRents = (RelativeLayout) view.findViewById(R.id.mine_rents);
+        mCare = (RelativeLayout) view.findViewById(R.id.mine_care);
+        mRecognize = (RelativeLayout) view.findViewById(R.id.mine_recognize);
+
+        mHeadportrait.setOnClickListener(this);
+        mPerssonaldata.setOnClickListener(this);
+        mFollow.setOnClickListener(this);
+        mIdentity.setOnClickListener(this);
+        mPublishs.setOnClickListener(this);
+        mRents.setOnClickListener(this);
+        mCare.setOnClickListener(this);
+        mRecognize.setOnClickListener(this);
+
+        for (int i=0;i<9;i++) {
+            applicationName.add(applicationNames[i]);
+            imageView.add(imageViews[i]);
+        }
+
+        mRecycles.setLayoutManager(new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        mRecycles.setHasFixedSize(true);
+
+        final MineRecycleViewAdapter adapter = new MineRecycleViewAdapter(applicationName,imageView);
+        adapter.setOnItemClickListener(new MineRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+
+                jump(position);
+            }
+        });
+        mRecycles.setAdapter(adapter);
+    }
+
+    private void jump(int position) {
+        if (position == 0) {
+            Toast.makeText(getContext(),"我的钱包", Toast.LENGTH_SHORT).show();
+        }else if (position == 1){
+            Toast.makeText(getContext(), "我的积分", Toast.LENGTH_SHORT).show();
+        }else if (position == 2){
+            Toast.makeText(getContext(), "分享奖励", Toast.LENGTH_SHORT).show();
+        }else if (position == 3){
+            Toast.makeText(getContext(), "我的信用", Toast.LENGTH_SHORT).show();
+        }else if (position == 4){
+            Toast.makeText(getContext(), "服务中心", Toast.LENGTH_SHORT).show();
+        }else if (position == 5){
+            Toast.makeText(getContext(), "我的买卖", Toast.LENGTH_SHORT).show();
+        }else if (position == 6){
+            Toast.makeText(getContext(), "我的收藏", Toast.LENGTH_SHORT).show();
+        }else if (position == 7){
+            Toast.makeText(getContext(), "联系客服", Toast.LENGTH_SHORT).show();
+        }else if (position == 8){
+            Toast.makeText(getContext(), "设置", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
     @Override
@@ -59,6 +167,34 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 loginPupWindow.showAtLocation(getActivity().findViewById(R.id.activity_main_ac), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
                 loginPupWindow.setOnDismissListener(this);
                 break;
+            case R.id.headportrait:
+                Toast.makeText(getContext(), "设置头像", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_perssonal_data:
+                Toast.makeText(getContext(), "个人资料", Toast.LENGTH_SHORT).show();
+                startActivity(UserInfoAC.class);
+                break;
+            case R.id.mine_follow:
+                Toast.makeText(getContext(), "我的关注", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_id_auth:
+                Toast.makeText(getContext(), "身份认证", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_publishs:
+                Toast.makeText(getContext(), "我的发布", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_rents:
+                Toast.makeText(getContext(), "我的租凭", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_care:
+                Toast.makeText(getContext(), "我的养护", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mine_recognize:
+                Toast.makeText(getContext(), "我的鉴定", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+
         }
     }
     //为弹出窗口实现监听类
@@ -69,10 +205,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             switch (v.getId()) {
                 case R.id.login_cancel:
                     loginPupWindow.dismiss();
-
-
                     break;
                 case R.id.login_useboobe:
+                    loginView.setVisibility(View.GONE);
+                    loginSucView.setVisibility(View.VISIBLE);
                     startActivity(LoginUseBoobeAC.class);
                     break;
                 case R.id.login_usewexin:

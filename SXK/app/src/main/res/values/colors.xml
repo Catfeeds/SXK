@@ -170,6 +170,8 @@
     <color name="textLightGray">#bbbbbb</color>
     <color name="comment">#eeeeee</color>
     <color name="raise">#5f9bbd</color>
+    // 80%透明度
+    <color name="alp">#FF3c3c3c</color>
 
 
 </resources>

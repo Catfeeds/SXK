@@ -63,7 +63,7 @@ public class HomeFC extends Fragment {
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
-            initBanner();
+//            initBanner();
 //            initHorscrollView();
             init();
             initHotTopic();

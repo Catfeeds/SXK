@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:weightSum="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="修改昵称"
+                android:textSize="14sp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/navi_title_color"
+                android:id="@+id/title1" />
+            <Button
+                android:id="@+id/imagbtn"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/dialog_closer" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="14dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="226dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/record_nickname_edt"
+                android:layout_width="226dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/table_shape_edittext_style"
+                android:textSize="14sp"
+                android:maxLength="10"
+                android:inputType="text"
+                android:textColor="@color/grrray"
+                android:hint="请输入昵称"
+                android:textColorHint="@color/grrray"
+                android:gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/record_nickname_btn_cancel"
+                    android:layout_width="81dp"
+                    android:layout_height="27dp"
+                    android:textSize="13sp"
+                    android:text="取消"
+                    android:textColor="@color/grrray"
+                    android:background="@drawable/table_shape_dialog"/>
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/record_nickname_btn_ok"
+                    android:layout_width="81dp"
+                    android:layout_height="27dp"
+                    android:layout_marginLeft="40dp"
+                    android:text="确定"
+                    android:textSize="13sp"
+                    android:textColor="@color/login_turquoisex"
+                    android:background="@drawable/table_shape_dialog_green"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

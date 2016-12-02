@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC;
+package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
 import android.content.Context;
 import android.net.Uri;

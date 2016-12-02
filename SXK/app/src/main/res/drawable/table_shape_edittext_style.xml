@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/home_bg" />
+
+    //设置边距
+    <padding
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp" />
+
+    //控制边界线颜色和笔触大小
+    <stroke
+        android:width="0.2dp"
+        android:color="#dedede" />
+
+    //控制界面颜色渐变（你这个用不到）
+    <!--<gradient-->
+        <!--android:startColor="@color/white"-->
+        <!--android:endColor="@color/white"-->
+        <!--android:type="linear"-->
+        <!--android:angle="90"/>-->
+
+    //控制圆角大小
+    <corners android:radius="0dp" />
+
+</shape>

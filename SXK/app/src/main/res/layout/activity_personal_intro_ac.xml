@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_personal_intro_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.example.cfwifine.sxk.Section.MineNC.Controller.PersonalIntroAndChangePswAC">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <include layout="@layout/nav_title_no_line"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grrray"/>
+    <LinearLayout
+        android:id="@+id/personalIntroLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+        <EditText
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:hint="请输入您的个人简介"
+            android:padding="15dp"
+            android:textColorHint="#a1a1a1"
+            android:background="#eeeeee"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:gravity="top"
+            android:enabled="true"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:scrollbars="vertical"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="30dp"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/table_shape_login_button"/>
+    </LinearLayout>
+</LinearLayout>
