@@ -23,6 +23,8 @@ import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_phone;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.datepicker.DatePicker;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.datepicker.TimePicker;
+import com.example.cfwifine.sxk.Utils.FileManager;
+import com.example.cfwifine.sxk.Utils.ImageFactory;
 import com.example.cfwifine.sxk.Utils.ToastUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
@@ -69,6 +71,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 
     Bitmap photo;
     CircleImageView header;
+    String mImageCachePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,23 +275,27 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         /**
          * 在启动拍照之前最好先判断一下sdcard是否可用
          */
-        String state = Environment.getExternalStorageState(); //拿到sdcard是否可用的状态码
-        if (state.equals(Environment.MEDIA_MOUNTED)){   //如果可用
+        String fileName = "sxk" + ".jpg";
+        mImageCachePath = FileManager.getSaveImagePath() + fileName;
+        Log.e("路径",""+mImageCachePath);
+//        String state = Environment.getExternalStorageState(); //拿到sdcard是否可用的状态码
+//        if (state.equals(Environment.MEDIA_MOUNTED)){   //如果可用
 
-            File file = new File(mPicDirectory);
-            if(!file.exists()) {//目录不存在则创建该目录及其不存在的父目录
-                file.mkdirs();
-            }
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//            mPicName = getPictureName();//获取照片名称
-//            mPicPath = mPicDirectory + mPicName;//照片存储路径
-//            //将照片保存到mPicPath位置
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mPicPath)));
-
-            startActivityForResult(intent,TAKE_PHOTO);
-        }else {
-            Toast.makeText(UserInfoAC.this,"SD卡不可用",Toast.LENGTH_SHORT).show();
-        }
+//            File file = new File(mPicDirectory);
+//            if(!file.exists()) {//目录不存在则创建该目录及其不存在的父目录
+//                file.mkdirs();
+//            }
+            Intent intent = new Intent(
+                    MediaStore.ACTION_IMAGE_CAPTURE);
+            Uri imageUri = Uri.fromFile(new File(
+                    mImageCachePath));
+            //这个参数就是转移保存地址的，对应Value中保存的URI就是指定的保存地址
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    imageUri);
+            startActivityForResult(intent, TAKE_PHOTO);
+//        }else {
+//            Toast.makeText(UserInfoAC.this,"SD卡不可用",Toast.LENGTH_SHORT).show();
+//        }
 
     }
     @Override
@@ -308,27 +315,31 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 header.setImageBitmap(BitmapFactory.decodeFile(new File(mResults.get(0)).getPath()));
                 break;
             case TAKE_PHOTO:
-                //两种方式 获取拍好的图片
-                if (data.getData() != null|| data.getExtras() != null){ //防止没有返回结果
-                    Uri uri =data.getData();
-                    if (uri != null) {
-                        photo = BitmapFactory.decodeFile(uri.getPath()); //拿到图片
-                        Log.e("拍的图",""+photo);
-                        header.setImageBitmap(photo);
-                    }
-                    if (photo == null) {
-                        Bundle bundle =data.getExtras();
-                        if (bundle != null){
-                            photo =(Bitmap) bundle.get("data");
-                        } else {
-                            Toast.makeText(getApplicationContext(), "找不到图片",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    //处理图片
-                    //裁剪图片
-                }
+//                //两种方式 获取拍好的图片
+//                if (data.getData() != null|| data.getExtras() != null){ //防止没有返回结果
+//                    Uri uri =data.getData();
+//                    if (uri != null) {
+//                        photo = BitmapFactory.decodeFile(uri.getPath()); //拿到图片
+//                        Log.e("拍的图",""+photo);
+//                        header.setImageBitmap(photo);
+//                    }
+//                    if (photo == null) {
+//                        Bundle bundle =data.getExtras();
+//                        if (bundle != null){
+//                            photo =(Bitmap) bundle.get("data");
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), "找不到图片",Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                    //处理图片
+//                    //裁剪图片
+//                }
 
 
+                Uri imageUri=Uri.fromFile(new File(mImageCachePath));
+                header.setImageBitmap(ImageFactory.getBitmapFormUri(this,imageUri,false));
+//
+                Log.e("图片路径",""+mImageCachePath);
                 break;
         }
 

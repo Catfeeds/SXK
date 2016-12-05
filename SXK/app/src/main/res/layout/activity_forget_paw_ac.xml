@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/login_phone_pic"/>
             <EditText
+                android:id="@+id/forgetpaw_phonenumber_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="    请输入手机号"
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/register_code"/>
             <EditText
-
+                android:id="@+id/forgetpaw_verify_code_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="    请输入验证码"
@@ -75,6 +76,7 @@
                 android:background="@color/login_line_color"/>
 
             <Button
+                android:id="@+id/forgetpaw_sendVerifycode_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:background="@null"
@@ -104,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/login_password_pic"/>
             <EditText
-
+                android:id="@+id/forgetpaw_newpassword_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="    请输入新密码"
@@ -141,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/forget_psw_confirm"/>
             <EditText
-
+                android:id="@+id/forgetpaw_confirmpaw_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="    请输入确认密码"
@@ -162,6 +164,7 @@
             android:layout_height="1dp"/>
     </LinearLayout>
     <Button
+        android:id="@+id/forgetpaw_submit_btn"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginTop="42dp"

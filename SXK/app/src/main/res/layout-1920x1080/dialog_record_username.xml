@@ -70,7 +70,7 @@
                     android:layout_height="27dp"
                     android:textSize="13sp"
                     android:text="取消"
-                    android:textColor="@color/grrray"
+                    android:textColor="@color/gray_40"
                     android:background="@drawable/table_shape_dialog"/>
 
                 <Button

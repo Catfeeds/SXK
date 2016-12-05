@@ -161,6 +161,7 @@
     <color name="home_bg">#f7f7f7</color>
     <color name="grrray">#dcdcdc</color>
     <color name="classify">#eeeeee</color>
+    <color name="gray_40">#aaaaaa</color>
 
     <color name="colorBlue">#69b3e0</color>
     <color name="textBlueDark">#1379d6</color>

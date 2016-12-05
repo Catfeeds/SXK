@@ -67,8 +67,10 @@
         <activity
             android:name=".Section.MineNC.Controller.UserInfoAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
-            android:theme="@style/AppThemeHasTitle" ></activity>
+        <activity
+            android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC"></activity>
     </application>
 
 </manifest>
