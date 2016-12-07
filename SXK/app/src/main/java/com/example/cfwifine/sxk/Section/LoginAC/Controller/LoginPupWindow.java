@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.LoginAC;
+package com.example.cfwifine.sxk.Section.LoginAC.Controller;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

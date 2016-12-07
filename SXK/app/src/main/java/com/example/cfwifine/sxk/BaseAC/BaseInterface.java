@@ -16,8 +16,19 @@ public class BaseInterface {
     public static String UserVerifyCode = root + "/app/sms/addpost";
     // 忘记喵喵
     public static String UserForgetPaw = root + "/app/applogin/forgetpost";
+    // 添加收货地址
+    public static String SettingAddReceiveGoods = root +"/app/receiver/addpost";
+    // 删除收货地址
+    public static String SettingDelReceiveGoods = root +"/app/receiver/delpost";
+    // 修改收货地址
+    public static String SettingUpdateReceiveGoods = root +"/app/receiver/setpost";
+    // 获取收货地址
+    public static String SettingGetReceiveGoods = root +"/app/receiver/getpost";
+    // 收货地址列表
+    public static String SettingListReceiveGoods = root +"/app/receiver/listpost";
+
 
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
-    public static String USERTOKEN = "USERTOKEN";
+    public static String PHPSESSION = "PHPSESSION";
 }

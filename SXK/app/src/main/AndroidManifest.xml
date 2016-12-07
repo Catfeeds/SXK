@@ -37,13 +37,13 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".BaseAC.MainAC" />
         <activity
-            android:name=".Section.LoginAC.LoginUseBoobeAC"
+            android:name=".Section.LoginAC.Controller.LoginUseBoobeAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.LoginAC.RegisterNowAC"
+            android:name=".Section.LoginAC.Controller.RegisterNowAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.LoginAC.ForgetPawAC"
+            android:name=".Section.LoginAC.Controller.ForgetPawAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.PublishPublishAC"
@@ -70,7 +70,15 @@
         <activity
             android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC"></activity>
+        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC" />
+        <activity
+            android:name=".Section.MineNC.Controller.UserInfoRecycleViewCommomAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.AddressSettingCommomAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.AddressDetailAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
 </manifest>

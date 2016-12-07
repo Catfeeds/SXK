@@ -87,7 +87,7 @@
     <ScrollView
         android:id="@+id/login_success_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:overScrollMode="never"
         android:scrollbars="none">
@@ -219,8 +219,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
                         android:text="我的发布"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
 
                 </RelativeLayout>
 
@@ -246,8 +246,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
                         android:text="我的租凭"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
 
                 </RelativeLayout>
 
@@ -273,8 +273,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
                         android:text="我的养护"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
 
                 </RelativeLayout>
 
@@ -300,8 +300,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
                         android:text="我的鉴定"
-                        android:textColor="@color/gray"
-                        android:textSize="10sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
 
                 </RelativeLayout>
 

@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.LoginAC;
+package com.example.cfwifine.sxk.Section.LoginAC.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.View.CircleImageView;
 
@@ -118,44 +119,28 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             public boolean canScrollVertically() {
                 return false;
             }
+            // SC嵌套ReCV防止数据显示不完整
+            @Override
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+                int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
+                super.onMeasure(recycler, state, widthSpec, expandSpec);
+            }
         });
-        mRecycles.setHasFixedSize(true);
+//        mRecycles.setHasFixedSize(true);
 
         final MineRecycleViewAdapter adapter = new MineRecycleViewAdapter(applicationName,imageView);
         adapter.setOnItemClickListener(new MineRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-
                 jump(position);
             }
         });
         mRecycles.setAdapter(adapter);
     }
-
     private void jump(int position) {
-        if (position == 0) {
-            Toast.makeText(getContext(),"我的钱包", Toast.LENGTH_SHORT).show();
-        }else if (position == 1){
-            Toast.makeText(getContext(), "我的积分", Toast.LENGTH_SHORT).show();
-        }else if (position == 2){
-            Toast.makeText(getContext(), "分享奖励", Toast.LENGTH_SHORT).show();
-        }else if (position == 3){
-            Toast.makeText(getContext(), "我的信用", Toast.LENGTH_SHORT).show();
-        }else if (position == 4){
-            Toast.makeText(getContext(), "服务中心", Toast.LENGTH_SHORT).show();
-        }else if (position == 5){
-            Toast.makeText(getContext(), "我的买卖", Toast.LENGTH_SHORT).show();
-        }else if (position == 6){
-            Toast.makeText(getContext(), "我的收藏", Toast.LENGTH_SHORT).show();
-        }else if (position == 7){
-            Toast.makeText(getContext(), "联系客服", Toast.LENGTH_SHORT).show();
-        }else if (position == 8){
-            Toast.makeText(getContext(), "设置", Toast.LENGTH_SHORT).show();
-        }
+        // 根据position跳转
+        startActivity(UserInfoRecycleViewCommomAC.class,position);
     }
-
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -172,7 +157,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_perssonal_data:
                 Toast.makeText(getContext(), "个人资料", Toast.LENGTH_SHORT).show();
-                startActivity(UserInfoAC.class);
+                startActivity(UserInfoAC.class,111);
                 break;
             case R.id.mine_follow:
                 Toast.makeText(getContext(), "我的关注", Toast.LENGTH_SHORT).show();
@@ -209,7 +194,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 case R.id.login_useboobe:
                     loginView.setVisibility(View.GONE);
                     loginSucView.setVisibility(View.VISIBLE);
-                    startActivity(LoginUseBoobeAC.class);
+                    startActivity(LoginUseBoobeAC.class,111);
                     break;
                 case R.id.login_usewexin:
 
@@ -228,8 +213,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     };
 
-    private void startActivity(Class<?> cls) {
+    private void startActivity(Class<?> cls,Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);
+        intent.putExtra("JUMPPOSITION",jumpvalue);
         startActivity(intent);
     }
 

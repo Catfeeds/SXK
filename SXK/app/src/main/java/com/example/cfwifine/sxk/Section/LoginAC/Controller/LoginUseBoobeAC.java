@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.LoginAC;
+package com.example.cfwifine.sxk.Section.LoginAC.Controller;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -104,7 +106,6 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
     // TODO*********************************登录请求**********************************************
     private void LoginUseRe(String username,String password) {
         JSONObject json = new JSONObject();
-
         try {
             json.put("mobile",username);
             json.put("password",password);
@@ -121,13 +122,18 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
-
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("登录成功",""+response);
-
-
-                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        Gson gson = new Gson();
+                        UserLoginModel userLoginModel = gson.fromJson(response,UserLoginModel.class);
+                        if (userLoginModel.getCode() ==1){
+                            SharedPreferencesUtils.setParam(getApplicationContext(),BaseInterface.PHPSESSION,userLoginModel.getPHPSESSID());
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            finish();
+                        }else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
                     }
                 });
     }

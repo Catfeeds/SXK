@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.LoginAC;
+package com.example.cfwifine.sxk.Section.LoginAC.Controller;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
+import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 import com.zhy.http.okhttp.https.HttpsUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -22,12 +24,13 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
+                .cookieJar(cookieJar)
                 .hostnameVerifier(new HostnameVerifier()
                 {
                     @Override

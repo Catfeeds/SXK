@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_setting_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/home_bg"
+    tools:context="com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <include layout="@layout/nav_title_no_line"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/login_line_color"/>
+    <!--// 这个是设置界面的View-->
+    <RelativeLayout
+        android:id="@+id/setting_view_lay"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/setting_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+
+
+</LinearLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_address_detail_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg"
+    android:orientation="vertical"
+    tools:context="com.example.cfwifine.sxk.Section.MineNC.Controller.AddressDetailAC">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <include layout="@layout/nav_title_no_line"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/login_line_color"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/login_line_color"/>
+            <EditText
+                android:id="@+id/add_address_username"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="    请输入收货人姓名"
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:background="@null"
+                android:textColorHint="@color/login_phone_numbercolor" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/login_line_color"/>
+            <EditText
+                android:id="@+id/add_address_phonenumber"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="    请输入联系人电话"
+                android:padding="5dp"
+                android:inputType="phone"
+                android:textSize="14sp"
+                android:background="@null"
+                android:textColorHint="@color/login_phone_numbercolor" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="12dp"
+                android:background="@color/login_line_color"/>
+            <RelativeLayout
+                android:id="@+id/add_address_selectedaddress"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center_vertical|center_horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:hint="    请选择地区街道"
+                    android:padding="5dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:textColorHint="@color/login_phone_numbercolor" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/publish_publish_go"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/login_line_color"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/home_bg"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/login_line_color"/>
+            <EditText
+                android:id="@+id/add_address_detailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="    请输入详细地址"
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:gravity="start"
+                android:background="@null"
+                android:textColorHint="@color/login_phone_numbercolor" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/login_line_color"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/add_address_saveaddress"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@drawable/table_shape_login_button"/>
+    </LinearLayout>
+
+
+</LinearLayout>
