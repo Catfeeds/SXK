@@ -1,7 +1,6 @@
 package com.example.cfwifine.sxk.Section.PublishNC.View;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.CityBean;
-import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 
 import java.util.List;
 
@@ -23,20 +21,20 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     private Context mContext;
-    private List<CityBean> mDatas;
+    private List<BrandBean> mDatas;
     private LayoutInflater mInflater;
 
-    public CityAdapter(Context mContext, List<CityBean> mDatas) {
+    public CityAdapter(Context mContext, List<BrandBean> mDatas) {
         this.mContext = mContext;
         this.mDatas = mDatas;
         mInflater = LayoutInflater.from(mContext);
     }
 
-    public List<CityBean> getDatas() {
+    public List<BrandBean> getDatas() {
         return mDatas;
     }
 
-    public CityAdapter setDatas(List<CityBean> datas) {
+    public CityAdapter setDatas(List<BrandBean> datas) {
         mDatas = datas;
         return this;
     }
@@ -48,8 +46,8 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final CityAdapter.ViewHolder holder, final int position) {
-        final CityBean cityBean = mDatas.get(position);
-        holder.tvCity.setText(cityBean.getCity());
+        final BrandBean brandBean = mDatas.get(position);
+        holder.tvCity.setText(brandBean.getCity());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +56,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
             }
         });
-        holder.avatar.setImageResource(R.drawable.personal);
+//        holder.avatar.setImageResource(R.drawable.personal);
     }
 
     @Override

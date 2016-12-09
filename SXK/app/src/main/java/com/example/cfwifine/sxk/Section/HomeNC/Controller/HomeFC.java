@@ -1,30 +1,28 @@
-package com.example.cfwifine.sxk.Section.HomeNC;
+package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
 
 import android.annotation.SuppressLint;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cfwifine.sxk.CircleViewImage.ADInfo;
 import com.example.cfwifine.sxk.CircleViewImage.CycleViewPager;
 import com.example.cfwifine.sxk.CircleViewImage.ViewFactory;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 
 
 import java.util.ArrayList;
@@ -37,9 +35,10 @@ public class HomeFC extends Fragment {
     private List<ADInfo> infos = new ArrayList<ADInfo>();
     private CycleViewPager cycleViewPager;
     ImageView more;
-    RecyclerView recyclerView,hotcycleView;
+    RecyclerView recyclerView,hotcycleView,eightRV;
     RecycleAdapter myAdapter;
     HotTopicAdapter hotAdapter;
+    EightItemRecycleAdapter eightItemRecycleAdapter;
     private ArrayList<String> listData = new ArrayList<>();
 
     private String[] imageUrls = {"http://img.taodiantong.cn/v55183/infoimg/2013-07/130720115322ky.jpg",
@@ -47,6 +46,17 @@ public class HomeFC extends Fragment {
             "http://pic18.nipic.com/20111215/577405_080531548148_2.jpg",
             "http://pic15.nipic.com/20110722/2912365_092519919000_2.jpg",
             "http://pic.58pic.com/58pic/12/64/27/55U58PICrdX.jpg"};
+
+    public ArrayList<String> datasText = null;
+    public ArrayList<Integer> datasPic = null;
+    String [] text = new String[]{
+            "租赁","交换","鉴定","养护","上新","活动","顾问","分享"
+    };
+    int[] pic = new int[]{
+            R.drawable.home_rent,R.drawable.home_change,R.drawable.home_recognize,R.drawable.home_care
+            ,R.drawable.home_new,R.drawable.home_activity,R.drawable.home_anwser,R.drawable.home_share
+    };
+
 
 
     @Override
@@ -65,12 +75,41 @@ public class HomeFC extends Fragment {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
 //            initBanner();
 //            initHorscrollView();
+            initEightItemRV();
             init();
             initHotTopic();
         }
         return view;
 
     }
+    // TODO ***************************************初始化8个专题***************************************
+    private void initEightItemRV(){
+        datasText = new ArrayList<>();
+        for (int i= 0;i<8;i++){
+            datasText.add(i,text[i]);
+        }
+        datasPic = new ArrayList<>();
+        for (int i =0;i<8;i++){
+            datasPic.add(i,pic[i]);
+        }
+        eightRV = (RecyclerView)view.findViewById(R.id.rv_home_item);
+        eightItemRecycleAdapter = new EightItemRecycleAdapter(datasPic,datasText);
+        eightRV.setLayoutManager(new GridLayoutManager(getActivity(),4));
+        eightRV.setAdapter(eightItemRecycleAdapter);
+        eightItemRecycleAdapter.setOnItemClickListener(new EightItemRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                LogUtil.e("点击了第几个"+position);
+                JumpForPage(position);
+            }
+        });
+    }
+
+    private void JumpForPage(int position) {
+        startActivity(EightItemDetailAC.class,position);
+    }
+
+
     // TODO ***************************************初始化热门专题***************************************
     private void initHotTopic() {
         hotcycleView = (RecyclerView)view.findViewById(R.id.home_hot_recycleView);
@@ -228,10 +267,17 @@ public class HomeFC extends Fragment {
 
     };
 
+    private void startActivity(Class<?> cls,Integer jumpvalue) {
+        Intent intent = new Intent(getActivity(), cls);
+        intent.putExtra("JUMPEIGHTITEMDETAIL",jumpvalue);
+        startActivity(intent);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
+
 
 
 }

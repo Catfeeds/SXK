@@ -1,10 +1,7 @@
 package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,42 +13,52 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyBrandListAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyLeftRecycleViewAdapter;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishBrandAC;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.CityBean;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
-import com.example.cfwifine.sxk.Section.PublishNC.View.CityAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.DividerItemDecoration;
 import com.example.cfwifine.sxk.Section.PublishNC.View.HeaderRecyclerAndFooterWrapperAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
-import com.example.cfwifine.sxk.Section.PublishNC.View.ViewHolder;
+import com.example.cfwifine.sxk.Utils.NetworkUtils;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
-import com.example.cfwifine.sxk.View.MyGridAdapter;
 import com.example.cfwifine.sxk.View.MyGridView;
+import com.google.gson.Gson;
 import com.mcxtzhang.indexlib.IndexBar.widget.IndexBar;
 import com.mcxtzhang.indexlib.suspension.TitleItemDecoration;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 public class ClassifyFC extends Fragment implements View.OnClickListener {
 
     View view;
-    RecyclerView leftRecycleView,rightRecycleView;
-    ArrayList <TestModel> datalist = new ArrayList<>();
+    RecyclerView leftRecycleView, rightRecycleView;
+    ArrayList<TestModel> datalist = new ArrayList<>();
 
     MyGridView myGridView;
 
     // 配置右侧indexbar
-    private CityAdapter mAdapter;
+    private ClassifyBrandListAdapter mAdapter;
     private HeaderRecyclerAndFooterWrapperAdapter mHeaderAdapter;
     private LinearLayoutManager mManager;
-    private List<CityBean> mDatas;
+    private List<BrandBean> mDatas;
     private TitleItemDecoration mDecoration;
     /**
      * 右侧边栏导航区域
@@ -62,9 +69,13 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
      * 显示指示器DialogText
      */
     private TextView mTvSideBarHint;
+    //    RelativeLayout relativeLayout ;
+    List<ClassfiyBrandModel.BrandListBean> brandNameList;
+    List<ClassfiyHotBrandModel.HotListBean> hotBrandList;
+    private TextView classify_reonline_text;
+    private LinearLayout classify_nonet_view;
+    private LinearLayout classify_online_view;
 
-
-    RelativeLayout relativeLayout ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,27 +87,46 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_classify_fc, container, false);
             configurationNaviTitle();
+            checkNet();
             initData();
             initleftRecycleView();
-            initRightRecycleView();
-            relativeLayout = (RelativeLayout)view.findViewById(R.id.classify_header);
-//            initGridView();
+
+            initBrandHotList();
             initView();
 
         }
 
-
         return view;
     }
-    FrameLayout frameLayout,frameLayouts;
+
+    private void checkNet() {
+        if (!NetworkUtils.isConnected(getActivity())){
+            classify_online_view.setVisibility(View.GONE);
+            classify_nonet_view.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    FrameLayout frameLayout, frameLayouts;
+
     private void initView() {
-        frameLayout = (FrameLayout)view.findViewById(R.id.classify_brand_frame);
-        frameLayouts = (FrameLayout)view.findViewById(R.id.classify_brand_frames);
+        frameLayout = (FrameLayout) view.findViewById(R.id.classify_brand_frame);
+        frameLayouts = (FrameLayout) view.findViewById(R.id.classify_brand_frames);
         frameLayout.setVisibility(View.VISIBLE);
         frameLayouts.setVisibility(View.GONE);
+        classify_reonline_text = (TextView) view.findViewById(R.id.classify_reonline_text);
+        classify_reonline_text.setOnClickListener(this);
+        classify_nonet_view = (LinearLayout) view.findViewById(R.id.classify_nonet_view);
+        classify_nonet_view.setOnClickListener(this);
+        classify_online_view = (LinearLayout) view.findViewById(R.id.classify_online_view);
+        classify_online_view.setOnClickListener(this);
+
+        classify_online_view.setVisibility(View.VISIBLE);
+        classify_nonet_view.setVisibility(View.GONE);
+
     }
 
     private void initGridView() {
@@ -105,11 +135,11 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-        for (int i = 0;i<3;i++){
-            if (i == 0){
-                TestModel testModel = new TestModel("测试"+i,true);
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                TestModel testModel = new TestModel("测试" + i, true);
                 datalist.add(testModel);
-            }else {
+            } else {
                 TestModel testModel = new TestModel("测试" + i, false);
                 datalist.add(testModel);
             }
@@ -120,12 +150,13 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
     private void configurationNaviTitle() {
         ImageView back = (ImageView) view.findViewById(R.id.navi_back_pic);
         back.setVisibility(View.INVISIBLE);
-        TextView title = (TextView)view.findViewById(R.id.navi_title);
+        TextView title = (TextView) view.findViewById(R.id.navi_title);
         title.setText("分类");
     }
+
     // TODO*********************************配置左侧recycleview************************************
-    private void initleftRecycleView(){
-        leftRecycleView = (RecyclerView)view.findViewById(R.id.classify_left_recycleview);
+    private void initleftRecycleView() {
+        leftRecycleView = (RecyclerView) view.findViewById(R.id.classify_left_recycleview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         leftRecycleView.setLayoutManager(linearLayoutManager);
@@ -134,12 +165,12 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         leftRecycleView.addOnItemTouchListener(new RecycleViewListener(leftRecycleView, new RecycleViewListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.e("点击了一个",""+datalist.get(position).getText());
-                if (position == 0){
+                Log.e("点击了一个", "" + datalist.get(position).getText());
+                if (position == 0) {
                     frameLayouts.setVisibility(View.GONE);
                     frameLayout.setVisibility(View.VISIBLE);
 
-                }else  {
+                } else {
 
                     frameLayout.setVisibility(View.GONE);
                     frameLayouts.setVisibility(View.VISIBLE);
@@ -157,29 +188,33 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
     // TODO*********************************配置右侧recycleview************************************
     @SuppressLint("NewApi")
-    private  void  initRightRecycleView(){
-        rightRecycleView = (RecyclerView)view.findViewById(R.id.classify_right_recycleview);
+    private void initRightRecycleView() {
+        rightRecycleView = (RecyclerView) view.findViewById(R.id.classify_right_recycleview);
         rightRecycleView.setLayoutManager(mManager = new LinearLayoutManager(getActivity()));
         //initDatas();
         //mDatas = new ArrayList<>();//测试为空或者null的情况 已经通过
-        mAdapter = new CityAdapter(getActivity(), mDatas);
-        mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(mAdapter) {
-            @Override
-            protected void onBindHeaderHolder(ViewHolder holder, int headerPos, int layoutId, Object o) {
-//                holder.setText(R.id.tvCity, (String) o);
-//                Drawable drawable =
-                holder.setImageDrawable(R.id.header_pic,(Drawable) o);
+        mAdapter = new ClassifyBrandListAdapter(getActivity(), mDatas, hotBrandList);
+//        mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(mAdapter) {
+//            @Override
+//            protected void onBindHeaderHolder(ViewHolder holder, int headerPos, int layoutId, Object o) {
+//                holder.setImageDrawable(R.id.header_pic,(Drawable) o);
+//
+////                holder.getLayoutId(R.id.header_pic)
+//
+//            }
+//        };
+//        mHeaderAdapter.setHeaderView(R.layout.header_complex,null);
 
-            }
-        };
+//        ClassifyHeaderCollectionRecycleViewAdapter headerApapter = new ClassifyHeaderCollectionRecycleViewAdapter();
+//        RecyclerView rv = (RecyclerView) view.findViewById(R.id.header_rv);
+//        rv.setAdapter(headerApapter);
+//        rv.setLayoutManager(new GridLayoutManager(getActivity(),3));
 
+//        rightRecycleView.setAdapter(mHeaderAdapter);
+//        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas).setHeaderViewCount(mHeaderAdapter.getHeaderViewCount()));
 
-
-        mHeaderAdapter.setHeaderView(R.layout.header_complex,null);
-
-
-        rightRecycleView.setAdapter(mHeaderAdapter);
-        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas).setHeaderViewCount(mHeaderAdapter.getHeaderViewCount()));
+        rightRecycleView.setAdapter(mAdapter);
+        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas));
         mDecoration.setColorTitleBg(Color.WHITE);
         mDecoration.setmTitleHeight(128);
         //如果add两个，那么按照先后顺序，依次渲染。
@@ -192,11 +227,9 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
             public void onItemClick(View view, int position) {
                 if (position != 0) {
                     SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "选中了" + mDatas.get(position - 1).getCity(), Color.WHITE, Color.parseColor("#16a6ae"));
-                }else {
+                } else {
                     SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "点击了header", Color.WHITE, Color.parseColor("#16a6ae"));
                 }
-
-
             }
 
             @Override
@@ -206,38 +239,45 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         }));
 
 
-
         //使用indexBar
         mTvSideBarHint = (TextView) view.findViewById(R.id.tvSideBarHint);//HintTextView
         mIndexBar = (IndexBar) view.findViewById(R.id.indexBar);//IndexBar
 
-        initDatas(getResources().getStringArray(R.array.provinces));
+//        initDatas(getResources().getStringArray(R.array.provinces));
+//        initBrandList();
+//        initBrandHotList();
+        initDatas(brandListArray);
     }
+
     /**
      * 组织数据源
      *
      * @param data
      * @return
      */
-    private void initDatas(final String[] data) {
+    private void initDatas(final ArrayList<String> data) {
         //延迟两秒 模拟加载数据中....
         getActivity().getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mDatas = new ArrayList<>();
-                for (int i = 0; i < data.length; i++) {
-                    CityBean cityBean = new CityBean();
-                    cityBean.setCity(data[i]);//设置城市名称
-                    mDatas.add(cityBean);
+                mDatas.add(0, new BrandBean().setCity("").setTop(true));
+                for (int i = 0; i < data.size(); i++) {
+                    BrandBean brandBean = new BrandBean();
+                    brandBean.setCity(data.get(i).toString());//设置城市名称
+                    mDatas.add(brandBean);
                 }
+
+                L.e("hotBrandList", hotBrandList.get(0).getImg());
                 mAdapter.setDatas(mDatas);
-                mHeaderAdapter.notifyDataSetChanged();
+//                mHeaderAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
 
                 mIndexBar.setmPressedShowTextView(mTvSideBarHint)//设置HintTextView
-                        .setNeedRealIndex(true)//设置需要真实的索引
+                        .setNeedRealIndex(false)//设置需要真实的索引
                         .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
                         .setmSourceDatas(mDatas)//设置数据
-                        .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount())//设置HeaderView数量
+//                        .setHeaderViewCount(mHeaderAdapter.getHeaderViewCount())//设置HeaderView数量
                         .invalidate();
                 mDecoration.setmDatas(mDatas);
             }
@@ -245,8 +285,126 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
     }
 
+    ArrayList<String> brandListArray;
+    String[] brandListString;
+
+    // TODO*********************************配置右侧recycleview数据********************************
+    private void initBrandList() {
+        JSONObject order = new JSONObject();
+        try {
+            order.put("brandid", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ClassfiyGetAllBrand)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        classify_online_view.setVisibility(View.GONE);
+                        classify_nonet_view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("品牌", "" + response);
+                        Gson gson = new Gson();
+                        ClassfiyBrandModel brandListData = gson.fromJson(response, ClassfiyBrandModel.class);
+                        if (brandListData.getCode() == 1) {
+                            brandListArray = new ArrayList<String>();
+//                            brandListString = new String[]{};
+                            brandNameList = brandListData.getBrandList();
+
+                            for (int i = 0; i < brandNameList.size(); i++) {
+                                brandListArray.add(brandNameList.get(i).getName());
+                            }
+//                            initDatas(brandListArray);
+                            initRightRecycleView();
+                        } else if (brandListData.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (brandListData.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+    }
+
+    // TODO*********************************配置右侧recycleviewHot数据********************************
+    private void initBrandHotList() {
+        JSONObject order = new JSONObject();
+        try {
+            order.put("sort", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ClassfiyGetAllHotBrand)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        classify_online_view.setVisibility(View.GONE);
+                        classify_nonet_view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("热门品牌", "" + response);
+                        hotBrandList = new ArrayList<ClassfiyHotBrandModel.HotListBean>();
+                        Gson gson = new Gson();
+                        ClassfiyHotBrandModel hotBrandListData = gson.fromJson(response, ClassfiyHotBrandModel.class);
+                        if (hotBrandListData.getCode() == 1) {
+                            hotBrandList = hotBrandListData.getHotList();
+                            initBrandList();
+                        } else if (hotBrandListData.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (hotBrandListData.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+    }
+
+
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.classify_reonline_text:
+                /**
+                 * 断网重新加载
+                 */
+                initData();
+                initleftRecycleView();
+                initBrandHotList();
+                initView();
+                break;
+        }
     }
 }

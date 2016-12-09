@@ -17,11 +17,6 @@ public class PersonalIntroAndChangePswAC extends AppCompatActivity implements Vi
         setContentView(R.layout.activity_personal_intro_ac);
         Integer pager = getIntent().getIntExtra("CHANGEPSW",0);
         configurationNaviTitle(pager);
-
-
-
-
-
     }
     // TODO*********************************配置导航头**********************************************
     private void configurationNaviTitle(Integer s) {

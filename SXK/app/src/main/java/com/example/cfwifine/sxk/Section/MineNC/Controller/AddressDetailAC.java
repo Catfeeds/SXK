@@ -5,14 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.view.ContextThemeWrapper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,9 +30,8 @@ import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.mo
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.model.DistrictModel;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.model.ProvinceModel;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.service.XmlParserHandler;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_AddressSelector;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
-import com.example.cfwifine.sxk.Section.MineNC.Model.AddressListModel;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -46,7 +42,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +53,6 @@ import okhttp3.Call;
 
 
 public class AddressDetailAC extends AppCompatActivity implements View.OnClickListener, OnWheelChangedListener {
-
     private ImageView navi_back_pic;
     private LinearLayout navi_back;
     private TextView navi_title;
@@ -71,40 +65,28 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     private Button add_address_save;
     private LinearLayout activity_address_detail_ac;
     private Button add_address_saveaddress;
-
     // 地址框
     protected String[] mProvinceDatas;
-
     protected Map<String, String[]> mCitisDatasMap = new HashMap<String, String[]>();
-
     protected Map<String, String[]> mDistrictDatasMap = new HashMap<String, String[]>();
-
-
     protected Map<String, String> mZipcodeDatasMap = new HashMap<String, String>();
-
-
     protected String mCurrentProviceName;
-
     protected String mCurrentCityName;
-
-    protected String mCurrentDistrictName ="";
-
-
-    protected String mCurrentZipCode ="";
-
-
+    protected String mCurrentDistrictName = "";
+    protected String mCurrentZipCode = "";
     private WheelView mViewProvince;
     private WheelView mViewCity;
     private WheelView mViewDistrict;
-    private Button mBtnConfirm,mBtnCancel;
+    private Button mBtnConfirm, mBtnCancel;
     AlertDialog alertDialog;
     AddressDetailModel.ReceiverBean dataSource = null;
+    Integer EditViewValue;
+    private TextView add_address_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_detail_ac);
-
         initData();
         initView();
         // 判断是谁传过来的值
@@ -112,9 +94,12 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     }
 
     private void judgeValue() {
-         Integer EditViewValue = getIntent().getIntExtra("JUMPPOSITION",0);
-        if (EditViewValue>=0){
+        EditViewValue = getIntent().getIntExtra("JUMPPOSITION", 0);
+        if (EditViewValue >= 0) {
             getGoodsByReceiveID(EditViewValue);
+            navi_title.setText("修改收货地址");
+        }else {
+            navi_title.setText("添加收货地址");
         }
     }
 
@@ -123,7 +108,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
         navi_back = (LinearLayout) findViewById(R.id.navi_back);
         navi_back.setOnClickListener(this);
         navi_title = (TextView) findViewById(R.id.navi_title);
-        navi_title.setText("添加收货地址");
+
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         add_address_username = (EditText) findViewById(R.id.add_address_username);
@@ -136,6 +121,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
 //        add_address_save.setOnClickListener(this);
         add_address_saveaddress = (Button) findViewById(R.id.add_address_saveaddress);
         add_address_saveaddress.setOnClickListener(this);
+        add_address_address = (TextView) findViewById(R.id.add_address_address);
     }
 
     @Override
@@ -148,19 +134,34 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.add_address_selectedaddress:
-                initAddress();
+//                initAddress();
+                CustomDialog_AddressSelector customDialog_addressSelector = new CustomDialog_AddressSelector(this, new CustomDialog_AddressSelector.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(List<String> addressList) {
+//                        Toast.makeText(AddressDetailAC.this,addressList.get(0)+","+addressList.get(1)+","+addressList.get(2), Toast.LENGTH_SHORT).show();
+                        mCurrentProviceName = addressList.get(0);
+                        mCurrentCityName = addressList.get(1);
+                        mCurrentDistrictName = addressList.get(2);
+                        add_address_address.setText(addressList.get(0)+addressList.get(1)+addressList.get(2));
+                    }
+                },R.style.style_dialog);
+                customDialog_addressSelector.show();
                 break;
             case R.id.record_address_btn_ok:
-                showSelectedResult();
+//                showSelectedResult();
+//                alertDialog.dismiss();
                 break;
             case R.id.record_address_btn_cancel:
-                alertDialog.dismiss();
+//                alertDialog.dismiss();
                 break;
             default:
                 break;
         }
     }
 
+    // TODO*********************************修改地址的网络请求**********************************
+
+    String Url = "";
     private void submit() {
         // validate
         String username = add_address_username.getText().toString().trim();
@@ -180,29 +181,68 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
         String detailAddress = add_address_detailAddress.getText().toString().trim();
         if (TextUtils.isEmpty(detailAddress)) {
 //            Toast.makeText(this, "    请输入详细地址", Toast.LENGTH_SHORT).show();
-            if (detailAddress.toString().trim().length()>=200){
+            if (detailAddress.toString().trim().length() >= 200) {
                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入1~200个字符哟!", Color.WHITE, Color.parseColor("#16a6ae"));
-            }else {
+            } else {
                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入详细地址!", Color.WHITE, Color.parseColor("#16a6ae"));
             }
             return;
         }
-
         // TODO ********************************点击提交数据***************************************
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("name",username);
-            jsonObject.put("mobile",phonenumber);
-            jsonObject.put("state","河南省");
-            jsonObject.put("city","郑州市");
-            jsonObject.put("district","管城区");
-//            jsonObject.put("",)
-            jsonObject.put("address",detailAddress);
+            /**
+             * 如果是更新界面多一个参数
+             */
+            if (EditViewValue>0){
+                jsonObject.put("receiverid",(EditViewValue));
+                if (!dataSource.getName().toString().equals(username)){
+                    jsonObject.put("name", username);
+                }
+                if (!dataSource.getMobile().toString().equals(phonenumber)){
+                    jsonObject.put("mobile", phonenumber);
+                }
+                if (!dataSource.getState().toString().equals(mCurrentProviceName)){
+                    jsonObject.put("state", mCurrentProviceName);
+                }
+                if (!dataSource.getCity().toString().equals(mCurrentCityName)){
+                    jsonObject.put("city", mCurrentCityName);
+                }
+                if (!dataSource.getDistrict().toString().equals(mCurrentDistrictName)){
+                    jsonObject.put("district", mCurrentDistrictName);
+                }
+                if (!dataSource.getAddress().toString().equals(detailAddress)){
+                    jsonObject.put("address", detailAddress);
+                }
+                if (dataSource.getName().toString().equals(username)
+                        &&dataSource.getMobile().toString().equals(phonenumber)
+                        &&dataSource.getState().toString().equals(mCurrentProviceName)
+                        &&dataSource.getCity().toString().equals(mCurrentCityName)
+                        &&dataSource.getDistrict().toString().equals(mCurrentDistrictName)
+                        &&dataSource.getAddress().toString().equals(detailAddress)){
+                    SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有修改过哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    return;
+                }
+            }else {
+                jsonObject.put("name", username);
+                jsonObject.put("mobile", phonenumber);
+                jsonObject.put("state", mCurrentProviceName);
+                jsonObject.put("city", mCurrentCityName);
+                jsonObject.put("district", mCurrentDistrictName);
+                jsonObject.put("address", detailAddress);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHPSESSION, ""));
-        OkHttpUtils.postString().url(BaseInterface.SettingAddReceiveGoods)
+
+        if (EditViewValue < 0) {
+            Url = BaseInterface.SettingAddReceiveGoods;
+        } else {
+            Url = BaseInterface.SettingUpdateReceiveGoods;
+        }
+        Log.e("Url",""+Url);
+        OkHttpUtils.postString().url(Url)
                 .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
@@ -213,18 +253,19 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("返回值", "" + response);
                         try {
                             JSONObject Json = new JSONObject(response);
-                            if (Json.optInt("code")==1){
-                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "添加成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            if (Json.optInt("code") == 1) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "保存成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                                 finish();
-                            }else if (Json.optInt("code")==911){
+                            } else if (Json.optInt("code") == 911) {
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录失效，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            }else {
-                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "地址添加失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            } else {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "保存失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -239,7 +280,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     private void getGoodsByReceiveID(Integer receiverid) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("receiverid",receiverid);
+            jsonObject.put("receiverid", receiverid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -255,20 +296,21 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
-                        AddressDetailModel addressDetailModel = gson.fromJson(response,AddressDetailModel.class);
-                            if (addressDetailModel.getCode()==1){
+                        AddressDetailModel addressDetailModel = gson.fromJson(response, AddressDetailModel.class);
+                        if (addressDetailModel.getCode() == 1) {
 //                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "删除成功!", Color.WHITE, Color.parseColor("#16a6ae"));
-                                L.e("详细信息"+response);
-                                dataSource = addressDetailModel.getReceiver();
-                                setDetailValueForView(dataSource);
-                            }else if (addressDetailModel.getCode()==911){
-                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            }else {
-                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            }
+                            L.e("详细信息" + response);
+                            dataSource = addressDetailModel.getReceiver();
+                            setDetailValueForView(dataSource);
+                        } else if (addressDetailModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
 
                     }
                 });
@@ -280,7 +322,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     private void setDetailValueForView(AddressDetailModel.ReceiverBean dataSource) {
         add_address_username.setText(dataSource.getName());
         add_address_phonenumber.setText(dataSource.getMobile());
-//        add_address_selectedaddress.
+        add_address_address.setText(dataSource.getState()+dataSource.getCity()+dataSource.getDistrict());
         add_address_detailAddress.setText(dataSource.getAddress());
     }
 
@@ -332,10 +374,11 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
         ArrayWheelAdapter arrayWheelAdapter = new ArrayWheelAdapter<String>(this, cities);
         arrayWheelAdapter.setTextColor(R.color.navi_title_color);
         arrayWheelAdapter.setTextSize(13);
-        mViewCity.setViewAdapter(new ArrayWheelAdapter<String>(this, cities));
+        mViewCity.setViewAdapter(arrayWheelAdapter);
         mViewCity.setCurrentItem(0);
         updateAreas();
     }
+
     private void initAddress() {
 
         View view = View.inflate(AddressDetailAC.this, R.layout.address_selector_item, null);
@@ -343,7 +386,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
         mViewCity = (WheelView) view.findViewById(R.id.id_city);
         mViewDistrict = (WheelView) view.findViewById(R.id.id_district);
         mBtnConfirm = (Button) view.findViewById(R.id.record_address_btn_ok);
-        mBtnCancel = (Button)view.findViewById(R.id.record_address_btn_cancel);
+        mBtnCancel = (Button) view.findViewById(R.id.record_address_btn_cancel);
         // 添加change事件
         mViewProvince.addChangingListener(this);
         // 添加change事件
@@ -363,7 +406,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
         mViewProvince.setVisibleItems(5);
         mViewCity.setVisibleItems(5);
         mViewDistrict.setVisibleItems(5);
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.style_dialog)).setView(view);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.style_dialog)).setView(view);
         alertDialog = builder.create();
         alertDialog.getWindow().setGravity(Gravity.BOTTOM);
 
@@ -385,11 +428,10 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showSelectedResult() {
-        Toast.makeText(AddressDetailAC.this, "当前选中:" + mCurrentProviceName + "," + mCurrentCityName + ","
-                + mCurrentDistrictName + "," + mCurrentZipCode, Toast.LENGTH_SHORT).show();
+        add_address_address.setText(mCurrentProviceName+mCurrentCityName+mCurrentDistrictName);
     }
-    private void initData()
-    {
+
+    private void initData() {
         List<ProvinceModel> provinceList = null;
         AssetManager asset = getAssets();
         try {
@@ -404,10 +446,10 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
 
             provinceList = handler.getDataList();
 
-            if (provinceList!= null && !provinceList.isEmpty()) {
+            if (provinceList != null && !provinceList.isEmpty()) {
                 mCurrentProviceName = provinceList.get(0).getName();
                 List<CityModel> cityList = provinceList.get(0).getCityList();
-                if (cityList!= null && !cityList.isEmpty()) {
+                if (cityList != null && !cityList.isEmpty()) {
                     mCurrentCityName = cityList.get(0).getName();
                     List<DistrictModel> districtList = cityList.get(0).getDistrictList();
                     mCurrentDistrictName = districtList.get(0).getName();
@@ -416,17 +458,17 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
             }
 
             mProvinceDatas = new String[provinceList.size()];
-            for (int i=0; i< provinceList.size(); i++) {
+            for (int i = 0; i < provinceList.size(); i++) {
                 mProvinceDatas[i] = provinceList.get(i).getName();
                 List<CityModel> cityList = provinceList.get(i).getCityList();
                 String[] cityNames = new String[cityList.size()];
-                for (int j=0; j< cityList.size(); j++) {
+                for (int j = 0; j < cityList.size(); j++) {
 
                     cityNames[j] = cityList.get(j).getName();
                     List<DistrictModel> districtList = cityList.get(j).getDistrictList();
                     String[] distrinctNameArray = new String[districtList.size()];
                     DistrictModel[] distrinctArray = new DistrictModel[districtList.size()];
-                    for (int k=0; k<districtList.size(); k++) {
+                    for (int k = 0; k < districtList.size(); k++) {
                         DistrictModel districtModel = new DistrictModel(districtList.get(k).getName(), districtList.get(k).getZipcode());
                         mZipcodeDatasMap.put(districtList.get(k).getName(), districtList.get(k).getZipcode());
                         distrinctArray[k] = districtModel;

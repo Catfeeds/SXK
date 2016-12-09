@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.CityBean;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Section.PublishNC.View.CityAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.DividerItemDecoration;
 import com.example.cfwifine.sxk.Section.PublishNC.View.HeaderRecyclerAndFooterWrapperAdapter;
@@ -29,7 +29,7 @@ public class PublishBrandAC extends AppCompatActivity implements View.OnClickLis
     private CityAdapter mAdapter;
     private HeaderRecyclerAndFooterWrapperAdapter mHeaderAdapter;
     private LinearLayoutManager mManager;
-    private List<CityBean> mDatas;
+    private List<BrandBean> mDatas;
     private TitleItemDecoration mDecoration;
 
     /**
@@ -101,9 +101,9 @@ public class PublishBrandAC extends AppCompatActivity implements View.OnClickLis
             public void run() {
                 mDatas = new ArrayList<>();
                 for (int i = 0; i < data.length; i++) {
-                    CityBean cityBean = new CityBean();
-                    cityBean.setCity(data[i]);//设置城市名称
-                    mDatas.add(cityBean);
+                    BrandBean brandBean = new BrandBean();
+                    brandBean.setCity(data[i]);//设置城市名称
+                    mDatas.add(brandBean);
                 }
                 mAdapter.setDatas(mDatas);
                 mHeaderAdapter.notifyDataSetChanged();
@@ -127,8 +127,8 @@ public class PublishBrandAC extends AppCompatActivity implements View.OnClickLis
      */
     public void updateDatas(View view) {
         for (int i = 0; i < 99; i++) {
-            mDatas.add(new CityBean("东京"));
-            mDatas.add(new CityBean("大阪"));
+            mDatas.add(new BrandBean("东京"));
+            mDatas.add(new BrandBean("大阪"));
         }
         mAdapter.notifyDataSetChanged();
         mIndexBar.setmSourceDatas(mDatas);

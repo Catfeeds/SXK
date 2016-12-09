@@ -60,7 +60,7 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
 //                L.e("点击了编辑按钮"+position);
 //                holder.edit.setTag(position);
 //                mOnItemClickListener.OnItemClick(mEditBtnOnItemClickListener);
-                mClickListener.edit(view,position);
+                mClickListener.edit(view,data.get(position).getReceiverid());
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +70,7 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
                 L.e("点击了删除按钮"+position);
 //                mOnItemClickListener.OnItemClick(view,position);
 //                holder.delete.setTag(position);
-                mClickListener.delete(view,position);
+                mClickListener.delete(view,data.get(position).getReceiverid());
             }
         });
 

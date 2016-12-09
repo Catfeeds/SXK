@@ -193,14 +193,14 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                 /**
                  * 删除接口
                  */
-                deleteGoodsByReceiveID(receiveList.get(position));
+                deleteGoodsByReceiveID(position);
             }
         });
 
     }
     // TODO****************************************编辑********************************************
     private void editGoodsByPositon(int position){
-        startActivity(AddressDetailAC.class,receiveList.get(position));
+        startActivity(AddressDetailAC.class,position);
     }
     // TODO****************************************删除********************************************
     private void deleteGoodsByReceiveID(Integer receiverid) {

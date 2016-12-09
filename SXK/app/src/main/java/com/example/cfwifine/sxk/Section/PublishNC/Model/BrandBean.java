@@ -3,24 +3,24 @@ package com.example.cfwifine.sxk.Section.PublishNC.Model;
 import com.mcxtzhang.indexlib.IndexBar.bean.BaseIndexPinyinBean;
 
 
-public class CityBean extends BaseIndexPinyinBean {
+public class BrandBean extends BaseIndexPinyinBean {
 
-    private String city;//城市名字
+    private String brandName;//城市名字
     private boolean isTop;//是否是最上面的 不需要被转化成拼音的
 
-    public CityBean() {
+    public BrandBean() {
     }
 
-    public CityBean(String city) {
-        this.city = city;
+    public BrandBean(String city) {
+        this.brandName = city;
     }
 
     public String getCity() {
-        return city;
+        return brandName;
     }
 
-    public CityBean setCity(String city) {
-        this.city = city;
+    public BrandBean setCity(String city) {
+        this.brandName = city;
         return this;
     }
 
@@ -28,14 +28,14 @@ public class CityBean extends BaseIndexPinyinBean {
         return isTop;
     }
 
-    public CityBean setTop(boolean top) {
+    public BrandBean setTop(boolean top) {
         isTop = top;
         return this;
     }
 
     @Override
     public String getTarget() {
-        return city;
+        return brandName;
     }
 
     @Override

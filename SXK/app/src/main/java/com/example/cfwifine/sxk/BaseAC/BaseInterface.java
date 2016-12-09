@@ -27,6 +27,18 @@ public class BaseInterface {
     // 收货地址列表
     public static String SettingListReceiveGoods = root +"/app/receiver/listpost";
 
+    // 品牌
+    // 获取所有品牌
+    public static String ClassfiyGetAllBrand = root +"/app/brand/listpost";
+    public static String ClassfiyGetAllHotBrand = root +"/app/brandhot/listpost";
+
+    // 首页
+    // 获取活动列表
+    public static String HomeEightItemActivityList = root + "/app/activity/listpost";
+    public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";
+
+    // 图片存储位置
+    public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqvdngk.bkt.clouddn.com/";
 
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";

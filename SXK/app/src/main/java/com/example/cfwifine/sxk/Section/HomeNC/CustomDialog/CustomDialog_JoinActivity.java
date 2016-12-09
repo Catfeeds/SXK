@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.CustomDialog;
+package com.example.cfwifine.sxk.Section.HomeNC.CustomDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,9 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.EditTextUtil;
 
 
-public class CustomDialog_phone extends Dialog{
+public class CustomDialog_JoinActivity extends Dialog{
 
     EditText editText;
 
@@ -30,23 +31,22 @@ public class CustomDialog_phone extends Dialog{
     private ICustomSaveEventListener customSaveEventListener;
     private Context mContext;
 
-    public CustomDialog_phone(Context context) {
+    public CustomDialog_JoinActivity(Context context, String s1, String s, ICustomDialogEventListener iCustomDialogEventListener, int style_dialog) {
         super(context);
         mContext = context;
     }
 
-    public CustomDialog_phone(Context context, ICustomDialogEventListener listener, int theme) {
+    public CustomDialog_JoinActivity(Context context, String s, ICustomDialogEventListener listener, int theme) {
         super(context, theme);
         mContext = context;
         mCustomDialogEventListener = listener;
-//        customSaveEventListener = listener;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.dialog_record_phonenumber, null);
+        View layout = inflater.inflate(R.layout.dialog_record_username, null);
         editText = (EditText) layout.findViewById(R.id.record_nickname_edt);
         EditTextUtil.setPricePoint(editText, mContext);
         Button btn = (Button) layout.findViewById(R.id.record_nickname_btn_ok);

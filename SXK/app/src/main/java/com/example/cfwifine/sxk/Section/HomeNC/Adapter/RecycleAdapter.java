@@ -1,7 +1,6 @@
-package com.example.cfwifine.sxk.Section.HomeNC;
+package com.example.cfwifine.sxk.Section.HomeNC.Adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cfwifine.sxk">
 
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -77,7 +78,13 @@
         <activity
             android:name=".Section.MineNC.Controller.AddressSettingCommomAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.AddressDetailAC"
+        <activity
+            android:name=".Section.MineNC.Controller.AddressDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.HomeNC.Controller.EightItemDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.HomeNC.Controller.ActivityDetailAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

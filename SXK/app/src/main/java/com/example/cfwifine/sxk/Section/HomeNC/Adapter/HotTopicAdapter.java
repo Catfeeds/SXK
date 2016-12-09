@@ -1,18 +1,14 @@
-package com.example.cfwifine.sxk.Section.HomeNC;
+package com.example.cfwifine.sxk.Section.HomeNC.Adapter;
 
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
