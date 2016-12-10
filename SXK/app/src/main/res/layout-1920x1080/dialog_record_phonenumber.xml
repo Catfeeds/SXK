@@ -48,10 +48,10 @@
                 android:layout_marginTop="26dp"
                 android:background="@drawable/table_shape_edittext_style"
                 android:textSize="14sp"
-                android:maxLength="10"
-                android:inputType="text"
+                android:maxLength="11"
+                android:inputType="phone"
                 android:textColor="@color/gray_40"
-                android:hint="请输入昵称"
+                android:hint="请输入手机号码"
                 android:textColorHint="@color/grrray"
                 android:gravity="center"
                 />

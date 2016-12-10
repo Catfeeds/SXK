@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,44 +35,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:padding="20dp">
         <com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.WheelView
             android:id="@+id/year"
-            android:layout_width="65dp"
-            android:layout_marginRight="50dp"
-            android:layout_height="wrap_content"/>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
 
         <com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.WheelView
             android:id="@+id/month"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"/>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
     </LinearLayout>
-    <!--<Button-->
-        <!--android:id="@+id/tv_ok"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:layout_marginLeft="15dp"-->
-        <!--android:layout_marginRight="15dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:text="保存" />-->
-    <LinearLayout
+    <Button
+        android:id="@+id/tv_ok"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <Button
-            android:id="@+id/tv_ok"
-            android:layout_width="81dp"
-            android:layout_height="27dp"
-            android:layout_marginBottom="30dp"
-            android:text="保存"
-            android:textSize="13sp"
-            android:textColor="@color/login_turquoisex"
-            android:background="@drawable/table_shape_dialog_green"/>
-    </LinearLayout>
-
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:text="保存" />
 
 
 </LinearLayout>

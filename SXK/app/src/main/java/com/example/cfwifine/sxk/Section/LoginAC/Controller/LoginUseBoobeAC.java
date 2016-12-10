@@ -76,8 +76,8 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
             case R.id.login_register_now:
                 Log.e("点击了注册", "" + view.getId());
 //                startActivity(RegisterNowAC.class);
-                Intent intent = new Intent(this,RegisterNowAC.class);
-                startActivityForResult(intent,LOGON_SUCESS);
+                Intent intent = new Intent(this, RegisterNowAC.class);
+                startActivityForResult(intent, LOGON_SUCESS);
                 break;
             case R.id.login_forget_password:
                 startActivity(ForgetPawAC.class);
@@ -90,31 +90,34 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
     ArrayList<String> userInfo = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == LOGON_SUCESS){
-            if (data!=null){
+        if (requestCode == LOGON_SUCESS) {
+            if (data != null) {
                 userInfo = data.getStringArrayListExtra("LOGINSUCESS");
                 String username = userInfo.get(0).toString().trim();
                 String password = userInfo.get(1).toString().trim();
-                LoginUseRe(username,password);
+                LoginUseRe(username, password);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     // TODO*********************************登录请求**********************************************
-    private void LoginUseRe(String username,String password) {
+    private void LoginUseRe(final String username, final String password) {
         JSONObject json = new JSONObject();
         try {
-            json.put("mobile",username);
-            json.put("password",password);
+            json.put("mobile", username);
+            json.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         OkHttpUtils.postString().url(BaseInterface.UserLogin)
-                .addHeader("X-Requested-With","XMLHttpRequest")
-                .addHeader("Content-Type","application/json;chartset=utf-8")
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
                 .content(json.toString())
                 .build()
                 .execute(new StringCallback() {
@@ -122,16 +125,18 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("登录成功",""+response);
+                        Log.e("登录成功", "" + response);
                         Gson gson = new Gson();
-                        UserLoginModel userLoginModel = gson.fromJson(response,UserLoginModel.class);
-                        if (userLoginModel.getCode() ==1){
-                            SharedPreferencesUtils.setParam(getApplicationContext(),BaseInterface.PHPSESSION,userLoginModel.getPHPSESSID());
+                        UserLoginModel userLoginModel = gson.fromJson(response, UserLoginModel.class);
+                        if (userLoginModel.getCode() == 1) {
+                            SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.PHPSESSION, userLoginModel.getPHPSESSID());
+                            SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.PHONENUMBER, username);
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             finish();
-                        }else {
+                        } else {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }
                     }
@@ -160,7 +165,7 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
         }
 
         // TODO validate success, do something
-        LoginUseRe(phonenumber,password);
+        LoginUseRe(phonenumber, password);
 
     }
 }

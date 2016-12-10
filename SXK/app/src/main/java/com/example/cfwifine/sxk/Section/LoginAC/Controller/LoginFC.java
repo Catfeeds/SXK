@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class LoginFC extends Fragment implements View.OnClickListener, PopupWindow.OnDismissListener {
 
     LoginPupWindow loginPupWindow;
-    LinearLayout layouts,layoutx;
+    LinearLayout layouts, layoutx;
     CircleImageView circleImageView;
     RecyclerView mRecycles;
     ArrayList<String> applicationName = new ArrayList<>();
@@ -57,7 +57,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         super.onCreate(savedInstanceState);
 
     }
+
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,20 +71,21 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
         return view;
     }
+
     // TODO**************************************初始化界面******************************************
     private void initView() {
-        loginView = (RelativeLayout)view.findViewById(R.id.login_view);
-        loginSucView = (ScrollView)view.findViewById(R.id.login_success_view);
+        loginView = (RelativeLayout) view.findViewById(R.id.login_view);
+        loginSucView = (ScrollView) view.findViewById(R.id.login_success_view);
         loginView.setVisibility(View.VISIBLE);
         loginSucView.setVisibility(View.GONE);
     }
 
     // TODO**************************************登录按钮******************************************
     private void initLoginBtn() {
-        circleImageView = (CircleImageView)view.findViewById(R.id.circleImageView);
+        circleImageView = (CircleImageView) view.findViewById(R.id.circleImageView);
         circleImageView.setOnClickListener(this);
-        layouts = (LinearLayout)view.findViewById(R.id.login_char_lay);
-        layoutx = (LinearLayout)view.findViewById(R.id.login_lay);
+        layouts = (LinearLayout) view.findViewById(R.id.login_char_lay);
+        layoutx = (LinearLayout) view.findViewById(R.id.login_lay);
 
     }
 
@@ -109,16 +112,17 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         mCare.setOnClickListener(this);
         mRecognize.setOnClickListener(this);
 
-        for (int i=0;i<9;i++) {
+        for (int i = 0; i < 9; i++) {
             applicationName.add(applicationNames[i]);
             imageView.add(imageViews[i]);
         }
 
-        mRecycles.setLayoutManager(new LinearLayoutManager(getActivity()){
+        mRecycles.setLayoutManager(new LinearLayoutManager(getActivity()) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
+
             // SC嵌套ReCV防止数据显示不完整
             @Override
             public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
@@ -128,7 +132,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         });
 //        mRecycles.setHasFixedSize(true);
 
-        final MineRecycleViewAdapter adapter = new MineRecycleViewAdapter(applicationName,imageView);
+        final MineRecycleViewAdapter adapter = new MineRecycleViewAdapter(applicationName, imageView);
         adapter.setOnItemClickListener(new MineRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -137,19 +141,21 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         });
         mRecycles.setAdapter(adapter);
     }
+
     private void jump(int position) {
         // 根据position跳转
-        startActivity(UserInfoRecycleViewCommomAC.class,position);
+        startActivity(UserInfoRecycleViewCommomAC.class, position);
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.circleImageView:
                 circleImageView.setVisibility(View.INVISIBLE);
                 layouts.setVisibility(View.INVISIBLE);
                 layoutx.setVisibility(View.INVISIBLE);
-                loginPupWindow = new LoginPupWindow(getActivity(),itemsOnClick);
-                loginPupWindow.showAtLocation(getActivity().findViewById(R.id.activity_main_ac), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
+                loginPupWindow = new LoginPupWindow(getActivity(), itemsOnClick);
+                loginPupWindow.showAtLocation(getActivity().findViewById(R.id.activity_main_ac), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 loginPupWindow.setOnDismissListener(this);
                 break;
             case R.id.headportrait:
@@ -157,7 +163,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_perssonal_data:
                 Toast.makeText(getContext(), "个人资料", Toast.LENGTH_SHORT).show();
-                startActivity(UserInfoAC.class,111);
+                startActivity(UserInfoAC.class, 111);
                 break;
             case R.id.mine_follow:
                 Toast.makeText(getContext(), "我的关注", Toast.LENGTH_SHORT).show();
@@ -182,8 +188,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
         }
     }
+
     //为弹出窗口实现监听类
-    private View.OnClickListener itemsOnClick = new View.OnClickListener(){
+    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
 
         public void onClick(View v) {
             loginPupWindow.dismiss();
@@ -194,7 +201,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 case R.id.login_useboobe:
                     loginView.setVisibility(View.GONE);
                     loginSucView.setVisibility(View.VISIBLE);
-                    startActivity(LoginUseBoobeAC.class,111);
+                    startActivity(LoginUseBoobeAC.class, 111);
                     break;
                 case R.id.login_usewexin:
 
@@ -213,9 +220,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     };
 
-    private void startActivity(Class<?> cls,Integer jumpvalue) {
+    private void startActivity(Class<?> cls, Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);
-        intent.putExtra("JUMPPOSITION",jumpvalue);
+        intent.putExtra("JUMPPOSITION", jumpvalue);
         startActivity(intent);
     }
 

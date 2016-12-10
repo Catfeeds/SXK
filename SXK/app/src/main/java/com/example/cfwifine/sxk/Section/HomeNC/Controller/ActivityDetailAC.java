@@ -1,7 +1,6 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,8 +16,6 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.CustomDialog.CustomDialog_JoinActivity;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityDetailModel;
-import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityListModel;
-import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -48,6 +46,9 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
     private Button logon_login_btn;
     private LinearLayout activity_detail_ac;
     List<ActivityDetailModel.ActivityBean> dataSource;
+    private ScrollView detail_view;
+    private TextView reload_data;
+    private LinearLayout no_net_view;
 
 
     @Override
@@ -58,12 +59,14 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
         initData();
 
     }
+
     ActivityDetailModel activityDetailModel;
+
     private void initData() {
-        int value = getIntent().getIntExtra("value",0);
+        int value = getIntent().getIntExtra("value", 0);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("activityid",value);
+            jsonObject.put("activityid", value);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -78,16 +81,17 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        detail_view.setVisibility(View.GONE);
+                        no_net_view.setVisibility(View.VISIBLE);
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("活动详情", "" + response);
-                        LogUtil.e("活动详情"+response);
+                        LogUtil.e("活动详情" + response);
                         dataSource = new ArrayList<ActivityDetailModel.ActivityBean>();
                         Gson gson = new Gson();
-                         activityDetailModel = gson.fromJson(response,ActivityDetailModel.class);
+                        activityDetailModel = gson.fromJson(response, ActivityDetailModel.class);
 //
                         if (activityDetailModel.getCode() == 1) {
                             setValueForCell(activityDetailModel);
@@ -99,7 +103,6 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 });
-
 
 
     }
@@ -136,22 +139,39 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
 
         logon_login_btn.setOnClickListener(this);
 
+        detail_view = (ScrollView) findViewById(R.id.detail_view);
+        detail_view.setOnClickListener(this);
+        reload_data = (TextView) findViewById(R.id.reload_data);
+        reload_data.setOnClickListener(this);
+        no_net_view = (LinearLayout) findViewById(R.id.no_net_view);
+        no_net_view.setOnClickListener(this);
+        detail_view.setVisibility(View.VISIBLE);
+        no_net_view.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logon_login_btn:
-                CustomDialog_JoinActivity customDialog_joinActivity = new CustomDialog_JoinActivity(this,"","", new CustomDialog_JoinActivity.ICustomDialogEventListener() {
+                String nickName = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.USERNAME, ""));
+                String phoneNumber = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHONENUMBER, ""));
+                if (nickName.isEmpty()) {
+                    nickName = phoneNumber;
+                }
+                CustomDialog_JoinActivity customDialog_joinActivity = new CustomDialog_JoinActivity(this, nickName, phoneNumber, new CustomDialog_JoinActivity.ICustomDialogEventListener() {
                     @Override
                     public void customDialogEvent(String id) {
-
+                        LogUtil.e("返回值" + id);
                     }
-                },R.style.style_dialog);
+                }, R.style.Dialog);
                 customDialog_joinActivity.show();
                 break;
             case R.id.navi_back:
                 finish();
+                break;
+            case R.id.reload_data:
+                initView();
+                initData();
                 break;
             default:
                 break;

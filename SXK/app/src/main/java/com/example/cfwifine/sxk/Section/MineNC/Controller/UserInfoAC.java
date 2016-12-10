@@ -1,8 +1,10 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,32 +17,44 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityDetailModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.UserInfoRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_Sex;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_birthday;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_nickname;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_phone;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.datepicker.DatePicker;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.datepicker.TimePicker;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.FileManager;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
+import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.Utils.ToastUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
+import com.google.gson.Gson;
 import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.multiple_images_selector.SelectorSettings;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.List;
 
 
 import android.app.AlertDialog;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import okhttp3.Call;
 
 
 public class UserInfoAC extends AppCompatActivity implements View.OnClickListener {
@@ -51,19 +65,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     String[] itemString = {"昵称", "性别", "生日", "个人简介", "手机号码",
             "修改密码"};
     ArrayList<String> callBackString = new ArrayList<>();
-
-
-
-    private DatePicker dp_test;
-    private TimePicker tp_test;
-    private Button tv_ok;
-    private TextView tv_cancel;	//确定、取消button
-    private Calendar calendars;
     LikeIOSSheetDialog shitView;
 
-    private String selectDate,selectTime;
+    private String selectDate, selectTime;
     //选择时间与当前时间，用于判断用户选择的是否是以前的时间
-    private int currentHour,currentMinute,currentDay,selectHour,selectMinute,selectDay;
+    private int currentHour, currentMinute, currentDay, selectHour, selectMinute, selectDay;
 
     private static final int REQUEST_CODE = 732;
     private static final int TAKE_PHOTO = 733;
@@ -72,53 +78,165 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     Bitmap photo;
     CircleImageView header;
     String mImageCachePath;
+    // 更新用户信息的相关信息
+    String nickName="";
+    int Sex= 0;
+    String Birthday;
+    String personalIntro;
+    String mobile;
+    private UserInfoModel.UserBean dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info_ac);
-        calendars = Calendar.getInstance();
+        /**
+         * 0 更新 1请求
+         */
+        initUserInfo(1, 911);
         initView();
         configurationNaviTitle();
         initRecycleData();
         initRecycleView();
     }
-    private  void initView(){
-        header = (CircleImageView)findViewById(R.id.userInfoHeaderView);
+
+    /**
+     * 初始化个人信息,更新个人信息
+     */
+    JSONObject jsonObject;
+    String Url = "";
+
+    private void initUserInfo(final int value, int ss) {
+        jsonObject = new JSONObject();
+        if (value == 0) {
+                try {
+                    switch (ss) {
+                        case 0:
+                            if (!dataSource.getNickname().equals(nickName)){
+                                jsonObject.put("nickname", nickName);
+                            }else {
+                                initSnackBar("你还没有修改哦！");
+                                return;
+                            }
+                            break;
+                        case 1:
+                            if (!dataSource.getSex().equals(Sex)){
+                                jsonObject.put("sex", nickName);
+                            }else {
+                                initSnackBar("你还没有修改哦！");
+                                return;
+                            }
+
+                            break;
+                        case 2:
+//                            jsonObject.put("profile",);
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            break;
+                    }
+//                jsonObject.put("nickname", "okile1");
+//                jsonObject.put("sex","1");
+//                jsonObject.put("birthday",725817600);
+//                jsonObject.put("profile","测试手册按时发生大幅度");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            Url = BaseInterface.UpdateUserInfo;
+        } else {
+            try {
+                jsonObject.put("", "");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Url = BaseInterface.GetUserInfo;
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(Url)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("个人信息", "" + response);
+                        LogUtil.e("个人信息" + response);
+                        if (value == 1) {
+                            Gson gson = new Gson();
+                            UserInfoModel userInfoModel = gson.fromJson(response, UserInfoModel.class);
+                            if (userInfoModel.getCode() == 1) {
+                                // 请求成功
+                                dataSource = userInfoModel.getUser();
+                                // 数据请求成功后才可以点击，否则不能点击
+                                initListener();
+                            } else if (userInfoModel.getCode() == 0) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            } else if (userInfoModel.getCode() == 911) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            }
+                        } else if (value == 0) {
+                            Gson gson = new Gson();
+                            RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                            if (requestStatueModel.getCode() == 1) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            } else if (requestStatueModel.getCode() == 0) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            } else if (requestStatueModel.getCode() == 911) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void initView() {
+        header = (CircleImageView) findViewById(R.id.userInfoHeaderView);
         header.setOnClickListener(this);
     }
 
     // TODO*********************************配置导航头**********************************************
     private void configurationNaviTitle() {
-        LinearLayout back = (LinearLayout)findViewById(R.id.navi_back);
+        LinearLayout back = (LinearLayout) findViewById(R.id.navi_back);
         back.setOnClickListener(this);
-        TextView title = (TextView)findViewById(R.id.navi_title);
+        TextView title = (TextView) findViewById(R.id.navi_title);
         title.setText("个人资料");
-        TextView rightTitle = (TextView)findViewById(R.id.navi_right);
+        TextView rightTitle = (TextView) findViewById(R.id.navi_right);
         rightTitle.setText("");
     }
+
     private void initRecycleData() {
-        for (int i = 0; i<itemString.length;i++){
+        for (int i = 0; i < itemString.length; i++) {
             itemSource.add(itemString[i]);
         }
     }
 
     // TODO**************************************初始化分栏******************************************
     private void initRecycleView() {
-        userRV = (RecyclerView)findViewById(R.id.user_info_recycleview);
-        userRV.setLayoutManager(new LinearLayoutManager(this){
+        userRV = (RecyclerView) findViewById(R.id.user_info_recycleview);
+        userRV.setLayoutManager(new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         });
-        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource,callBackString);
+        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource, callBackString);
         userRV.setAdapter(userInfoRecycleViewAdapter);
+    }
+
+    private void initListener() {
         userInfoRecycleViewAdapter.setOnItemClickListener(new UserInfoRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                Log.e("点击了",""+position);
-                switch (position){
+                Log.e("点击了", "" + position);
+                switch (position) {
                     case 0:
                         initNickNameDialog();
                         break;
@@ -142,101 +260,77 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
-
-
     }
-    // TODO**************************************自定义弹出框******************************************
-    private void initSexDialog(){
 
+
+    // TODO**************************************自定义弹出框******************************************
+    private void initSexDialog() {
         CustomDialog_Sex customDialog_sex = new CustomDialog_Sex(this, new CustomDialog_Sex.ICustomDialogEventListener() {
             @Override
             public void customDialogEvent(String id) {
-                Log.e("性别",""+id);
+                Log.e("性别", "" + id);
+                if (id.equals("男")){
+                    Sex = 1;
+                }else if (id.equals("女")){
+                    Sex = 2;
+                }
+                initUserInfo(0,1);
             }
-        },R.style.Dialog);
+        }, R.style.Dialog);
         customDialog_sex.show();
     }
-    private void initNickNameDialog() {
 
+    /**
+     * nickname
+     */
+    private void initNickNameDialog() {
         CustomDialog_nickname customDialog_nickname = new CustomDialog_nickname(this, new CustomDialog_nickname.ICustomDialogEventListener() {
             @Override
             public void customDialogEvent(String id) {
-                Log.e("返回的",""+id);
+                Log.e("返回的", "" + id);
+                if (!id.isEmpty()) {
+                    SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.USERNAME, id);
+                }
+                nickName = id;
+                initUserInfo(0, 0);
             }
-        },R.style.Dialog);
+        }, R.style.Dialog);
         customDialog_nickname.show();
     }
-    private  void  initBirthdayDialog(){
-        ToastUtil.show(this,"asfdasdfasdfasdf");
-        View view1 = View.inflate(UserInfoAC.this, R.layout.datepicker_layout, null);
-        selectDate = calendars.get(Calendar.YEAR) + "年" +( calendars.get(Calendar.MONTH)+1) + "月"
-                + calendars.get(Calendar.DAY_OF_MONTH) + "日";
-        //选择时间与当前时间的初始化，用于判断用户选择的是否是以前的时间，如果是，弹出toss提示不能选择过去的时间
-        selectDay = currentDay = calendars.get(Calendar.DAY_OF_MONTH);
-        selectMinute = currentMinute = calendars.get(Calendar.MINUTE);
-        selectHour = currentHour = calendars.get(Calendar.HOUR_OF_DAY);
 
-        selectTime = currentHour + ":" + ((currentMinute < 10)?("0"+currentMinute):currentMinute) + "";
-        dp_test = (DatePicker)view1.findViewById(R.id.dp_test);
-        tp_test = (TimePicker)view1.findViewById(R.id.tp_test);
-        tv_ok = (Button) view1.findViewById(R.id.tv_ok);
-        tv_cancel = (TextView) view1.findViewById(R.id.tv_cancel);
-        //设置滑动改变监听器
-        dp_test.setOnChangeListener(dp_onchanghelistener);
-        tp_test.setOnChangeListener(tp_onchanghelistener);
-
-        AlertDialog.Builder builder=new AlertDialog.Builder(this).setView(view1);
-        final AlertDialog alertDialog=builder.create();
-        alertDialog.show();
-
-        //点击确定
-        tv_ok.setOnClickListener(new View.OnClickListener() {
+    private void initBirthdayDialog() {
+        CustomDialog_birthday customDialog_birthday = new CustomDialog_birthday(this, new CustomDialog_birthday.ICustomDialogEventListener() {
             @Override
-            public void onClick(View arg0) {
-                if(selectDay == currentDay ){	//在当前日期情况下可能出现选中过去时间的情况
-                    if(selectHour > currentHour){
-                        Toast.makeText(getApplicationContext(), "不能选择未来的时间\n  请重新选择",Toast.LENGTH_LONG ).show();
-                    }else if( (selectHour == currentHour) && (selectMinute > currentMinute) ){
-                        Toast.makeText(getApplicationContext(), "不能选择未来的时间\n 请重新选择", Toast.LENGTH_LONG).show();
-                    }else{
+            public void customDialogEvent(List<Integer> birthdayList) {
+                LogUtil.e("生日" + birthdayList);
 
-                        Log.e("获取的时间",""+selectDate+selectTime);
-                        alertDialog.dismiss();
-                    }
-                }else{
-                    Log.e("获取的时间",""+selectDate+selectTime);
-                    alertDialog.dismiss();
-                }
             }
-        });
-
-        //点击取消
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                alertDialog.dismiss();
-            }
-        });
+        }, R.style.Dialog);
+        customDialog_birthday.show();
     }
-    private void initPersonalIntro(){
-        Intent intent = new Intent(UserInfoAC.this,PersonalIntroAndChangePswAC.class);
+
+    private void initPersonalIntro() {
+        Intent intent = new Intent(UserInfoAC.this, PersonalIntroAndChangePswAC.class);
         startActivity(intent);
     }
-    private void initChangePhone(){
+
+    private void initChangePhone() {
         CustomDialog_phone customDialog_phone = new CustomDialog_phone(this, new CustomDialog_phone.ICustomDialogEventListener() {
             @Override
             public void customDialogEvent(String id) {
-                Log.e("返回",""+id);
+                Log.e("返回", "" + id);
             }
-        },R.style.Dialog);
+        }, R.style.Dialog);
         customDialog_phone.show();
     }
-    private void initChangePsw(int pos){
-        Intent intent = new Intent(UserInfoAC.this,PersonalIntroAndChangePswAC.class);
-        intent.putExtra("CHANGEPSW",pos);
+
+    private void initChangePsw(int pos) {
+        Intent intent = new Intent(UserInfoAC.this, PersonalIntroAndChangePswAC.class);
+        intent.putExtra("CHANGEPSW", pos);
         startActivity(intent);
     }
-    private void initIOSSheetDialog(){
+
+    private void initIOSSheetDialog() {
         shitView = new LikeIOSSheetDialog.Builder(UserInfoAC.this)
                 .setTitle("更换头像")
                 .addMenu("从手机相册选择", new View.OnClickListener() {
@@ -256,6 +350,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 }).create();
         shitView.show();
     }
+
     private void addPic() {
         Intent intent = new Intent(UserInfoAC.this, ImagesSelectorActivity.class);
         // 选择数量
@@ -270,14 +365,16 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         startActivityForResult(intent, REQUEST_CODE);
 
     }
+
     String mPicDirectory = "SXK";
-    private void takePhoto(){
+
+    private void takePhoto() {
         /**
          * 在启动拍照之前最好先判断一下sdcard是否可用
          */
         String fileName = "sxk" + ".jpg";
         mImageCachePath = FileManager.getSaveImagePath() + fileName;
-        Log.e("路径",""+mImageCachePath);
+        Log.e("路径", "" + mImageCachePath);
 //        String state = Environment.getExternalStorageState(); //拿到sdcard是否可用的状态码
 //        if (state.equals(Environment.MEDIA_MOUNTED)){   //如果可用
 
@@ -285,30 +382,31 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 //            if(!file.exists()) {//目录不存在则创建该目录及其不存在的父目录
 //                file.mkdirs();
 //            }
-            Intent intent = new Intent(
-                    MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri imageUri = Uri.fromFile(new File(
-                    mImageCachePath));
-            //这个参数就是转移保存地址的，对应Value中保存的URI就是指定的保存地址
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    imageUri);
-            startActivityForResult(intent, TAKE_PHOTO);
+        Intent intent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri imageUri = Uri.fromFile(new File(
+                mImageCachePath));
+        //这个参数就是转移保存地址的，对应Value中保存的URI就是指定的保存地址
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                imageUri);
+        startActivityForResult(intent, TAKE_PHOTO);
 //        }else {
 //            Toast.makeText(UserInfoAC.this,"SD卡不可用",Toast.LENGTH_SHORT).show();
 //        }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE:
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
                     assert mResults != null;
                     // show results in textview
                     StringBuilder sb = new StringBuilder();
                     sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                    for(String result : mResults) {
+                    for (String result : mResults) {
                         sb.append(result).append("\n");
                     }
                 }
@@ -336,35 +434,24 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 //                }
 
 
-                Uri imageUri=Uri.fromFile(new File(mImageCachePath));
-                header.setImageBitmap(ImageFactory.getBitmapFormUri(this,imageUri,false));
+                Uri imageUri = Uri.fromFile(new File(mImageCachePath));
+                header.setImageBitmap(ImageFactory.getBitmapFormUri(this, imageUri, false));
 //
-                Log.e("图片路径",""+mImageCachePath);
+                Log.e("图片路径", "" + mImageCachePath);
                 break;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void initSnackBar(String name) {
+        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), name, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
 
-    DatePicker.OnChangeListener dp_onchanghelistener = new DatePicker.OnChangeListener() {
-        @Override
-        public void onChange(int year, int month, int day, int day_of_week) {
-            selectDay = day;
-            selectDate = year + "年" + month + "月" + day + "日";
-        }
-    };
-    TimePicker.OnChangeListener tp_onchanghelistener = new TimePicker.OnChangeListener() {
-        @Override
-        public void onChange(int hour, int minute) {
-            selectTime = hour + ":" + ((minute < 10)?("0"+minute):minute) ;
-            selectHour = hour;
-            selectMinute = minute;
-        }
-    };
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_back:
                 finish();
                 break;

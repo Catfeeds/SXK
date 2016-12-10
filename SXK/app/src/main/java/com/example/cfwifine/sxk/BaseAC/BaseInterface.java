@@ -12,6 +12,10 @@ public class BaseInterface {
     public static String UserRegister= root + "/app/applogin/registerpost";
     // 登录
     public static String UserLogin = root + "/app/applogin/loginpost";
+    // 获取用户信息
+    public static String GetUserInfo = root + "/app/user/getpost";
+    // 修改用户信息
+    public static String UpdateUserInfo = root + "/app/user/setpost";
     // 验证码
     public static String UserVerifyCode = root + "/app/sms/addpost";
     // 忘记喵喵
@@ -42,5 +46,6 @@ public class BaseInterface {
 
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
+    public static String PHONENUMBER = "PHONENUMBER";
     public static String PHPSESSION = "PHPSESSION";
 }
