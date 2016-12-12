@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
-import com.example.cfwifine.sxk.Section.CommunityNC.View.ComRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemActivityRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityListModel;

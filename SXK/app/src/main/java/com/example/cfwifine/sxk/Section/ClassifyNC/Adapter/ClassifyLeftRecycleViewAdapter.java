@@ -8,15 +8,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemActivityRecycleAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClassifyLeftRecycleViewAdapter extends RecyclerView.Adapter<ClassifyLeftRecycleViewAdapter.ViewHolder> {
-    public ArrayList<TestModel> datas = null;
+    public List<ClassifyCateModel.CategoryListBean> datas = null;
+    public ArrayList<TestModel> dataStatues = null;
 
-    public ClassifyLeftRecycleViewAdapter(ArrayList<TestModel> datas) {
+    private ClassifyLeftRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int categoryid, int position);
+    }
+
+    public void setOnItemClickListener(ClassifyLeftRecycleViewAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public ClassifyLeftRecycleViewAdapter(List<ClassifyCateModel.CategoryListBean> datas, ArrayList<TestModel> dataListStatue) {
         this.datas = datas;
+        this.dataStatues = dataListStatue;
     }
 
     //创建新View，被LayoutManager所调用
@@ -30,23 +46,33 @@ public class ClassifyLeftRecycleViewAdapter extends RecyclerView.Adapter<Classif
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.mTextView.setText(datas.get(position).getText());
+        if (position == 0){
+            viewHolder.mTextView.setText("品牌");
+        }else {
+            viewHolder.mTextView.setText(datas.get(position-1).getName().toString());
+            LogUtil.e("品牌分类"+datas.get(position-1).getName().toString());
+        }
         // 选中狂
-        boolean state = datas.get(position).getState();
+        boolean state = dataStatues.get(position).getState();
         if (state == true){
             viewHolder.content_layout.setBackgroundResource(R.color.white);
         }else {
             viewHolder.content_layout.setBackgroundResource(R.color.classify);
         }
-
         viewHolder.content_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i<datas.size();i++){
-                    datas.get(i).setState(false);
+                for (int i = 0; i<dataStatues.size();i++){
+                    dataStatues.get(i).setState(false);
                 }
-                datas.get(position).setState(true);
+                dataStatues.get(position).setState(true);
                 notifyDataSetChanged();
+                // 一级分类点击事件
+                if (position !=0){
+                    mOnItemClickListener.OnItemClick(view,datas.get(position-1).getCategoryid(),position);
+                }else {
+                    mOnItemClickListener.OnItemClick(view,0,position);
+                }
             }
         });
     }
@@ -54,7 +80,7 @@ public class ClassifyLeftRecycleViewAdapter extends RecyclerView.Adapter<Classif
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return datas.size();
+        return dataStatues.size();
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素

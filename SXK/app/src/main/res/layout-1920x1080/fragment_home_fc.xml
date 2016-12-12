@@ -23,11 +23,6 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <!--<fragment-->
-                        <!--android:id="@+id/fragment_cycle_viewpager_content"-->
-                        <!--android:name="com.example.cfwifine.sxk.CircleViewImage.CycleViewPager"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="274dp" />-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"

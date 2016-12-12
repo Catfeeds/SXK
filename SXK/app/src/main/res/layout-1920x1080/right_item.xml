@@ -8,7 +8,7 @@
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:background="@drawable/classify_click_bg">
+        android:background="@drawable/ripple_bg">
 
         <TextView
             android:id="@+id/text"

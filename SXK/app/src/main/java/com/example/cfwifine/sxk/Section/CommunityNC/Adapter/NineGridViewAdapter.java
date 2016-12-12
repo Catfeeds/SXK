@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.CommunityNC.View;
+package com.example.cfwifine.sxk.Section.CommunityNC.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.squareup.picasso.Picasso;
 import com.w4lle.library.NineGridAdapter;
 

@@ -13,10 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.cfwifine.sxk.CircleViewImage.ADInfo;
-import com.example.cfwifine.sxk.CircleViewImage.CycleViewPager;
-import com.example.cfwifine.sxk.CircleViewImage.ViewFactory;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
@@ -32,8 +28,6 @@ import java.util.List;
 @SuppressLint("NewApi")
 public class HomeFC extends Fragment {
     private List<ImageView> views = new ArrayList<ImageView>();
-    private List<ADInfo> infos = new ArrayList<ADInfo>();
-    private CycleViewPager cycleViewPager;
     ImageView more;
     RecyclerView recyclerView,hotcycleView,eightRV;
     RecycleAdapter myAdapter;
@@ -216,56 +210,6 @@ public class HomeFC extends Fragment {
 
 
     // TODO ***************************************初始化轮播图***************************************
-    @SuppressLint("NewApi")
-    private void initBanner() {
-
-        for(int i = 0; i < imageUrls.length; i ++){
-            ADInfo info = new ADInfo();
-            info.setUrl(imageUrls[i]);
-            info.setContent("图片-->" + i );
-            infos.add(info);
-        }
-
-        cycleViewPager = (CycleViewPager)getActivity().getFragmentManager().findFragmentById(R.id.fragment_cycle_viewpager_content);
-
-
-        // 将最后一个ImageView添加进来
-        views.add(ViewFactory.getImageView(getActivity(), infos.get(infos.size() - 1).getUrl()));
-        for (int i = 0; i < infos.size(); i++) {
-            views.add(ViewFactory.getImageView(getActivity(), infos.get(i).getUrl()));
-        }
-        // 将第一个ImageView添加进来
-        views.add(ViewFactory.getImageView(getActivity(), infos.get(0).getUrl()));
-
-        // 设置循环，在调用setData方法前调用
-        cycleViewPager.setCycle(true);
-
-        // 在加载数据前设置是否循环
-        cycleViewPager.setData(views, infos, mAdCycleViewListener);
-        //设置轮播
-        cycleViewPager.setWheel(true);
-
-        // 设置轮播时间，默认5000ms
-        cycleViewPager.setTime(3000);
-        //设置圆点指示图标组居中显示，默认靠右
-        cycleViewPager.setIndicatorCenter();
-
-    }
-    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new CycleViewPager.ImageCycleViewListener() {
-
-        @Override
-        public void onImageClick(ADInfo info, int position, View imageView) {
-            if (cycleViewPager.isCycle()) {
-                position = position - 1;
-                Toast.makeText(getActivity(),
-                        "position-->" + info.getContent(), Toast.LENGTH_SHORT)
-                        .show();
-//                startActivity(DetailInfoActivity.class);
-            }
-
-        }
-
-    };
 
     private void startActivity(Class<?> cls,Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);

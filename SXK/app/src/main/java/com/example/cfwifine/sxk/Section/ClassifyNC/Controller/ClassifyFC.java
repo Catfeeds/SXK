@@ -15,19 +15,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyBrandListAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyLeftRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.DividerItemDecoration;
 import com.example.cfwifine.sxk.Section.PublishNC.View.HeaderRecyclerAndFooterWrapperAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
-import com.example.cfwifine.sxk.Utils.NetworkUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.MyGridView;
@@ -50,7 +52,8 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
     View view;
     RecyclerView leftRecycleView, rightRecycleView;
-    ArrayList<TestModel> datalist = new ArrayList<>();
+    List<ClassifyCateModel.CategoryListBean> datalist;
+    ArrayList<TestModel> dataListStatue;
 
     MyGridView myGridView;
 
@@ -75,6 +78,8 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
     private TextView classify_reonline_text;
     private LinearLayout classify_nonet_view;
     private LinearLayout classify_online_view;
+    private ImageView classify_cate_header_pic;
+    private RecyclerView classify_cate_rv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,31 +95,23 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_classify_fc, container, false);
             configurationNaviTitle();
-            checkNet();
-            initData();
+            initData(0, -1);
             initleftRecycleView();
 
             initBrandHotList();
             initView();
 
         }
-
         return view;
     }
 
-    private void checkNet() {
-        if (!NetworkUtils.isConnected(getActivity())){
-            classify_online_view.setVisibility(View.GONE);
-            classify_nonet_view.setVisibility(View.VISIBLE);
-        }
-    }
 
-
-    FrameLayout frameLayout, frameLayouts;
+    FrameLayout frameLayout;
+    LinearLayout frameLayouts;
 
     private void initView() {
         frameLayout = (FrameLayout) view.findViewById(R.id.classify_brand_frame);
-        frameLayouts = (FrameLayout) view.findViewById(R.id.classify_brand_frames);
+        frameLayouts = (LinearLayout) view.findViewById(R.id.classify_brand_frames);
         frameLayout.setVisibility(View.VISIBLE);
         frameLayouts.setVisibility(View.GONE);
         classify_reonline_text = (TextView) view.findViewById(R.id.classify_reonline_text);
@@ -127,23 +124,96 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         classify_online_view.setVisibility(View.VISIBLE);
         classify_nonet_view.setVisibility(View.GONE);
 
+        classify_cate_header_pic = (ImageView) view.findViewById(R.id.classify_cate_header_pic);
+        classify_cate_header_pic.setOnClickListener(this);
+        classify_cate_rv = (RecyclerView) view.findViewById(R.id.classify_cate_rv);
+        classify_cate_rv.setOnClickListener(this);
     }
 
-    private void initGridView() {
-//        myGridView=(MyGridView) view.findViewById(R.id.classify_gridView);
-//        myGridView.setAdapter(new MyGridAdapter(getActivity()));
-    }
+    /**
+     * 左侧 0 一级分类 1 二级分类
+     */
+    private void initData(final int value, final int pos) {
 
-    private void initData() {
-        for (int i = 0; i < 3; i++) {
-            if (i == 0) {
-                TestModel testModel = new TestModel("测试" + i, true);
-                datalist.add(testModel);
-            } else {
-                TestModel testModel = new TestModel("测试" + i, false);
-                datalist.add(testModel);
-            }
+        /**
+         * 初始化左侧的list
+         */
+        dataListStatue = new ArrayList<>();
+        datalist = new ArrayList<>();
+        JSONObject order = new JSONObject();
+        try {
+            order.put("sort", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+            jsonObject.put("parentid", value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ClassfiyGoodsCateify)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        classify_online_view.setVisibility(View.GONE);
+                        classify_nonet_view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("左侧一级品牌", "" + response);
+                        Gson gson = new Gson();
+                        ClassifyCateModel cateModel = gson.fromJson(response, ClassifyCateModel.class);
+                        if (cateModel.getCode() == 1) {
+                            if (value == 0) {
+                                datalist = cateModel.getCategoryList();
+                                for (int i = 0; i < cateModel.getTotal() + 1; i++) {
+                                    if (i == 0) {
+                                        TestModel testModel = new TestModel("品牌" + i, true);
+                                        dataListStatue.add(testModel);
+                                    } else {
+                                        TestModel testModel = new TestModel("测试" + i, false);
+                                        dataListStatue.add(testModel);
+                                    }
+                                }
+                                initleftRecycleView();
+                            } else {
+                                LogUtil.e("二级分类" + response);
+//                                if (!datalist.get(pos - 1).equals("")&&pos>=1) {
+//                                     分类的header图片
+//                                    String headerPic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + datalist.get(pos - 1).getImg();
+//                                    Glide.with(getActivity()).load(headerPic)
+//                                            .centerCrop()
+//                                            .placeholder(R.drawable.home_placeholder)
+//                                            .into(classify_cate_header_pic);
+//                                }
+
+                            }
+
+                        } else if (cateModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
+                        } else if (cateModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+
     }
 
     // TODO*********************************配置导航头**********************************************
@@ -160,22 +230,11 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         leftRecycleView.setLayoutManager(linearLayoutManager);
-        ClassifyLeftRecycleViewAdapter classifyLeftRecycleViewAdapter = new ClassifyLeftRecycleViewAdapter(datalist);
+        ClassifyLeftRecycleViewAdapter classifyLeftRecycleViewAdapter = new ClassifyLeftRecycleViewAdapter(datalist, dataListStatue);
         leftRecycleView.setAdapter(classifyLeftRecycleViewAdapter);
         leftRecycleView.addOnItemTouchListener(new RecycleViewListener(leftRecycleView, new RecycleViewListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.e("点击了一个", "" + datalist.get(position).getText());
-                if (position == 0) {
-                    frameLayouts.setVisibility(View.GONE);
-                    frameLayout.setVisibility(View.VISIBLE);
-
-                } else {
-
-                    frameLayout.setVisibility(View.GONE);
-                    frameLayouts.setVisibility(View.VISIBLE);
-                }
-
 
             }
 
@@ -184,6 +243,26 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
             }
         }));
+        classifyLeftRecycleViewAdapter.setOnItemClickListener(new ClassifyLeftRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View views, int categoryid, int position) {
+                if (position == 0) {
+                    frameLayouts.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                } else {
+                    frameLayout.setVisibility(View.GONE);
+                    frameLayouts.setVisibility(View.VISIBLE);
+                    LogUtil.e("position" + position);
+                    LogUtil.e("categoryid" + categoryid);
+
+                    initData(categoryid,position);
+
+
+                }
+
+
+            }
+        });
     }
 
     // TODO*********************************配置右侧recycleview************************************
@@ -338,6 +417,8 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (brandListData.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -387,20 +468,24 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (hotBrandListData.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
                         }
                     }
                 });
     }
 
+    // TODO*********************************配置分类recycleview数据********************************
+
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.classify_reonline_text:
                 /**
                  * 断网重新加载
                  */
-                initData();
+                initData(0, -1);
                 initleftRecycleView();
                 initBrandHotList();
                 initView();

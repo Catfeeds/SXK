@@ -34,12 +34,32 @@ public class BaseInterface {
     // 品牌
     // 获取所有品牌
     public static String ClassfiyGetAllBrand = root +"/app/brand/listpost";
+    // 获取热门品牌
     public static String ClassfiyGetAllHotBrand = root +"/app/brandhot/listpost";
+    // 获取商品分类
+    public static String ClassfiyGoodsCateify = root + "/app/category/listpost";
 
     // 首页
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";
     public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";
+
+    // 社区
+    // 获取宣传图
+    public static String CommunityGetPic = root + "/app/communitysetup/getpost";
+    // 获取模块列表
+    public static String CommunityGetSectionList = root + "/app/communitymodule/listpost";
+    // 添加话题
+    public static String CommunityAddTopic = root + "/app/communitytopic/addpost";
+    // 删除话题
+    public static String CommunityDeleteTopic = root + "/app/communitytopic/delpost";
+    // 修改话题
+    public static String CommunityUpdateTopic = root + "/app/communitytopic/setpost";
+    // 获取话题
+    public static String CommunityGetTopic = root + "/app/communitytopic/getpost";
+    // 话题列表
+    public static String CommunityTopicList = root + "/app/communitytopic/listpost";
+
 
     // 图片存储位置
     public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqvdngk.bkt.clouddn.com/";
