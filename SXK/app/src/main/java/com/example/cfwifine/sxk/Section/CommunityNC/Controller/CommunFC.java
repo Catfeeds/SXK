@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.CommunityNC.Controller;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.ComRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -68,7 +70,9 @@ public class CommunFC extends Fragment implements View.OnClickListener {
             , {"http://img1.3lian.com/2015/a1/110/d/180.jpg", "1280", "800"}
     };
     String picUrl = "";
-    List<CommunityTopicListModel.ModuleListBean> topicList;
+    List<CommunityTopicListModel.ModuleListBean> topic;
+    List<TopicListModel.TopicListBean> topicList;
+    LinearLayout rightLay;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 //            initFriendMomentView();
             initFriendMomentHeaderPicDataSource();
 //            initFriendMomentGetTopicListDataSource();
-            initFriendMomentItemListDataSource();
+//            initFriendMomentItemListDataSource();
 
 
         }
@@ -178,12 +182,12 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("话题列表", "" + response);
-                        topicList = new ArrayList<CommunityTopicListModel.ModuleListBean>();
+                        topic = new ArrayList<CommunityTopicListModel.ModuleListBean>();
                         Gson gson = new Gson();
                         CommunityTopicListModel communityTopicListModel = gson.fromJson(response, CommunityTopicListModel.class);
                         if (communityTopicListModel.getCode() == 1) {
-                            topicList = communityTopicListModel.getModuleList();
-                            initFriendMomentView();
+                            topic = communityTopicListModel.getModuleList();
+                            initFriendMomentItemListDataSource();
                         } else if (communityTopicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (communityTopicListModel.getCode() == 911) {
@@ -231,17 +235,19 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("话题列表————————", "" + response);
+                        topicList = new ArrayList<TopicListModel.TopicListBean>();
                         Gson gson = new Gson();
-
-//                        if (communityHeaderImageModel.getCode() == 1) {
-
-//                        } else if (communityHeaderImageModel.getCode() == 0) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        } else if (communityHeaderImageModel.getCode() == 911) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        TopicListModel topicListModel = gson.fromJson(response,TopicListModel.class);
+                        if (topicListModel.getCode() == 1) {
+                            topicList = topicListModel.getTopicList();
+                            initFriendMomentView();
+                        } else if (topicListModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (topicListModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                            classify_online_view.setVisibility(View.GONE);
 //                            classify_nonet_view.setVisibility(View.VISIBLE);
-//                        }
+                        }
                     }
                 });
     }
@@ -297,6 +303,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         title.setText("社区");
         ImageView rightPubFriendMoment = (ImageView) view.findViewById(R.id.left_pic);
         rightPubFriendMoment.setBackgroundResource(R.drawable.com_pubfriendmoment);
+
+        rightLay = (LinearLayout)view.findViewById(R.id.navi_right_pic_click_lay);
+        rightLay.setOnClickListener(this);
+
 //       initHorscrollView();
     }
 
@@ -377,7 +387,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         });
 
         initFriendMomentData();
-        mAdapter = new ComRecycleViewAdapter(getActivity(), imagesList, picUrl,topicList);
+        mAdapter = new ComRecycleViewAdapter(getActivity(), picUrl,topic,topicList);
         hao_recycleview.setAdapter(mAdapter);
 
 
@@ -420,14 +430,27 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     }
 
 
+    ArrayList<String> topicName = null;
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        String content = (String) view.getTag();
-        for (int i = 0; i < mImgIds.length; i++) {
-            if (i == id) {
-                Log.e("你点击了", "" + content);
-            }
+//        int id = view.getId();
+//        String content = (String) view.getTag();
+//        for (int i = 0; i < mImgIds.length; i++) {
+//            if (i == id) {
+//                Log.e("你点击了", "" + content);
+//            }
+//        }
+        switch (view.getId()){
+            case R.id.navi_right_pic_click_lay:
+                topicName = new ArrayList<>();
+                for (int i = 0;i<topic.size();i++){
+                    topicName.add(i,topic.get(i).getName());
+                }
+                Intent intent = new Intent(getActivity(),CommunityPublishTopicAC.class);
+                intent.putExtra("TOPIC",topicName);
+                startActivity(intent);
+                break;
         }
+
     }
 }

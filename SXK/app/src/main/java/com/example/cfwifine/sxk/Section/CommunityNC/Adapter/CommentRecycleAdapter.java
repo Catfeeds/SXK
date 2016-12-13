@@ -5,18 +5,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommentModel;
+import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAdapter.ViewHolder> {
-    public List<String> datas = null;
+    public List<?> datas = null;
     private Activity context;
-    public CommentRecycleAdapter(List<String> datas) {
+    private int poss = 0;
+    private ArrayList<String> mData = null;
+
+    public CommentRecycleAdapter(List<?> datas, int pos) {
 //        this.context = context;
         this.datas = datas;
+        this.poss = pos;
     }
 
     //创建新View，被LayoutManager所调用
@@ -30,45 +42,30 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAd
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-//        viewHolder.mTextView.setText(datas.get(position));
-//        List<Image> itemList = datas.get(position);
 
-//        viewHolder.tag_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        viewHolder.title_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        viewHolder.content_layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
-//        if (itemList.isEmpty()){
-//            viewHolder.nineGridlayout.setVisibility(View.GONE);
-//        }else {
-//            NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context,itemList);
-//            viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
-//            viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
-//                @Override
-//                public void onItemClick(View view, int position) {
-//                    Log.e("点击了",""+position);
-//                }
-//            });
-//
-
-
-
+        LogUtil.e("评论------" + String.valueOf(datas));
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("commentList",datas);
+//            LogUtil.e("大事发生地方"+jsonObject);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
 //        }
+        try {
+            JSONObject jsonObject = new JSONObject((datas.get(position).toString()));
+            LogUtil.e("jsonObject字符串" + jsonObject);
 
+            LogUtil.e("评论的内容" + jsonObject.optString("nickname"));
+            viewHolder.username.setText(jsonObject.optString("nickname") + ":");
+            LogUtil.e("评论的内容" + jsonObject.optString("comment"));
+            viewHolder.mTextView.setText(jsonObject.optString("comment"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        Gson gson = new Gson();
+//        CommentModel commentModel = gson.fromJson(jsonObject.toString(),CommentModel.class);
+//        viewHolder.username.setText(commentModel.getCommentList().get(position).getNickname());
+//        viewHolder.mTextView.setText(commentModel.getCommentList().get(position).getComment());
 
 
     }
@@ -76,32 +73,20 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAd
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return 5;
+        return datas.size();
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
-//        public TextView mTextView;
-//        public TextView tag_text;
-//        public TextView title_text;
-//        public LinearLayout content_layout;
-//        public NineGridlayout nineGridlayout;
-//        public RecyclerView raiseRV,commentRV;
         public TextView mTextView;
-
+        public TextView username;
+        LinearLayout commentView;
 
         public ViewHolder(View view) {
             super(view);
-//            mTextView = (TextView) view.findViewById(R.id.text);
-//            tag_text = (TextView) view.findViewById(R.id.tag_text);
-//            title_text = (TextView) view.findViewById(R.id.title_text);
-//            content_layout = (LinearLayout) view.findViewById(R.id.content_layout);
-//            nineGridlayout = (NineGridlayout)view.findViewById(R.id.iv_ngrid_layout);
-//            raiseRV = (RecyclerView)view.findViewById(R.id.raise_recycleview);
-//            commentRV = (RecyclerView)view.findViewById(R.id.comment_recycleview);
-
-            mTextView = (TextView)view.findViewById(R.id.raise_recycleview_text);
-
+            mTextView = (TextView) view.findViewById(R.id.comment_says);
+            username = (TextView) view.findViewById(R.id.comment_username);
+            commentView = (LinearLayout) view.findViewById(R.id.comment_view);
 
         }
     }

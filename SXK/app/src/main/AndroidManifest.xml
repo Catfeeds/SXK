@@ -84,7 +84,10 @@
         <activity
             android:name=".Section.HomeNC.Controller.EightItemDetailAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.HomeNC.Controller.ActivityDetailAC"
+        <activity
+            android:name=".Section.HomeNC.Controller.ActivityDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.CommunityNC.Controller.CommunityPublishTopicAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

@@ -10,6 +10,9 @@ import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.squareup.picasso.Picasso;
 import com.w4lle.library.NineGridAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -30,7 +33,15 @@ public class NineGridViewAdapter extends NineGridAdapter {
 
     @Override
     public String getUrl(int position) {
-        return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
+//        return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
+        try {
+            JSONObject jsonObject = new JSONObject(list.toString());
+            return jsonObject.optString("");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
