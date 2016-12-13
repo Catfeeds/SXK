@@ -23,6 +23,13 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
+                    <com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp">
+                    </com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
@@ -67,6 +74,8 @@
                             android:background="@drawable/home_message"
                             android:layout_height="22dp" />
                     </LinearLayout>
+
+
 
                 </RelativeLayout>
                 <LinearLayout

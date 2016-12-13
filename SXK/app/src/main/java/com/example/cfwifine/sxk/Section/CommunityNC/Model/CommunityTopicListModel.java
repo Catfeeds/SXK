@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.ClassifyNC.Model;
+package com.example.cfwifine.sxk.Section.CommunityNC.Model;
 
 import java.util.List;
 

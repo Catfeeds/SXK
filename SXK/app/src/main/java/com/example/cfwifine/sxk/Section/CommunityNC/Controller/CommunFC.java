@@ -17,12 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CommunityHeaderImageModel;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CommunityTopicListModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.ComRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
@@ -88,7 +86,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
             view = inflater.inflate(R.layout.fragment_commun_fc, container, false);
             configurationNaviTitle();
 //            initFriendMomentView();
-//            initFriendMomentHeaderPicDataSource();
+            initFriendMomentHeaderPicDataSource();
 //            initFriendMomentGetTopicListDataSource();
             initFriendMomentItemListDataSource();
 

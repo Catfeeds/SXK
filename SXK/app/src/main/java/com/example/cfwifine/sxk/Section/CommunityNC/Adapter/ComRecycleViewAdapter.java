@@ -7,14 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CommunityTopicListModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;

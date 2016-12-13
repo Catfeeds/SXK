@@ -17,6 +17,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
@@ -51,8 +52,8 @@ public class HomeFC extends Fragment {
             ,R.drawable.home_new,R.drawable.home_activity,R.drawable.home_anwser,R.drawable.home_share
     };
 
-
-
+    RecyclerBanner recyclerBanner;
+    private List<RecyclerBanner.BannerEntity> urls = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,8 @@ public class HomeFC extends Fragment {
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
-//            initBanner();
+            initBannerData();
+            initBanner();
 //            initHorscrollView();
             initEightItemRV();
             init();
@@ -76,6 +78,38 @@ public class HomeFC extends Fragment {
         return view;
 
     }
+
+    private void initBannerData() {
+        urls.add(new Entity("http://pic.58pic.com/58pic/12/46/13/03B58PICXxE.jpg"));
+        urls.add(new Entity("http://www.jitu5.com/uploads/allimg/121120/260529-121120232T546.jpg"));
+        urls.add(new Entity("http://pic34.nipic.com/20131025/2531170_132447503000_2.jpg"));
+        urls.add(new Entity("http://img5.imgtn.bdimg.com/it/u=3462610901,3870573928&fm=206&gp=0.jpg"));
+    }
+
+    private void initBanner() {
+        recyclerBanner = (RecyclerBanner)view.findViewById(R.id.banner);
+        recyclerBanner.setOnPagerClickListener(new RecyclerBanner.OnPagerClickListener() {
+            @Override
+            public void onClick(RecyclerBanner.BannerEntity entity) {
+
+            }
+        });
+        recyclerBanner.setDatas(urls);
+    }
+    private class Entity implements RecyclerBanner.BannerEntity {
+
+        String url;
+
+        public Entity(String url) {
+            this.url = url;
+        }
+
+        @Override
+        public String getUrl() {
+            return url;
+        }
+    }
+
     // TODO ***************************************初始化8个专题***************************************
     private void initEightItemRV(){
         datasText = new ArrayList<>();

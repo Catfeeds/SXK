@@ -1,6 +1,5 @@
 package com.example.cfwifine.sxk.Section.CommunityNC.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CommunityTopicListModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 
 import java.util.List;
 
