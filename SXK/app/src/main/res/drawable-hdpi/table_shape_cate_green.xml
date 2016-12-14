@@ -22,5 +22,5 @@
         <!--android:angle="90"/>-->
 
     //控制圆角大小
-    <corners android:radius="20dp" />
+    <corners android:radius="5dp" />
 </shape>

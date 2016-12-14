@@ -167,7 +167,7 @@ public class ImageFactory {
         int imageWidth = factoryOptions.outWidth;
 
         // »ñÈ¡Ëõ·ÅÖµ
-        int width = 600;
+        int width = 550;
         float imageWidthF = imageWidth;
         float widthF = width;
         int scaleFactor = Math.round(imageWidthF / widthF);

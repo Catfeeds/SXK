@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.io.File;
 import java.util.List;
@@ -17,10 +19,10 @@ import java.util.List;
  * Created by cfwifine on 16/11/26.
  */
 
-public class FourGridViewAdapter extends FourGridAdapter {
+public class FriendFourGridViewAdapter extends FourGridAdapter {
 
 
-    public FourGridViewAdapter(Context context, List list) {
+    public FriendFourGridViewAdapter(Context context, List list) {
         super(context, list);
     }
 
@@ -55,10 +57,12 @@ public class FourGridViewAdapter extends FourGridAdapter {
             if (list.get(i).equals("TAG")){
                 iv.setImageResource(R.drawable.publish_publish_addpic);
             }else if (list.get(i).equals("MORE")){
-                iv.setImageResource(R.drawable.publish_must_nine);
+                iv.setImageResource(R.drawable.ninepicmax);
             }else{
                 File file = new File(list.get(i).toString());
                 Bitmap bitmap = ImageFactory.getBitmapFormUri(context, Uri.fromFile(file),false);
+                float s = ImageFactory.getSizeOfBitmap(bitmap);
+                LogUtil.e("图片的大小"+s);
                 iv.setImageBitmap(bitmap);
 //                Picasso.with(context).load(new File(list.get(i).toString())).error(R.drawable.image_selected).into(iv);
             }

@@ -431,6 +431,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
 
     ArrayList<String> topicName = null;
+    ArrayList<Integer> topicModelID = null;
     @Override
     public void onClick(View view) {
 //        int id = view.getId();
@@ -443,11 +444,14 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.navi_right_pic_click_lay:
                 topicName = new ArrayList<>();
+                topicModelID = new ArrayList<>();
                 for (int i = 0;i<topic.size();i++){
                     topicName.add(i,topic.get(i).getName());
+                    topicModelID.add(i,topic.get(i).getModuleid());
                 }
                 Intent intent = new Intent(getActivity(),CommunityPublishTopicAC.class);
                 intent.putExtra("TOPIC",topicName);
+                intent.putExtra("TOPICMODELID",topicModelID);
                 startActivity(intent);
                 break;
         }
