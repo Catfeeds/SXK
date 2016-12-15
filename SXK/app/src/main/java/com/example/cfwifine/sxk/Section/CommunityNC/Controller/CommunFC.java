@@ -29,6 +29,7 @@ import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -237,7 +238,9 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         Log.e("话题列表————————", "" + response);
                         topicList = new ArrayList<TopicListModel.TopicListBean>();
                         Gson gson = new Gson();
-                        TopicListModel topicListModel = gson.fromJson(response,TopicListModel.class);
+                        TopicListModel topicListModel = gson.fromJson(response,new TypeToken<TopicListModel>() {}.getType());
+//                        List<TopicListModel> topicListModels =
+
                         if (topicListModel.getCode() == 1) {
                             topicList = topicListModel.getTopicList();
                             initFriendMomentView();
@@ -322,7 +325,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        initFriendMomentData();
+//                        initFriendMomentData();
                         //注意此处
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
@@ -386,7 +389,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
             }
         });
 
-        initFriendMomentData();
+//        initFriendMomentData();
         mAdapter = new ComRecycleViewAdapter(getActivity(), picUrl,topic,topicList);
         hao_recycleview.setAdapter(mAdapter);
 
@@ -409,25 +412,25 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
     }
 
-    private void initFriendMomentData() {
-        listData.clear();
-        for (int i = 0; i < limit; i++) {
-            listData.add(i + "");
-        }
-        imagesList = new ArrayList<>();
-        //这里单独添加一条单条的测试数据，用来测试单张的时候横竖图片的效果
-        ArrayList<Image> singleList = new ArrayList<>();
-        singleList.add(new Image(images[8][0], Integer.parseInt(images[8][1]), Integer.parseInt(images[8][2])));
-        imagesList.add(singleList);
-        //从一到9生成9条朋友圈内容，分别是1~9张图片
-        for (int i = 0; i < 9; i++) {
-            ArrayList<Image> itemList = new ArrayList<>();
-            for (int j = 0; j <= i; j++) {
-                itemList.add(new Image(images[j][0], Integer.parseInt(images[j][1]), Integer.parseInt(images[j][2])));
-            }
-            imagesList.add(itemList);
-        }
-    }
+//    private void initFriendMomentData() {
+//        listData.clear();
+//        for (int i = 0; i < limit; i++) {
+//            listData.add(i + "");
+//        }
+//        imagesList = new ArrayList<>();
+//        //这里单独添加一条单条的测试数据，用来测试单张的时候横竖图片的效果
+//        ArrayList<Image> singleList = new ArrayList<>();
+//        singleList.add(new Image(images[8][0], Integer.parseInt(images[8][1]), Integer.parseInt(images[8][2])));
+//        imagesList.add(singleList);
+//        //从一到9生成9条朋友圈内容，分别是1~9张图片
+//        for (int i = 0; i < 9; i++) {
+//            ArrayList<Image> itemList = new ArrayList<>();
+//            for (int j = 0; j <= i; j++) {
+//                itemList.add(new Image(images[j][0], Integer.parseInt(images[j][1]), Integer.parseInt(images[j][2])));
+//            }
+//            imagesList.add(itemList);
+//        }
+//    }
 
 
     ArrayList<String> topicName = null;

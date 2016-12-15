@@ -60,6 +60,16 @@ public class BaseInterface {
     // 话题列表
     public static String CommunityTopicList = root + "/app/communitytopic/listpost";
 
+    // 意见反馈
+    public static String SupportReplay = root + "/app/feedback/addpost";
+
+    // 其他
+    // 用户协议
+    public static String UserProtocal = root + "/app/agreementsetup/getpost";
+    // 问答列表
+    public static String AnswerList = root + "/app/question/listpost";
+    // 获取问答
+    public static String GetAnwer = root + "/app/question/getpost";
 
     // 图片存储位置
     public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqvdngk.bkt.clouddn.com/";

@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RaiseRecycleAdapter extends RecyclerView.Adapter<RaiseRecycleAdapter.ViewHolder> {
-    public String datas = null;
+    public List<TopicListModel.TopicListBean.LikeListBean> datas = null;
     private Activity context;
-    public RaiseRecycleAdapter(String datas) {
+    String likeString="";
+    public RaiseRecycleAdapter(List<TopicListModel.TopicListBean.LikeListBean> datas) {
 //        this.context = context;
         this.datas = datas;
     }
@@ -31,7 +33,10 @@ public class RaiseRecycleAdapter extends RecyclerView.Adapter<RaiseRecycleAdapte
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.mTextView.setText(datas.toString());
+        for (int i = 0; i<datas.size();i++){
+            likeString +=  (datas.get(i).getNickname()+"、");
+        }
+        viewHolder.mTextView.setText(likeString);
 
     }
 

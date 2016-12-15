@@ -71,7 +71,8 @@
         <activity
             android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC" />
+        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC"
+            android:theme="@style/AppThemeHasTitle"/>
         <activity
             android:name=".Section.MineNC.Controller.UserInfoRecycleViewCommomAC"
             android:theme="@style/AppThemeHasTitle" />

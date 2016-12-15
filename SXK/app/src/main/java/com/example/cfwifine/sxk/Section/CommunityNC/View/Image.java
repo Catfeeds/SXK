@@ -5,7 +5,7 @@ public class Image {
     private int width;
     private int height;
 
-    public Image(String url, int width, int height) {
+    public Image(String url) {
         this.url = url;
         this.width = width;
         this.height = height;

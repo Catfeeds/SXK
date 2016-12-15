@@ -176,7 +176,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                                 // 请求成功
                                 dataSource = userInfoModel.getUser();
                                 // 数据请求成功后才可以点击，否则不能点击
-                                initListener();
+
                             } else if (userInfoModel.getCode() == 0) {
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                             } else if (userInfoModel.getCode() == 911) {
@@ -200,6 +200,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         header = (CircleImageView) findViewById(R.id.userInfoHeaderView);
         header.setOnClickListener(this);
+        initListener();
     }
 
     // TODO*********************************配置导航头**********************************************

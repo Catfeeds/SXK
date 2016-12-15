@@ -13,22 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommentModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
-import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
-import com.google.gson.Gson;
 import com.w4lle.library.NineGridlayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAdapter.ViewHolder> {
@@ -101,7 +96,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         viewHolder.topic_during.setText(String.valueOf(topicList.get(position).getCreatetime()));
 
         // 图片
-        NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context, (List) topicList.get(position).getImgList());
+        NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context,topicList.get(position).getImgList());
         viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
         viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
             @Override
@@ -130,35 +125,37 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         }
 
 
-        String likeString = "";
-
-        for (int i = 0; i < topicList.get(position).getLikeList().size(); i++) {
-            try {
-                JSONObject jsonObject = new JSONObject(String.valueOf(topicList.get(position).getLikeList().get(i)));
-                likeString += (jsonObject.optString("nickname") + ",");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        String likeString = "";
+//
+//        for (int i = 0; i < topicList.get(position).getLikeList().size(); i++) {
+//            try {
+//                JSONObject jsonObject = new JSONObject(String.valueOf(topicList.get(position).getLikeList().get(i)));
+//                likeString += (jsonObject.optString("nickname") + ",");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
 //        likeString = likeString + topicList.get(position).getLikeList().get(topicList.get(position).getLikeList().size() - 1);
 
 //        likeString= likeString+topicList.get(position).getLikeList().get(topicList.get(position).getLikeList().size());
-        LogUtil.e("点赞的" + likeString);
+//        LogUtil.e("点赞的" + likeString);
         // 点赞RecycleView
-        RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(likeString);
+        RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(topicList.get(position).getLikeList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         viewHolder.raiseRV.setLayoutManager(layoutManager);
         viewHolder.raiseRV.setAdapter(raiseRecycleAdapter);
 
 
-        LogUtil.e("评论的数据"+topicList.get(position).getCommentList());
+//        LogUtil.e("评论的数据"+topicList.get(position).getCommentList());
 
 //        Gson gson = new Gson();
 //        CommentModel commentModel = gson.fromJson(topicList.get(position).getCommentList().toString(),CommentModel.class);
 
+
+
         // 评论 RecycleView
-        CommentRecycleAdapter commentRecycleAdapter = new CommentRecycleAdapter( topicList.get(position).getCommentList(), topicList.get(position).getCommentList().size());
+        CommentRecycleAdapter commentRecycleAdapter = new CommentRecycleAdapter(topicList.get(position).getCommentList());
         LinearLayoutManager layoutManagers = new LinearLayoutManager(context);
         layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
         viewHolder.commentRV.setLayoutManager(layoutManagers);

@@ -1,8 +1,10 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.CustomDialog.CustomDialog_JoinActivity;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityDetailModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -49,12 +52,15 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
     private ScrollView detail_view;
     private TextView reload_data;
     private LinearLayout no_net_view;
+    Dialog mLoading;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_ac);
+        mLoading = LoadingUtils.createLoadingDialog(this,"正在努力加载中...");
+        mLoading.show();
         initView();
         initData();
 
@@ -92,7 +98,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                         dataSource = new ArrayList<ActivityDetailModel.ActivityBean>();
                         Gson gson = new Gson();
                         activityDetailModel = gson.fromJson(response, ActivityDetailModel.class);
-//
+                        mLoading.dismiss();
                         if (activityDetailModel.getCode() == 1) {
                             setValueForCell(activityDetailModel);
                             logon_login_btn.setVisibility(View.VISIBLE);
@@ -117,7 +123,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
         activity_detail_title.setText(activityDetailModel.getActivity().getName());
         activity_detail_address.setText(activityDetailModel.getActivity().getPlace());
         activity_detail_date.setText(String.valueOf(activityDetailModel.getActivity().getTime()));
-        activity_detail_content.setText(activityDetailModel.getActivity().getContent());
+        activity_detail_content.setText(Html.fromHtml(activityDetailModel.getActivity().getContent()));
     }
 
     private void initView() {

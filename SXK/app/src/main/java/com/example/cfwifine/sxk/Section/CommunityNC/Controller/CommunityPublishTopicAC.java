@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.CommunityNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.PublishFriendMomentRecycleAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
@@ -31,6 +33,7 @@ import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FriendFour
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.ImageBrowseActivity;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
 import com.example.cfwifine.sxk.Utils.ImageUtils;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -70,7 +73,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private TextView navi_right;
     private LinearLayout navi_right_lays;
     private FourGridlayout results;
-    private ImageView publish_publish_add_pic_imageview,mostNinePic;
+    private ImageView publish_publish_add_pic_imageview, mostNinePic;
     private LinearLayout publish_add_pic_lay;
     private RecyclerView hot_cate_publish;
     private LinearLayout activity_community_publish_topic_ac;
@@ -78,14 +81,15 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private EditText friend_edittext;
     private ArrayList<String> mResults = new ArrayList<>();
     private static final int REQUEST_CODE = 732;
-    ArrayList<String> dataSource=null;
+    ArrayList<String> dataSource = null;
     ArrayList<String> filePathList = null;
     ArrayList<String> list = null;
     int s = 0;
+    int number = 0;
     String headUrl = "";
     ArrayList<byte[]> uploadDatasource = null;
     int modelid = -1;
-
+    Dialog mloading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +109,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private void initTopicData() {
         topicNameList = getIntent().getStringArrayListExtra("TOPIC");
         topicModelList = getIntent().getIntegerArrayListExtra("TOPICMODELID");
-        LogUtil.e("topicNameList"+topicNameList);
-        LogUtil.e("topicModelList"+topicModelList);
+        LogUtil.e("topicNameList" + topicNameList);
+        LogUtil.e("topicModelList" + topicModelList);
 
         topicListModle = new ArrayList<>();
         for (int i = 0; i < topicNameList.size(); i++) {
@@ -115,11 +119,13 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         }
 
         initRecycleView();
+
+        uploadDatasource = new ArrayList<>();
     }
 
     private void initRecycleView() {
         hot_cate_publish = (RecyclerView) findViewById(R.id.hot_cate_publish);
-        publishFriendMomentRecycleAdapter = new PublishFriendMomentRecycleAdapter(this, topicListModle,topicModelList);
+        publishFriendMomentRecycleAdapter = new PublishFriendMomentRecycleAdapter(this, topicListModle, topicModelList);
         hot_cate_publish.setLayoutManager(new GridLayoutManager(this, 3));
         hot_cate_publish.setAdapter(publishFriendMomentRecycleAdapter);
         publishFriendMomentRecycleAdapter.setOnItemClickListener(new PublishFriendMomentRecycleAdapter.OnItemClickListener() {
@@ -141,7 +147,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         publish_publish_add_pic_imageview = (ImageView) findViewById(R.id.friend_publish_pic);
         publish_publish_add_pic_imageview.setOnClickListener(this);
 
-        mostNinePic = (ImageView)findViewById(R.id.most_nine_pic);
+        mostNinePic = (ImageView) findViewById(R.id.most_nine_pic);
         publish_add_pic_lay = (LinearLayout) findViewById(R.id.publish_add_pic_lay);
 
         activity_community_publish_topic_ac = (LinearLayout) findViewById(R.id.activity_community_publish_topic_ac);
@@ -164,6 +170,11 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 break;
             case R.id.navi_right_lays:
                 // 点击发表朋友圈
+                mloading = LoadingUtils.createLoadingDialog(this,"正在努力发布中...");
+                mloading.show();
+                s= 0;
+                LogUtil.e("number的值"+number);
+                LogUtil.e("uploadData"+uploadDatasource);
                 releaseTopic();
                 break;
             case R.id.friend_publish_pic:
@@ -175,38 +186,14 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
     private void releaseTopic() {
         // 先上传图片，再上传数据
-        filePathList = new ArrayList<>();
         list = new ArrayList<>();
-        if (mResults.size()!=0){
-//            for (int i = 0; i < uploadDatasource.size(); i++) {
-//                filePathList.add(i, mResults.get(i));
-//                // 图片批量上传
-//
-//            }
+        if (number != 0) {
             String token = creatTokenLocal();
             uploadImageToQiniu(uploadDatasource.get(s), token);
-//            initReleaseFriendMoment(list);
-        }else {
+        } else {
             initReleaseFriendMoment(list);
         }
     }
-
-//    private void uploadBitMapToQiniu(byte[] filePath, String token) {
-//        UploadManager uploadManager = new UploadManager();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-//        final String key = "sxk_userPic_" + sdf.format(new Date()) + s;
-//        uploadManager.put(filePath,key,token,new UpCompletionHandler(){
-//            @Override
-//            public void complete(String key, ResponseInfo info, JSONObject response) {
-//
-//            }
-//        },null);
-
-//        uploadManager.put(filePath, key, token, new UpCompletionHandler() {
-//
-//
-//        }, null);
-//    }
 
     private void uploadImageToQiniu(byte[] filePath, String token) {
         UploadManager uploadManager = new UploadManager();
@@ -218,8 +205,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
                 // TODO Auto-generated method stub
 
-                if (key.toString().equals(arg0)){
-                    headUrl =  arg0;
+                if (key.toString().equals(arg0)) {
+                    headUrl = arg0;
                     list.add(s, headUrl);
                     Log.e("上传返回值", "" + headUrl);
                     Log.e("上传返回数组", "" + list);
@@ -231,19 +218,20 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     }
 
                     Log.e("上传返回JSONObject", "" + arg2);
-                        s += 1;
-                    if (s < mResults.size()) {
+                    s += 1;
+                    if (s < uploadDatasource.size()) {
                         String token = creatTokenLocal();
                         uploadImageToQiniu(uploadDatasource.get(s), token);
                     } else {
                         // 图片上传完成
-                        LogUtil.e("图片上传完成"+list);
+                        LogUtil.e("图片上传完成" + list);
                         initReleaseFriendMoment(list);
 
                     }
-                }else {
+                } else {
 //                     图片上传失败屌
-
+                    LogUtil.e("图片上传失败"+list);
+                        return;
 
                 }
             }
@@ -252,35 +240,37 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
     private void initReleaseFriendMoment(ArrayList<String> list) {
         String edittext = friend_edittext.getText().toString().trim();
-        if (modelid == -1){
+        if (edittext.toString().trim().isEmpty()){
+            SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "内容不能为空哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+            return;
+        }
+        if (modelid == -1) {
             SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "你还没有选择分类哦!", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
-
-        JSONObject jsonObjects = new JSONObject();
-        try {
-            if (list.size()!=0){
-                for (int i = 0; i<list.size();i++){
-                    jsonObjects.put("image",list.get(i));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        LogUtil.e("图片列表"+list);
         JSONArray jsonArray1 = new JSONArray();
-        for (int i = 0;i<list.size();i++){
+
+        for (int i = 0; i < list.size(); i++) {
+
+            String li = list.get(i);
+            JSONObject jsonObjects = new JSONObject();
             try {
-                jsonArray1.put(i,jsonObjects);
+                jsonObjects.put("image", li);
+                jsonArray1.put(i, jsonObjects);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
+
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("content",edittext);
-            jsonObject.put("imgList",jsonArray1);
-            jsonObject.put("moduleid",modelid);
+            jsonObject.put("content", edittext);
+            if (list.size()!=0){
+                jsonObject.put("imgList", jsonArray1);
+            }
+            jsonObject.put("moduleid", modelid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -302,17 +292,18 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("发表结果", "" + response);
+                        mloading.dismiss();
                         Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
 
-//                        if (communityHeaderImageModel.getCode() == 1) {
-
-//                        } else if (communityHeaderImageModel.getCode() == 0) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        } else if (communityHeaderImageModel.getCode() == 911) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (requestStatueModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(CommunityPublishTopicAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (requestStatueModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(CommunityPublishTopicAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                            classify_online_view.setVisibility(View.GONE);
 //                            classify_nonet_view.setVisibility(View.VISIBLE);
-//                        }
+                        }
                     }
                 });
 
@@ -349,10 +340,10 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 9);
         // min size of image which will be shown; to filter tiny images (mainly icons)
         intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 100000);
-        if (s == 9){
+        if (s == 9) {
             // show camera or not
             intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
-        }else {
+        } else {
             // show camera or not
             intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
         }
@@ -367,54 +358,55 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // get selected images from selector
-        if(requestCode == REQUEST_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
                 assert mResults != null;
                 // show results in textview
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                for(String result : mResults) {
+                for (String result : mResults) {
                     sb.append(result).append("\n");
                 }
             }
-        }else if (requestCode == 777){
-            if (resultCode == -1){
+        } else if (requestCode == 777) {
+            if (resultCode == -1) {
                 mResults = data.getStringArrayListExtra("images");
-                Log.e("回电的数据",""+mResults);
+                Log.e("回电的数据", "" + mResults);
             }
         }
 
-        if (mResults.size()!=0){
+        if (mResults.size() != 0) {
             results.setVisibility(View.VISIBLE);
             publish_publish_add_pic_imageview.setVisibility(View.GONE);
             mostNinePic.setVisibility(View.GONE);
 
             dataSource = new ArrayList<>();
-            for (int i = 0; i<mResults.size();i++){
+            for (int i = 0; i < mResults.size(); i++) {
                 dataSource.add(mResults.get(i));
             }
 
-            LogUtil.e("图片mResults"+mResults);
+            LogUtil.e("图片mResults" + mResults);
             /**
              * 压缩图片质量
              */
-            uploadDatasource = new ArrayList<>();
-            for (int i = 0; i <mResults.size(); i++){
-                Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(i).toString())),false);
+            number = mResults.size();
+            s = 1;
+            uploadDatasource.clear();
+            for (int i = 0; i < mResults.size(); i++) {
+                Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(i).toString())), false);
                 byte[] b = ImageFactory.bitmapToByteAAA(bitmap);
-                uploadDatasource.add(i,b);
+                uploadDatasource.add(i, b);
             }
 
 
-            dataSource.add(mResults.size(),"TAG");
-            dataSource.add(mResults.size()+1,"MORE");
-
+            dataSource.add(mResults.size(), "TAG");
+            dataSource.add(mResults.size() + 1, "MORE");
 
 
             // 初始化九宫格
             initFourGridView();
-        }else {
+        } else {
             results.setVisibility(View.GONE);
             publish_publish_add_pic_imageview.setVisibility(View.VISIBLE);
             mostNinePic.setVisibility(View.VISIBLE);
@@ -423,29 +415,31 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     // TODO***********************************点击选择照片********************************************
-    private  void  initFourGridView(){
-        FriendFourGridViewAdapter nineGridAdapter = new FriendFourGridViewAdapter(this,dataSource);
+    private void initFourGridView() {
+        FriendFourGridViewAdapter nineGridAdapter = new FriendFourGridViewAdapter(this, dataSource);
 
         results.setAdapter(nineGridAdapter);
         results.setOnItemClickListerner(new FourGridlayout.OnItemClickListerner() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.e("点击了",""+position);
+                Log.e("点击了", "" + position);
 //                ImageBrowseActivity.startActivity(PublishPublishAC.this,dataSource,position);
-                Log.e("dataSource",""+dataSource);
-                int s = dataSource.size()-2;
-                if (position == s){
+                Log.e("dataSource", "" + dataSource);
+                int s = dataSource.size() - 2;
+                if (position == s) {
                     addPic(s);
-                }else if (position == s+1){
+                } else if (position == s + 1) {
                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-                } else{
+                } else {
                     PreviewPic(position);
                 }
             }
         });
 
     }
+
     // TODO***********************************点击预览照片********************************************
     private void PreviewPic(int position) {
 //        Intent intent = new Intent(PublishPublishAC.this, ImageBrowseActivity.class);
@@ -453,12 +447,16 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 //        intent.putExtra("dataSource", dataSource);
 //        startActivityForResult(intent, 777);
 
-        Intent intent = new Intent(CommunityPublishTopicAC.this,ImageBrowseActivity.class);
-        intent.putStringArrayListExtra("images",dataSource);
-        intent.putExtra("position",position);
-        startActivityForResult(intent,777);
+        Intent intent = new Intent(CommunityPublishTopicAC.this, ImageBrowseActivity.class);
+        intent.putStringArrayListExtra("images", dataSource);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, 777);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     private void submit() {
         // validate

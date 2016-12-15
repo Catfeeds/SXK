@@ -130,6 +130,12 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
             case 0:
                 startActivity(AddressSettingCommomAC.class,911);
                 break;
+            case 4:
+                // 意见反馈页面和个人简介是一样的
+                startActivity(PersonalIntroAndChangePswAC.class,4);
+                break;
+            case 5:
+                startActivity(UserPrctocalAC.class,-1);
             default:
                 break;
         }

@@ -6,7 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.squareup.picasso.Picasso;
 import com.w4lle.library.NineGridAdapter;
 
@@ -21,32 +26,27 @@ import java.util.List;
 
 public class NineGridViewAdapter extends NineGridAdapter {
 
+    private List<TopicListModel.TopicListBean.ImgListBean> data = null;
 
-    public NineGridViewAdapter(Context context, List list) {
+    public NineGridViewAdapter(Context context, List<TopicListModel.TopicListBean.ImgListBean> list) {
         super(context, list);
+        this.data = list;
     }
 
     @Override
     public int getCount() {
-        return (list == null) ? 0 : list.size();
+        return (data == null) ? 0 : data.size();
     }
 
     @Override
     public String getUrl(int position) {
-//        return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
-        try {
-            JSONObject jsonObject = new JSONObject(list.toString());
-            return jsonObject.optString("");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return getItem(position) == null ? null : ((Image)getItem(position)).getUrl();
+//        return null;
     }
 
     @Override
     public Object getItem(int position) {
-        return (list == null) ? null : list.get(position);
+        return (data == null) ? null : data.get(position);
     }
 
     @Override
@@ -59,7 +59,10 @@ public class NineGridViewAdapter extends NineGridAdapter {
         ImageView iv = new ImageView(context);
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
-        Picasso.with(context).load(getUrl(i)).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
+        LogUtil.e("图片地址"+list.get(i));
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+ data.get(i).getImage();
+//        Picasso.with(context).load(list.get(i).toString()).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
+        Glide.with(context).load(picUrl).fitCenter().placeholder(R.drawable.home_placeholder).into(iv);
         return iv;
     }
 }
