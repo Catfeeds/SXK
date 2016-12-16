@@ -74,6 +74,8 @@ public class BaseInterface {
     // 图片存储位置
     public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqvdngk.bkt.clouddn.com/";
 
+    // 储存用户的
+    public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";
     public static String PASSWORD = "PASSWORD";
     public static String PHONENUMBER = "PHONENUMBER";

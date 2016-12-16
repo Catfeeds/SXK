@@ -58,8 +58,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:border_color="@color/login_line_color"
-            app:border_width="0.2dp"
-            android:background="@drawable/com_user"/>
+            app:border_width="0.2dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +68,7 @@
                 android:id="@+id/topic_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="好肥一只鱼"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@android:color/black"/>
             <TextView
@@ -79,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:textColor="@android:color/black"
-                android:text="麻烦大家帮我看下这个神奇的包包谁不是真的，快来快来。错过今天，再等一年。"
+                android:text=""
                 />
             <com.w4lle.library.NineGridlayout
                 android:id="@+id/iv_ngrid_layout"
@@ -99,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/gray"
-                        android:text="2016-08-26   18：00"
+                        android:text=""
                         android:textSize="12sp"/>
 
                <ImageButton

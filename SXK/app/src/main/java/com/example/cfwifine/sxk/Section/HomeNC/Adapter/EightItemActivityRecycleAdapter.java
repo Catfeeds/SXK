@@ -65,7 +65,7 @@ public class EightItemActivityRecycleAdapter extends RecyclerView.Adapter<EightI
                 .into(viewHolder.imageView);
         viewHolder.title.setText(dataSource.get(position).getName());
         // 处理时间戳
-        String date = TimeUtils.milliseconds2String(dataSource.get(position).getTime());
+        String date = TimeUtils.milliseconds2String(dataSource.get(position).getTime()*1000l);
         viewHolder.date.setText(String.valueOf(date));
         viewHolder.address.setText(dataSource.get(position).getPlace());
         if (mOnItemClickListener!=null){

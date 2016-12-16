@@ -9,7 +9,7 @@ public class UserInfoModel {
 
     /**
      * code : 1
-     * user : {"mobile":"15539910985","password":"$2y$10$gRQSTvbUHLfXF1SEv2WfyeFko5jOX/m3TllbS.ruXn3TqVqT4SPEe","userid":10,"createtime":1480922278,"updatetime":1481352164,"nickname":"okile1","sex":"1","birthday":725817600,"profile":"测试手册按时发生大幅度"}
+     * user : {"mobile":"15539910985","password":"$2y$10$gRQSTvbUHLfXF1SEv2WfyeFko5jOX/m3TllbS.ruXn3TqVqT4SPEe","userid":10,"createtime":1480922278,"updatetime":1481875357,"nickname":"杨伟康","sex":1,"birthday":946656000,"profile":"测试手册按时发生大幅度","role":1,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20161216160154"}
      */
 
     private int code;
@@ -37,11 +37,13 @@ public class UserInfoModel {
          * password : $2y$10$gRQSTvbUHLfXF1SEv2WfyeFko5jOX/m3TllbS.ruXn3TqVqT4SPEe
          * userid : 10
          * createtime : 1480922278
-         * updatetime : 1481352164
-         * nickname : okile1
+         * updatetime : 1481875357
+         * nickname : 杨伟康
          * sex : 1
-         * birthday : 725817600
+         * birthday : 946656000
          * profile : 测试手册按时发生大幅度
+         * role : 1
+         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20161216160154
          */
 
         private String mobile;
@@ -50,9 +52,11 @@ public class UserInfoModel {
         private int createtime;
         private int updatetime;
         private String nickname;
-        private String sex;
+        private int sex;
         private int birthday;
         private String profile;
+        private int role;
+        private String headimgurl;
 
         public String getMobile() {
             return mobile;
@@ -102,11 +106,11 @@ public class UserInfoModel {
             this.nickname = nickname;
         }
 
-        public String getSex() {
+        public int getSex() {
             return sex;
         }
 
-        public void setSex(String sex) {
+        public void setSex(int sex) {
             this.sex = sex;
         }
 
@@ -124,6 +128,22 @@ public class UserInfoModel {
 
         public void setProfile(String profile) {
             this.profile = profile;
+        }
+
+        public int getRole() {
+            return role;
+        }
+
+        public void setRole(int role) {
+            this.role = role;
+        }
+
+        public String getHeadimgurl() {
+            return headimgurl;
+        }
+
+        public void setHeadimgurl(String headimgurl) {
+            this.headimgurl = headimgurl;
         }
     }
 }

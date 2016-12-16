@@ -22,6 +22,7 @@ import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.example.cfwifine.sxk.Utils.TimeUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -122,7 +123,8 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                 .into(activity_detail_iamge);
         activity_detail_title.setText(activityDetailModel.getActivity().getName());
         activity_detail_address.setText(activityDetailModel.getActivity().getPlace());
-        activity_detail_date.setText(String.valueOf(activityDetailModel.getActivity().getTime()));
+        String date = TimeUtils.milliseconds2String(activityDetailModel.getActivity().getTime()*1000l);
+        activity_detail_date.setText(String.valueOf(date));
         activity_detail_content.setText(Html.fromHtml(activityDetailModel.getActivity().getContent()));
     }
 

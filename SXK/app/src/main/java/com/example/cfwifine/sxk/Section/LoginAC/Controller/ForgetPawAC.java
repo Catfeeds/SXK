@@ -50,7 +50,13 @@ public class ForgetPawAC extends AppCompatActivity implements View.OnClickListen
         LinearLayout back = (LinearLayout) findViewById(R.id.navi_back);
         back.setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.navi_title);
-        title.setText("忘记密码");
+        int s = getIntent().getIntExtra("CHANGEPSW",0);
+        if (s == 5){
+            title.setText("修改密码");
+        }else {
+            title.setText("忘记密码");
+        }
+
         TextView rightTitle = (TextView) findViewById(R.id.navi_right);
         rightTitle.setText("");
     }

@@ -13,32 +13,44 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
+import com.example.cfwifine.sxk.Utils.DateUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.TimeUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.w4lle.library.NineGridlayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.util.List;
 
 public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAdapter.ViewHolder> {
-    //    public List<List<Image>> datas = null;
     public List<String> Stringdatas = null;
     public String headerPic = "";
     public List<CommunityTopicListModel.ModuleListBean> topic = null;
     public List<TopicListModel.TopicListBean> topicList = null;
-
-
     private Activity context;
+
+    private ComRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int topicid, int position);
+    }
+    public void setOnItemClickListener(ComRecycleViewAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
 
     public ComRecycleViewAdapter(Activity context, String picUrl, List<CommunityTopicListModel.ModuleListBean> topicList, List<TopicListModel.TopicListBean> list) {
         this.context = context;
-//        this.datas = datas;
         this.headerPic = picUrl;
         this.topic = topicList;
         this.topicList = list;
@@ -54,10 +66,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-//        viewHolder.mTextView.setText(datas.get(position));
-//        List<Image> itemList = datas.get(position);
-
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         // 判断是不是头部，呵呵
         if (position == 0 && position < 1) {
             viewHolder.headerView.setVisibility(View.VISIBLE);
@@ -72,10 +81,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             lp.height = RecyclerView.LayoutParams.WRAP_CONTENT;
             viewHolder.header_pic.setLayoutParams(lp);
 
-//            viewHolder.header_pic.setMaxWidth(screenWidth);
-//            viewHolder.header_pic.setMaxHeight(300);
-
-            Glide.with(context).load(headerPic).placeholder(R.drawable.home_placeholder).into(viewHolder.header_pic);
+            Glide.with(context).load(headerPic).placeholder(R.drawable.home_placeholder).fitCenter().into(viewHolder.header_pic);
             // 话题列表的Recycleview
             TopicListRecycleAdapter topicListRecycleAdapter = new TopicListRecycleAdapter(context, topic);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -90,13 +96,16 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
          * 朋友圈详情
          */
         String topicHeaderUserUrl = topicList.get(position).getHeadimgurl();
-        Glide.with(context).load(topicHeaderUserUrl).placeholder(R.drawable.user_header_image_placeholder).into(viewHolder.tiopicHeaderPic);
+        Glide.with(context).load(topicHeaderUserUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(viewHolder.tiopicHeaderPic);
+//        ImageLoader.getInstance().displayImage(topicHeaderUserUrl,viewHolder.tiopicHeaderPic);
         viewHolder.topic_username.setText(topicList.get(position).getNickname());
         viewHolder.topic_content.setText(topicList.get(position).getContent());
-        viewHolder.topic_during.setText(String.valueOf(topicList.get(position).getCreatetime()));
+
+        LogUtil.e("" + TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
+        viewHolder.topic_during.setText(TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
 
         // 图片
-        NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context,topicList.get(position).getImgList());
+        NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context, topicList.get(position).getImgList());
         viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
         viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
             @Override
@@ -124,34 +133,21 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             viewHolder.sanjiaoxing.setVisibility(View.VISIBLE);
         }
 
-
-//        String likeString = "";
-//
-//        for (int i = 0; i < topicList.get(position).getLikeList().size(); i++) {
-//            try {
-//                JSONObject jsonObject = new JSONObject(String.valueOf(topicList.get(position).getLikeList().get(i)));
-//                likeString += (jsonObject.optString("nickname") + ",");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
+        String username = String.valueOf(SharedPreferencesUtils.getParam(context, BaseInterface.USERNAME,""));
+//        for (int i = 0; i < topicList.get(position).getLikeList().size();i++){
+//            if (username.equals(topicList.get(position).getLikeList().get(i))){
+//                viewHolder.raiseBtn.setImageResource(R.drawable.com_raised);
+//            }else {
+//                viewHolder.raiseBtn.setImageResource(R.drawable.com_raise);
 //            }
 //        }
-//        likeString = likeString + topicList.get(position).getLikeList().get(topicList.get(position).getLikeList().size() - 1);
 
-//        likeString= likeString+topicList.get(position).getLikeList().get(topicList.get(position).getLikeList().size());
-//        LogUtil.e("点赞的" + likeString);
         // 点赞RecycleView
         RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(topicList.get(position).getLikeList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         viewHolder.raiseRV.setLayoutManager(layoutManager);
         viewHolder.raiseRV.setAdapter(raiseRecycleAdapter);
-
-
-//        LogUtil.e("评论的数据"+topicList.get(position).getCommentList());
-
-//        Gson gson = new Gson();
-//        CommentModel commentModel = gson.fromJson(topicList.get(position).getCommentList().toString(),CommentModel.class);
-
 
 
         // 评论 RecycleView
@@ -161,6 +157,15 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         viewHolder.commentRV.setLayoutManager(layoutManagers);
         viewHolder.commentRV.setAdapter(commentRecycleAdapter);
 
+        // 点赞按钮
+        viewHolder.raiseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position);
+
+
+            }
+        });
 
     }
 
@@ -197,15 +202,12 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             commentView = (LinearLayout) view.findViewById(R.id.commentView);
             header_pic = (ImageView) view.findViewById(R.id.community_header_pic);
             topicListRV = (RecyclerView) view.findViewById(R.id.community_topic_list);
-
             tiopicHeaderPic = (CircleImageView) view.findViewById(R.id.topic_header_pic);
             topic_username = (TextView) view.findViewById(R.id.topic_username);
             topic_content = (TextView) view.findViewById(R.id.topic_contente);
             topic_during = (TextView) view.findViewById(R.id.topic_during);
-
             raiseBtn = (ImageButton) view.findViewById(R.id.topic_raise);
             commentBtn = (ImageButton) view.findViewById(R.id.topic_comment);
-
             sanjiaoxing = (LinearLayout) view.findViewById(R.id.sanjiaoxing);
         }
     }

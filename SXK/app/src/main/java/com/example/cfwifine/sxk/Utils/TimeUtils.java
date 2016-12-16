@@ -184,7 +184,7 @@ public class TimeUtils {
      * </pre>
      * 注意SimpleDateFormat不是线程安全的
      */
-    public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.getDefault());
 
 
     /**

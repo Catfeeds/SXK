@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.CommunityNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,11 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
@@ -24,8 +23,9 @@ import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageMo
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.ComRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
-import com.example.cfwifine.sxk.Section.CommunityNC.View.Image;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -56,24 +56,11 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private ComRecycleViewAdapter mAdapter;
     private ArrayList<String> listData = new ArrayList<>();
     private int limit = 10;
-
-    private List<List<Image>> imagesList;
-
-    private String[][] images = new String[][]{
-            {"http://image.tianjimedia.com/uploadImages/2013/305/33E65M598VXC.jpg", "250", "250"}
-            , {"http://img15.3lian.com/2015/a1/11/d/121.jpg", "640", "960"}
-            , {"http://image.tianjimedia.com/uploadImages/2014/238/38/JRN83IK657XC_1000x500.jpg", "250", "250"}
-            , {"http://image.tianjimedia.com/uploadImages/2014/238/38/JRN83IK657XC_1000x500.jpg", "250", "250"}
-            , {"http://img1.3lian.com/2015/w21/11/d/81.jpg", "250", "250"}
-            , {"http://image.tianjimedia.com/uploadImages/2014/290/45/WVZ917J06LF5.jpg", "250", "250"}
-            , {"http://image84.360doc.com/DownloadImg/2015/04/0209/51898729_18.jpg", "250", "250"}
-            , {"http://image.fvideo.cn/www/uploadfilen/2009/02/26/16/img042728804.jpg", "250", "250"}
-            , {"http://img1.3lian.com/2015/a1/110/d/180.jpg", "1280", "800"}
-    };
     String picUrl = "";
     List<CommunityTopicListModel.ModuleListBean> topic;
     List<TopicListModel.TopicListBean> topicList;
     LinearLayout rightLay;
+    Dialog mloading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,14 +77,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_commun_fc, container, false);
             configurationNaviTitle();
-//            initFriendMomentView();
+            mloading = LoadingUtils.createLoadingDialog(getActivity(),"正在努力加载中...");
+            mloading.show();
             initFriendMomentHeaderPicDataSource();
-//            initFriendMomentGetTopicListDataSource();
-//            initFriendMomentItemListDataSource();
-
-
         }
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -124,6 +107,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                        classify_online_view.setVisibility(View.GONE);
 //                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        mloading.dismiss();
                     }
 
                     @Override
@@ -137,8 +121,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             initFriendMomentGetTopicListDataSource();
                         } else if (communityHeaderImageModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            mloading.dismiss();
                         } else if (communityHeaderImageModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            mloading.dismiss();
 //                            classify_online_view.setVisibility(View.GONE);
 //                            classify_nonet_view.setVisibility(View.VISIBLE);
                         }
@@ -178,6 +164,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                        classify_online_view.setVisibility(View.GONE);
 //                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        mloading.dismiss();
                     }
 
                     @Override
@@ -191,8 +178,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             initFriendMomentItemListDataSource();
                         } else if (communityTopicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            mloading.dismiss();
                         } else if (communityTopicListModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            mloading.dismiss();
 //                            classify_online_view.setVisibility(View.GONE);
 //                            classify_nonet_view.setVisibility(View.VISIBLE);
                         }
@@ -212,9 +201,9 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo",0);
-            jsonObject.put("pageSize",0);
-            jsonObject.put("order",picJson);
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", picJson);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -231,18 +220,22 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                        classify_online_view.setVisibility(View.GONE);
 //                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        mloading.dismiss();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("话题列表————————", "" + response);
+                        mloading.dismiss();
                         topicList = new ArrayList<TopicListModel.TopicListBean>();
                         Gson gson = new Gson();
-                        TopicListModel topicListModel = gson.fromJson(response,new TypeToken<TopicListModel>() {}.getType());
+                        TopicListModel topicListModel = gson.fromJson(response, new TypeToken<TopicListModel>() {
+                        }.getType());
 //                        List<TopicListModel> topicListModels =
 
                         if (topicListModel.getCode() == 1) {
                             topicList = topicListModel.getTopicList();
+
                             initFriendMomentView();
                         } else if (topicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -254,6 +247,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     }
                 });
     }
+
     /**
      * 获取话题
      */
@@ -307,7 +301,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         ImageView rightPubFriendMoment = (ImageView) view.findViewById(R.id.left_pic);
         rightPubFriendMoment.setBackgroundResource(R.drawable.com_pubfriendmoment);
 
-        rightLay = (LinearLayout)view.findViewById(R.id.navi_right_pic_click_lay);
+        rightLay = (LinearLayout) view.findViewById(R.id.navi_right_pic_click_lay);
         rightLay.setOnClickListener(this);
 
 //       initHorscrollView();
@@ -331,7 +325,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         swiperefresh.setRefreshing(false);
                         mAdapter.notifyDataSetChanged();
                     }
-                }, 3000);
+                }, 1000);
 
             }
         });
@@ -385,76 +379,96 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         hao_recycleview.loadMoreComplete();
 
                     }
-                }, 2000);
+                }, 1000);
             }
         });
 
 //        initFriendMomentData();
-        mAdapter = new ComRecycleViewAdapter(getActivity(), picUrl,topic,topicList);
+        mAdapter = new ComRecycleViewAdapter(getActivity(), picUrl, topic, topicList);
         hao_recycleview.setAdapter(mAdapter);
-
-
-        hao_recycleview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new ComRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "click-----position" + i, Toast.LENGTH_SHORT).show();
+            public void OnItemClick(View view, int topicid, int postion) {
+                // 点赞
+                initLikeData(topicid,postion);
+                mAdapter.notifyDataSetChanged();
             }
         });
-
-
-        hao_recycleview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "long click------position" + i, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
+//        hao_recycleview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(getActivity(), "click-----position" + i, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+//        hao_recycleview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(getActivity(), "long click------position" + i, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
     }
 
-//    private void initFriendMomentData() {
-//        listData.clear();
-//        for (int i = 0; i < limit; i++) {
-//            listData.add(i + "");
-//        }
-//        imagesList = new ArrayList<>();
-//        //这里单独添加一条单条的测试数据，用来测试单张的时候横竖图片的效果
-//        ArrayList<Image> singleList = new ArrayList<>();
-//        singleList.add(new Image(images[8][0], Integer.parseInt(images[8][1]), Integer.parseInt(images[8][2])));
-//        imagesList.add(singleList);
-//        //从一到9生成9条朋友圈内容，分别是1~9张图片
-//        for (int i = 0; i < 9; i++) {
-//            ArrayList<Image> itemList = new ArrayList<>();
-//            for (int j = 0; j <= i; j++) {
-//                itemList.add(new Image(images[j][0], Integer.parseInt(images[j][1]), Integer.parseInt(images[j][2])));
-//            }
-//            imagesList.add(itemList);
-//        }
-//    }
+    private void initLikeData(int topicid, final int position) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("topicid",topicid);
+            jsonObject.put("like",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.CommunityUpdateTopic)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
 
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("点赞", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            // 点赞成功 通知数组本地加一
+                            String username = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.NICKNAME,""));
+                            TopicListModel.TopicListBean.LikeListBean likeListBean = new TopicListModel.TopicListBean.LikeListBean();
+                            likeListBean.setNickname(username);
+                            topicList.get(position).getLikeList().add(likeListBean);
+                            mAdapter.notifyDataSetChanged();
 
+                        } else if (requestStatueModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "你已经点过赞了!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (requestStatueModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+    }
     ArrayList<String> topicName = null;
     ArrayList<Integer> topicModelID = null;
+
     @Override
     public void onClick(View view) {
-//        int id = view.getId();
-//        String content = (String) view.getTag();
-//        for (int i = 0; i < mImgIds.length; i++) {
-//            if (i == id) {
-//                Log.e("你点击了", "" + content);
-//            }
-//        }
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_right_pic_click_lay:
                 topicName = new ArrayList<>();
                 topicModelID = new ArrayList<>();
-                for (int i = 0;i<topic.size();i++){
-                    topicName.add(i,topic.get(i).getName());
-                    topicModelID.add(i,topic.get(i).getModuleid());
+                for (int i = 0; i < topic.size(); i++) {
+                    topicName.add(i, topic.get(i).getName());
+                    topicModelID.add(i, topic.get(i).getModuleid());
                 }
-                Intent intent = new Intent(getActivity(),CommunityPublishTopicAC.class);
-                intent.putExtra("TOPIC",topicName);
-                intent.putExtra("TOPICMODELID",topicModelID);
+                Intent intent = new Intent(getActivity(), CommunityPublishTopicAC.class);
+                intent.putExtra("TOPIC", topicName);
+                intent.putExtra("TOPICMODELID", topicModelID);
                 startActivity(intent);
                 break;
         }

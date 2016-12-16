@@ -125,7 +125,6 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
         setting_rv.setAdapter(adapter);
     }
     private void SettingJump(int position){
-//        startActivity();
         switch (position){
             case 0:
                 startActivity(AddressSettingCommomAC.class,911);

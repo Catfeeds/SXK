@@ -37,8 +37,8 @@ public class DateUtils {
 
     // 将时间戳转换为日期
     public static String getDateToString(long time){
-        Date date = new Date(time);
-        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date = new Date(time*1000l);
+        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
         return simpleDateFormat.format(date);
     }
 

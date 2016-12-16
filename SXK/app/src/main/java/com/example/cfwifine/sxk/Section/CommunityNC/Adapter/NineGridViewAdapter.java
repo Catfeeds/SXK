@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
@@ -62,7 +63,9 @@ public class NineGridViewAdapter extends NineGridAdapter {
         LogUtil.e("图片地址"+list.get(i));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+ data.get(i).getImage();
 //        Picasso.with(context).load(list.get(i).toString()).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
-        Glide.with(context).load(picUrl).fitCenter().placeholder(R.drawable.home_placeholder).into(iv);
+//        Glide.with(context).load(picUrl).fitCenter().placeholder(R.drawable.home_placeholder).into(iv);
+        Glide.with(context).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(iv);
+
         return iv;
     }
 }
