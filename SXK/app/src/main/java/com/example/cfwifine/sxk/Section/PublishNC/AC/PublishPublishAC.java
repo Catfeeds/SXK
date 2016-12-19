@@ -2,6 +2,9 @@ package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,20 +16,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.ImageBrowseActivity;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
-import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
-import com.zfdang.multiple_images_selector.SelectorSettings;
+import com.meiqia.meiqiasdk.activity.MQConversationActivity;
+import com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity;
+import com.meiqia.meiqiasdk.activity.MQPhotoPickerPreviewActivity;
+import com.meiqia.meiqiasdk.util.MQUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PublishPublishAC extends AppCompatActivity implements View.OnClickListener {
 
-    PublishHowToPupWindow publishHowToPupWindow;
     ImageView addPic,howtoAdd;
     RelativeLayout category,brand,color,material,suitpersonal,file;
     TextView cateoryTxt;
@@ -34,6 +41,9 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private ArrayList<String> mResults = new ArrayList<>();
     ArrayList<String> dataSource;
     FourGridlayout nineGridlayout;
+    LikeIOSSheetDialog sheetView;
+
+    File imageFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,35 +86,13 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         rights.setOnClickListener(this);
     }
     // TODO*********************************点击发布商品**********************************************
-    private void addPic(int s) {
-        Intent intent = new Intent(PublishPublishAC.this, ImagesSelectorActivity.class);
-        // 选择数量
-        intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 9);
-        // min size of image which will be shown; to filter tiny images (mainly icons)
-        intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 100000);
-        if (s == 9){
-            // show camera or not
-            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
-        }else {
-            // show camera or not
-            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
-        }
-        // pass current selected images as the initial value
-        intent.putStringArrayListExtra(SelectorSettings.SELECTOR_INITIAL_SELECTED_LIST, mResults);
-        // start the selector
-        startActivityForResult(intent, REQUEST_CODE);
-
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // get selected images from selector
         if(requestCode == REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
-                mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
+                mResults = MQPhotoPickerActivity.getSelectedImages(data);
                 assert mResults != null;
-
                 // show results in textview
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
@@ -116,6 +104,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             if (resultCode == -1){
                 mResults = data.getStringArrayListExtra("images");
                 Log.e("回电的数据",""+mResults);
+//                mResults = MQPhotoPickerPreviewActivity.getSelectedImages(data);
             }
         }
 
@@ -141,10 +130,32 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+    /**
+     * 打开相机
+     */
+    private String mCameraPicPath;
+    private void choosePhotoFromCamera() {
+        MQUtils.closeKeyboard(PublishPublishAC.this);
+
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(MQUtils.getPicStorePath(this));
+        file.mkdirs();
+        String path = MQUtils.getPicStorePath(this) + "/" + System.currentTimeMillis() + ".jpg";
+        File imageFile = new File(path);
+        camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+        mCameraPicPath = path;
+        try {
+            startActivityForResult(camera, MQConversationActivity.REQUEST_CODE_CAMERA);
+        } catch (Exception e) {
+            MQUtils.show(this, com.meiqia.meiqiasdk.R.string.mq_photo_not_support);
+        }
+        mResults.add(mCameraPicPath);
+    }
+
+
     // TODO***********************************点击选择照片********************************************
     private  void  initFourGridView(){
         FourGridAdapter nineGridAdapter = new FourGridViewAdapter(this,dataSource);
-
         nineGridlayout.setAdapter(nineGridAdapter);
         nineGridlayout.setOnItemClickListerner(new FourGridlayout.OnItemClickListerner() {
             @Override
@@ -154,11 +165,19 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 Log.e("dataSource",""+dataSource);
                 int s = dataSource.size()-2;
                 if (position == s){
-                    addPic(s);
+                    File file =  Environment.getExternalStorageDirectory();
+                    if (mResults.size()>=9){
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }else {
+                        addPic();
+                    }
+//                    startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
                 }else if (position == s+1){
                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
                 } else{
                     PreviewPic(position);
+//                    startActivityForResult(MQPhotoPickerPreviewActivity.newIntent(PublishPublishAC.this, mResults.size(), mResults, mResults, position, "完成", false), 777);
+
                 }
             }
         });
@@ -166,11 +185,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     }
     // TODO***********************************点击预览照片********************************************
     private void PreviewPic(int position) {
-//        Intent intent = new Intent(PublishPublishAC.this, ImageBrowseActivity.class);
-//        // 选择数量
-//        intent.putExtra("dataSource", dataSource);
-//        startActivityForResult(intent, 777);
-
         Intent intent = new Intent(PublishPublishAC.this,ImageBrowseActivity.class);
         intent.putStringArrayListExtra("images",dataSource);
         intent.putExtra("position",position);
@@ -180,8 +194,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
     // TODO*********************************点击如何传图**********************************************
     private void howToPublish() {
-        publishHowToPupWindow = new PublishHowToPupWindow(PublishPublishAC.this,itemsOnClick);
-        publishHowToPupWindow.showAtLocation(PublishPublishAC.this.findViewById(R.id.activity_publish_publish_ac), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
+        Intent intent = new Intent(this,HowToReleasePicAC.class);
+        startActivity(intent);
     }
     @Override
     public void onClick(View view) {
@@ -193,7 +207,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.publish_publish_add_pic_imageview:
-                addPic(0);
+                addPic();
                 break;
             case R.id.publish_publish_howto_pic_imageview:
                 howToPublish();
@@ -218,20 +232,24 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                     break;
         }
     }
-    //为弹出窗口实现监听类
-    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
 
-        public void onClick(View v) {
-            publishHowToPupWindow.dismiss();
-            switch (v.getId()) {
-//                case R.id.:
-//                    publishHowToPupWindow.dismiss();
-//                    break;
-                default:
-                    break;
+    private void addPic() {
+        sheetView = new LikeIOSSheetDialog.Builder(PublishPublishAC.this).setTitle("选择照片").addMenu("从手机相册选择", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sheetView.dismiss();
+                startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
             }
-        }
-    };
+        }).addMenu("拍一张", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sheetView.dismiss();
+                choosePhotoFromCamera();
+            }
+        }).create();
+        sheetView.show();
+    }
+
     private void startActivity(Class<?> cls) {
         Intent intent = new Intent(PublishPublishAC.this, cls);
         startActivity(intent);

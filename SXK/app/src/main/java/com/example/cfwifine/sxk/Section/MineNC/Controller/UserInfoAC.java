@@ -34,6 +34,7 @@ import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_phone;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Utils.DFileUtils;
 import com.example.cfwifine.sxk.Utils.FileManager;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
@@ -45,6 +46,7 @@ import com.example.cfwifine.sxk.Utils.TimeUtils;
 import com.example.cfwifine.sxk.Utils.ToastUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
+import com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -52,8 +54,6 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
 import com.qiniu.api.rs.PutPolicy;
-import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
-import com.zfdang.multiple_images_selector.SelectorSettings;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -400,17 +400,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     }
 
     private void addPic() {
-        Intent intent = new Intent(UserInfoAC.this, ImagesSelectorActivity.class);
-        // 选择数量
-        intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 1);
-        // min size of image which will be shown; to filter tiny images (mainly icons)
-        intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 10000);
-        // show camera or not
-        intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
-        // pass current selected images as the initial value
-        intent.putStringArrayListExtra(SelectorSettings.SELECTOR_INITIAL_SELECTED_LIST, mResults);
-        // start the selector
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(MQPhotoPickerActivity.newIntent(UserInfoAC.this, null, 1, mResults, "完成"), REQUEST_CODE);
 
     }
 
@@ -433,22 +423,25 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         switch (requestCode) {
             case REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
+                    mResults = MQPhotoPickerActivity.getSelectedImages(data);
                     assert mResults != null;
                     // show results in textview
                     StringBuilder sb = new StringBuilder();
                     sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                    for (String result : mResults) {
+                    for(String result : mResults) {
                         sb.append(result).append("\n");
                     }
                 }
-                header.setImageBitmap(BitmapFactory.decodeFile(new File(mResults.get(0)).getPath()));
-                Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(0).toString())), false);
-                // 上传图片
-                mloading.show();
-                String token = creatTokenLocal();
-                byte[] bytes = ImageFactory.bitmapToByteAAA(bitmap);
-                uploadImageToQiniuByChar(bytes,token);
+                if (mResults.size()!=0){
+                    header.setImageBitmap(BitmapFactory.decodeFile(new File(mResults.get(0)).getPath()));
+                    Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(0).toString())), false);
+                    // 上传图片
+                    mloading.show();
+                    String token = creatTokenLocal();
+                    byte[] bytes = ImageFactory.bitmapToByteAAA(bitmap);
+                    uploadImageToQiniuByChar(bytes,token);
+                }
+
                 break;
             case TAKE_PHOTO:
                 File temp = new File(Environment.getExternalStorageDirectory() + "/" + IMAGE_FILE_NAME);

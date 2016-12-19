@@ -22,8 +22,10 @@ import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.View.CircleImageView;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class LoginFC extends Fragment implements View.OnClickListener, PopupWindow.OnDismissListener {
@@ -34,7 +36,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     RecyclerView mRecycles;
     ArrayList<String> applicationName = new ArrayList<>();
     ArrayList<Integer> imageView = new ArrayList<>();
-    String[] applicationNames = {"我的钱包", "我的积分", "分享奖励", "我的信用", "服务中心",
+    String[] applicationNames = {"我的钱包", "我的啵值", "分享奖励", "我的信用", "服务中心",
             "我的买卖", "我的收藏", "联系客服", "设置"};
     int[] imageViews = {R.drawable.mine_vallet, R.drawable.mine_integral, R.drawable.mine_share,
             R.drawable.mine_credit, R.drawable.mine_service_center, R.drawable.mine_business,
@@ -64,12 +66,17 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login_fc, container, false);
+        initUserInfo();
         initView();
         initLoginBtn();
         initLoginOk();
 
 
         return view;
+    }
+
+    private void initUserInfo() {
+
     }
 
     // TODO**************************************初始化界面******************************************
@@ -144,7 +151,27 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     private void jump(int position) {
         // 根据position跳转
-        startActivity(UserInfoRecycleViewCommomAC.class, position);
+        if (position == 7){
+            initMeiQiaView();
+        }else {
+            startActivity(UserInfoRecycleViewCommomAC.class, position);
+        }
+
+
+    }
+
+    /**
+     * 初始化美恰服务
+     */
+    private void initMeiQiaView() {
+        HashMap<String, String> clientInfo = new HashMap<>();
+        clientInfo.put("name", "证");
+        clientInfo.put("avatar", "http://pic1a.nipic.com/2008-10-27/2008102715429376_2.jpg");
+        clientInfo.put("gender", "男");
+        clientInfo.put("tel", "1300000000");
+        clientInfo.put("技能1", "休刊");
+        Intent intent = new MQIntentBuilder(getActivity()).setClientInfo(clientInfo).build();
+        startActivity(intent);
     }
 
     @Override

@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.nostra13.universalimageloader.utils.L;
-import com.zfdang.multiple_images_selector.SelectorSettings;
-import com.zfdang.multiple_images_selector.models.ImageListContent;
 
 import java.util.ArrayList;
 import java.util.List;

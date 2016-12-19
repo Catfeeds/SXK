@@ -2,7 +2,6 @@ package com.example.cfwifine.sxk.BaseAC;
 
 import android.app.Application;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
@@ -43,8 +42,6 @@ public class MyApplication extends Application {
                 .build();
         OkHttpUtils.initClient(okHttpClient);
         // the following line is important
-        // 照片选择
-        Fresco.initialize(getApplicationContext());
 
     }
 }

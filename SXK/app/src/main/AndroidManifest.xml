@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <supports-screens
         android:anyDensity="true"
@@ -71,8 +72,9 @@
         <activity
             android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.UserPrctocalAC"
-            android:theme="@style/AppThemeHasTitle"/>
+        <activity
+            android:name=".Section.MineNC.Controller.UserPrctocalAC"
+            android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.UserInfoRecycleViewCommomAC"
             android:theme="@style/AppThemeHasTitle" />
@@ -88,8 +90,75 @@
         <activity
             android:name=".Section.HomeNC.Controller.ActivityDetailAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.CommunityNC.Controller.CommunityPublishTopicAC"
+        <activity
+            android:name=".Section.CommunityNC.Controller.CommunityPublishTopicAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.AC.HowToReleasePicAC"
             android:theme="@style/AppThemeHasTitle"></activity>
+
     </application>
+
+
+    // 集成美恰相关界面
+    <!--聊天界面-->
+    <activity
+        android:name="com.meiqia.meiqiasdk.activity.MQConversationActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateHidden|adjustResize" />
+
+    <!--图片查看界面-->
+    <activity
+        android:name="com.meiqia.meiqiasdk.activity.MQPhotoPreviewActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateAlwaysHidden" />
+
+    <!--图片选择界面-->
+    <activity
+        android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateAlwaysHidden" />
+    <!--图片选择预览界面-->
+    <activity
+        android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerPreviewActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateAlwaysHidden" />
+    <!--WebView 界面-->
+    <activity
+        android:name=".activity.MQWebViewActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateHidden|adjustResize" />
+    <!--询前表单-->
+    <activity
+        android:name=".activity.MQInquiryFormActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateHidden|adjustResize" />
+
+    <activity
+        android:name=".activity.MQCollectInfoActivity"
+        android:configChanges="keyboardHidden|orientation"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/MQTheme"
+        android:windowSoftInputMode="stateHidden|adjustResize" />
+
+    <service android:name="com.meiqia.core.MeiQiaService" />
 
 </manifest>

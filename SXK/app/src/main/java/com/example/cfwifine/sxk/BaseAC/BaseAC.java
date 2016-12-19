@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Utils.NetReceiver;
+import com.meiqia.core.callback.OnInitCallback;
+import com.meiqia.meiqiasdk.util.MQConfig;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -35,11 +38,27 @@ public class BaseAC extends AppCompatActivity {
         initImageLoader();
         // 配置导航头
 //        translucentStatusBar();
-
-
+        // 初始化美恰
+        inITMeIQia();
     }
 
-
+    private void inITMeIQia() {
+        MQConfig.init(this, "8a2358a00969823007f4ea328ad95bfa", new OnInitCallback() {
+            @Override
+            public void onSuccess(String clientId) {
+                Toast.makeText(BaseAC.this, "初始化客服成功！", Toast.LENGTH_SHORT).show();
+                MQConfig.isShowClientAvatar = true;
+                MQConfig.ui.rightChatBubbleColorResId = R.color.login_turquoise;
+                MQConfig.ui.leftChatBubbleColorResId = R.color.grrray;
+                MQConfig.ui.leftChatTextColorResId = R.color.black;
+                MQConfig.ui.rightChatTextColorResId = R.color.white;
+            }
+            @Override
+            public void onFailure(int code, String message) {
+                Toast.makeText(BaseAC.this, "初始化客服失败！", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private  void translucentStatusBar() {

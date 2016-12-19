@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.PublishNC.View.photoview.PhotoViewAttacher;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
-import com.zfdang.multiple_images_selector.SelectorSettings;
-import com.zfdang.multiple_images_selector.models.ImageListContent;
 
 import java.io.File;
 import java.util.ArrayList;

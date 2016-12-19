@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.IntegerRes;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.PublishFriendMomentRecycleAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
@@ -39,14 +41,15 @@ import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.meiqia.meiqiasdk.activity.MQConversationActivity;
+import com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity;
+import com.meiqia.meiqiasdk.util.MQUtils;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
 import com.qiniu.api.rs.PutPolicy;
-import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
-import com.zfdang.multiple_images_selector.SelectorSettings;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -90,7 +93,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     ArrayList<byte[]> uploadDatasource = null;
     int modelid = -1;
     Dialog mloading;
-
+    LikeIOSSheetDialog sheetView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,13 +175,12 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 // 点击发表朋友圈
                 mloading = LoadingUtils.createLoadingDialog(this,"正在努力发布中...");
                 mloading.show();
-                s= 0;
                 LogUtil.e("number的值"+number);
                 LogUtil.e("uploadData"+uploadDatasource);
                 releaseTopic();
                 break;
             case R.id.friend_publish_pic:
-                addPic(0);
+                addPic();
                 break;
 
         }
@@ -334,38 +336,55 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
 
     // TODO*********************************点击发布商品**********************************************
-    private void addPic(int s) {
-        Intent intent = new Intent(CommunityPublishTopicAC.this, ImagesSelectorActivity.class);
-        // 选择数量
-        intent.putExtra(SelectorSettings.SELECTOR_MAX_IMAGE_NUMBER, 9);
-        // min size of image which will be shown; to filter tiny images (mainly icons)
-        intent.putExtra(SelectorSettings.SELECTOR_MIN_IMAGE_SIZE, 10000000);
-        if (s == 9) {
-            // show camera or not
-            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, false);
-        } else {
-            // show camera or not
-            intent.putExtra(SelectorSettings.SELECTOR_SHOW_CAMERA, true);
-        }
-        // pass current selected images as the initial value
-        intent.putStringArrayListExtra(SelectorSettings.SELECTOR_INITIAL_SELECTED_LIST, mResults);
-        // start the selector
-        startActivityForResult(intent, REQUEST_CODE);
-
+    private void addPic() {
+        sheetView = new LikeIOSSheetDialog.Builder(CommunityPublishTopicAC.this).setTitle("选择照片").addMenu("从手机相册选择", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sheetView.dismiss();
+                startActivityForResult(MQPhotoPickerActivity.newIntent(CommunityPublishTopicAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+            }
+        }).addMenu("拍一张", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sheetView.dismiss();
+                choosePhotoFromCamera();
+            }
+        }).create();
+        sheetView.show();
     }
+    /**
+     * 打开相机
+     */
+    private String mCameraPicPath;
+    private void choosePhotoFromCamera() {
+        MQUtils.closeKeyboard(CommunityPublishTopicAC.this);
 
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(MQUtils.getPicStorePath(this));
+        file.mkdirs();
+        String path = MQUtils.getPicStorePath(this) + "/" + System.currentTimeMillis() + ".jpg";
+        File imageFile = new File(path);
+        camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+        mCameraPicPath = path;
+        try {
+            startActivityForResult(camera, MQConversationActivity.REQUEST_CODE_CAMERA);
+        } catch (Exception e) {
+            MQUtils.show(this, com.meiqia.meiqiasdk.R.string.mq_photo_not_support);
+        }
+        mResults.add(mCameraPicPath);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // get selected images from selector
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
+                mResults = MQPhotoPickerActivity.getSelectedImages(data);
                 assert mResults != null;
                 // show results in textview
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                for (String result : mResults) {
+                for(String result : mResults) {
                     sb.append(result).append("\n");
                 }
             }
@@ -429,7 +448,11 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 Log.e("dataSource", "" + dataSource);
                 int s = dataSource.size() - 2;
                 if (position == s) {
-                    addPic(s);
+                    if (mResults.size()>=9){
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }else {
+                        addPic();
+                    }
                 } else if (position == s + 1) {
                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
                 } else {
@@ -442,11 +465,6 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
     // TODO***********************************点击预览照片********************************************
     private void PreviewPic(int position) {
-//        Intent intent = new Intent(PublishPublishAC.this, ImageBrowseActivity.class);
-//        // 选择数量
-//        intent.putExtra("dataSource", dataSource);
-//        startActivityForResult(intent, 777);
-
         Intent intent = new Intent(CommunityPublishTopicAC.this, ImageBrowseActivity.class);
         intent.putStringArrayListExtra("images", dataSource);
         intent.putExtra("position", position);

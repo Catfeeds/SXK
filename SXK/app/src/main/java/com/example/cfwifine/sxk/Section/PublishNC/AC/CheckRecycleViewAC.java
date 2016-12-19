@@ -1,62 +1,144 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
+import android.app.Dialog;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.SecondCateModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.CheckRecycleViewAdapter;
-import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
-import com.example.cfwifine.sxk.Utils.ToastUtil;
-import com.example.cfwifine.sxk.Utils.XToast;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 
 // 重用上一个界面的view
 public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClickListener {
     RecyclerView recyclerView;
     private ArrayList<TestModel> listData = new ArrayList<>();
-    TextView title,right;
-    String position;
+    private List<SecondCateModel.CategoryListBean> dataSource = new ArrayList<>();
+    TextView title, right;
+    int position;
     String value;
+    Dialog mloading;
+    private LinearLayout navi_back;
+    private TextView navi_title;
+    private TextView navi_right;
+    private LinearLayout navi_right_lays;
+    private RecyclerView check_list;
+    private LinearLayout classify_online_view;
+    private TextView classify_reonline_text;
+    private LinearLayout classify_nonet_view;
+    private LinearLayout activity_publish_cateory_ac;
+    String tit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish_cateory_ac);
-        position = getIntent().getStringExtra("POSITION");
-        Log.e("position",""+position);
-        configurationNaviTitle();
+        setContentView(R.layout.activity_check_recycle_view_ac);
+        initView();
+        mloading = LoadingUtils.createLoadingDialog(this, "正在加载中...");
+        position = getIntent().getIntExtra("POSITION", -1);
+        String title = getIntent().getStringExtra("TITLE");
+        Log.e("传递的parentid", "" + position);
+        configurationNaviTitle(title);
+        initData(position);
+    }
 
-
-
-//        initData();
-        for (int i = 0;i<10;i++){
-            TestModel testModel = new TestModel("测试"+i,false);
-            listData.add(testModel);
+    private void initData(final int value) {
+        mloading.show();
+        JSONObject order = new JSONObject();
+        try {
+            order.put("sort", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+            jsonObject.put("parentid", value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ClassfiyGoodsCateify)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(CheckRecycleViewAC.this.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        classify_online_view.setVisibility(View.GONE);
+                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        mloading.dismiss();
+                    }
 
-        initRecycleView();
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("二级分类", "" + response);
+                        mloading.dismiss();
+                        Gson gson = new Gson();
+                        SecondCateModel cateModel = gson.fromJson(response, SecondCateModel.class);
+                        if (cateModel.getCode() == 1) {
+                            classify_online_view.setVisibility(View.VISIBLE);
+                            classify_nonet_view.setVisibility(View.GONE);
+                            if (cateModel.getTotal() != 0) {
+                                for (int i = 0; i < cateModel.getTotal(); i++) {
+                                    TestModel testModel = new TestModel("测试" + i, false);
+                                    listData.add(testModel);
+                                }
+                                dataSource = cateModel.getCategoryList();
+                                initRecycleView();
+                            }
 
+
+                        } else if (cateModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(CheckRecycleViewAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
+                        } else if (cateModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(CheckRecycleViewAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            classify_online_view.setVisibility(View.GONE);
+                            classify_nonet_view.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
 
 
     }
+
     // TODO*********************************配置导航头**********************************************
-    private void configurationNaviTitle() {
-        LinearLayout back = (LinearLayout)findViewById(R.id.navi_back);
+    private void configurationNaviTitle(String title) {
+        LinearLayout back = (LinearLayout) findViewById(R.id.navi_back);
         back.setOnClickListener(this);
-        title = (TextView)findViewById(R.id.navi_title);
-        title.setText(position);
-        right = (TextView)findViewById(R.id.navi_right);
+        this.title = (TextView) findViewById(R.id.navi_title);
+        this.title.setText(title);
+        right = (TextView) findViewById(R.id.navi_right);
         right.setText("完成");
         right.setOnClickListener(this);
 
@@ -65,37 +147,33 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
 
 
     private void initRecycleView() {
-        Log.e("",""+listData);
-        recyclerView = (RecyclerView)findViewById(R.id.cateory_list);
+        Log.e("", "" + listData);
+        recyclerView = (RecyclerView) findViewById(R.id.check_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        final CheckRecycleViewAdapter checkRecycleViewAdapter = new CheckRecycleViewAdapter(listData);
+        CheckRecycleViewAdapter checkRecycleViewAdapter = new CheckRecycleViewAdapter(listData, dataSource);
         recyclerView.setAdapter(checkRecycleViewAdapter);
-        recyclerView.addOnItemTouchListener(new RecycleViewListener(recyclerView, new RecycleViewListener.OnItemClickListener() {
+        checkRecycleViewAdapter.setOnItemClickListener(new CheckRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Log.e("点击了一个",""+listData.get(position));
-                value = listData.get(position).getText();
-
-
+            public void OnItemClick(View view, int position, String tits) {
+                LogUtil.e("点击了" + tits);
+                tit = tits;
             }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        }));
+        });
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_back:
                 finish();
                 break;
             case R.id.navi_right:
                 sendValue();
+                break;
+            case R.id.classify_reonline_text:
+                initData(position);
                 break;
             default:
                 break;
@@ -103,32 +181,24 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     }
 
     private void sendValue() {
-//        Intent intent = new Intent();
-//        intent.putExtra("result",value);
-//        setResult(1001,intent);
-//        finish();
-        Log.e("value",""+value);
-        if (value!=null) {
-            Log.e("穿值", "" + value);
-            SharedPreferencesUtils.setParam(this, "RESULT", value);
+        if (tit != null) {
+            SharedPreferencesUtils.setParam(this, "RESULT", tit);
             finish();
-        }else {
-//            XToast.show(CheckRecycleViewAC.this,"您还没有选择哦！");
+        } else {
             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-//            SnackbarUtils.showIndefiniteSnackbar(getWindow().getDecorView(), "您还没有选择哦!", 5000, Color.WHITE, Color.parseColor("#16a6ae"), "OK", Color.WHITE, new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    SnackbarUtils.dismissSnackbar();
-//                }
-//            });
-//            SnackbarUtils.showLongSnackbar(getWindow().getDecorView(), "short snackbar", Color.WHITE, Color.BLUE,
-//                    "Short", Color.YELLOW, new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            XToast.show(CheckRecycleViewAC.this,"您还没有选择哦！");
-//                        }
-//                    });
         }
+    }
 
+    private void initView() {
+        navi_back = (LinearLayout) findViewById(R.id.navi_back);
+        navi_title = (TextView) findViewById(R.id.navi_title);
+        navi_right = (TextView) findViewById(R.id.navi_right);
+        navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
+        check_list = (RecyclerView) findViewById(R.id.check_list);
+        classify_online_view = (LinearLayout) findViewById(R.id.classify_online_view);
+        classify_reonline_text = (TextView) findViewById(R.id.classify_reonline_text);
+        classify_reonline_text.setOnClickListener(this);
+        classify_nonet_view = (LinearLayout) findViewById(R.id.classify_nonet_view);
+        activity_publish_cateory_ac = (LinearLayout) findViewById(R.id.activity_publish_cateory_ac);
     }
 }
