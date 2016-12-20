@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,10 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.ChengSeRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.SecondCateModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
-import com.example.cfwifine.sxk.Section.PublishNC.View.CheckRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CheckRecycleViewAdapter;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -51,18 +53,70 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private LinearLayout classify_nonet_view;
     private LinearLayout activity_publish_cateory_ac;
     String tit;
-
+    int s=0;
+    String chengse = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_recycle_view_ac);
-        initView();
         mloading = LoadingUtils.createLoadingDialog(this, "正在加载中...");
-        position = getIntent().getIntExtra("POSITION", -1);
-        String title = getIntent().getStringExtra("TITLE");
-        Log.e("传递的parentid", "" + position);
-        configurationNaviTitle(title);
-        initData(position);
+        initView();
+
+        s = getIntent().getIntExtra("CHENGSE", 0);
+        if (s == 3) {
+            // s == 3 代表是成色页面
+            configurationNaviTitle("成色");
+            initChengSeData(3);
+
+        } else if (s == 4) {
+            // s == 4代表人群
+            configurationNaviTitle("适用人群");
+            initChengSeData(4);
+        } else {
+                position = getIntent().getIntExtra("POSITION", -1);
+                String title = getIntent().getStringExtra("TITLE");
+                Log.e("传递的parentid", "" + position);
+                configurationNaviTitle(title);
+                initData(position);
+            }
+        }
+
+
+
+    String[] list;
+    private void initChengSeData(int s) {
+        if (s == 3) {
+            list = new String[]{"99成新（未使用）", "95新", "9成新", "85成新", "8成新"};
+        }else {
+            list = new String[]{"所有人", "男士", "女士"};
+        }
+        for (int i = 0; i < list.length; i++) {
+            TestModel testModel = new TestModel(list[i], false);
+            listData.add(testModel);
+        }
+        initChengSeRecycleView();
+    }
+
+    private void initChengSeRecycleView() {
+        recyclerView = (RecyclerView) findViewById(R.id.check_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        ChengSeRecycleViewAdapter chengSeRecycleViewAdapter = new ChengSeRecycleViewAdapter(listData);
+        recyclerView.setAdapter(chengSeRecycleViewAdapter);
+        chengSeRecycleViewAdapter.setOnItemClickListener(new ChengSeRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position, String title) {
+                LogUtil.e("成色为" + title);
+                chengse = title;
+            }
+        });
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void initData(final int value) {
@@ -161,6 +215,12 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                 tit = tits;
             }
         });
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -170,7 +230,19 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.navi_right:
-                sendValue();
+                if (s == 3) {
+                    Intent intent = new Intent();
+                    intent.putExtra("CHENGSE",chengse);
+                    setResult(667,intent);
+                    finish();
+                } else if (s == 4) {
+                    Intent intent = new Intent();
+                    intent.putExtra("CHENGSE",chengse);
+                    setResult(668,intent);
+                    finish();
+                } else {
+                    sendValue();
+                }
                 break;
             case R.id.classify_reonline_text:
                 initData(position);

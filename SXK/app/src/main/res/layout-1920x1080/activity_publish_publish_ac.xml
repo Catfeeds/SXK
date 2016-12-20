@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <EditText
+                    android:id="@+id/publish_input_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
@@ -69,6 +70,7 @@
                         android:background="@drawable/publish_publish_howtophoto" />
 
                     <ImageView
+                        android:id="@+id/publish_publish_max_nine_pic"
                         android:layout_width="111dp"
                         android:layout_height="111dp"
                         android:layout_marginRight="12dp"
@@ -82,39 +84,45 @@
                     android:background="#f7f7f7"/>
 
                     <EditText
+                        android:id="@+id/publish_name_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:text="宝贝名称（必填）"
+                        android:hint="宝贝名称（必填）"
+                        android:textColorHint="#a1a1a1"
                         android:background="@null"
-                        android:textColor="#a1a1a1"
+                        android:textColor="@color/black"
                         android:textSize="14sp"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:background="#dcdcdc"/>
                 <EditText
+                    android:id="@+id/publish_price_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:text="专柜价（选填）"
+                    android:hint="专柜价（选填）"
+                    android:textColorHint="#a1a1a1"
                     android:background="@null"
-                    android:textColor="#a1a1a1"
+                    android:textColor="@color/black"
                     android:textSize="14sp"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#dcdcdc"/>
                 <EditText
+                    android:id="@+id/publish_keyword_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:text="关键字描述（选填）"
+                    android:hint="关键字描述（选填）"
+                    android:textColorHint="#a1a1a1"
                     android:background="@null"
-                    android:textColor="#a1a1a1"
+                    android:textColor="@color/black"
                     android:textSize="14sp"/>
 
                 <View
@@ -149,8 +157,9 @@
                         android:id="@+id/cateory_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginRight="10dp"
                         android:text="（必选）"
+                        android:paddingRight="5dp"
                         android:textSize="14sp"
                         android:textColor="#a1a1a1"
                         android:gravity="center_vertical"
@@ -186,6 +195,7 @@
                         android:layout_alignParentEnd="true" />
 
                     <TextView
+                        android:id="@+id/publish_brand_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="（必选）  "
@@ -215,11 +225,13 @@
                         android:textColor="@color/navi_title_color"/>
 
                     <EditText
+                        android:id="@+id/publish_color_edittext"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:hint="（必填)    "
                         android:background="@null"
                         android:textSize="14sp"
+                        android:textColor="@color/black"
                         android:textColorHint="#a1a1a1"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
@@ -255,6 +267,7 @@
                         android:layout_alignParentEnd="true" />
 
                     <TextView
+                        android:id="@+id/publish_news_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="（必选）  "
@@ -293,6 +306,7 @@
                         android:layout_alignParentEnd="true" />
 
                     <TextView
+                        android:id="@+id/publish_people_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="（必选）  "
@@ -369,6 +383,7 @@
                         android:textAlignment="center"
                         android:text="已阅读并同意BOOBE的"/>
                     <TextView
+                        android:id="@+id/publish_user_protocal_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
@@ -379,6 +394,7 @@
 
 
                 <Button
+                    android:id="@+id/publish_release_btn"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_marginTop="25dp"

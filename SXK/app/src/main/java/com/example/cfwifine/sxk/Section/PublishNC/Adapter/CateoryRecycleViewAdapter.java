@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.PublishNC.View;
+package com.example.cfwifine.sxk.Section.PublishNC.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CateoryRecycleViewAdapter extends RecyclerView.Adapter<CateoryRecycleViewAdapter.ViewHolder> {

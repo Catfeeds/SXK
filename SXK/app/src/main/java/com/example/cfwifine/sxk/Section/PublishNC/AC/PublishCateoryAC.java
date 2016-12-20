@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
-import com.example.cfwifine.sxk.Section.PublishNC.View.CateoryRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CateoryRecycleViewAdapter;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;

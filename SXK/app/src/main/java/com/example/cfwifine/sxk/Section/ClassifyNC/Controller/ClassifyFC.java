@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyBrandListAdapter;
@@ -26,8 +25,8 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
-import com.example.cfwifine.sxk.Section.PublishNC.View.DividerItemDecoration;
-import com.example.cfwifine.sxk.Section.PublishNC.View.HeaderRecyclerAndFooterWrapperAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.DividerItemDecoration;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.HeaderRecyclerAndFooterWrapperAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -321,10 +320,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         //使用indexBar
         mTvSideBarHint = (TextView) view.findViewById(R.id.tvSideBarHint);//HintTextView
         mIndexBar = (IndexBar) view.findViewById(R.id.indexBar);//IndexBar
-
-//        initDatas(getResources().getStringArray(R.array.provinces));
-//        initBrandList();
-//        initBrandHotList();
         initDatas(brandListArray);
     }
 
@@ -400,7 +395,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("品牌", "" + response);
+                        Log.e("所有的品牌", "" + response);
                         Gson gson = new Gson();
                         ClassfiyBrandModel brandListData = gson.fromJson(response, ClassfiyBrandModel.class);
                         if (brandListData.getCode() == 1) {

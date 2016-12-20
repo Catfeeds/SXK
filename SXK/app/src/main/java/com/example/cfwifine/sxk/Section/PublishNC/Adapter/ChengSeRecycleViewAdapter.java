@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.PublishNC.View;
+package com.example.cfwifine.sxk.Section.PublishNC.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.SecondCateModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -20,23 +19,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleViewAdapter.ViewHolder> {
+public class ChengSeRecycleViewAdapter extends RecyclerView.Adapter<ChengSeRecycleViewAdapter.ViewHolder> {
     public ArrayList<TestModel> datas = null;
-    public List<SecondCateModel.CategoryListBean> datasource = null;
-
-    private CheckRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+    private ChengSeRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int position,String title);
+        void OnItemClick(View view, int position, String title);
     }
 
-    public void setOnItemClickListener(CheckRecycleViewAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(ChengSeRecycleViewAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public CheckRecycleViewAdapter(ArrayList<TestModel> datas, List<SecondCateModel.CategoryListBean> dataSource) {
+    public ChengSeRecycleViewAdapter(ArrayList<TestModel> datas) {
         this.datas = datas;
-        this.datasource = dataSource;
     }
 
     //创建新View，被LayoutManager所调用
@@ -51,8 +47,7 @@ public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleVi
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        viewHolder.mTextView.setText(datasource.get(position).getName());
-        LogUtil.e("输出"+datasource.get(position).getName());
+        viewHolder.mTextView.setText(datas.get(position).getText());
         // 选中狂
         boolean state = datas.get(position).getState();
         if (state == true){
@@ -61,23 +56,23 @@ public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleVi
             viewHolder.check_pic.setImageResource(R.drawable.check_circle);
         }
 
-        viewHolder.checkCircle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("选中了",""+datas.get(position));
-            }
-        });
-        viewHolder.check_pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int i = 0; i<datas.size();i++){
-                    datas.get(i).setState(false);
-                }
-                datas.get(position).setState(true);
-                notifyDataSetChanged();
-
-            }
-        });
+//        viewHolder.checkCircle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.e("选中了",""+datas.get(position));
+//            }
+//        });
+//        viewHolder.check_pic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                for (int i = 0; i<datas.size();i++){
+//                    datas.get(i).setState(false);
+//                }
+//                datas.get(position).setState(true);
+//                notifyDataSetChanged();
+//
+//            }
+//        });
 
         if (mOnItemClickListener != null) {
             viewHolder.content_layout.setOnClickListener(new View.OnClickListener() {
@@ -88,11 +83,16 @@ public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleVi
                     }
                     datas.get(position).setState(true);
                     notifyDataSetChanged();
-                    mOnItemClickListener.OnItemClick(view,-1,datasource.get(position).getName());
+                    mOnItemClickListener.OnItemClick(view,-1,datas.get(position).getText());
                 }
             });
         }
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
 
 
     }
@@ -100,7 +100,7 @@ public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleVi
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return datasource.size();
+        return datas.size();
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素

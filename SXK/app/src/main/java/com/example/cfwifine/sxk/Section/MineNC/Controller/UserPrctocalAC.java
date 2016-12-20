@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
     private TextView navi_title;
     private TextView navi_right;
     private LinearLayout navi_right_lays;
-    private TextView text;
+    private WebView text;
     private LinearLayout activity_user_prctocal_ac;
     Dialog dialog;
     UserProtocalModel userProtocalModel;
@@ -56,7 +59,7 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
         navi_title = (TextView) findViewById(R.id.navi_title);
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
-        text = (TextView) findViewById(R.id.text);
+        text = (WebView) findViewById(R.id.text);
         activity_user_prctocal_ac = (LinearLayout) findViewById(R.id.activity_user_prctocal_ac);
         initUserAdviceView();
     }
@@ -101,10 +104,28 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
                 });
 
     }
-
+    final String mimeType = "text/html";
+    final String encoding = "utf-8";
+    @SuppressLint("NewApi")
     private void initContent() {
         navi_title.setText("用户协议");
-        text.setText(Html.fromHtml(userProtocalModel.getSetup().getContent().toString()));
+        WebSettings webSettings = text.getSettings();
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        try {
+            String data = userProtocalModel.getSetup().getContent().toString();
+            text.loadDataWithBaseURL("about：blank", data, mimeType,
+                    encoding, "");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+
     }
 
 
