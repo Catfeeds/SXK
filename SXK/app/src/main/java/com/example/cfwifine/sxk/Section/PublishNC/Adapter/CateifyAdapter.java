@@ -29,7 +29,7 @@ public class CateifyAdapter extends RecyclerView.Adapter<CateifyAdapter.ViewHold
     private CateifyAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, String name);
+        void OnItemClick(View view, String name, int brandid);
     }
     public void setOnItemClickListener(CateifyAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -67,7 +67,7 @@ public class CateifyAdapter extends RecyclerView.Adapter<CateifyAdapter.ViewHold
             holder.frameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getName());
+                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getName(),dataSource.get(position).getBrandid());
                 }
             });
         }

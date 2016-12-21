@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,8 +54,11 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private LinearLayout classify_nonet_view;
     private LinearLayout activity_publish_cateory_ac;
     String tit;
-    int s=0;
+    int s = 0;
     String chengse = "";
+    private ArrayList<String> attachmentdata;
+    private ArrayList<String> baobeifujianData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,29 +76,52 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             // s == 4代表人群
             configurationNaviTitle("适用人群");
             initChengSeData(4);
-        } else {
-                position = getIntent().getIntExtra("POSITION", -1);
-                String title = getIntent().getStringExtra("TITLE");
-                Log.e("传递的parentid", "" + position);
-                configurationNaviTitle(title);
-                initData(position);
-            }
-        }
+        } else if (s == 5) {
+            // 标题，数据，和附件内容
+            baobeifujianData = getIntent().getStringArrayListExtra("BAOBEIFUJIAN");
+            SharedPreferencesUtils.setParam(this,"BAOBEIFUJIAN",baobeifujianData.toString());
 
+            attachmentdata = getIntent().getStringArrayListExtra("ATTACHMENT");
+            String title = getIntent().getStringExtra("TITLESS");
+            configurationNaviTitle(title);
+            initChengSeData(5);
+        } else {
+            position = getIntent().getIntExtra("POSITION", -1);
+            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", position);
+            String title = getIntent().getStringExtra("TITLE");
+            Log.e("传递的parentid", "" + position);
+            configurationNaviTitle(title);
+            initData(position);
+
+        }
+    }
 
 
     String[] list;
+
     private void initChengSeData(int s) {
         if (s == 3) {
             list = new String[]{"99成新（未使用）", "95新", "9成新", "85成新", "8成新"};
-        }else {
+            for (int i = 0; i < list.length; i++) {
+                TestModel testModel = new TestModel(list[i], false);
+                listData.add(testModel);
+            }
+            initChengSeRecycleView();
+        } else if (s == 5) {
+            for (int i = 0; i < attachmentdata.size(); i++) {
+                TestModel testModel = new TestModel(attachmentdata.get(i), false);
+                listData.add(testModel);
+            }
+            initChengSeRecycleView();
+
+        } else if (s == 4) {
             list = new String[]{"所有人", "男士", "女士"};
+            for (int i = 0; i < list.length; i++) {
+                TestModel testModel = new TestModel(list[i], false);
+                listData.add(testModel);
+            }
+            initChengSeRecycleView();
         }
-        for (int i = 0; i < list.length; i++) {
-            TestModel testModel = new TestModel(list[i], false);
-            listData.add(testModel);
-        }
-        initChengSeRecycleView();
     }
 
     private void initChengSeRecycleView() {
@@ -232,14 +259,21 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             case R.id.navi_right:
                 if (s == 3) {
                     Intent intent = new Intent();
-                    intent.putExtra("CHENGSE",chengse);
-                    setResult(667,intent);
+                    intent.putExtra("CHENGSE", chengse);
+                    setResult(667, intent);
                     finish();
                 } else if (s == 4) {
                     Intent intent = new Intent();
-                    intent.putExtra("CHENGSE",chengse);
-                    setResult(668,intent);
+                    intent.putExtra("CHENGSE", chengse);
+                    setResult(668, intent);
                     finish();
+                } else if (s == 5) {
+                    if (chengse.isEmpty()){
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }else {
+                        SharedPreferencesUtils.setParam(this,"FUJIAN",chengse);
+                        finish();
+                    }
                 } else {
                     sendValue();
                 }

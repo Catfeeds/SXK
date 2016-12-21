@@ -6,31 +6,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class AttachmentBottomAdapter extends RecyclerView.Adapter<AttachmentBottomAdapter.ViewHolder> {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<String> dataSource;
+    private ArrayList<TestModel> dataSource;
 
     private AttachmentBottomAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, List<String> name);
+        void OnItemClick(View view, ArrayList<TestModel> check);
     }
     public void setOnItemClickListener(AttachmentBottomAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public AttachmentBottomAdapter(Context mContext, List<String> dataSource) {
+    public AttachmentBottomAdapter(Context mContext, ArrayList<TestModel> dataSource) {
         this.mContext = mContext;
         this.dataSource = dataSource;
         mInflater = LayoutInflater.from(mContext);
@@ -44,22 +47,26 @@ public class AttachmentBottomAdapter extends RecyclerView.Adapter<AttachmentBott
 
     @Override
     public void onBindViewHolder(final AttachmentBottomAdapter.ViewHolder holder, final int position) {
-        holder.tvCity.setText(dataSource.get(position).toString());
-        holder.check.setOnClickListener(new View.OnClickListener() {
+        holder.tvCity.setText(dataSource.get(position).getText());
+        // 选中狂
+        boolean state = dataSource.get(position).getState();
+        if (state == true) {
+            holder.check_pic.setImageResource(R.drawable.check_ok);
+        } else {
+            holder.check_pic.setImageResource(R.drawable.check_circle);
+        }
+        holder.check_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!dataSource.get(position).getState()){
+                    dataSource.get(position).setState(true);
+                }else {
+                    dataSource.get(position).setState(false);
+                }
+                notifyDataSetChanged();
+                mOnItemClickListener.OnItemClick(view,dataSource);
             }
         });
-
-        if (mOnItemClickListener != null){
-            holder.check.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-        }
     }
 
     @Override
@@ -70,12 +77,12 @@ public class AttachmentBottomAdapter extends RecyclerView.Adapter<AttachmentBott
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCity;
         RelativeLayout frameLayout;
-        ImageButton check;
+        ImageView check_pic;
         public ViewHolder(View itemView) {
             super(itemView);
             tvCity = (TextView) itemView.findViewById(R.id.attach_bottom_text);
             frameLayout = (RelativeLayout) itemView.findViewById(R.id.attach_cell);
-            check = (ImageButton)itemView.findViewById(R.id.attach_circle);
+            check_pic = (ImageView)itemView.findViewById(R.id.attach_circle);
         }
     }
 }

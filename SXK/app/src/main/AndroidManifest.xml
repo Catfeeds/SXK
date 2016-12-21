@@ -153,8 +153,10 @@
         <activity
             android:name=".Section.PublishNC.AC.HowToReleasePicAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.AC.AttachMentAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
+        <activity
+            android:name=".Section.PublishNC.AC.AttachMentAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.CuringAC.CuringAC"></activity>
     </application>
 
 </manifest>

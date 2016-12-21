@@ -16,8 +16,6 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CateifyAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
-import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CityAdapter;
-import com.example.cfwifine.sxk.Section.PublishNC.Adapter.DividerItemDecoration;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.HeaderRecyclerAndFooterWrapperAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.ViewHolder;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -96,8 +94,9 @@ public class PublishBrandAC extends AppCompatActivity implements View.OnClickLis
 //        mRv.addItemDecoration(new DividerItemDecoration(PublishBrandAC.this, DividerItemDecoration.VERTICAL_LIST));
         mAdapter.setOnItemClickListener(new CateifyAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, String name) {
+            public void OnItemClick(View view, String name, int brandid) {
                 LogUtil.e("点击了"+name);
+                SharedPreferencesUtils.setParam(PublishBrandAC.this,"BRANDID",brandid);
                 Intent brand = new Intent();
                 brand.putExtra("BRAND",name);
                 PublishBrandAC.this.setResult(666,brand);

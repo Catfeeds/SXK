@@ -29,7 +29,7 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     private AttachmentTopAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, List<String> name);
+        void OnItemClick(View view, List<String> name, String attributeName);
     }
     public void setOnItemClickListener(AttachmentTopAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -49,16 +49,12 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
 
     @Override
     public void onBindViewHolder(final AttachmentTopAdapter.ViewHolder holder, final int position) {
-        if (position != dataSource.size()-1){
-            holder.tvCity.setText(dataSource.get(position).getAttributeName());
-        }else {
-            holder.itemView.setVisibility(View.GONE);
-        }
+        holder.tvCity.setText(dataSource.get(position).getAttributeName());
         if (mOnItemClickListener != null){
             holder.frameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getAttributeValueList());
+                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getAttributeValueList(),dataSource.get(position).getAttributeName());
                 }
             });
         }

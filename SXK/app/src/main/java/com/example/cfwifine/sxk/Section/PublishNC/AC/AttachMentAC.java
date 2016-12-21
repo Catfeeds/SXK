@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,10 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AttachmentBottomAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AttachmentTopAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -45,6 +46,9 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private RecyclerView baobeifujian_rv;
     private LinearLayout activity_attach_ment_ac;
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSource;
+    private ArrayList<TestModel> listData;
+    private ArrayList<String> StringList;
+    private ArrayList<String> nameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,35 +71,27 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
         activity_attach_ment_ac = (LinearLayout) findViewById(R.id.activity_attach_ment_ac);
 
-
-        initData(3);
+        int cateoryid = getIntent().getIntExtra("CATEID",0);
+        LogUtil.e("测试id"+cateoryid);
+        initData(cateoryid);
     }
 
     private void initData(final int parentid) {
-
-//        {
-//            "pageNo": 0,
-//                "pageSize": 0,
-//                "order": {
-//            "sort": 1
-//        },
-//            "parentid": 0
-//        }
         // 通过传过来的parentid来展示页面
 
         JSONObject order = new JSONObject();
         try {
-            order.put("sort",1);
+            order.put("sort", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo",0);
-            jsonObject.put("pageSize",0);
-            jsonObject.put("order",order);
-            jsonObject.put("parentid",0);
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+            jsonObject.put("parentid", 0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,22 +117,38 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                         AttachmentModel attachmentModel = gson.fromJson(response, AttachmentModel.class);
                         if (attachmentModel.getCode() == 1) {
                             // 根据穿过来的parentid来取数据
-                            for (int i = 0; i < attachmentModel.getCategoryList().size();i++){
-                                if (attachmentModel.getCategoryList().get(i).getCategoryid() == parentid){
+                            for (int i = 0; i < attachmentModel.getCategoryList().size(); i++) {
+                                if (attachmentModel.getCategoryList().get(i).getCategoryid() == parentid) {
                                     dataSource = attachmentModel.getCategoryList().get(i).getAttachList();
                                 }
                             }
 
-//                            bottomDataSource = attachmentModel.getCategoryList().get(dataSource.size()-1).getAttachList().get(0).getAttributeValueList();
+                            if (dataSource != null) {
+                                // 取最后一个数组，如果里面不为空，则有最后一栏，如果为空，就不展示最后一个界面
+                                listData = new ArrayList<TestModel>();
 
-                            // 去掉最后一个数组里面的内容
-//                            for (int i = 0 ; i<dataSource.size();i++){
-//                                dataSource.remove(dataSource.size()-1);
-//                            }
-                            if (dataSource!=null){
-                                initListRecycleView();
+                                if (dataSource.size() > 1) {
+                                    if (dataSource.get(dataSource.size() - 1).getAttributeValueList().size() == 0) {
+                                        baobei_textview.setVisibility(View.GONE);
+                                        return;
+                                    }else {
+                                        // 注意，必须先初始化底部的数组再移除最后一个
+                                        // 初始化底部的多选的数据呢
+                                        for (int i = 0; i < dataSource.get(dataSource.size() - 1).getAttributeValueList().size(); i++) {
+                                            TestModel testModel = new TestModel(dataSource.get(dataSource.size() - 1).getAttributeValueList().get(i), false);
+                                            listData.add(i, testModel);
+                                        }
 
-                                initCollectionRecycleView();
+                                        // 将数组传回到第一个页面
+                                        dataSource.remove(dataSource.size()-1);
+                                        initListRecycleView();
+                                        initCollectionRecycleView();
+                                    }
+
+                                }else {
+                                    baobei_textview.setVisibility(View.GONE);
+                                    initListRecycleView();
+                                }
                             }
 
 
@@ -155,10 +167,22 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
     private void initCollectionRecycleView() {
         baobeifujian_rv = (RecyclerView) findViewById(R.id.baobeifujian_rv);
-        LinearLayoutManager layoutManager = new GridLayoutManager(this,3);
+        LinearLayoutManager layoutManager = new GridLayoutManager(this, 3);
         baobeifujian_rv.setLayoutManager(layoutManager);
-        AttachmentBottomAdapter attachmentBottomAdapter = new AttachmentBottomAdapter(this,dataSource.get(dataSource.size()-1).getAttributeValueList());
+        AttachmentBottomAdapter attachmentBottomAdapter = new AttachmentBottomAdapter(this, listData);
         baobeifujian_rv.setAdapter(attachmentBottomAdapter);
+        attachmentBottomAdapter.setOnItemClickListener(new AttachmentBottomAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, ArrayList<TestModel> check) {
+                StringList = new ArrayList<String>();
+                for (int i = 0; i < check.size(); i++) {
+                    if (check.get(i).getState()) {
+                        StringList.add(check.get(i).getText());
+                    }
+                }
+                Log.e("选中的有", "" + StringList);
+            }
+        });
 
     }
 
@@ -167,12 +191,23 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         attachment_rv.setLayoutManager(layoutManager);
-        AttachmentTopAdapter attachmentTopAdapter = new AttachmentTopAdapter(this,dataSource);
+        AttachmentTopAdapter attachmentTopAdapter = new AttachmentTopAdapter(this, dataSource);
         attachment_rv.setAdapter(attachmentTopAdapter);
         attachmentTopAdapter.setOnItemClickListener(new AttachmentTopAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, List<String> name) {
-                LogUtil.e("数组"+name);
+            public void OnItemClick(View view, List<String> name, String attributeName) {
+                LogUtil.e("数组" + name);
+                nameList = new ArrayList<>();
+                for (int i = 0; i<name.size();i++){
+                    nameList.add(i,name.get(i));
+                }
+                Intent intent = new Intent(AttachMentAC.this,CheckRecycleViewAC.class);
+                intent.putStringArrayListExtra("ATTACHMENT",nameList);
+                intent.putStringArrayListExtra("BAOBEIFUJIAN",StringList);
+                intent.putExtra("TITLESS",attributeName);
+                intent.putExtra("CHENGSE",5);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -182,7 +217,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_back:
                 finish();
                 break;

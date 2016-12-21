@@ -140,7 +140,6 @@ public class PublishCateoryAC extends AppCompatActivity implements View.OnClickL
             @Override
             public void OnItemClick(View view, int position,String title) {
                 LogUtil.e("parentid"+position);
-
                 Intent intent = new Intent(PublishCateoryAC.this, CheckRecycleViewAC.class);
                 intent.putExtra("POSITION", position);
                 intent.putExtra("TITLE",title);

@@ -18,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout;
@@ -33,6 +35,7 @@ import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.activity.MQConversationActivity;
 import com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity;
 import com.meiqia.meiqiasdk.util.MQUtils;
@@ -42,7 +45,10 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
 import com.qiniu.api.rs.PutPolicy;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +56,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import okhttp3.Call;
 
 public class PublishPublishAC extends AppCompatActivity implements View.OnClickListener {
 
@@ -78,15 +87,43 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     ArrayList<byte[]> uploadDatasource = null;
     private ArrayList<String> urlList;
 
+    int number = 0;
+    private String descript;
+    private String goodsName;
+    private String goodsBrand;
+    private String goodsColor;
+    private String chengse;
+    private String people;
+    private String goodsprice;
+    private String goodsKeyword;
+    private int categoryid;
+    private int CATEGORYID;
+    private int BRANDID;
+    private String chengsexxxx;
+    private String peoplexxxx;
+    private String ATTACHMENT;
+    private AttachmentModel.CategoryListBean.AttachListBean SECONDDATA;
+    private String FUJIAN;
+    private List<AttachmentModel.CategoryListBean.AttachListBean> dataSourcess;
+    private String BAOBEIFUJIAN;
+    private ArrayList<String> FUJIANARR;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_publish_ac);
         mloading = LoadingUtils.createLoadingDialog(this, "正在发布...");
-//        SharedPreferencesUtils.setParam(this, "RESULT", " (必选) ");
+        SharedPreferencesUtils.setParam(this, "RESULT", "");
+        SharedPreferencesUtils.setParam(this, "CATEGORYID", 0);
+        SharedPreferencesUtils.setParam(this, "BRANDID", 0);
+        SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", "");
+        SharedPreferencesUtils.setParam(this, "SECONDDATA", "");
+        SharedPreferencesUtils.setParam(this, "FUJIAN", "");
+
         configurationNaviTitle();
         initView();
         cateoryTxt.setText("（必选）");
+
     }
 
     // TODO*********************************配置界面**********************************************
@@ -134,6 +171,65 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         publish_release_btn.setOnClickListener(this);
     }
 
+    private void initData(final int parentid) {
+        // 通过传过来的parentid来展示页面
+
+        JSONObject order = new JSONObject();
+        try {
+            order.put("sort", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pageNo", 0);
+            jsonObject.put("pageSize", 0);
+            jsonObject.put("order", order);
+            jsonObject.put("parentid", 0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(PublishPublishAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ClassfiyGoodsCateify)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(PublishPublishAC.this.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+//                        classify_online_view.setVisibility(View.GONE);
+//                        classify_nonet_view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("一级附件", "" + response);
+                        Gson gson = new Gson();
+                        AttachmentModel attachmentModel = gson.fromJson(response, AttachmentModel.class);
+                        if (attachmentModel.getCode() == 1) {
+                            // 根据穿过来的parentid来取数据
+                            for (int i = 0; i < attachmentModel.getCategoryList().size(); i++) {
+                                if (attachmentModel.getCategoryList().get(i).getCategoryid() == parentid) {
+                                    dataSourcess = attachmentModel.getCategoryList().get(i).getAttachList();
+                                }
+                            }
+
+
+                        } else if (attachmentModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(PublishPublishAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (attachmentModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(PublishPublishAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+
+
+    }
+
 
     // TODO*********************************配置导航头**********************************************
     private void configurationNaviTitle() {
@@ -175,13 +271,13 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         } else if (requestCode == 667) {
             if (resultCode == RESULT_OK || data != null) {
-                String chengse = data.getStringExtra("CHENGSE");
-                publish_news_text.setText(chengse);
+                chengsexxxx = data.getStringExtra("CHENGSE");
+                publish_news_text.setText(chengsexxxx);
             }
         } else if (requestCode == 668) {
             if (resultCode == RESULT_OK || data != null) {
-                String people = data.getStringExtra("CHENGSE");
-                publish_people_text.setText(people);
+                peoplexxxx = data.getStringExtra("CHENGSE");
+                publish_people_text.setText(peoplexxxx);
             }
         }
 
@@ -313,8 +409,16 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.publish_file:
                 // 先根据选择的类别来传值
-                Intent intentx = new Intent(PublishPublishAC.this, AttachMentAC.class);
-                startActivity(intentx);
+                if (CATEGORYID <= 0) {
+                    initSnackBar("你还没有选择类别！");
+                    return;
+                } else {
+                    initData(CATEGORYID);
+                    Intent intentx = new Intent(PublishPublishAC.this, AttachMentAC.class);
+                    intentx.putExtra("CATEID", CATEGORYID);
+                    startActivity(intentx);
+                }
+
                 break;
             case R.id.publish_user_protocal_text:
                 startActivity(UserPrctocalAC.class, 222);
@@ -361,13 +465,24 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         // 回调传至
         catetext = String.valueOf(SharedPreferencesUtils.getParam(this, "RESULT", ""));
         cateoryTxt.setText(catetext);
+        CATEGORYID = (int) SharedPreferencesUtils.getParam(this, "CATEGORYID", 0);
+        LogUtil.e("回调的取值" + CATEGORYID);
+        BRANDID = (int) SharedPreferencesUtils.getParam(this, "BRANDID", 0);
+        LogUtil.e("成色" + chengse);
+        FUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
+        LogUtil.e("附件参数" + FUJIAN);
+        BAOBEIFUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "BAOBEIFUJIAN", ""));
+
+        LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
+
+
         super.onResume();
     }
 
     private void check() {
         // validate
-        String edittext = publish_input_edittext.getText().toString().trim();
-        if (TextUtils.isEmpty(edittext)) {
+        descript = publish_input_edittext.getText().toString().trim();
+        if (TextUtils.isEmpty(descript)) {
             initSnackBar("你还没有描述你的宝贝！");
             return;
         }
@@ -376,34 +491,44 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             initSnackBar("必须九张图！");
             return;
         }
-        String name = publish_name_edittext.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
+        goodsName = publish_name_edittext.getText().toString().trim();
+        if (TextUtils.isEmpty(goodsName)) {
             initSnackBar("你还没有填写宝贝名称！");
             return;
         }
-        String cate = cateoryTxt.getText().toString().trim();
+        goodsprice = publish_price_edittext.getText().toString().trim();
+        if (TextUtils.isEmpty(goodsprice)) {
+            initSnackBar("你还没有填写专柜价！");
+            return;
+        }
+        goodsKeyword = publish_keyword_edittext.getText().toString().trim();
+        if (TextUtils.isEmpty(goodsKeyword)) {
+            initSnackBar("你还没有填写关键词！");
+            return;
+        }
+        String goodsCate = cateoryTxt.getText().toString().trim();
         LogUtil.e("类别" + catetext);
         if (catetext == "" || catetext.trim().equals("(必选)")) {
             initSnackBar("你还没有选择类别！");
             return;
         }
-        String brand = publish_brand_text.getText().toString().trim();
-        if (brand.equals("（必选）")) {
+        goodsBrand = publish_brand_text.getText().toString().trim();
+        if (goodsBrand.equals("（必选）")) {
             initSnackBar("你还没有选择品牌");
             return;
         }
-        String color = publish_color_edittext.getText().toString().trim();
-        if (TextUtils.isEmpty(color)) {
+        goodsColor = publish_color_edittext.getText().toString().trim();
+        if (TextUtils.isEmpty(goodsColor)) {
             initSnackBar("你还没有填写颜色！");
             return;
         }
 
-        String chengse = publish_news_text.getText().toString().trim();
+        chengse = publish_news_text.getText().toString().trim();
         if (chengse.equals("（必选）")) {
             initSnackBar("你还没有选择成色！");
             return;
         }
-        String people = publish_people_text.getText().toString().trim();
+        people = publish_people_text.getText().toString().trim();
         if (people.equals("（必选）")) {
             initSnackBar("你还没有选择适用人群！");
             return;
@@ -411,7 +536,61 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         // TODO 开始发布商品
         // 先上传图片，再发请求
-//        {
+        uploadNinePic();
+
+
+    }
+
+    private void uploadNinePic() {
+        // 要上传的byte类型的图片数组, 处理后图片大小在100-400K之间
+        uploadDatasource = new ArrayList<>();
+        for (int i = 0; i < mResults.size(); i++) {
+            Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(i).toString())), false);
+            byte[] b = ImageFactory.bitmapToByteAAA(bitmap);
+            uploadDatasource.add(i, b);
+            LogUtil.e("监控图片大小" + ImageFactory.getSizeOfBitmap(bitmap));
+        }
+        LogUtil.e("准备上传的图片的数组" + uploadDatasource);
+        urlList = new ArrayList<>();
+        // 开始上传
+        number = 0;
+        uploadImageToQiniu(uploadDatasource.get(0), creatTokenLocal(), number);
+
+        LogUtil.e("上传完成" + urlList);
+    }
+
+    private void uploadImageToQiniu(byte[] filePath, String token, final int s) {
+        UploadManager uploadManager = new UploadManager();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        final String key = "sxk_userPic_" + sdf.format(new Date()) + s;
+        uploadManager.put(filePath, key, token, new UpCompletionHandler() {
+
+            @Override
+            public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
+                // TODO Auto-generated method stub
+                if (key.toString().equals(arg0)) {
+                    // 上传成功！
+                    String url = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
+                    urlList.add(url);
+                    if (number < 8) {
+                        number += 1;
+                        uploadImageToQiniu(uploadDatasource.get(number), creatTokenLocal(), number);
+                    } else {
+                        // 上传完成
+                        LogUtil.e("图片的数组" + urlList);
+                        initReleaseData(urlList);
+
+                    }
+                } else {
+                    // 上传失败
+                    initSnackBar("发布失败！");
+                }
+            }
+        }, null);
+    }
+
+    private void initReleaseData(ArrayList<String> urlList) {
+        //        {
 //            "name": "string, 必填, 产品名称",
 //                "keywrod": "string, 必填, 关键字描述",
 //                "imgList": "array, 必填, 图片名称列表，至少一张图片，最多9张",
@@ -436,48 +615,127 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 //            }
 //            ]
 //        }
-        uploadNinePic();
+
+//        Gson gson = new Gson();
+//         gson.fromJson(BAOBEIFUJIAN,);
+
+//        try {
+//            JSONArray arr = new JSONArray(BAOBEIFUJIAN);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        // 附件
+//        JSONArray arr = new JSONArray();
+////        arr.put("保修啊");
+////        arr.put("发票");
+//        arr = J;
 
 
-    }
-
-    private void uploadNinePic() {
-        // 要上传的byte类型的图片数组, 处理后图片大小在100-400K之间
-        uploadDatasource = new ArrayList<>();
-        for (int i = 0; i < mResults.size(); i++) {
-            Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(i).toString())), false);
-            byte[] b = ImageFactory.bitmapToByteAAA(bitmap);
-            uploadDatasource.add(i, b);
+        JSONObject attributeArr = new JSONObject();
+        try {
+            attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size()-1).getAttributeName());
+            attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        LogUtil.e("准备上传的图片的数组"+uploadDatasource);
-        urlList = new ArrayList<>();
-        // 开始上传
-        for (int i = 0;i<uploadDatasource.size();i++){
-            uploadImageToQiniu(uploadDatasource.get(i),creatTokenLocal(),i);
-        }
-        LogUtil.e("上传完成"+urlList);
-    }
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(attributeArr);
 
-    private void uploadImageToQiniu(byte[] filePath, String token, final int s) {
-        UploadManager uploadManager = new UploadManager();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        final String key = "sxk_userPic_" + sdf.format(new Date())+s;
-        uploadManager.put(filePath, key, token, new UpCompletionHandler() {
 
-            @Override
-            public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
-                // TODO Auto-generated method stub
-                if (key.toString().equals(arg0)) {
-                    // 上传成功！
-                    String url = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
-                    urlList.add(url);
-                } else {
-                    // 上传失败
-                    initSnackBar("发布失败！");
-                }
+        // 图片数组
+        JSONArray jsonArray1 = new JSONArray();
+        for (int i = 0; i < urlList.size(); i++) {
+            String li = urlList.get(i);
+            JSONObject jsonObjects = new JSONObject();
+            try {
+                jsonObjects.put("image", li);
+                jsonArray1.put(i, jsonObjects);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, null);
+        }
+        // 附件
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", goodsName);
+            jsonObject.put("keyword", goodsKeyword);
+            jsonObject.put("imgList", jsonArray1);
+            jsonObject.put("counterPrice", Integer.valueOf(goodsprice));
+            jsonObject.put("description", descript);
+            jsonObject.put("categoryid", CATEGORYID);
+            jsonObject.put("brandid", BRANDID);
+            jsonObject.put("color", goodsColor);
+            // 成色
+            int cheng = -1;
+            switch (chengsexxxx) {
+                case "99成新（未使用）":
+                    cheng = 1;
+                    break;
+                case "95新":
+                    cheng = 2;
+                    break;
+                case "9成新":
+                    cheng = 3;
+                    break;
+                case "85成新":
+                    cheng = 4;
+                    break;
+                case "8成新":
+                    cheng = 5;
+                    break;
+                default:
+                    break;
+            }
+            jsonObject.put("condition", cheng);
+
+            int p = -1;
+            switch (peoplexxxx) {
+                case "所有人":
+                    p = 1;
+                    break;
+                case "男士":
+                    p = 2;
+                    break;
+                case "女士":
+                    p = 3;
+                    break;
+            }
+            jsonObject.put("crowd", p);
+            jsonObject.put("attachList", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("上传参数结果" + jsonObject.toString());
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ReleaseGoods)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("发布商品", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+
+
+                        } else if (requestStatueModel.getCode() == 0) {
+                        } else if (requestStatueModel.getCode() == 911) {
+                        }
+                    }
+                });
+
+
     }
+
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";
     public static String SK = "RxiQnoa8NqIe7lzSip-RRnBdX9_pwOQmBBPqGWvv";
     public static String SCOPE = "shexiangke-jcq";
