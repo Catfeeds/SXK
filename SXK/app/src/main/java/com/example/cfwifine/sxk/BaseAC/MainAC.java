@@ -21,6 +21,7 @@ import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
+import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 
 public class MainAC extends BaseAC  {
 
@@ -115,6 +116,7 @@ public class MainAC extends BaseAC  {
                     break;
                 case R.id.care_lay:
                     Log.e("点击了养护",""+v.getId());
+                    startActivity(CuringAC.class);
                     break;
                 case R.id.rec_lay:
                     Log.e("点击了鉴定",""+v.getId());

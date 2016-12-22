@@ -1,9 +1,11 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,6 +14,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -136,12 +140,17 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             try {
                 switch (ss) {
                     case 0:
-                        if (!dataSource.getNickname().equals(nickName)) {
-                            jsonObject.put("nickname", nickName);
-                        } else {
-                            initSnackBar("你还没有修改哦！");
-                            return;
+                        if (dataSource.getNickname()!= null){
+                            if (!dataSource.getNickname().equals(nickName)) {
+                                jsonObject.put("nickname", nickName);
+                            } else {
+                                initSnackBar("你还没有修改哦！");
+                                return;
+                            }
+                        }else {
+                                jsonObject.put("nickname", nickName);
                         }
+
                         break;
                     case 1:
                         if (dataSource.getSex() !=Sex) {
@@ -392,7 +401,15 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     public void onClick(View v) {
                         shitView.dismiss();
 //                        Toast.makeText(v.getContext(), "拍一张" , Toast.LENGTH_SHORT).show();
-                        takePhoto();
+                        // 适配安卓6.0 对敏感权限进行动态非配权限
+                        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            //如果没有授权，则请求授权
+                            ActivityCompat.requestPermissions(UserInfoAC.this, new String[]{Manifest.permission.CAMERA}, 733);
+                        } else {
+                            //有授权，直接开启摄像头
+                            takePhoto();
+                        }
+
 
                     }
                 }).create();
@@ -410,6 +427,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private static final int REQUESTCODE_CUTTING = 2;
     private static final String IMAGE_FILE_NAME = "avatarImage.jpg";
     private void takePhoto() {
+
+
+
         Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 下面这句指定调用相机拍照后照片存储的位置
         takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,
@@ -433,6 +453,8 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     }
                 }
                 if (mResults.size()!=0){
+
+
                     header.setImageBitmap(BitmapFactory.decodeFile(new File(mResults.get(0)).getPath()));
                     Bitmap bitmap = ImageFactory.getBitmapFormUri(this, Uri.fromFile(new File(mResults.get(0).toString())), false);
                     // 上传图片

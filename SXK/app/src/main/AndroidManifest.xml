@@ -156,7 +156,11 @@
         <activity
             android:name=".Section.PublishNC.AC.AttachMentAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.CuringAC.CuringAC"></activity>
+        <activity
+            android:name=".Section.PublishNC.CuringAC.CuringAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.CuringAC.CuringDetailAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
 </manifest>

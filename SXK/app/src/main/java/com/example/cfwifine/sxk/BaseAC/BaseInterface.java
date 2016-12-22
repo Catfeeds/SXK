@@ -76,6 +76,12 @@ public class BaseInterface {
 
     // 商品管理
     public static String ReleaseGoods = root + "/app/rent/addpost";
+    // 发布说明图片
+    public static String ReleaseDetailPic = root + "/app/rentsetup/getpost";
+    // 养护列表
+    public static String CuringList = root + "/app/maintain/listpost";
+    // 获取养护
+    public static String GetCuring = root + "/app/maintain/getpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
