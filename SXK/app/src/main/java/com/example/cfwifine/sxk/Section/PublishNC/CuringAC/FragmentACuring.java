@@ -72,7 +72,7 @@ public class FragmentACuring extends CuringBaseFragment {
             public void OnItemClick(View view, int maintainid) {
                 LogUtil.e("maintainid"+maintainid);
                 Intent intent = new Intent(getActivity(),CuringDetailAC.class);
-                intent.putExtra("maintainid",-1);
+                intent.putExtra("maintainid",maintainid);
                 startActivity(intent);
             }
         });

@@ -15,63 +15,225 @@
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
         android:background="@color/grrray"/>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:background="@color/home_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="61dp"
+                android:background="@color/home_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/touxiangk"/>
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="啵呗养护管家"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="end|center_vertical"
+                    android:paddingRight="15dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="18dp"
+                        android:background="@drawable/zuixingc"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="啵一个"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/duihuac"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/black"
+                        android:text="聊呗"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/curing_cell"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/ripple_bg"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/curing_pic"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="15dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/curing_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/curing_descript"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/gray_40"
+                        android:textSize="11sp"/>
+                    <TextView
+                        android:id="@+id/curing_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/login_turquoise"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
                 android:background="@color/home_bg"/>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="啵呗养护管家"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
+                android:padding="13dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="商品细节 "
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="| Product details"
+                    android:textSize="12sp"
+                    android:textColor="#a0a0a0"/>
+            </LinearLayout>
+            <WebView
+                android:id="@+id/curing_webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </WebView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="13dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="评价         "
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="| Comments"
+                    android:textSize="12sp"
+                    android:textColor="#a0a0a0"/>
+
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/curing_comment_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="13dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="交易流程"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="| Production information"
+                    android:textSize="12sp"
+                    android:textColor="#a0a0a0"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/xiangqing"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/curing_pause_right_now"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="40dp"
+                android:text="立即购买"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:background="@drawable/table_shape_login_button"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="end|center_vertical"
-            android:paddingRight="15dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="18dp"
-                android:background="@color/home_bg"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="啵一个"
-                android:textSize="12sp"
-                android:textColor="@color/black"/>
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/com_comments"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/black"
-                android:text="聊呗"
-                android:textSize="12sp"/>
-        </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
+
+
 
 </LinearLayout>
