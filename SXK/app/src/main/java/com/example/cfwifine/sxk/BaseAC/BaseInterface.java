@@ -82,6 +82,8 @@ public class BaseInterface {
     public static String CuringList = root + "/app/maintain/listpost";
     // 获取养护
     public static String GetCuring = root + "/app/maintain/getpost";
+    // 获取中间设置
+    public static String GetCenterSetting = root + "/app/identifysetup/getpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";

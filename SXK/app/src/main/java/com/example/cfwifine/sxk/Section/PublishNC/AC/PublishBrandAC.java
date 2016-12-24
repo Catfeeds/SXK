@@ -97,6 +97,7 @@ public class PublishBrandAC extends AppCompatActivity implements View.OnClickLis
             public void OnItemClick(View view, String name, int brandid) {
                 LogUtil.e("点击了"+name);
                 SharedPreferencesUtils.setParam(PublishBrandAC.this,"BRANDID",brandid);
+                SharedPreferencesUtils.setParam(PublishBrandAC.this,"BRANDNAME",name);
                 Intent brand = new Intent();
                 brand.putExtra("BRAND",name);
                 PublishBrandAC.this.setResult(666,brand);

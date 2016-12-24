@@ -58,6 +58,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     String chengse = "";
     private ArrayList<String> attachmentdata;
     private ArrayList<String> baobeifujianData;
+    private ArrayList<String> appraisaCateList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +80,17 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
         } else if (s == 5) {
             // 标题，数据，和附件内容
             baobeifujianData = getIntent().getStringArrayListExtra("BAOBEIFUJIAN");
-            SharedPreferencesUtils.setParam(this,"BAOBEIFUJIAN",baobeifujianData.toString());
+            SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", baobeifujianData.toString());
 
             attachmentdata = getIntent().getStringArrayListExtra("ATTACHMENT");
             String title = getIntent().getStringExtra("TITLESS");
             configurationNaviTitle(title);
             initChengSeData(5);
+        } else if (s == 6) {
+            // 这个是中间鉴定里面的分类
+            appraisaCateList = getIntent().getStringArrayListExtra("APPRAISACATE");
+            configurationNaviTitle("分类");
+            initAppraisaCateData();
         } else {
             position = getIntent().getIntExtra("POSITION", -1);
             SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", position);
@@ -94,6 +100,14 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             initData(position);
 
         }
+    }
+
+    private void initAppraisaCateData() {
+        for (int i = 0; i < appraisaCateList.size(); i++) {
+            TestModel testModel = new TestModel(appraisaCateList.get(i), false);
+            listData.add(testModel);
+        }
+        initChengSeRecycleView();
     }
 
 
@@ -268,10 +282,17 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                     setResult(668, intent);
                     finish();
                 } else if (s == 5) {
-                    if (chengse.isEmpty()){
+                    if (chengse.isEmpty()) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-                    }else {
-                        SharedPreferencesUtils.setParam(this,"FUJIAN",chengse);
+                    } else {
+                        SharedPreferencesUtils.setParam(this, "FUJIAN", chengse);
+                        finish();
+                    }
+                } else if (s == 6) {
+                    if (chengse.isEmpty()) {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    } else {
+                        SharedPreferencesUtils.setParam(this, "APPRAISACATE", chengse);
                         finish();
                     }
                 } else {

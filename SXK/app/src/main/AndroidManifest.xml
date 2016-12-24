@@ -159,7 +159,13 @@
         <activity
             android:name=".Section.PublishNC.CuringAC.CuringAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.CuringAC.CuringDetailAC"
+        <activity
+            android:name=".Section.PublishNC.CuringAC.CuringDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.PublishNC.AppraisalAC.AppraisasAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.CuringAC.WarningAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
