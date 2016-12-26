@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,10 @@ import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.ComRecycleViewAdapte
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.ImageBrowseActivity;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -61,6 +65,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     List<TopicListModel.TopicListBean> topicList;
     LinearLayout rightLay;
     Dialog mloading;
+    private EditTextPupWindow edittextPupWindow;
+    private String COMMENT;
+    private String USERNAME;
+    private ArrayList<String> dataSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -388,34 +396,73 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         hao_recycleview.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ComRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, int topicid, int postion) {
-                // 点赞
-                initLikeData(topicid,postion);
-                mAdapter.notifyDataSetChanged();
+            public void OnItemClick(View views, final int topicid, final int position, final int cateid, int picPosition) {
+                if (cateid == -1){
+                    // 点赞
+                    initLikeData(topicid,position,cateid);
+                    mAdapter.notifyDataSetChanged();
+                }else if (cateid == -2){
+                    // 评论
+                    LogUtil.e("点击了评论"+cateid);
+
+                    edittextPupWindow = new EditTextPupWindow(getActivity(), itemsOnClick, new EditTextPupWindow.EditTextEventListener() {
+                        @Override
+                        public void editTextEvent(String content) {
+                            LogUtil.e("评论"+content);
+                            COMMENT = content;
+                            initLikeData(topicid,position,cateid);
+                        }
+                    });
+                    edittextPupWindow.showAtLocation(getActivity().findViewById(R.id.activity_main_ac), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+                }else if (cateid == -3){
+                    // 查看图片
+                    LogUtil.e("图片点击了"+topicid+"个"+picPosition);
+
+                    initPreviewPic(picPosition,topicid,position);
+
+                }
+
             }
         });
-//        hao_recycleview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(getActivity(), "click-----position" + i, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
-//        hao_recycleview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(getActivity(), "long click------position" + i, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
     }
 
-    private void initLikeData(int topicid, final int position) {
+    private void initPreviewPic(int position,int topicId,int pos) {
+        // 预览图片
+        dataSource = new ArrayList<>();
+
+        LogUtil.e("数组"+topicList.get(pos).getImgList());
+
+        for (int i = 0; i < topicList.get(pos).getImgList().size();i++){
+            dataSource.add(BaseInterface.ClassfiyGetAllHotBrandImgUrl +topicList.get(pos).getImgList().get(i).getImage().toString());
+        }
+        LogUtil.e("图片数组"+dataSource);
+        Intent intent = new Intent(getActivity(), ImageBrowseActivity.class);
+        intent.putExtra("TYPE",999);
+        intent.putStringArrayListExtra("images", dataSource);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, 777);
+    }
+
+
+
+    //为弹出窗口实现监听类
+    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+        }
+    };
+
+    private void initLikeData(int topicid, final int position, final int type) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("topicid",topicid);
-            jsonObject.put("like",1);
+            if (type == -1){
+                jsonObject.put("like",1);
+            }else if (type == -2){
+                jsonObject.put("comment",COMMENT);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -434,19 +481,31 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("点赞", "" + response);
+                        Log.e("点赞评论", "" + response);
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            // 点赞成功 通知数组本地加一
-                            String username = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.NICKNAME,""));
-                            TopicListModel.TopicListBean.LikeListBean likeListBean = new TopicListModel.TopicListBean.LikeListBean();
-                            likeListBean.setNickname(username);
-                            topicList.get(position).getLikeList().add(likeListBean);
-                            mAdapter.notifyDataSetChanged();
+                            if (type == -1){
+                                // 点赞成功 通知数组本地加一
+                                USERNAME = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.NICKNAME,""));
+                                TopicListModel.TopicListBean.LikeListBean likeListBean = new TopicListModel.TopicListBean.LikeListBean();
+                                likeListBean.setNickname(USERNAME);
+                                topicList.get(position).getLikeList().add(likeListBean);
+                                mAdapter.notifyDataSetChanged();
+                            }else if (type == -2){
+                                // 评论成功
+                                TopicListModel.TopicListBean.CommentListBean commentListBean = new TopicListModel.TopicListBean.CommentListBean();
+                                commentListBean.setComment(COMMENT);
+                                commentListBean.setNickname(USERNAME);
+                                topicList.get(position).getCommentList().add(commentListBean);
+                                mAdapter.notifyDataSetChanged();
+                            }
+
 
                         } else if (requestStatueModel.getCode() == 0) {
-                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "你已经点过赞了!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            if (type == -1)SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "你已经点过赞了!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            else if (type == -2)SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "评论失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+
                         } else if (requestStatueModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }

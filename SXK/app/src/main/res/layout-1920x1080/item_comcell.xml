@@ -107,11 +107,19 @@
                    android:layout_height="14dp"
                    android:layout_marginRight="20dp"
                    android:background="@drawable/com_raise"/>
-                <ImageButton
-                    android:id="@+id/topic_comment"
-                    android:layout_width="14dp"
-                    android:layout_height="12dp"
-                    android:background="@drawable/com_comments"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/commemt_content_edt"
+                        android:layout_width="14dp"
+                        android:layout_height="12dp" />
+                    <ImageButton
+                        android:id="@+id/topic_comment"
+                        android:layout_width="14dp"
+                        android:layout_height="12dp"
+                        android:background="@drawable/com_comments"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/sanjiaoxing"

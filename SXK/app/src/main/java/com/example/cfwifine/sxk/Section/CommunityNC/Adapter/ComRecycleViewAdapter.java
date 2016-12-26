@@ -18,19 +18,13 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
-import com.example.cfwifine.sxk.Utils.DateUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.TimeUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.w4lle.library.NineGridlayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.Time;
 import java.util.List;
 
 public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAdapter.ViewHolder> {
@@ -43,7 +37,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
     private ComRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int topicid, int position);
+        void OnItemClick(View view, int topicid, int position, int cateid, int picPosition);
     }
     public void setOnItemClickListener(ComRecycleViewAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -109,8 +103,10 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
         viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
             @Override
-            public void onItemClick(View view, int position) {
-                Log.e("点击了", "" + position);
+            public void onItemClick(View view, int picPosition) {
+                Log.e("点击了", "" + picPosition);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-3,picPosition);
+
             }
         });
 
@@ -134,14 +130,6 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         }
 
         String username = String.valueOf(SharedPreferencesUtils.getParam(context, BaseInterface.USERNAME,""));
-//        for (int i = 0; i < topicList.get(position).getLikeList().size();i++){
-//            if (username.equals(topicList.get(position).getLikeList().get(i))){
-//                viewHolder.raiseBtn.setImageResource(R.drawable.com_raised);
-//            }else {
-//                viewHolder.raiseBtn.setImageResource(R.drawable.com_raise);
-//            }
-//        }
-
         // 点赞RecycleView
         RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(topicList.get(position).getLikeList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -157,17 +145,28 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         viewHolder.commentRV.setLayoutManager(layoutManagers);
         viewHolder.commentRV.setAdapter(commentRecycleAdapter);
 
+
         // 点赞按钮
         viewHolder.raiseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-1, -1);
 
 
             }
         });
+        // 评论按钮
+        viewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                InputMethodManager inputMethodManager = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputMethodManager.showSoftInput(view,InputMethodManager.SHOW_FORCED);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-2, -1);
+            }
+        });
 
     }
+
 
     //获取数据的数量
     @Override

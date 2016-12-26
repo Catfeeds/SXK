@@ -19,7 +19,7 @@ public class CustomDialog_nickname extends Dialog{
 
     //增加一个回调函数,用以从外部接收返回值
     public interface ICustomDialogEventListener {
-        public void customDialogEvent(String id);
+        void customDialogEvent(String id);
     }
 
     public interface ICustomSaveEventListener {

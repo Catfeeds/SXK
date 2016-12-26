@@ -86,14 +86,15 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private static final int REQUEST_CODE = 732;
     ArrayList<String> dataSource = null;
     ArrayList<String> filePathList = null;
-    ArrayList<String> list = null;
+    ArrayList<String> list;
     int s = 0;
     int number = 0;
-    String headUrl = "";
     ArrayList<byte[]> uploadDatasource = null;
     int modelid = -1;
     Dialog mloading;
     LikeIOSSheetDialog sheetView;
+    private String headUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +115,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         topicModelList = getIntent().getIntegerArrayListExtra("TOPICMODELID");
         LogUtil.e("topicNameList" + topicNameList);
         LogUtil.e("topicModelList" + topicModelList);
-
+        mloading = LoadingUtils.createLoadingDialog(this,"正在努力发布中...");
         topicListModle = new ArrayList<>();
         for (int i = 0; i < topicNameList.size(); i++) {
             testModel = new TestModel(topicNameList.get(i).toString(), false);
@@ -173,8 +174,6 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 break;
             case R.id.navi_right_lays:
                 // 点击发表朋友圈
-                mloading = LoadingUtils.createLoadingDialog(this,"正在努力发布中...");
-                mloading.show();
                 LogUtil.e("number的值"+number);
                 LogUtil.e("uploadData"+uploadDatasource);
                 releaseTopic();
@@ -189,9 +188,12 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private void releaseTopic() {
         // 先上传图片，再上传数据
         list = new ArrayList<>();
+        s= 0;
         if (number != 0) {
+            LogUtil.e("number"+number);
             String token = creatTokenLocal();
-            uploadImageToQiniu(uploadDatasource.get(s), token);
+            LogUtil.e("数组"+uploadDatasource);
+            uploadImageToQiniu(uploadDatasource.get(0), token);
         } else {
             initReleaseFriendMoment(list);
         }
@@ -209,7 +211,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
                 if (key.toString().equals(arg0)) {
                     headUrl = arg0;
-                    list.add(s, headUrl);
+                    list.add(headUrl);
                     Log.e("上传返回值", "" + headUrl);
                     Log.e("上传返回数组", "" + list);
                     try {
@@ -220,15 +222,15 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     }
 
                     Log.e("上传返回JSONObject", "" + arg2);
-                    s += 1;
-                    if (s < uploadDatasource.size()) {
+
+                    if (s < uploadDatasource.size()-1) {
+                        s += 1;
                         String token = creatTokenLocal();
                         uploadImageToQiniu(uploadDatasource.get(s), token);
                     } else {
                         // 图片上传完成
                         LogUtil.e("图片上传完成" + list);
                         initReleaseFriendMoment(list);
-
                     }
                 } else {
 //                     图片上传失败屌
@@ -250,6 +252,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "你还没有选择分类哦!", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
+        mloading.show();
         LogUtil.e("图片列表"+list);
         JSONArray jsonArray1 = new JSONArray();
 
@@ -269,9 +272,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("content", edittext);
-            if (list.size()!=0){
-                jsonObject.put("imgList", jsonArray1);
-            }
+            jsonObject.put("imgList", jsonArray1);
             jsonObject.put("moduleid", modelid);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -298,7 +299,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-
+                            finish();
                         } else if (requestStatueModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(CommunityPublishTopicAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (requestStatueModel.getCode() == 911) {

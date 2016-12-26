@@ -3,6 +3,8 @@ package com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.cfwifine.sxk.Utils.LogUtil;
+
 import java.util.List;
 
 
@@ -19,13 +21,24 @@ public class ImageBrowsePresenter {
 
     public void loadImage(){
         Intent intent = view.getDataIntent();
-        images = intent.getStringArrayListExtra("images");
-        Log.e("images",""+images);
-        position = intent.getIntExtra("position",0);
 
-        Log.e("获取position",""+position);
+        int s = intent.getIntExtra("TYPE",0);
+        if (s == 999){
+            // 说明是预览穿过类的图
+            images = intent.getStringArrayListExtra("images");
+            Log.e("朋友圈images",""+images);
+            position = intent.getIntExtra("position",0);
+            Log.e("获取position",""+position);
+            view.setImageBrowse(images,position,999);
+        }else {
+            images = intent.getStringArrayListExtra("images");
+            Log.e("发朋友圈images",""+images);
+            position = intent.getIntExtra("position",0);
+            Log.e("获取position",""+position);
+            view.setImageBrowse(images,position, 0);
+        }
 
-        view.setImageBrowse(images,position);
+
 
 //        saveImage();
     }
@@ -37,15 +50,17 @@ public class ImageBrowsePresenter {
     }
 
     private void reloadImage() {
-        view.setImageBrowse(images,position);
+        view.setImageBrowse(images,position, 0);
     }
 
 
-    public void saveImage(){
+    public void saveImage(int position){
         //利用Picasso加载图片
+        LogUtil.e("保存一张图" + position);
 
-        String imageUrl = images.get(position).toString();
-        Log.e("address",""+imageUrl);
+
+//        String imageUrl = images.get(position).toString();
+//        Log.e("address",""+imageUrl);
 //        Picasso.with(view.getMyContext()).load(new File(imageUrl)).error(R.drawable.image_selected).into(view.);
 
 //        Picasso.with(view.getMyContext()).load(new File(imageUrl)).error(R.drawable.image_selected).into(new Target() {

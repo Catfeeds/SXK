@@ -204,6 +204,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     public void onResponse(String response, int id) {
                         Log.e("个人信息", "" + response);
                         LogUtil.e("个人信息" + response);
+                        mloading.dismiss();
                         if (value == 1) {
                             Gson gson = new Gson();
                             UserInfoModel userInfoModel = gson.fromJson(response, UserInfoModel.class);
@@ -227,6 +228,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                             Gson gson = new Gson();
                             RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                             if (requestStatueModel.getCode() == 1) {
+                                if (nickName != null){
+                                    SharedPreferencesUtils.setParam(UserInfoAC.this, BaseInterface.NICKNAME,nickName);
+                                }
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             } else if (requestStatueModel.getCode() == 0) {
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改失败!", Color.WHITE, Color.parseColor("#16a6ae"));

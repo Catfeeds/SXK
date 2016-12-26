@@ -5,19 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.example.cfwifine.sxk.R;
-import com.nostra13.universalimageloader.utils.L;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageBrowseActivity extends Activity implements ViewPager.OnPageChangeListener,View.OnClickListener,ImageBrowseView {
+public class ImageBrowseActivity extends Activity implements ViewPager.OnPageChangeListener, View.OnClickListener, ImageBrowseView {
 
     private ViewPager vp;
     private TextView hint;
@@ -25,6 +24,8 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
     private ViewPageAdapter adapter;
     private ImageBrowsePresenter presenter;
     LinearLayout back;
+    private CommunityViewPageAdapter CommuAdapter;
+    private int TAG;
 
 
     @Override
@@ -34,14 +35,14 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
         vp = (ViewPager) this.findViewById(R.id.viewPager);
         hint = (TextView) this.findViewById(R.id.hint);
         save = (TextView) this.findViewById(R.id.save);
-        back = (LinearLayout)this.findViewById(R.id.browse_back);
+        back = (LinearLayout) this.findViewById(R.id.browse_back);
         back.setOnClickListener(this);
         save.setOnClickListener(this);
         initPresenter();
         presenter.loadImage();
     }
 
-    public void initPresenter(){
+    public void initPresenter() {
         presenter = new ImageBrowsePresenter(this);
     }
 
@@ -54,21 +55,40 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
     public Context getMyContext() {
         return this;
     }
-    private List<String> mList = new ArrayList<>();
-    @Override
-    public void setImageBrowse(List<String> images,int position) {
 
-        if(images != null && images.size() != 0){
-            images.remove("TAG");
-            images.remove("MORE");
-            mList = images;
-            adapter = new ViewPageAdapter(this,mList);
-            vp.setAdapter(adapter);
-            vp.setCurrentItem(position);
-            vp.addOnPageChangeListener(this);
+    private List<String> mList = new ArrayList<>();
+
+    @Override
+    public void setImageBrowse(List<String> images, int position, int i) {
+
+        TAG = i;
+        if (i == 999) {
+            save.setText("保存");
+            LogUtil.e("点击了预览" + i);
+            if (images != null && images.size() != 0) {
+                images.remove("TAG");
+                images.remove("MORE");
+                mList = images;
+                CommuAdapter = new CommunityViewPageAdapter(this, mList);
+                vp.setAdapter(CommuAdapter);
+                vp.setCurrentItem(position);
+                vp.addOnPageChangeListener(this);
+                hint.setText(vp.getCurrentItem() + 1 + "/" + mList.size());
+            }
+        } else {
+            if (images != null && images.size() != 0) {
+                images.remove("TAG");
+                images.remove("MORE");
+                mList = images;
+                adapter = new ViewPageAdapter(this, mList);
+                vp.setAdapter(adapter);
+                vp.setCurrentItem(position);
+                vp.addOnPageChangeListener(this);
 //            hint.setText(position + 1 + "/" + images.size());
-            hint.setText(vp.getCurrentItem()+1+"/"+mList.size());
+                hint.setText(vp.getCurrentItem() + 1 + "/" + mList.size());
+            }
         }
+
     }
 
     @Override
@@ -82,7 +102,7 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
     public void onPageSelected(int position) {
         presenter.setPosition(position);
 //        hint.setText(position + 1 + "/" + presenter.getImages().size());
-        hint.setText(vp.getCurrentItem()+1+"/"+mList.size());
+        hint.setText(vp.getCurrentItem() + 1 + "/" + mList.size());
     }
 
     @Override
@@ -92,28 +112,36 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.browse_back:
-
                 finish();
                 break;
             case R.id.save:
-                // 删除一张图片
-                if (mList.size()>1){
-                    int currentItem = vp.getCurrentItem();
-                    presenter.delePosition(currentItem);
-                    adapter.notifyDataSetChanged();
-                    Intent data = new Intent();
-                    data.putStringArrayListExtra("images", (ArrayList<String>) presenter.getImages());
-                    setResult(Activity.RESULT_OK, data);
-                }else {
-                    mList.clear();
-                    adapter.notifyDataSetChanged();
-                    Intent data = new Intent();
-                    data.putStringArrayListExtra("images", (ArrayList<String>) mList);
-                    setResult(Activity.RESULT_OK, data);
-                    finish();
+
+                if (TAG == 999) {
+                    // 保存一张图
+                    int cur = vp.getCurrentItem();
+                    presenter.saveImage(cur);
+
+                } else {
+                    // 删除一张图片
+                    if (mList.size() > 1) {
+                        int currentItem = vp.getCurrentItem();
+                        presenter.delePosition(currentItem);
+                        adapter.notifyDataSetChanged();
+                        Intent data = new Intent();
+                        data.putStringArrayListExtra("images", (ArrayList<String>) presenter.getImages());
+                        setResult(Activity.RESULT_OK, data);
+                    } else {
+                        mList.clear();
+                        adapter.notifyDataSetChanged();
+                        Intent data = new Intent();
+                        data.putStringArrayListExtra("images", (ArrayList<String>) mList);
+                        setResult(Activity.RESULT_OK, data);
+                        finish();
+                    }
                 }
+
                 break;
             default:
                 break;
@@ -122,12 +150,10 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
     }
 
 
-
-
-    public static void startActivity(Context context, ArrayList<String> images, int position){
-        Intent intent = new Intent(context,ImageBrowseActivity.class);
-        intent.putStringArrayListExtra("images",images);
-        intent.putExtra("position",position);
+    public static void startActivity(Context context, ArrayList<String> images, int position) {
+        Intent intent = new Intent(context, ImageBrowseActivity.class);
+        intent.putStringArrayListExtra("images", images);
+        intent.putExtra("position", position);
         context.startActivity(intent);
     }
 

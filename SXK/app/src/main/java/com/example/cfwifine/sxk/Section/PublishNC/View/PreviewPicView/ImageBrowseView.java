@@ -9,7 +9,7 @@ public interface ImageBrowseView {
 
     Intent getDataIntent();
 
-    void setImageBrowse(List<String> images, int position);
+    void setImageBrowse(List<String> images, int position, int i);
 
     Context getMyContext();
 }

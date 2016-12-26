@@ -80,8 +80,9 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
         } else if (s == 5) {
             // 标题，数据，和附件内容
             baobeifujianData = getIntent().getStringArrayListExtra("BAOBEIFUJIAN");
-            SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", baobeifujianData.toString());
-
+            if (baobeifujianData != null){
+                SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", baobeifujianData.toString());
+            }
             attachmentdata = getIntent().getStringArrayListExtra("ATTACHMENT");
             String title = getIntent().getStringExtra("TITLESS");
             configurationNaviTitle(title);
