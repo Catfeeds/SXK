@@ -21,6 +21,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
+import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 
@@ -199,13 +200,13 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 Toast.makeText(getContext(), "身份认证", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mine_publishs:
-                Toast.makeText(getContext(), "我的发布", Toast.LENGTH_SHORT).show();
+                startActivity(CuringAC.class,1);
                 break;
             case R.id.mine_rents:
-                Toast.makeText(getContext(), "我的租凭", Toast.LENGTH_SHORT).show();
+                startActivity(CuringAC.class,2);
                 break;
             case R.id.mine_care:
-                Toast.makeText(getContext(), "我的养护", Toast.LENGTH_SHORT).show();
+                startActivity(CuringAC.class,3);
                 break;
             case R.id.mine_recognize:
                 Toast.makeText(getContext(), "我的鉴定", Toast.LENGTH_SHORT).show();
@@ -215,6 +216,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
         }
     }
+
 
     //为弹出窗口实现监听类
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {

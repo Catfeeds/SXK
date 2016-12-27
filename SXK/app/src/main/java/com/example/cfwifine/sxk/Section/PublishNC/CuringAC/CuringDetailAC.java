@@ -145,7 +145,6 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
     final String encoding = "utf-8";
     @SuppressLint("NewApi")
     private void initContent() {
-        navi_title.setText("用户协议");
         WebSettings webSettings = curing_webview.getSettings();
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);

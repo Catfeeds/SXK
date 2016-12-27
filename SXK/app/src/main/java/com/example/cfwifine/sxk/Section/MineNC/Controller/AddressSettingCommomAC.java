@@ -97,7 +97,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                         data.clear();
                         pageNum = 10;
 //                        pageSize+=10;
-                        getListData(pageNo, 60);
+                        getListData(pageNo, 10);
                         //注意此处
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);

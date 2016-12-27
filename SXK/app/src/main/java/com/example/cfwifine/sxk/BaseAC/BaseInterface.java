@@ -85,6 +85,10 @@ public class BaseInterface {
     // 获取中间设置
     public static String GetCenterSetting = root + "/app/identifysetup/getpost";
 
+    // 租赁列表
+    public static String RentList = root + "/app/rent/listpost";
+
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";
