@@ -165,7 +165,10 @@
         <activity
             android:name=".Section.PublishNC.AppraisalAC.AppraisasAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.CuringAC.WarningAC"
+        <activity
+            android:name=".Section.PublishNC.CuringAC.WarningAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MinePublish.MineItemAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

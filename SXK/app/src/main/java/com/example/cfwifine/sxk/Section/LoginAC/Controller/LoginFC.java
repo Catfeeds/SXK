@@ -19,9 +19,9 @@ import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
-import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 
@@ -200,13 +200,13 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 Toast.makeText(getContext(), "身份认证", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mine_publishs:
-                startActivity(CuringAC.class,1);
+                startActivity(MineItemAC.class,1);
                 break;
             case R.id.mine_rents:
-                startActivity(CuringAC.class,2);
+                startActivity(MineItemAC.class,2);
                 break;
             case R.id.mine_care:
-                startActivity(CuringAC.class,3);
+                startActivity(MineItemAC.class,3);
                 break;
             case R.id.mine_recognize:
                 Toast.makeText(getContext(), "我的鉴定", Toast.LENGTH_SHORT).show();

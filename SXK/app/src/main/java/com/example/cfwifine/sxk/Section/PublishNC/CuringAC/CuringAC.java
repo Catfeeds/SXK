@@ -194,8 +194,8 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
                             MinePublishShenHeModel minePublishShenHeModel = gson.fromJson(response,MinePublishShenHeModel.class);
                             if (minePublishShenHeModel.getCode() == 1) {
                                 rentListDataSouce = minePublishShenHeModel.getRentList();
-                                FragmentACuring fragmentACuring = new FragmentACuring();
-                                fragmentACuring.getShenHeInstance(rentListDataSouce,0);
+//                                FragmentACuring fragmentACuring = new FragmentACuring();
+//                                fragmentACuring.getShenHeInstance(rentListDataSouce,0);
 
 //                                fragmentACuring.initView();
 

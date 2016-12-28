@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.PublishNC.Adapter;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringListModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
@@ -44,27 +43,27 @@ public class MineShenHeListAdapter extends RecyclerView.Adapter<MineShenHeListAd
 
     @Override
     public MineShenHeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mInflater.inflate(R.layout.item_curing_main_list, parent, false));
+        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_daishenghe_list, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final MineShenHeListAdapter.ViewHolder holder, final int position) {
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position).getName());
-//        holder.name.setText(classifyDataSource.get(position).getName());
-//        holder.description.setText(classifyDataSource.get(position).getKeyword());
-//        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getPrice()));
-//        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImg();
-//        Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
-//
-//        if (mOnItemClickListener != null){
-//            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getMaintainid());
-//                }
-//            });
-//        }
+        holder.name.setText(classifyDataSource.get(position).getName());
+        holder.description.setText(classifyDataSource.get(position).getKeyword());
+        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()));
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
+        Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
+
+        if (mOnItemClickListener != null){
+            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid());
+                }
+            });
+        }
     }
 
     @Override
@@ -73,6 +72,7 @@ public class MineShenHeListAdapter extends RecyclerView.Adapter<MineShenHeListAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView rentPrice;
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
@@ -81,10 +81,11 @@ public class MineShenHeListAdapter extends RecyclerView.Adapter<MineShenHeListAd
             super(itemView);
 
             frameLayout = (LinearLayout) itemView.findViewById(R.id.curing_cell);
-            name = (TextView)itemView.findViewById(R.id.curing_name);
-            description = (TextView)itemView.findViewById(R.id.curing_descript);
-            price = (TextView)itemView.findViewById(R.id.curing_price);
-            pic = (ImageView)itemView.findViewById(R.id.curing_pic);
+            name = (TextView)itemView.findViewById(R.id.mine_publish_name);
+            description = (TextView)itemView.findViewById(R.id.mine_publish_descript);
+            price = (TextView)itemView.findViewById(R.id.mine_publish_price);
+            pic = (ImageView)itemView.findViewById(R.id.mine_publish_pic);
+            rentPrice = (TextView)itemView.findViewById(R.id.mine_publish_rentprice);
 
         }
     }
