@@ -13,6 +13,15 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!--&lt;!&ndash; 通用权限 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--&lt;!&ndash; 银联需要的权限 &ndash;&gt;-->
+    <uses-permission android:name="android.permission.NFC" />
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -79,6 +88,10 @@
         android:windowSoftInputMode="stateHidden|adjustResize" />
 
     <service android:name="com.meiqia.core.MeiQiaService" />
+
+
+
+
 
     <application
         android:name=".BaseAC.MyApplication"
@@ -170,6 +183,55 @@
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.MineNC.Controller.MinePublish.MineItemAC"
             android:theme="@style/AppThemeHasTitle"></activity>
+
+        <activity
+            android:name=".Section.ClassifyNC.AC.CateListAC"
+            android:theme="@style/AppThemeHasTitle">
+        </activity>
+        <activity
+            android:name=".Section.ClassifyNC.AC.ProductDetailsAC"
+            android:theme="@style/AppThemeHasTitle">
+        </activity>
+        <activity android:name=".Section.ClassifyNC.AC.PlaceOrderAC"
+            android:theme="@style/AppThemeHasTitle">
+        </activity>
+
+
+        <activity
+            android:name="com.pingplusplus.android.PaymentActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+        <!-- 微信支付 -->
+        <activity-alias
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.pingplusplus.android.PaymentActivity" />
+
+        <!-- 支付宝 -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+
+        <!-- 银联支付 -->
+        <activity android:name="com.unionpay.uppay.PayActivity" />
+
+
+
     </application>
+
+
+
 
 </manifest>

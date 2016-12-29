@@ -8,11 +8,10 @@ import java.util.List;
 
 public class MineItemPublishingModel {
 
-
     /**
      * code : 1
      * total : 1
-     * rentList : [{"userid":10,"name":"测试","imgList":[{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404020"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404021"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404032"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404033"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404044"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404045"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404056"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404057"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404058"}],"keyword":"测试","description":"背时鬼","counterPrice":1000,"categoryid":3,"rentid":14,"color":"红色","condition":3,"crowd":1,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","说明书"]}],"commentList":[],"sale":0,"sort":0,"status":2,"createtime":1482818644,"updatetime":1482819007,"marketPrice":10000,"rentPrice":10000,"risk":10000,"three":10000,"seven":10000,"fiften":10000,"twentyFive":10000}]
+     * rentList : [{"userid":10,"name":"安啦","imgList":["sxk_userPic_201612291413240","sxk_userPic_201612291413251","sxk_userPic_201612291413262","sxk_userPic_201612291413263","sxk_userPic_201612291413274","sxk_userPic_201612291413275","sxk_userPic_201612291413286","sxk_userPic_201612291413287","sxk_userPic_201612291413298"],"keyword":"JJ错么5啦咯啦咯啦咯啦咯啦咯啦咯啦咯兔兔咯了考虑兔兔突击涂土土图兔兔V领图兔兔图图V领TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤","description":"dzzzz","counterPrice":2000,"categoryid":3,"color":"红色","condition":3,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":2,"rentid":30,"createtime":1482992009,"updatetime":1482992150,"marketPrice":99900,"rentPrice":88800,"risk":900,"three":1,"seven":1,"fiften":1,"twentyFive":1}]
      */
 
     private int code;
@@ -46,30 +45,30 @@ public class MineItemPublishingModel {
     public static class RentListBean {
         /**
          * userid : 10
-         * name : 测试
-         * imgList : [{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404020"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404021"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404032"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404033"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404044"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404045"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404056"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404057"},{"image":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404058"}]
-         * keyword : 测试
-         * description : 背时鬼
-         * counterPrice : 1000
+         * name : 安啦
+         * imgList : ["sxk_userPic_201612291413240","sxk_userPic_201612291413251","sxk_userPic_201612291413262","sxk_userPic_201612291413263","sxk_userPic_201612291413274","sxk_userPic_201612291413275","sxk_userPic_201612291413286","sxk_userPic_201612291413287","sxk_userPic_201612291413298"]
+         * keyword : JJ错么5啦咯啦咯啦咯啦咯啦咯啦咯啦咯兔兔咯了考虑兔兔突击涂土土图兔兔V领图兔兔图图V领TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤
+         * description : dzzzz
+         * counterPrice : 2000
          * categoryid : 3
-         * rentid : 14
          * color : 红色
          * condition : 3
-         * crowd : 1
-         * attachList : [{"attributeName":"相关配件","attributeValueList":["保修卡","说明书"]}]
+         * crowd : 2
+         * attachList : [{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * commentList : []
          * sale : 0
          * sort : 0
          * status : 2
-         * createtime : 1482818644
-         * updatetime : 1482819007
-         * marketPrice : 10000
-         * rentPrice : 10000
-         * risk : 10000
-         * three : 10000
-         * seven : 10000
-         * fiften : 10000
-         * twentyFive : 10000
+         * rentid : 30
+         * createtime : 1482992009
+         * updatetime : 1482992150
+         * marketPrice : 99900
+         * rentPrice : 88800
+         * risk : 900
+         * three : 1
+         * seven : 1
+         * fiften : 1
+         * twentyFive : 1
          */
 
         private int userid;
@@ -78,13 +77,13 @@ public class MineItemPublishingModel {
         private String description;
         private int counterPrice;
         private int categoryid;
-        private int rentid;
         private String color;
         private int condition;
         private int crowd;
         private int sale;
         private int sort;
         private int status;
+        private int rentid;
         private int createtime;
         private int updatetime;
         private int marketPrice;
@@ -94,7 +93,7 @@ public class MineItemPublishingModel {
         private int seven;
         private int fiften;
         private int twentyFive;
-        private List<ImgListBean> imgList;
+        private List<String> imgList;
         private List<AttachListBean> attachList;
         private List<?> commentList;
 
@@ -146,14 +145,6 @@ public class MineItemPublishingModel {
             this.categoryid = categoryid;
         }
 
-        public int getRentid() {
-            return rentid;
-        }
-
-        public void setRentid(int rentid) {
-            this.rentid = rentid;
-        }
-
         public String getColor() {
             return color;
         }
@@ -200,6 +191,14 @@ public class MineItemPublishingModel {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public int getRentid() {
+            return rentid;
+        }
+
+        public void setRentid(int rentid) {
+            this.rentid = rentid;
         }
 
         public int getCreatetime() {
@@ -274,11 +273,11 @@ public class MineItemPublishingModel {
             this.twentyFive = twentyFive;
         }
 
-        public List<ImgListBean> getImgList() {
+        public List<String> getImgList() {
             return imgList;
         }
 
-        public void setImgList(List<ImgListBean> imgList) {
+        public void setImgList(List<String> imgList) {
             this.imgList = imgList;
         }
 
@@ -298,26 +297,10 @@ public class MineItemPublishingModel {
             this.commentList = commentList;
         }
 
-        public static class ImgListBean {
-            /**
-             * image : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_201612271404020
-             */
-
-            private String image;
-
-            public String getImage() {
-                return image;
-            }
-
-            public void setImage(String image) {
-                this.image = image;
-            }
-        }
-
         public static class AttachListBean {
             /**
              * attributeName : 相关配件
-             * attributeValueList : ["保修卡","说明书"]
+             * attributeValueList : ["保修卡","防尘袋"]
              */
 
             private String attributeName;

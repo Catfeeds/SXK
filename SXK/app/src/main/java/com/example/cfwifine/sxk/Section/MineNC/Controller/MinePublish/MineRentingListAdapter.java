@@ -43,7 +43,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
 
     @Override
     public MineRentingListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_list, parent, false));
+        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_renting_list, parent, false));
     }
 
     @Override
@@ -53,6 +53,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
         holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()));
+//        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(classifyDataSource.get(position).get));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
@@ -80,12 +81,12 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
         public ViewHolder(View itemView) {
             super(itemView);
 
-            frameLayout = (LinearLayout) itemView.findViewById(R.id.curing_cell);
-            name = (TextView)itemView.findViewById(R.id.mine_publish_name);
-            description = (TextView)itemView.findViewById(R.id.mine_publish_descript);
-            price = (TextView)itemView.findViewById(R.id.mine_publish_price);
-            pic = (ImageView)itemView.findViewById(R.id.mine_publish_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.mine_publish_rentprice);
+            frameLayout = (LinearLayout) itemView.findViewById(R.id.mine_renting_cell);
+            name = (TextView)itemView.findViewById(R.id.mine_renting_name);
+            description = (TextView)itemView.findViewById(R.id.mine_renting_descript);
+            price = (TextView)itemView.findViewById(R.id.mine_renting_price);
+            pic = (ImageView)itemView.findViewById(R.id.mine_renting_pic);
+            rentPrice = (TextView)itemView.findViewById(R.id.mine_renting_marketprice);
 
         }
     }

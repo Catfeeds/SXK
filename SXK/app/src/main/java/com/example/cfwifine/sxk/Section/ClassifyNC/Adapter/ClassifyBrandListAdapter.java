@@ -3,7 +3,6 @@ package com.example.cfwifine.sxk.Section.ClassifyNC.Adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 
@@ -25,6 +23,9 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
     private List<BrandBean> mDatas;
     private List<ClassfiyHotBrandModel.HotListBean> mHeaderDatas;
     private LayoutInflater mInflater;
+    private HeaderRecycleAdapter mRaiseRecycleAdapter;
+
+
 
     public ClassifyBrandListAdapter(Context mContext, List<BrandBean> mDatas, List<ClassfiyHotBrandModel.HotListBean> mHeaderDatas) {
         this.mContext = mContext;
@@ -37,6 +38,8 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
         return mDatas;
     }
 
+
+
     public ClassifyBrandListAdapter setDatas(List<BrandBean> datas) {
         mDatas = datas;
 //        mHeaderDatas = mHeaderDatas;
@@ -44,33 +47,43 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
     }
 
     @Override
-    public ClassifyBrandListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(mInflater.inflate(R.layout.item_city, parent, false));
     }
 
+
     @Override
-    public void onBindViewHolder(final ClassifyBrandListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 //        final BrandBean brandBean = mDatas.get(position);
 
         if (position==0){
             holder.cellHeader.setVisibility(View.VISIBLE);
             holder.cell.setVisibility(View.GONE);
-            HeaderRecycleAdapter raiseRecycleAdapter = new HeaderRecycleAdapter(mContext,mHeaderDatas);
-            holder.raiseRV.setLayoutManager(new GridLayoutManager(mContext,3));
-            holder.raiseRV.setAdapter(raiseRecycleAdapter);
-            Log.e("传的值",""+mHeaderDatas.get(0).getImg());
+            mRaiseRecycleAdapter = new HeaderRecycleAdapter(mContext,mHeaderDatas);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext,3);
+            holder.raiseRV.setLayoutManager(gridLayoutManager);
+            holder.raiseRV.setAdapter(mRaiseRecycleAdapter);
+//            Log.e("传的值",""+mHeaderDatas.get(0).getImg());
+            //热门品牌点击监听事件
+            mRaiseRecycleAdapter.setOnItemClickLitener(new HeaderRecycleAdapter.OnItemClickLitener() {
+                @Override
+                public void onItemClick(View view,final int position) {
+                    Toast.makeText(mContext,mHeaderDatas.get(position).getName().toString()+"", Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
         }else {
             holder.cellHeader.setVisibility(View.GONE);
             holder.cell.setVisibility(View.VISIBLE);
             final BrandBean cityBean = mDatas.get(position);
             holder.tvCity.setText(cityBean.getCity());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, "pos:" + position, Toast.LENGTH_SHORT).show();
-                }
-            });
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(mContext, "pos:" + position, Toast.LENGTH_SHORT).show();
+//                }
+//            });
         }
     }
 

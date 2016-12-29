@@ -570,7 +570,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 // TODO Auto-generated method stub
                 if (key.toString().equals(arg0)) {
                     // 上传成功！
-                    String url = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
+                    String url = arg0;
                     urlList.add(url);
                     if (number < 8) {
                         number += 1;
@@ -647,13 +647,20 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         JSONArray jsonArray1 = new JSONArray();
         for (int i = 0; i < urlList.size(); i++) {
             String li = urlList.get(i);
-            JSONObject jsonObjects = new JSONObject();
+//            JSONArray picArray = new JSONArray();
+//            picArray.put(li);
             try {
-                jsonObjects.put("image", li);
-                jsonArray1.put(i, jsonObjects);
+                jsonArray1.put(i,li);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+//            JSONObject jsonObjects = new JSONObject();
+//            try {
+//                jsonObjects.put("image", li);
+//                jsonArray1.put(i, jsonObjects);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         }
         // 附件
         JSONObject jsonObject = new JSONObject();

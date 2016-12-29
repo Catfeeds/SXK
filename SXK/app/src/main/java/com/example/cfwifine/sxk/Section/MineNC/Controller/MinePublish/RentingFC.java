@@ -49,7 +49,7 @@ public class RentingFC extends Fragment {
                              Bundle savedInstanceState) {
 
         if (view == null){
-            view = inflater.inflate(R.layout.wait_pass_fc, container, false);
+            view = inflater.inflate(R.layout.renting_fc, container, false);
             mineItemAC = (MineItemAC) getActivity();
             initMineData(3,1,10);
 
@@ -174,21 +174,21 @@ public class RentingFC extends Fragment {
                         Log.e("我的发布", "" + response);
                         mineItemAC.dialog.dismiss();
                         Gson gson = new Gson();
-                        if (status == 1) {
+                        if (status == 3) {
                             // 审核中
-                            MinePublishShenHeModel minePublishShenHeModel = gson.fromJson(response, MinePublishShenHeModel.class);
-                            if (minePublishShenHeModel.getCode() == 1) {
-                                rentListDataSouce = minePublishShenHeModel.getRentList();
-                                initSheHeRV();
+//                             mineRentingListAdapter = gson.fromJson(response, MineRentingListAdapter.class);
+//                            if (minePublishShenHeModel.getCode() == 1) {
+//                                rentListDataSouce = minePublishShenHeModel.getRentList();
+//                                initSheHeRV();
 //                                LogUtil.e("审核数据的大小"+rentListDataSouce.size());
 //                                initView();
 //                                adapter.flushData(rentListDataSouce);
 //                                adapter.notifyDataSetChanged();
-                            } else if (minePublishShenHeModel.getCode() == 0) {
-                                mineItemAC.initSnackBar("请求失败！");
-                            } else if (minePublishShenHeModel.getCode() == 911) {
-                                mineItemAC.initSnackBar("登录超时，请重新登录");
-                            }
+//                            } else if (minePublishShenHeModel.getCode() == 0) {
+//                                mineItemAC.initSnackBar("请求失败！");
+//                            } else if (minePublishShenHeModel.getCode() == 911) {
+//                                mineItemAC.initSnackBar("登录超时，请重新登录");
+//                            }
 
                         }
 

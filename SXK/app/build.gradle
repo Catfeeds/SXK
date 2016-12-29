@@ -7,7 +7,7 @@ android {
         applicationId "com.example.cfwifine.sxk"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -51,4 +51,10 @@ dependencies {
     compile 'com.flyco.roundview:FlycoRoundView_Lib:1.1.2@aar'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:1.5.0@aar'
     compile 'com.nshmura:recyclertablayout:1.1.0'
+
+    // 支付
+    compile 'com.pingxx:pingpp-core:2.1.+'//必须添加
+    compile 'com.pingxx:pingpp-alipay:2.1.+'//使用支付宝时添加
+    compile 'com.pingxx:pingpp-upacp:2.1.+'//使用银联支付时添加
+    compile 'com.pingxx:pingpp-wxpay:2.1.+'//使用微信支付时添加
 }

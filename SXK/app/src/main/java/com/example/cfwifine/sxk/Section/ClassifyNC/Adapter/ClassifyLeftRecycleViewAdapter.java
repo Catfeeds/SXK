@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
-import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemActivityRecycleAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
@@ -20,13 +19,13 @@ public class ClassifyLeftRecycleViewAdapter extends RecyclerView.Adapter<Classif
     public List<ClassifyCateModel.CategoryListBean> datas = null;
     public ArrayList<TestModel> dataStatues = null;
 
-    private ClassifyLeftRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
         void OnItemClick(View view, int categoryid, int position);
     }
 
-    public void setOnItemClickListener(ClassifyLeftRecycleViewAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 

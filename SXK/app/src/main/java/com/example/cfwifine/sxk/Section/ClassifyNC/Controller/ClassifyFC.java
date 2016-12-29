@@ -1,9 +1,11 @@
 package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,19 +16,25 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.AC.CateListAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyBrandListAdapter;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyCateListAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyLeftRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RentListModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.SecondCateModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.DividerItemDecoration;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.HeaderRecyclerAndFooterWrapperAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -51,9 +59,9 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
     View view;
     RecyclerView leftRecycleView, rightRecycleView;
-    List<ClassifyCateModel.CategoryListBean> datalist;
+    List<ClassifyCateModel.CategoryListBean> datalist = new ArrayList<>();
+    ;
     ArrayList<TestModel> dataListStatue;
-
     MyGridView myGridView;
 
     // 配置右侧indexbar
@@ -74,11 +82,13 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
     //    RelativeLayout relativeLayout ;
     List<ClassfiyBrandModel.BrandListBean> brandNameList;
     List<ClassfiyHotBrandModel.HotListBean> hotBrandList;
+    List<RentListModel.RentListBean> rentList;
     private TextView classify_reonline_text;
     private LinearLayout classify_nonet_view;
     private LinearLayout classify_online_view;
     private ImageView classify_cate_header_pic;
     private RecyclerView classify_cate_rv;
+    private List<SecondCateModel.CategoryListBean> secondDataSource = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +106,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
             configurationNaviTitle();
             initData(0, -1);
             initleftRecycleView();
-
             initBrandHotList();
             initView();
 
@@ -126,7 +135,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         classify_cate_header_pic = (ImageView) view.findViewById(R.id.classify_cate_header_pic);
         classify_cate_header_pic.setOnClickListener(this);
         classify_cate_rv = (RecyclerView) view.findViewById(R.id.classify_cate_rv);
-        classify_cate_rv.setOnClickListener(this);
     }
 
     /**
@@ -138,7 +146,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
          * 初始化左侧的list
          */
         dataListStatue = new ArrayList<>();
-        datalist = new ArrayList<>();
+//        datalist = new ArrayList<>();
         JSONObject order = new JSONObject();
         try {
             order.put("sort", -1);
@@ -174,9 +182,11 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                         Log.e("左侧一级品牌", "" + response);
                         Gson gson = new Gson();
                         ClassifyCateModel cateModel = gson.fromJson(response, ClassifyCateModel.class);
+//                        ClassifyBigImgModel bigImgModel = gson.fromJson(response,ClassifyBigImgModel.class);
                         if (cateModel.getCode() == 1) {
                             if (value == 0) {
                                 datalist = cateModel.getCategoryList();
+
                                 for (int i = 0; i < cateModel.getTotal() + 1; i++) {
                                     if (i == 0) {
                                         TestModel testModel = new TestModel("品牌" + i, true);
@@ -189,6 +199,20 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                                 initleftRecycleView();
                             } else {
                                 LogUtil.e("二级分类" + response);
+                                secondDataSource = new ArrayList<SecondCateModel.CategoryListBean>();
+                                Gson gson1 = new Gson();
+                                SecondCateModel secondCateModel = gson1.fromJson(response, SecondCateModel.class);
+                                if (secondCateModel.getCode() == 1) {
+                                    secondDataSource = secondCateModel.getCategoryList();
+//                                    if (pos ==1) {
+                                    initAllCateList();
+//                                    }
+                                } else if (secondCateModel.getCode() == 0) {
+
+                                } else if (secondCateModel.getCode() == 911) {
+
+                                }
+
 //                                if (!datalist.get(pos - 1).equals("")&&pos>=1) {
 //                                     分类的header图片
 //                                    String headerPic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + datalist.get(pos - 1).getImg();
@@ -231,17 +255,17 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         leftRecycleView.setLayoutManager(linearLayoutManager);
         ClassifyLeftRecycleViewAdapter classifyLeftRecycleViewAdapter = new ClassifyLeftRecycleViewAdapter(datalist, dataListStatue);
         leftRecycleView.setAdapter(classifyLeftRecycleViewAdapter);
-        leftRecycleView.addOnItemTouchListener(new RecycleViewListener(leftRecycleView, new RecycleViewListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        }));
+//        leftRecycleView.addOnItemTouchListener(new RecycleViewListener(leftRecycleView, new RecycleViewListener.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//
+//            }
+//
+//            @Override
+//            public void onItemLongClick(View view, int position) {
+//
+//            }
+//        }));
         classifyLeftRecycleViewAdapter.setOnItemClickListener(new ClassifyLeftRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View views, int categoryid, int position) {
@@ -254,7 +278,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                     LogUtil.e("position" + position);
                     LogUtil.e("categoryid" + categoryid);
 
-                    initData(categoryid,position);
+                    initData(categoryid, position);
 
 
                 }
@@ -290,23 +314,35 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
 //        rightRecycleView.setAdapter(mHeaderAdapter);
 //        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas).setHeaderViewCount(mHeaderAdapter.getHeaderViewCount()));
-
-        rightRecycleView.setAdapter(mAdapter);
-        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas));
+//        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(), mDatas));
+        rightRecycleView.addItemDecoration(mDecoration = new TitleItemDecoration(getActivity(),mDatas));
         mDecoration.setColorTitleBg(Color.WHITE);
         mDecoration.setmTitleHeight(128);
         //如果add两个，那么按照先后顺序，依次渲染。
         //mRv.addItemDecoration(new TitleItemDecoration2(this,mDatas));
         rightRecycleView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        rightRecycleView.setAdapter(mAdapter);
+//        mAdapter.setOnItemClickLitener(new ClassifyBrandListAdapter.OnItemClickLitener() {
+//            @Override
+//            public void onItemClick(HeaderRecycleAdapter mheaderAdapter,final List<ClassfiyHotBrandModel.HotListBean> mHeaderDatas) {
+//                mheaderAdapter.setOnItemClickLitener(new HeaderRecycleAdapter.OnItemClickLitener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        Toast.makeText(getActivity(), mHeaderDatas.get(position).getName().toString()+"", Toast.LENGTH_SHORT).show();
+//                        Log.e("品牌名称=====: ",mHeaderDatas.get(position).getName().toString()+"");
+//                    }
+//                });
+//            }
+//        });
 
-        // 重写点击事件方法
+
+        // 重写点击事件方法（全部品牌列表）
         rightRecycleView.addOnItemTouchListener(new RecycleViewListener(rightRecycleView, new RecycleViewListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 if (position != 0) {
-                    SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "选中了" + mDatas.get(position - 1).getCity(), Color.WHITE, Color.parseColor("#16a6ae"));
-                } else {
-                    SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "点击了header", Color.WHITE, Color.parseColor("#16a6ae"));
+////                    SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "选中了" + mDatas.get(position).getCity(), Color.WHITE, Color.parseColor("#16a6ae"));
+                    Toast.makeText(getContext(), mDatas.get(position).getCity() + "", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -320,6 +356,10 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         //使用indexBar
         mTvSideBarHint = (TextView) view.findViewById(R.id.tvSideBarHint);//HintTextView
         mIndexBar = (IndexBar) view.findViewById(R.id.indexBar);//IndexBar
+
+//        initDatas(getResources().getStringArray(R.array.provinces));
+//        initBrandList();
+//        initBrandHotList();
         initDatas(brandListArray);
     }
 
@@ -395,7 +435,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("所有的品牌", "" + response);
+                        Log.e("品牌1", "" + response);
                         Gson gson = new Gson();
                         ClassfiyBrandModel brandListData = gson.fromJson(response, ClassfiyBrandModel.class);
                         if (brandListData.getCode() == 1) {
@@ -419,7 +459,36 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                 });
     }
 
-    // TODO*********************************配置右侧recycleviewHot数据********************************
+
+    // TODO********************************配置右侧recycleviewHot数据********************************
+    //加载右边包袋列表
+    private void initAllCateList() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        classify_cate_rv.setLayoutManager(gridLayoutManager);
+        ClassifyCateListAdapter adapter = new ClassifyCateListAdapter(getActivity(), secondDataSource);
+        classify_cate_rv.setAdapter(adapter);
+        adapter.setOnItemClickLitener(new ClassifyCateListAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(), secondDataSource.get(position).getName().toString() + "", Toast.LENGTH_SHORT).show();
+                //跳转到详细列表界面
+                Intent intent = new Intent(getContext(), CateListAC.class);
+                startActivity(intent);
+            }
+
+
+        });
+//        classify_cate_header_pic.setImageResource();
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+datalist.get(1).getImg();
+        Glide.with(getActivity())
+                .load(picUrl)
+                .centerCrop()
+                .placeholder(R.drawable.home_placeholder)
+                .crossFade()
+                .into(classify_cate_header_pic);
+
+    }
+
     private void initBrandHotList() {
         JSONObject order = new JSONObject();
         try {

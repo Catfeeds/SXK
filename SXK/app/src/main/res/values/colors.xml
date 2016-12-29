@@ -173,6 +173,8 @@
     <color name="raise">#5f9bbd</color>
     // 80%透明度
     <color name="alp">#FF3c3c3c</color>
-
-
+    <color name="bababa">#bababa</color>
+    <color name="mn">#1c1c1c</color>
+    <color name="transparency">#b3ffffff</color><!-- 纯白70%透明度 -->
+    <color name="marketvalue">#666666</color>
 </resources>
