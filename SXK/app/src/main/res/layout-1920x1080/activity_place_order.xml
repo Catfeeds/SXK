@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.AC.PlaceOrderAC">
+    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.PlaceOrderAC">
 
     <include layout="@layout/classify_title_place_order" />
 

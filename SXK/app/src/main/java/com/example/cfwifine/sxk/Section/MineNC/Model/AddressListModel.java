@@ -8,10 +8,11 @@ import java.util.List;
 
 public class AddressListModel {
 
+
     /**
      * code : 1
-     * total : 1
-     * receiverList : [{"userid":4,"name":"杨伟康","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":3,"createtime":1480931696,"updatetime":1480931696},{"userid":4,"name":"杨伟康","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":4,"createtime":1480932170,"updatetime":1480932170},{"userid":4,"name":"杨伟康","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":5,"createtime":1480950875,"updatetime":1480950875},{"userid":4,"name":"杨伟康","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":6,"createtime":1480955124,"updatetime":1480955124},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":7,"createtime":1480987562,"updatetime":1480987562},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":8,"createtime":1480987562,"updatetime":1480987562},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":9,"createtime":1480987562,"updatetime":1480987562},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":10,"createtime":1480987562,"updatetime":1480987562},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":11,"createtime":1480987562,"updatetime":1480987562},{"userid":4,"name":"曹操","mobile":"15659568279","state":"福建省","city":"厦门市","district":"思明区","address":"软件园二期","receiverid":12,"createtime":1480987563,"updatetime":1480987563}]
+     * total : 5
+     * receiverList : [{"userid":10,"name":"就冷了","mobile":"15559910895","state":"安徽省","city":"安庆市","district":"枞阳县","address":"KKK摸摸摸","receiverid":111,"createtime":1481172865,"updatetime":1481172865,"isdefault":0},{"userid":10,"name":"王宇","mobile":"14444444444","state":"河南省","city":"安阳市","district":"安阳县","address":"来咯哦恶露TMD","receiverid":110,"createtime":1481167773,"updatetime":1481174368,"isdefault":0},{"userid":10,"name":"李琦就","mobile":"15536610985","state":"安徽省","city":"安庆市","district":"宜秀区","address":"来咯兔子","receiverid":109,"createtime":1481167215,"updatetime":1483086603,"isdefault":0},{"userid":10,"name":"李琦","mobile":"15539910985","state":"河南省","city":"郑州市","district":"管城区","address":"来咯哦哦monkKKK","receiverid":104,"createtime":1481111043,"updatetime":1481111043,"isdefault":0},{"userid":10,"name":"董证","mobile":"15539910985","state":"河南省","city":"郑州市","district":"管城区","address":"好个咯啦咯啦咯","receiverid":83,"createtime":1481086071,"updatetime":1481086071,"isdefault":0}]
      */
 
     private int code;
@@ -44,16 +45,17 @@ public class AddressListModel {
 
     public static class ReceiverListBean {
         /**
-         * userid : 4
-         * name : 杨伟康
-         * mobile : 15659568279
-         * state : 福建省
-         * city : 厦门市
-         * district : 思明区
-         * address : 软件园二期
-         * receiverid : 3
-         * createtime : 1480931696
-         * updatetime : 1480931696
+         * userid : 10
+         * name : 就冷了
+         * mobile : 15559910895
+         * state : 安徽省
+         * city : 安庆市
+         * district : 枞阳县
+         * address : KKK摸摸摸
+         * receiverid : 111
+         * createtime : 1481172865
+         * updatetime : 1481172865
+         * isdefault : 0
          */
 
         private int userid;
@@ -66,6 +68,7 @@ public class AddressListModel {
         private int receiverid;
         private int createtime;
         private int updatetime;
+        private int isdefault;
 
         public int getUserid() {
             return userid;
@@ -145,6 +148,14 @@ public class AddressListModel {
 
         public void setUpdatetime(int updatetime) {
             this.updatetime = updatetime;
+        }
+
+        public int getIsdefault() {
+            return isdefault;
+        }
+
+        public void setIsdefault(int isdefault) {
+            this.isdefault = isdefault;
         }
     }
 }

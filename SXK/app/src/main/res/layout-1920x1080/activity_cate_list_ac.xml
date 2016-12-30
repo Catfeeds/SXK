@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.AC.CateListAC">
+    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.CateListAC">
     <!--头部-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,10 +33,10 @@
             android:textSize="16sp"/>
     </RelativeLayout>
     <!--头部-->
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/home_bg"/>
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
     <!--导航-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                     android:layout_width="40dp"
                     android:layout_height="1dp"
                     android:layout_below="@+id/top1"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="8dp"
                     android:background="@color/login_turquoise"/>
                 <LinearLayout
                     android:id="@+id/top1"
@@ -92,25 +92,25 @@
                         <ImageView
                             android:id="@+id/up1"
                             android:visibility="gone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up11"
                             android:src="@drawable/huishang"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"/>
                         <ImageView
                             android:id="@+id/dn11"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:src="@drawable/lanxia"
                             android:layout_marginTop="1dp"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -154,25 +154,25 @@
                         <ImageView
                             android:id="@+id/up2"
                             android:visibility="gone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up22"
                             android:src="@drawable/huishang"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"/>
                         <ImageView
                             android:id="@+id/dn22"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:src="@drawable/lanxia"
                             android:layout_marginTop="1dp"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -183,7 +183,7 @@
                     android:layout_height="1dp"
                     android:visibility="invisible"
                     android:layout_below="@+id/top2"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="8dp"
                     android:background="@color/login_turquoise"/>
             </RelativeLayout>
         </LinearLayout>
@@ -226,8 +226,8 @@
                         <ImageView
                             android:id="@+id/up3"
                             android:visibility="gone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up33"
@@ -236,15 +236,15 @@
                             android:layout_height="wrap_content"/>
                         <ImageView
                             android:id="@+id/dn33"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxia"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -254,7 +254,7 @@
                     android:layout_width="40dp"
                     android:layout_height="1dp"
                     android:layout_below="@+id/top3"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="8dp"
                     android:visibility="invisible"
 
                     android:background="@color/login_turquoise"/>
@@ -263,11 +263,22 @@
     </LinearLayout>
 
     <!--列表-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/catelistRecyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/catelistRecyclerview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:overScrollMode="never">-->
 
-    </android.support.v7.widget.RecyclerView>
+    <!--</android.support.v7.widget.RecyclerView>-->
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <me.fangx.haorefresh.HaoRecyclerView
+            android:id="@+id/hao_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

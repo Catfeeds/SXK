@@ -185,18 +185,19 @@
             android:theme="@style/AppThemeHasTitle"></activity>
 
         <activity
-            android:name=".Section.ClassifyNC.AC.CateListAC"
+            android:name=".Section.ClassifyNC.Controller.CateListAC"
             android:theme="@style/AppThemeHasTitle">
         </activity>
         <activity
-            android:name=".Section.ClassifyNC.AC.ProductDetailsAC"
+            android:name=".Section.ClassifyNC.Controller.ProductDetailsAC"
             android:theme="@style/AppThemeHasTitle">
         </activity>
-        <activity android:name=".Section.ClassifyNC.AC.PlaceOrderAC"
+        <activity android:name=".Section.ClassifyNC.Controller.PlaceOrderAC"
             android:theme="@style/AppThemeHasTitle">
         </activity>
 
 
+        // 支付页面
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"

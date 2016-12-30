@@ -50,6 +50,15 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
+        if (data.get(position).getIsdefault()==1){
+            holder.check.setImageResource(R.drawable.check_ok);
+        }else {
+            holder.check.setImageResource(R.drawable.check_circle);
+        }
+
+
+
         holder.username.setText(data.get(position).getName());
         holder.phonenumber.setText(data.get(position).getMobile());
         holder.address.setText(data.get(position).getAddress());
@@ -73,6 +82,14 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
                 mClickListener.delete(view,data.get(position).getReceiverid());
             }
         });
+        // 点击修改地址
+        holder.changeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mClickListener.changeAddress(view,position,data.get(position).getReceiverid());
+            }
+        });
+
 
     }
 
@@ -91,7 +108,8 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
         public TextView phonenumber;
         public TextView address;
         LinearLayout delete,edit;
-
+        ImageView check;
+        RelativeLayout changeAddress;
         public ViewHolder(View view) {
             super(view);
             username = (TextView)view.findViewById(R.id.address_user);
@@ -99,6 +117,8 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
             address = (TextView)view.findViewById(R.id.address_useraddress);
             edit = (LinearLayout)view.findViewById(R.id.address_edit);
             delete = (LinearLayout)view.findViewById(R.id.address_delete);
+            check = (ImageView) view.findViewById(R.id.address_picture);
+            changeAddress = (RelativeLayout)view.findViewById(R.id.address_change_address);
         }
     }
     public void mEditOnClickListener(MyClickOnListener listener){

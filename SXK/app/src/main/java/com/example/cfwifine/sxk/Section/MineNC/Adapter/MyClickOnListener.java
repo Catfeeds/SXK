@@ -9,4 +9,5 @@ import android.view.View;
 public interface MyClickOnListener {
     void edit(View view, int position);
     void delete(View view, int position);
+    void changeAddress(View view, int position,int receivedid);
 }

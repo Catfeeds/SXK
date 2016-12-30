@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.ClassifyNC.AC;
+package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;

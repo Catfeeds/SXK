@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.AddressSettingRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MyClickOnListener;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressListModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -61,11 +65,12 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
     int pageNum = 10;
     private ImageView img_float;
     ArrayList<Integer> receiveList = new ArrayList<Integer>();
-
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_setting_commom_ac);
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
         initView();
         configurationNaviTitle();
         getListData(pageNo, pageSize);
@@ -156,23 +161,6 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
 //        getListData();
         mAdapter = new AddressSettingRecycleViewAdapter(data);
         hao_recycleview.setAdapter(mAdapter);
-
-
-        hao_recycleview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(AddressSettingCommomAC.this, "click-----position" + i, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        hao_recycleview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(AddressSettingCommomAC.this, "long click------position" + i, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
         // 获取收货地址id
         for (int i = 0; i<data.size();i++){
             int rece = data.get(i).getReceiverid();
@@ -195,9 +183,95 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                  */
                 deleteGoodsByReceiveID(position);
             }
+
+            @Override
+            public void changeAddress(View view, int position,int receivedid) {
+                /**
+                 * 修改默认地址
+                 */
+                changeReceiveGoodsAddress(position,data.get(position).getReceiverid());
+
+            }
         });
 
     }
+
+    /**
+     * 修改收货地址
+     * @param
+     * @param position
+     */
+    private void changeReceiveGoodsAddress(final int position, final int receiverid) {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("receiverid",receiverid);
+            js.put("isdefault",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHPSESSION, ""));
+        /**
+         * 发送报头的时候PHPSESSIONID是作为Cookie发送的，不然无法验证！！！！！！
+         */
+        OkHttpUtils.postString().url(BaseInterface.SettingUpdateReceiveGoods)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("修改", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            for (int i = 0; i<data.size();i++){
+                                if (data.get(i).getReceiverid() == receiverid){
+                                    data.get(i).setIsdefault(1);
+                                }else {
+                                    data.get(i).setIsdefault(0);
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功！", Color.WHITE, Color.parseColor("#16a6ae"));
+
+                        } else if (requestStatueModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+
+
+//                        moviesList bean = gson.fromJson(response,moviesList.class);
+//
+//                        Log.e("gson解析出来的头部",""+ bean.getData().get(0).getDuration());
+//                        List<moviesList.DataBean> data = bean.getData();
+//                        for (int i = 0; i<data.size();i ++){
+//                            List<moviesList.DataBean.CatesBean> catesBeen = data.get(i).getCates();
+//                            String app_fu_title = data.get(i).getApp_fu_title();
+//                            Log.e("",""+app_fu_title);
+//                            for (int j= 0; j < catesBeen.size();j++){
+//                                String catename = catesBeen.get(j).getCatename();
+//                                Log.e("",""+catename);
+//                            }
+//                        }
+//
+
+
+                    }
+                });
+
+    }
+
     // TODO****************************************编辑********************************************
     private void editGoodsByPositon(int position){
         startActivity(AddressDetailAC.class,position);
@@ -277,7 +351,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("返回值", "" + response);
+                        Log.e("地址列表", "" + response);
                         Gson gson = new Gson();
                         addressListModel = gson.fromJson(response, AddressListModel.class);
                         if (addressListModel.getCode() == 1) {

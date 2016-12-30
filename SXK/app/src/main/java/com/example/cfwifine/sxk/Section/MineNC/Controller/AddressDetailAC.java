@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller;
 
+import android.app.Dialog;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.mo
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.service.XmlParserHandler;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_AddressSelector;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -82,11 +84,13 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
     AddressDetailModel.ReceiverBean dataSource = null;
     Integer EditViewValue;
     private TextView add_address_address;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_detail_ac);
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
         initData();
         initView();
         // 判断是谁传过来的值
@@ -278,6 +282,7 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
 
     // TODO****************************************获取详细地址********************************************
     private void getGoodsByReceiveID(Integer receiverid) {
+        dialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("receiverid", receiverid);
@@ -294,15 +299,16 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        dialog.dismiss();
                         Gson gson = new Gson();
                         AddressDetailModel addressDetailModel = gson.fromJson(response, AddressDetailModel.class);
                         if (addressDetailModel.getCode() == 1) {
-//                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "删除成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             L.e("详细信息" + response);
                             dataSource = addressDetailModel.getReceiver();
                             setDetailValueForView(dataSource);

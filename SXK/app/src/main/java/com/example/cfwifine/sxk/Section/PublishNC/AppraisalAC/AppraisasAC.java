@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.CheckRecycleViewAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishBrandAC;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AppraisasCheckRecycleViewAdapter;
@@ -64,6 +65,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
     private int BRANDID;
     private String BRANDNAME;
     private TextView appraisal_total_money;
+    private LinearLayout appraisal_selected_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,8 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         initRecycleData();
         appraisal_total_money = (TextView) findViewById(R.id.appraisal_total_money);
         appraisal_total_money.setOnClickListener(this);
+        appraisal_selected_address = (LinearLayout) findViewById(R.id.appraisal_selected_address);
+        appraisal_selected_address.setOnClickListener(this);
     }
 
     private void initRecycleView() {
@@ -193,7 +197,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
             appraisal_txt.setText(appraisaCate);
             for (int i = 0; i < appraisalModel.getGenreList().size(); i++) {
                 if (appraisaCate.trim().equals(appraisalModel.getGenreList().get(i).getName())) {
-                    appraisal_total_money.setText("¥ "+String.valueOf(appraisalModel.getGenreList().get(i).getPrice()));
+                    appraisal_total_money.setText("¥ " + String.valueOf(appraisalModel.getGenreList().get(i).getPrice()));
                 }
             }
 
@@ -239,6 +243,10 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
             case R.id.appraisal_brand:
                 Intent intent = new Intent(this, PublishBrandAC.class);
                 startActivity(intent);
+                break;
+            case R.id.appraisal_selected_address:
+                Intent intent1 = new Intent(this, AddressSettingCommomAC.class);
+                startActivity(intent1);
                 break;
             default:
                 break;

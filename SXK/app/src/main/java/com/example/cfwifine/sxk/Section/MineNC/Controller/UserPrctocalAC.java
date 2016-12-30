@@ -117,8 +117,26 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
         webSettings.setSupportZoom(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         try {
-            String data = userProtocalModel.getSetup().getContent().toString();
-            text.loadDataWithBaseURL("about：blank", data, mimeType,
+
+            String s =  "<html> \n"+
+                    "<head> \n"+
+                    "<style type=\"text/css\"> \n"+
+                    "body {font-size:30px;}\n"+
+                    "</style> \n"+
+                    "</head> \n"+
+                    "<body>"+
+                    "<script type='text/javascript'>"+
+                    "window.onload = function(){\n"+
+                    "var $img = document.getElementsByTagName('img');\n"+
+                    "for(var p in  $img){\n"+
+                    " $img[p].style.width = '100%%';\n"+
+                    "$img[p].style.height ='auto'\n"+
+                    "}\n"+
+                    "}"+
+                    "</script>"+userProtocalModel.getSetup().getContent().toString()+
+                    "</body>"+
+                    "</html>";
+            text.loadDataWithBaseURL("about：blank", s, mimeType,
                     encoding, "");
         } catch (Exception ex) {
             ex.printStackTrace();

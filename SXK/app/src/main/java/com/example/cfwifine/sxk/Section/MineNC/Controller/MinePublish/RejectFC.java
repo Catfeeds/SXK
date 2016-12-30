@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
+import com.example.cfwifine.sxk.Section.MineNC.Model.MineItemNoPassModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -36,7 +37,7 @@ public class RejectFC extends Fragment {
     private SwipeRefreshLayout swiperefresh;
     private HaoRecyclerView hao_recycleview;
     private MineNoPassListAdapter mSheHeAdapter;
-    private List<MinePublishShenHeModel.RentListBean> rentListDataSouce;
+    private List<MineItemNoPassModel.RentListBean> rentListDataSouce;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class RejectFC extends Fragment {
                              Bundle savedInstanceState) {
 
         if (view == null){
-            view = inflater.inflate(R.layout.wait_pass_fc, container, false);
+            view = inflater.inflate(R.layout.no_pass_fc, container, false);
             mineItemAC = (MineItemAC) getActivity();
             initMineData(5,1,10);
 
@@ -171,22 +172,22 @@ public class RejectFC extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("我的发布", "" + response);
+                        Log.e("我的发布-未通过", "" + response);
                         mineItemAC.dialog.dismiss();
                         Gson gson = new Gson();
-                        if (status == 1) {
+                        if (status == 5) {
                             // 审核中
-                            MinePublishShenHeModel minePublishShenHeModel = gson.fromJson(response, MinePublishShenHeModel.class);
-                            if (minePublishShenHeModel.getCode() == 1) {
-                                rentListDataSouce = minePublishShenHeModel.getRentList();
+                            MineItemNoPassModel mineItemNoPassModel = gson.fromJson(response, MineItemNoPassModel.class);
+                            if (mineItemNoPassModel.getCode() == 1) {
+                                rentListDataSouce = mineItemNoPassModel.getRentList();
                                 initSheHeRV();
 //                                LogUtil.e("审核数据的大小"+rentListDataSouce.size());
 //                                initView();
 //                                adapter.flushData(rentListDataSouce);
 //                                adapter.notifyDataSetChanged();
-                            } else if (minePublishShenHeModel.getCode() == 0) {
+                            } else if (mineItemNoPassModel.getCode() == 0) {
                                 mineItemAC.initSnackBar("请求失败！");
-                            } else if (minePublishShenHeModel.getCode() == 911) {
+                            } else if (mineItemNoPassModel.getCode() == 911) {
                                 mineItemAC.initSnackBar("登录超时，请重新登录");
                             }
 

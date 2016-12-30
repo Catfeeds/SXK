@@ -1,18 +1,17 @@
-package com.example.cfwifine.sxk.Section.PublishNC.Model;
+package com.example.cfwifine.sxk.Section.MineNC.Model;
 
 import java.util.List;
 
 /**
- * Created by cfwifine on 16/12/27.
+ * Created by cfwifine on 16/12/30.
  */
 
-public class MinePublishShenHeModel {
-
+public class MineItemNoPassModel {
 
     /**
      * code : 1
-     * total : 1
-     * rentList : [{"userid":10,"name":"dzz","imgList":["sxk_userPic_201612291132220","sxk_userPic_201612291132231","sxk_userPic_201612291132232","sxk_userPic_201612291132233","sxk_userPic_201612291132244","sxk_userPic_201612291132245","sxk_userPic_201612291132256","sxk_userPic_201612291132257","sxk_userPic_201612291132258"],"keyword":"啊KKK啦now","description":"dzzz","counterPrice":1000,"categoryid":3,"color":"就冷了","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["盒子","发票"]}],"commentList":[],"sale":0,"sort":0,"status":1,"rentid":29,"createtime":1482982346,"updatetime":1482982346}]
+     * total : 2
+     * rentList : [{"userid":10,"name":"黯然报名","imgList":["sxk_userPic_201612301425500","sxk_userPic_201612301425521","sxk_userPic_201612301425532","sxk_userPic_201612301425543","sxk_userPic_201612301425554","sxk_userPic_201612301425565","sxk_userPic_201612301425566","sxk_userPic_201612301425577","sxk_userPic_201612301426008"],"keyword":"啦啦叫我","description":"Jack了分开","counterPrice":20000,"categoryid":3,"color":"红色","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":5,"rentid":39,"createtime":1483079161,"updatetime":1483079351},{"userid":10,"name":"啊模特","imgList":["sxk_userPic_201612301426140","sxk_userPic_201612301426141","sxk_userPic_201612301426152","sxk_userPic_201612301426163","sxk_userPic_201612301426184","sxk_userPic_201612301426205","sxk_userPic_201612301426206","sxk_userPic_201612301426217","sxk_userPic_201612301426238"],"keyword":"啦啦叫我","description":"Jack了分开","counterPrice":20000,"categoryid":3,"color":"红色","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":5,"rentid":40,"createtime":1483079184,"updatetime":1483079342}]
      */
 
     private int code;
@@ -46,23 +45,23 @@ public class MinePublishShenHeModel {
     public static class RentListBean {
         /**
          * userid : 10
-         * name : dzz
-         * imgList : ["sxk_userPic_201612291132220","sxk_userPic_201612291132231","sxk_userPic_201612291132232","sxk_userPic_201612291132233","sxk_userPic_201612291132244","sxk_userPic_201612291132245","sxk_userPic_201612291132256","sxk_userPic_201612291132257","sxk_userPic_201612291132258"]
-         * keyword : 啊KKK啦now
-         * description : dzzz
-         * counterPrice : 1000
+         * name : 黯然报名
+         * imgList : ["sxk_userPic_201612301425500","sxk_userPic_201612301425521","sxk_userPic_201612301425532","sxk_userPic_201612301425543","sxk_userPic_201612301425554","sxk_userPic_201612301425565","sxk_userPic_201612301425566","sxk_userPic_201612301425577","sxk_userPic_201612301426008"]
+         * keyword : 啦啦叫我
+         * description : Jack了分开
+         * counterPrice : 20000
          * categoryid : 3
-         * color : 就冷了
+         * color : 红色
          * condition : 4
          * crowd : 2
-         * attachList : [{"attributeName":"相关配件","attributeValueList":["盒子","发票"]}]
+         * attachList : [{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * commentList : []
          * sale : 0
          * sort : 0
-         * status : 1
-         * rentid : 29
-         * createtime : 1482982346
-         * updatetime : 1482982346
+         * status : 5
+         * rentid : 39
+         * createtime : 1483079161
+         * updatetime : 1483079351
          */
 
         private int userid;
@@ -80,7 +79,7 @@ public class MinePublishShenHeModel {
         private int rentid;
         private int createtime;
         private int updatetime;
-        private List<Object> imgList;
+        private List<String> imgList;
         private List<AttachListBean> attachList;
         private List<?> commentList;
 
@@ -204,11 +203,11 @@ public class MinePublishShenHeModel {
             this.updatetime = updatetime;
         }
 
-        public List<Object> getImgList() {
+        public List<String> getImgList() {
             return imgList;
         }
 
-        public void setImgList(List<Object> imgList) {
+        public void setImgList(List<String> imgList) {
             this.imgList = imgList;
         }
 
@@ -231,7 +230,7 @@ public class MinePublishShenHeModel {
         public static class AttachListBean {
             /**
              * attributeName : 相关配件
-             * attributeValueList : ["盒子","发票"]
+             * attributeValueList : ["保修卡","防尘袋"]
              */
 
             private String attributeName;

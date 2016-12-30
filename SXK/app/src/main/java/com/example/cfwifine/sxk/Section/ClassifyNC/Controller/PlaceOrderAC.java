@@ -1,11 +1,9 @@
-package com.example.cfwifine.sxk.Section.ClassifyNC.AC;
+package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -20,24 +18,16 @@ import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassifyCateModel;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.SecondCateModel;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
-import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
 import com.pingplusplus.android.PaymentActivity;
-import com.pingplusplus.android.Pingpp;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import okhttp3.Call;
 
@@ -197,7 +187,6 @@ public class PlaceOrderAC extends AppCompatActivity implements View.OnClickListe
 
 
     }
-    private static final String CHANNEL_ALIPAY = "alipay";
     private void initAlipay() {
 //        new PaymentTask().execute(new PaymentRequest(CHANNEL_ALIPAY));
 
@@ -208,53 +197,6 @@ public class PlaceOrderAC extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(PaymentActivity.EXTRA_CHARGE, datas.toString());
         startActivityForResult(intent, REQUEST_CODE_PAYMENT);
 
-    }
-    class PaymentTask extends AsyncTask<PaymentRequest, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            //按键点击之后的禁用，防止重复点击
-
-        }
-
-        @Override
-        protected String doInBackground(PaymentRequest... pr) {
-
-            PaymentRequest paymentRequest = pr[0];
-            String data = null;
-            String json = new Gson().toJson(paymentRequest);
-
-
-            data = datas;
-
-            return data;
-        }
-
-        /**
-         * 获得服务端的charge，调用ping++ sdk。
-         */
-        @Override
-        protected void onPostExecute(String data) {
-            if(null == data){
-                showMsg("请求出错", "请检查URL", "URL无法获取charge");
-                return;
-            }
-            Log.d("charge", data);
-//            Pingpp.createPayment(ClientSDKActivity.this, data);
-            //QQ钱包调起支付方式  “qwalletXXXXXXX”需与AndroidManifest.xml中的data值一致
-            //建议填写规则:qwallet + APP_ID
-            Pingpp.createPayment(PlaceOrderAC.this, data, "qwalletXXXXXXX");
-        }
-
-    }
-    class PaymentRequest {
-        String channel;
-        int amount;
-
-        public PaymentRequest(String channel) {
-            this.channel = channel;
-            this.amount = amount;
-        }
     }
 
     /**
@@ -295,6 +237,7 @@ public class PlaceOrderAC extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    // 生成订单的接口
     private void useAliPays() {
         JSONObject js = new JSONObject();
         try {
