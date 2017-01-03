@@ -1,10 +1,13 @@
 package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,11 +15,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class ProductDetailsAC extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,15 +63,58 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private TextView product_condition;//成色
     private TextView product_intended_for_person;//适用人群
     private TextView product_enclosure;//附件
+    private int RentID;
+    Dialog dialog;
+    private ProductDetailModel.RentBean rentDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details_ac);
+        RentID = getIntent().getIntExtra("RENTID",0);
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
         initView();
-        initBannerData();//初始化轮播图
     }
-
+    // 初始化商品详情
+    private void initDetailData() {
+        dialog.show();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("rentid",RentID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.GetRentDetail)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错!");
+                        dialog.dismiss();
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("获取租赁", "" + response);
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        ProductDetailModel productDetailModel = gson.fromJson(response,ProductDetailModel.class);
+                        if (productDetailModel.getCode() == 1) {
+                            SharedPreferencesUtils.setParam(ProductDetailsAC.this,"RENTDETAILMODEL",response.toString());
+                            rentDetail = productDetailModel.getRent();
+                            setValueForView();
+                        } else if (productDetailModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (productDetailModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
     private void initView() {
         product_details_share = (LinearLayout) findViewById(R.id.product_details_share);
         product_details_back = (LinearLayout) findViewById(R.id.product_details_back);
@@ -91,7 +150,21 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_condition = (TextView) findViewById(R.id.product_condition);
         product_intended_for_person = (TextView) findViewById(R.id.product_intended_for_person);
         product_enclosure = (TextView) findViewById(R.id.product_enclosure);
+
+        initDetailData();
+
     }
+    private void setValueForView() {
+        initBannerData();
+        product_name.setText(rentDetail.getName().toString());
+//        product_category.setText(rentDetail);
+
+    }
+
+
+
+
+
 
     // TODO ***************************************初始化轮播图**************************************
 
@@ -110,18 +183,10 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void initBannerData() {
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i3/2286172057/TB2ZR2NsFXXXXXaXFXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i4/2286172057/TB2tinRsFXXXXcAXpXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i1/2286172057/TB28SCjemiJ.eBjSszfXXa4bVXa_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i1/2286172057/TB2ghDdjFXXXXahXXXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i3/2286172057/TB20_98jFXXXXcrXXXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i4/2286172057/TB2QCm5jFXXXXcVXXXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i4/2286172057/TB2cmjhjFXXXXXTXXXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i3/2286172057/TB2VXvfjFXXXXaJXXXXXXXXXXXX_!!2286172057.jpg"));
-        urls.add(new Entity("https://img.alicdn.com/imgextra/i2/2286172057/TB2cezljFXXXXXnXXXXXXXXXXXX_!!2286172057.jpg"));
-
+        for (int i=0;i<rentDetail.getImgList().size();i++){
+            urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl +rentDetail.getImgList().get(i)));
+        }
         banner.setDatas(urls, now_num);
-
     }
 
     // TODO ***************************************商品评价初始化**************************************
@@ -129,7 +194,9 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_comment_list_rv.setLayoutManager(new LinearLayoutManager(this));
 
     }
-
+    public void initSnackBar(String value){
+        SnackbarUtils.showShortSnackbar(ProductDetailsAC.this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
 
 
     // TODO ***************************************点击监听方法**************************************
@@ -143,8 +210,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "分享到第三方", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.lease_btn:
-//                Toast.makeText(this, "租呗", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ProductDetailsAC.this,PlaceOrderAC.class);
+                Intent intent = new Intent(ProductDetailsAC.this,PayOrderAC.class);
                 startActivity(intent);
                 break;
             case R.id.bo_one:

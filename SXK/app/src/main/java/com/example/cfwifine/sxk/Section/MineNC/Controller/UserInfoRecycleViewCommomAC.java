@@ -134,7 +134,10 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
                 startActivity(PersonalIntroAndChangePswAC.class,4);
                 break;
             case 5:
-                startActivity(UserPrctocalAC.class,-1);
+                startActivity(UserPrctocalAC.class,222);
+                break;
+            case 6:
+                startActivity(UserPrctocalAC.class,111);
             default:
                 break;
         }

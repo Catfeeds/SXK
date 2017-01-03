@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -16,12 +14,13 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.AboutBoBeiModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserProtocalModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.example.cfwifine.sxk.Utils.XToast;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -61,7 +60,63 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         text = (WebView) findViewById(R.id.text);
         activity_user_prctocal_ac = (LinearLayout) findViewById(R.id.activity_user_prctocal_ac);
-        initUserAdviceView();
+
+        int value = getIntent().getIntExtra("SETJUMPPOSITION",0);
+        if (value == 111){
+            // 关于薄被
+            navi_title.setText("关于啵呗");
+            initAboutBoBei();
+        }else if (value == 222){
+            // 用户协议
+            navi_title.setText("用户协议");
+            initUserAdviceView();
+        }
+    }
+
+    /**
+     * 关于薄被
+     */
+    private void initAboutBoBei() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("setupid",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.AboutBOBEI)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        LogUtil.e("关于薄被" + response);
+                        Gson gson = new Gson();
+                        AboutBoBeiModel aboutBoBeiModel = gson.fromJson(response,AboutBoBeiModel.class);
+                        if (aboutBoBeiModel.getCode() == 1) {
+                            // 请求成功
+                            String abouts = aboutBoBeiModel.getSetup().getContent().toString();
+                            LogUtil.e("关于---"+aboutBoBeiModel.getCode());
+                            initContent(abouts);
+                        } else if (aboutBoBeiModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (aboutBoBeiModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+
+
     }
 
     private void initUserAdviceView() {
@@ -94,7 +149,8 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
                         userProtocalModel = gson.fromJson(response,UserProtocalModel.class);
                         if (userProtocalModel.getCode() == 1) {
                             // 请求成功
-                            initContent();
+                            String about = userProtocalModel.getSetup().getContent().toString();
+                            initContent(about);
                         } else if (userProtocalModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (userProtocalModel.getCode() == 911) {
@@ -107,8 +163,8 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
     final String mimeType = "text/html";
     final String encoding = "utf-8";
     @SuppressLint("NewApi")
-    private void initContent() {
-        navi_title.setText("用户协议");
+    private void initContent(String about) {
+
         WebSettings webSettings = text.getSettings();
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
@@ -133,7 +189,7 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
                     "$img[p].style.height ='auto'\n"+
                     "}\n"+
                     "}"+
-                    "</script>"+userProtocalModel.getSetup().getContent().toString()+
+                    "</script>"+about+
                     "</body>"+
                     "</html>";
             text.loadDataWithBaseURL("about：blank", s, mimeType,

@@ -50,7 +50,7 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
     }
 
     @Override
-    public void onBindViewHolder(final VH holder, int position) {
+    public void onBindViewHolder(final VH holder, final int position) {
 
         holder.mTitle.setText(rentList.get(position).getName()+"");
         holder.mComment.setText(rentList.get(position).getKeyword()+"");
@@ -72,7 +72,7 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickLintener.OnItemClick(holder.itemView,holder.getLayoutPosition());
+                    mOnItemClickLintener.OnItemClick(view,rentList.get(position).getRentid());
                 }
             });
         }

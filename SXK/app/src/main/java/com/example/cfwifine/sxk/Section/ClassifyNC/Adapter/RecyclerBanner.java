@@ -237,7 +237,7 @@ public class RecyclerBanner extends FrameLayout {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ImageView img = (ImageView) holder.itemView.findViewById(R.id.icon);
-            Glide.with(img.getContext()).load(datas.get(position % datas.size()).getUrl()).placeholder(R.drawable.home_placeholder).into(img);
+            Glide.with(img.getContext()).load(datas.get(position % datas.size()).getUrl()).animate(R.anim.glide_animal).into(img);
         }
 
         @Override

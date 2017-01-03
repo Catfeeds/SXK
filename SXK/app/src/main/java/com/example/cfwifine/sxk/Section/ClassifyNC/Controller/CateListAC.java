@@ -288,9 +288,9 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
         hao_recycleview.setAdapter(mClassiftAdapter);
         mClassiftAdapter.setOnItemClickLintener(new ClassifyAllListAdapter.OnItemClickLintener() {
             @Override
-            public void OnItemClick(View view, int position) {
-//                        Toast.makeText(CateListAC.this,"选择"+position, Toast.LENGTH_SHORT).show();
+            public void OnItemClick(View view, int rentid) {
                 Intent intent = new Intent(CateListAC.this,ProductDetailsAC.class);
+                intent.putExtra("RENTID",rentid);
                 startActivity(intent);
             }
         });

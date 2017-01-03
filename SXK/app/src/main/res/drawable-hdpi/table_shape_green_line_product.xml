@@ -13,7 +13,7 @@
     //控制边界线颜色和笔触大小
     <stroke
         android:width="0.5dp"
-        android:color="@color/bababa" />
+        android:color="@color/login_turquoise" />
 
     //控制界面颜色渐变（你这个用不到）
 

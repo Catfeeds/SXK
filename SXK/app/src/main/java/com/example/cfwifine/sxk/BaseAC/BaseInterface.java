@@ -84,12 +84,13 @@ public class BaseInterface {
     public static String GetCuring = root + "/app/maintain/getpost";
     // 获取中间设置
     public static String GetCenterSetting = root + "/app/identifysetup/getpost";
-
     // 租赁列表
     public static String RentList = root + "/app/rent/listpost";
-
     // 修改租赁
     public static String ChangeRent = root + "/app/rent/listpost";
+    // 获取租赁
+    public static String GetRentDetail = root + "/app/rent/getpost";
+
 
     // 删除租赁
     // 生成订单
@@ -101,6 +102,9 @@ public class BaseInterface {
     // 生成订单
     public static String CreateOrder = root + "/app/rentorder/addpost";
 
+
+    // 关于啵呗
+    public static String AboutBOBEI = root + "/app/aboutsetup/getpost";
 
 
 

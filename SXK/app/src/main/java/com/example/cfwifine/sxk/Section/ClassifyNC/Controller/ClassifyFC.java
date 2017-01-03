@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.example.cfwifine.sxk.Section.PublishNC.Adapter.HeaderRecyclerAndFoote
 import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.RecycleViewListener;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -88,6 +90,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
     private ImageView classify_cate_header_pic;
     private RecyclerView classify_cate_rv;
     private List<SecondCateModel.CategoryListBean> secondDataSource = null;
+    Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,7 +105,9 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_classify_fc, container, false);
+            dialog = LoadingUtils.createLoadingDialog(getActivity(),"加载中...");
             configurationNaviTitle();
+            dialog.show();
             initData(0, -1);
             initleftRecycleView();
             initBrandHotList();
@@ -428,6 +433,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        dialog.dismiss();
                         classify_online_view.setVisibility(View.GONE);
                         classify_nonet_view.setVisibility(View.VISIBLE);
                     }
@@ -435,6 +441,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("品牌1", "" + response);
+                        dialog.dismiss();
                         Gson gson = new Gson();
                         ClassfiyBrandModel brandListData = gson.fromJson(response, ClassfiyBrandModel.class);
                         if (brandListData.getCode() == 1) {
@@ -514,6 +521,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        dialog.dismiss();
                         classify_online_view.setVisibility(View.GONE);
                         classify_nonet_view.setVisibility(View.VISIBLE);
                     }
@@ -521,6 +529,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("热门品牌", "" + response);
+                        dialog.dismiss();
                         hotBrandList = new ArrayList<ClassfiyHotBrandModel.HotListBean>();
                         Gson gson = new Gson();
                         ClassfiyHotBrandModel hotBrandListData = gson.fromJson(response, ClassfiyHotBrandModel.class);

@@ -236,9 +236,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                     startActivity(intent);
                 } else {
                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "暂时还没有分类!", Color.WHITE, Color.parseColor("#16a6ae"));
-
                 }
-
                 break;
             case R.id.appraisal_brand:
                 Intent intent = new Intent(this, PublishBrandAC.class);

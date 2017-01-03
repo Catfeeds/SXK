@@ -26,6 +26,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="295dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/home_placeholder"/>
+                </LinearLayout>
                 <com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
@@ -63,7 +72,6 @@
                         android:textSize="12sp"/>
                 </LinearLayout>
 
-
             </RelativeLayout>
 
             <LinearLayout
@@ -90,7 +98,7 @@
                         android:id="@+id/product_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="11dp"
+                        android:layout_marginTop="5dp"
                         android:text="95新 经典款 办公休闲均可"
                         android:textColor="@color/textGray"
                         android:textSize="12sp"/>
@@ -98,7 +106,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="11dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal">
 
                         <TextView
