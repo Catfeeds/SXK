@@ -1,13 +1,17 @@
 package com.example.cfwifine.sxk.Section.CommunityNC.Controller;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.IntegerRes;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -348,7 +352,14 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 sheetView.dismiss();
-                choosePhotoFromCamera();
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //如果没有授权，则请求授权
+                    ActivityCompat.requestPermissions(CommunityPublishTopicAC.this, new String[]{Manifest.permission.CAMERA}, 733);
+                } else {
+                    //有授权，直接开启摄像头
+//                    takePhoto();
+                    choosePhotoFromCamera();
+                }
             }
         }).create();
         sheetView.show();

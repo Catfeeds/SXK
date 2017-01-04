@@ -1,13 +1,17 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +25,9 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
@@ -53,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,7 +90,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private TextView publish_people_text;
     private TextView publish_user_protocal_text;
     private Button publish_release_btn;
-    Dialog mloading;
+
     ArrayList<byte[]> uploadDatasource = null;
     private ArrayList<String> urlList;
 
@@ -107,22 +114,26 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSourcess;
     private String BAOBEIFUJIAN;
     private ArrayList<String> FUJIANARR;
+    Dialog dialog;
+    private String StringList;
+    private static final int TAKE_PHOTO = 733;
+    private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_publish_ac);
-        mloading = LoadingUtils.createLoadingDialog(this, "正在发布...");
+        dialog = LoadingUtils.createLoadingDialog(this,"发布中...");
         SharedPreferencesUtils.setParam(this, "RESULT", "");
         SharedPreferencesUtils.setParam(this, "CATEGORYID", 0);
         SharedPreferencesUtils.setParam(this, "BRANDID", 0);
         SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", "");
         SharedPreferencesUtils.setParam(this, "SECONDDATA", "");
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
-
+        SharedPreferencesUtils.getParam(this,"STRINGLIST","");
         configurationNaviTitle();
         initView();
-        cateoryTxt.setText("（必选）");
+
 
     }
 
@@ -158,13 +169,10 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         publish_keyword_edittext = (EditText) findViewById(R.id.publish_keyword_edittext);
         publish_keyword_edittext.setOnClickListener(this);
         publish_brand_text = (TextView) findViewById(R.id.publish_brand_text);
-        publish_brand_text.setOnClickListener(this);
         publish_color_edittext = (EditText) findViewById(R.id.publish_color_edittext);
         publish_color_edittext.setOnClickListener(this);
         publish_news_text = (TextView) findViewById(R.id.publish_news_text);
-        publish_news_text.setOnClickListener(this);
         publish_people_text = (TextView) findViewById(R.id.publish_people_text);
-        publish_people_text.setOnClickListener(this);
         publish_user_protocal_text = (TextView) findViewById(R.id.publish_user_protocal_text);
         publish_user_protocal_text.setOnClickListener(this);
         publish_release_btn = (Button) findViewById(R.id.publish_release_btn);
@@ -316,7 +324,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(MQUtils.getPicStorePath(this));
         file.mkdirs();
-        String path = MQUtils.getPicStorePath(this) + "/" + System.currentTimeMillis() + ".jpg";
+        String path = Environment.getExternalStorageDirectory() + "/" + System.currentTimeMillis() + ".jpg";
         File imageFile = new File(path);
         camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
         mCameraPicPath = path;
@@ -421,11 +429,14 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.publish_user_protocal_text:
-                startActivity(UserPrctocalAC.class, 222);
+                Intent intent1 = new Intent(PublishPublishAC.this,UserPrctocalAC.class);
+                intent1.putExtra("SETJUMPPOSITION",222);
+                startActivity(intent1);
                 break;
             default:
                 break;
             case R.id.publish_release_btn:
+                dialog.show();
                 check();
                 break;
             case R.id.publish_publish_max_nine_pic:
@@ -447,11 +458,34 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 sheetView.dismiss();
-                choosePhotoFromCamera();
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //如果没有授权，则请求授权
+                    ActivityCompat.requestPermissions(PublishPublishAC.this, new String[]{Manifest.permission.CAMERA}, 733);
+                } else {
+                    //有授权，直接开启摄像头
+//                    takePhoto();
+                    choosePhotoFromCamera();
+                }
+
+
             }
         }).create();
         sheetView.show();
     }
+    private static final int REQUESTCODE_CUTTING = 2;
+    private static final String IMAGE_FILE_NAME = "avatarImage.jpg";
+    private void takePhoto() {
+
+
+
+        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // 下面这句指定调用相机拍照后照片存储的位置
+        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(new File(Environment.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
+        startActivityForResult(takeIntent, TAKE_PHOTO);
+
+    }
+
 
     private void startActivity(Class<?> cls, int CALLBACKCODE) {
         Intent intent = new Intent(PublishPublishAC.this, cls);
@@ -462,9 +496,14 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onResume() {
+        super.onResume();
         // 回调传至
         catetext = String.valueOf(SharedPreferencesUtils.getParam(this, "RESULT", ""));
-        cateoryTxt.setText(catetext);
+        if (catetext ==""){
+            cateoryTxt.setText("（必选）");
+        }else {
+            cateoryTxt.setText(catetext);
+        }
         CATEGORYID = (int) SharedPreferencesUtils.getParam(this, "CATEGORYID", 0);
         LogUtil.e("回调的取值" + CATEGORYID);
         BRANDID = (int) SharedPreferencesUtils.getParam(this, "BRANDID", 0);
@@ -475,64 +514,77 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
 
+        StringList = String.valueOf(SharedPreferencesUtils.getParam(this,"STRINGLIST",""));
 
-        super.onResume();
+
     }
 
     private void check() {
+
         // validate
         descript = publish_input_edittext.getText().toString().trim();
         if (TextUtils.isEmpty(descript)) {
+            dialog.dismiss();
             initSnackBar("你还没有描述你的宝贝！");
             return;
         }
         // 判断用户是否选了九张图
         if (mResults.size() != 9) {
+            dialog.dismiss();
             initSnackBar("必须九张图！");
             return;
         }
         goodsName = publish_name_edittext.getText().toString().trim();
         if (TextUtils.isEmpty(goodsName)) {
+            dialog.dismiss();
             initSnackBar("你还没有填写宝贝名称！");
             return;
         }
         goodsprice = publish_price_edittext.getText().toString().trim();
         if (TextUtils.isEmpty(goodsprice)) {
+            dialog.dismiss();
             initSnackBar("你还没有填写专柜价！");
             return;
         }
         goodsKeyword = publish_keyword_edittext.getText().toString().trim();
         if (TextUtils.isEmpty(goodsKeyword)) {
+            dialog.dismiss();
             initSnackBar("你还没有填写关键词！");
             return;
         }
         String goodsCate = cateoryTxt.getText().toString().trim();
         LogUtil.e("类别" + catetext);
         if (catetext == "" || catetext.trim().equals("(必选)")) {
+            dialog.dismiss();
             initSnackBar("你还没有选择类别！");
             return;
         }
         goodsBrand = publish_brand_text.getText().toString().trim();
         if (goodsBrand.equals("（必选）")) {
+            dialog.dismiss();
             initSnackBar("你还没有选择品牌");
             return;
         }
         goodsColor = publish_color_edittext.getText().toString().trim();
         if (TextUtils.isEmpty(goodsColor)) {
+            dialog.dismiss();
             initSnackBar("你还没有填写颜色！");
             return;
         }
 
         chengse = publish_news_text.getText().toString().trim();
         if (chengse.equals("（必选）")) {
+            dialog.dismiss();
             initSnackBar("你还没有选择成色！");
             return;
         }
         people = publish_people_text.getText().toString().trim();
         if (people.equals("（必选）")) {
+            dialog.dismiss();
             initSnackBar("你还没有选择适用人群！");
             return;
         }
+
 
         // TODO 开始发布商品
         // 先上传图片，再发请求
@@ -542,6 +594,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void uploadNinePic() {
+
         // 要上传的byte类型的图片数组, 处理后图片大小在100-400K之间
         uploadDatasource = new ArrayList<>();
         for (int i = 0; i < mResults.size(); i++) {
@@ -582,6 +635,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
                     }
                 } else {
+                    dialog.dismiss();
                     // 上传失败
                     initSnackBar("发布失败！");
                 }
@@ -630,17 +684,30 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 ////        arr.put("保修啊");
 ////        arr.put("发票");
 //        arr = J;
+        jsonArray = new JSONArray();
+        if (StringList.isEmpty()&&BAOBEIFUJIAN.isEmpty()){
+//            JSONObject json = new JSONObject();
+//            try {
+//                json.put("","");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+            jsonArray.put("");
+        }else {
+            JSONObject attributeArr = new JSONObject();
+            try {
+                attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size()-1).getAttributeName());
+                if (BAOBEIFUJIAN != ""){
+                    attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
+                }else {
+                    attributeArr.put("attributeValueList", new JSONArray(StringList));
+                }
 
-
-        JSONObject attributeArr = new JSONObject();
-        try {
-            attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size()-1).getAttributeName());
-            attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
-        } catch (JSONException e) {
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonArray.put(attributeArr);
         }
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.put(attributeArr);
 
 
         // 图片数组
@@ -662,13 +729,14 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 //                e.printStackTrace();
 //            }
         }
+
         // 附件
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("name", goodsName);
             jsonObject.put("keyword", goodsKeyword);
             jsonObject.put("imgList", jsonArray1);
-            jsonObject.put("counterPrice", Integer.valueOf(goodsprice));
+            jsonObject.put("counterPrice", Integer.valueOf((int) (Float.valueOf(goodsprice)*100)) );
             jsonObject.put("description", descript);
             jsonObject.put("categoryid", CATEGORYID);
             jsonObject.put("brandid", BRANDID);
@@ -724,18 +792,23 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        dialog.dismiss();
                         Log.e("发布商品", "" + response);
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-
-
+                            CustomDialog_publish_success customDialog_publish_success = new CustomDialog_publish_success(PublishPublishAC.this,R.style.style_dialog);
+                            customDialog_publish_success.show();
                         } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
                         }
                     }
                 });

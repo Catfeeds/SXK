@@ -80,7 +80,7 @@ public class MineItemAC extends FragmentActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.navi_back:
-                finish();
+//                finish();
                 break;
         }
     }

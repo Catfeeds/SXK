@@ -12,6 +12,10 @@
         android:layout_height="44dp">
         <include layout="@layout/nav_title_right_pic"></include>
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,21 +62,21 @@
                     </com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout>
                     <ImageView
                         android:id="@+id/publish_publish_add_pic_imageview"
-                        android:layout_width="111dp"
-                        android:layout_height="111dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_publish_addpic" />
                     <ImageView
                         android:id="@+id/publish_publish_howto_pic_imageview"
-                        android:layout_width="111dp"
-                        android:layout_height="111dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_publish_howtophoto" />
 
                     <ImageView
                         android:id="@+id/publish_publish_max_nine_pic"
-                        android:layout_width="111dp"
-                        android:layout_height="111dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_must_nine" />
 
@@ -83,21 +87,23 @@
                     android:layout_height="15dp"
                     android:background="#f7f7f7"/>
 
-                    <EditText
-                        android:id="@+id/publish_name_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:hint="宝贝名称（必填）"
-                        android:textColorHint="#a1a1a1"
-                        android:background="@null"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="#dcdcdc"/>
+                <EditText
+                    android:id="@+id/publish_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:hint="宝贝名称（必填）"
+                    android:textColorHint="#a1a1a1"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dcdcdc"/>
                 <EditText
                     android:id="@+id/publish_price_edittext"
                     android:layout_width="match_parent"
@@ -105,6 +111,9 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:hint="专柜价（选填）"
+                    android:inputType="numberDecimal"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:textColorHint="#a1a1a1"
                     android:background="@null"
                     android:textColor="@color/black"
@@ -120,6 +129,8 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:hint="关键字描述（选填）"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:textColorHint="#a1a1a1"
                     android:background="@null"
                     android:textColor="@color/black"
@@ -157,9 +168,8 @@
                         android:id="@+id/cateory_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
                         android:text="（必选）"
-                        android:paddingRight="5dp"
+                        android:paddingRight="16dp"
                         android:textSize="14sp"
                         android:textColor="#a1a1a1"
                         android:gravity="center_vertical"
@@ -200,6 +210,7 @@
                         android:layout_height="match_parent"
                         android:text="（必选）  "
                         android:textSize="14sp"
+                        android:paddingRight="10dp"
                         android:textColor="#a1a1a1"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
@@ -226,14 +237,17 @@
 
                     <EditText
                         android:id="@+id/publish_color_edittext"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="（必填)    "
                         android:background="@null"
                         android:textSize="14sp"
-                        android:textColor="@color/black"
+                        android:cursorVisible="true"
+                        android:textCursorDrawable="@null"
+                        android:paddingRight="11dp"
+                        android:textColor="#a1a1a1"
                         android:textColorHint="#a1a1a1"
-                        android:gravity="center_vertical"
+                        android:gravity="end|center_vertical"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true" />
@@ -272,6 +286,7 @@
                         android:layout_height="match_parent"
                         android:text="（必选）  "
                         android:textSize="14sp"
+                        android:paddingRight="10dp"
                         android:textColor="#a1a1a1"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
@@ -311,6 +326,7 @@
                         android:layout_height="match_parent"
                         android:text="（必选）  "
                         android:textSize="14sp"
+                        android:paddingRight="10dp"
                         android:textColor="#a1a1a1"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
@@ -364,49 +380,49 @@
                     android:orientation="vertical">
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="23dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/publish_publish_agree"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/navi_title_color"
-                        android:textSize="12sp"
-                        android:textAlignment="center"
-                        android:text="已阅读并同意BOOBE的"/>
-                    <TextView
-                        android:id="@+id/publish_user_protocal_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textAlignment="center"
-                        android:textColor="@color/login_turquoise"
-                        android:text="《用户协议》"/>
+                        android:layout_marginTop="23dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/publish_publish_agree"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/navi_title_color"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:text="已阅读并同意BOOBE的"/>
+                        <TextView
+                            android:id="@+id/publish_user_protocal_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            android:textColor="@color/login_turquoise"
+                            android:text="《用户协议》"/>
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/publish_release_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginBottom="40dp"
+                        android:text="立即发布"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:background="@drawable/table_shape_login_button"/>
+
                 </LinearLayout>
-
-
-                <Button
-                    android:id="@+id/publish_release_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginBottom="40dp"
-                    android:text="立即发布"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:background="@drawable/table_shape_login_button"/>
-
-            </LinearLayout>
             </LinearLayout>
 
 

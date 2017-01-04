@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="42dp"
+            android:gravity="start"
+            android:text="以下是您的报名信息，请确认！"
+            android:textColor="@color/navi_title_color"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="19dp">
+            <TextView
+                android:layout_weight=".1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称:"
+                android:textSize="14sp"
+                android:textColor="@color/textGray"/>
+
+            <TextView
+                android:id="@+id/activity_dialog_nickName"
+                android:layout_weight=".8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text=""
+                android:textColor="@color/black"
+                android:layout_alignParentTop="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="19dp">
+            <TextView
+                android:layout_weight=".1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="电话:"
+                android:textSize="14sp"
+                android:textColor="@color/textGray"/>
+
+            <EditText
+                android:layout_weight=".6"
+                android:id="@+id/record_nickname_edtSS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:hint="请输入电话号码"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grrray"
+                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bianjis"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="226dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/record_nickname_btn_cancel"
+                    android:layout_width="81dp"
+                    android:layout_height="27dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_shape_dialog"
+                    android:text="取消"
+                    android:textColor="@color/gray_40"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/record_nickname_btn_ok"
+                    android:layout_width="81dp"
+                    android:layout_height="27dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/table_shape_dialog_green"
+                    android:text="确定"
+                    android:textColor="@color/login_turquoisex"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

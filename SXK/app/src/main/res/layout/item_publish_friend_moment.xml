@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_bg"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/friend_publish_text"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/table_shape_cate_white"
+                android:textColor="@color/login_phone_numbercolor"
+                android:textSize="11sp"
+                android:text="测试"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

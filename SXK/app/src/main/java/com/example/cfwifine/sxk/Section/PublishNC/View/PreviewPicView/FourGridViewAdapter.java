@@ -57,8 +57,10 @@ public class FourGridViewAdapter extends FourGridAdapter {
             }else if (list.get(i).equals("MORE")){
                 iv.setImageResource(R.drawable.publish_must_nine);
             }else{
-                File file = new File(list.get(i).toString());
-                Bitmap bitmap = ImageFactory.getBitmapFormUri(context, Uri.fromFile(file),false);
+                // 处理图片
+                Bitmap bitmap = ImageFactory.getBitmapFormUris(context, Uri.fromFile(new File(list.get(i).toString())), false);
+//                File file = new File(list.get(i).toString());
+//                Bitmap bitmap = ImageFactory.getBitmapFormUri(context, Uri.fromFile(file),false);
                 iv.setImageBitmap(bitmap);
 //                Picasso.with(context).load(new File(list.get(i).toString())).error(R.drawable.image_selected).into(iv);
             }

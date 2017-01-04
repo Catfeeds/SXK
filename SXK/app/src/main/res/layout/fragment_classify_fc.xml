@@ -1,10 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/white"
+             tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
-            <include layout="@layout/nav_title_no_line" />
+            <include layout="@layout/nav_title_no_line"/>
         </LinearLayout>
 
         <View
@@ -41,7 +41,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/beijing" />
+                    android:background="@drawable/beijing"/>
 
                 <TextView
                     android:id="@+id/classify_reonline_text"
@@ -51,7 +51,7 @@
                     android:layout_centerVertical="true"
                     android:text="重新加载"
                     android:textColor="@color/login_turquoise"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="11dp"
                 android:background="@drawable/classfiy_search"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                         android:layout_marginTop="74dp"
                         android:paddingRight="15dp"
                         app:indexBarPressBackground="@color/white"
-                        app:indexBarTextSize="11sp" />
+                        app:indexBarTextSize="11sp"/>
 
                     <TextView
                         android:id="@+id/tvSideBarHint"
@@ -135,7 +135,7 @@
                         android:textSize="48sp"
                         android:visibility="gone"
                         tools:text="A"
-                        tools:visibility="visible" />
+                        tools:visibility="visible"/>
 
 
                 </FrameLayout>
@@ -156,23 +156,87 @@
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
                         android:scrollbars="none">
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="15dp"
+                            android:orientation="vertical">
                             <ImageView
                                 android:id="@+id/classify_cate_header_pic"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="108dp"
+                                android:src="@drawable/background_mine"
+                                android:scaleType="centerCrop"/>
+
+                            <LinearLayout
+                                android:layout_marginTop="20dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="16.5dp"
+                                    android:layout_height="14.5dp"
+                                    android:src="@drawable/biaoqianclassify"/>
+                                <TextView
+                                    android:layout_marginLeft="4dp"
+                                    android:textColor="@color/navi_title_color"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="热门品牌"
+                                    android:textSize="14.5sp"/>
+                            </LinearLayout>
+
                             <RelativeLayout
+                                android:layout_marginTop="25dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/classify_hotbrand_rv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true">
+                                </android.support.v7.widget.RecyclerView>
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_marginTop="36dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14.5dp"
+                                    android:src="@drawable/classifyallbrand"/>
+                                <TextView
+                                    android:textColor="@color/navi_title_color"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="全部分类"
+                                    android:textSize="14.5sp"/>
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_marginTop="20.5dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
                                 <android.support.v7.widget.RecyclerView
                                     android:id="@+id/classify_cate_rv"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true">
                                 </android.support.v7.widget.RecyclerView>
                             </RelativeLayout>
-                        </RelativeLayout>
+                        </LinearLayout>
 
 
                     </ScrollView>

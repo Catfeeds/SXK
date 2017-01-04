@@ -212,6 +212,136 @@ public class ImageFactory {
 
         return bitmap;
     }
+    public static Bitmap getBitmapFormUris(Context c, Uri uri, boolean original) {
+
+        InputStream is = null;
+        try {
+            is = c.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (is == null) {
+            return null;
+        }
+
+        // ²âÁ¿Í¼Æ¬¸ß¿í
+        BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
+        factoryOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(is, null, factoryOptions);
+        int imageWidth = factoryOptions.outWidth;
+
+        // »ñÈ¡Ëõ·ÅÖµ
+        int width = 100;
+        float imageWidthF = imageWidth;
+        float widthF = width;
+        int scaleFactor = Math.round(imageWidthF / widthF);
+
+        if (scaleFactor == 3) {
+            scaleFactor = 4;
+        } else if (scaleFactor > 5 && scaleFactor < 8) {
+            scaleFactor = 8;
+        }
+
+        factoryOptions.inJustDecodeBounds = false;
+        factoryOptions.inSampleSize = scaleFactor;
+        factoryOptions.inPurgeable = true;
+
+        // ÈôÊÇÉÏ´«Ôò¶ÁÈ¡Ô­Í¼£¬ÈôÊÇÔ¤ÀÀÔò¶ÁÈ¡Ñ¹ËõÍ¼
+        try {
+            is = c.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (is == null) {
+            return null;
+        }
+
+        Bitmap bitmap = null;
+        try {
+            if (original) {
+                bitmap = BitmapFactory.decodeStream(is);
+            } else {
+                bitmap = BitmapFactory.decodeStream(is, null, factoryOptions);
+            }
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bitmap;
+    }
+    public static Bitmap getBitmapFormUrix(Context c, Uri uri, boolean original) {
+
+        InputStream is = null;
+        try {
+            is = c.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (is == null) {
+            return null;
+        }
+
+        // ²âÁ¿Í¼Æ¬¸ß¿í
+        BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
+        factoryOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(is, null, factoryOptions);
+        int imageWidth = factoryOptions.outWidth;
+
+        // »ñÈ¡Ëõ·ÅÖµ
+        int width = 440;
+        float imageWidthF = imageWidth;
+        float widthF = width;
+        int scaleFactor = Math.round(imageWidthF / widthF);
+
+        if (scaleFactor == 3) {
+            scaleFactor = 4;
+        } else if (scaleFactor > 5 && scaleFactor < 8) {
+            scaleFactor = 8;
+        }
+
+        factoryOptions.inJustDecodeBounds = false;
+        factoryOptions.inSampleSize = scaleFactor;
+        factoryOptions.inPurgeable = true;
+
+        // ÈôÊÇÉÏ´«Ôò¶ÁÈ¡Ô­Í¼£¬ÈôÊÇÔ¤ÀÀÔò¶ÁÈ¡Ñ¹ËõÍ¼
+        try {
+            is = c.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (is == null) {
+            return null;
+        }
+
+        Bitmap bitmap = null;
+        try {
+            if (original) {
+                bitmap = BitmapFactory.decodeStream(is);
+            } else {
+                bitmap = BitmapFactory.decodeStream(is, null, factoryOptions);
+            }
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return bitmap;
+    }
 
     public static byte[] bitmapToByteAAA(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

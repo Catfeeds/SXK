@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_place_order"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cfwifine.sxk.Section.ClassifyNC.Controller.PayOrderAC">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/classify_title_place_order" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_40" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="160dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/select_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/home_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:id="@+id/product_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="请选择收货地址"
+                        android:textColor="@color/login_phone_numbercolor"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/choice_address" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="20dp">
+
+                    <ImageView
+                        android:id="@+id/product_img"
+                        android:layout_width="103.5dp"
+                        android:layout_height="101dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/home_placeholder" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/product_img"
+                        android:orientation="vertical"
+                        android:paddingLeft="22dp">
+
+                        <TextView
+                            android:id="@+id/product_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/product_keyword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text=""
+                            android:textColor="@color/textGray"
+                            android:textSize="13sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="最低租价: "
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/product_lowest_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/login_turquoise"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/product_money_everyday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/login_turquoise"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/product_money"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="选择租期:"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <RadioGroup
+                                android:id="@+id/product_rg"
+                                android:layout_width="match_parent"
+                                android:layout_height="32dp"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/product_r1"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="3天"
+                                    android:textColor="@drawable/font_check_style"
+                                    android:textSize="13sp"
+                                    android:gravity="center"
+                                    android:checked="false"
+                                    android:button="@null"
+                                    android:background="@drawable/radio_check_style" />
+
+                                <RadioButton
+                                    android:id="@+id/product_r2"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="7天"
+                                    android:textColor="@drawable/font_check_style"
+                                    android:textSize="13sp"
+                                    android:gravity="center"
+                                    android:checked="false"
+                                    android:button="@null"
+                                    android:background="@drawable/radio_check_style"
+                                    />
+                                <RadioButton
+                                    android:id="@+id/product_r3"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="15天"
+                                    android:textColor="@drawable/font_check_style"
+                                    android:textSize="13sp"
+                                    android:gravity="center"
+                                    android:checked="false"
+                                    android:button="@null"
+                                    android:background="@drawable/radio_check_style"
+                                    />
+                                <RadioButton
+                                    android:id="@+id/product_r4"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="25天"
+                                    android:textColor="@drawable/font_check_style"
+                                    android:textSize="13sp"
+                                    android:gravity="center"
+                                    android:checked="false"
+                                    android:button="@null"
+                                    android:background="@drawable/radio_check_style"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/home_bg" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="订单租金"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/xiangqingblue" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:paddingRight="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="￥："
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/order_rent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="450.00"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="订单押金"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/xiangqingblue" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:paddingRight="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="￥："
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/order_deposit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="10000.00"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/freight_insurance_btn"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:checked="false"
+                                android:background="@drawable/yunshuxian"
+                                android:button="@null"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:text="货物运费险"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/xiangqingblue" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:paddingRight="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="￥："
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/freight_insurance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5.00"
+                                android:textColor="@color/navi_title_color"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/home_bg" />
+
+                <EditText
+                    android:id="@+id/leaving_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="123dp"
+                    android:background="@color/white"
+                    android:gravity="top"
+                    android:hint="给啵主留言（250字以内）"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:textColor="@color/navi_title_color"
+                    android:textColorHint="@color/login_phone_numbercolor"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="79dp"
+                    android:background="@color/home_bg"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp">
+
+                    <TextView
+                        android:id="@+id/rule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:text="查看违约金规则"
+                        android:textColor="@color/login_turquoise"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="91dp"
+                        android:layout_height="0.5dp"
+                        android:background="@color/login_turquoise" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/agreement_btn"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:checked="false"
+                            android:background="@drawable/yunshuxian"
+                            android:button="@null"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="已阅读并同意"
+                            android:textColor="@color/login_phone_numbercolor"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/user_agreement"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="《啵呗平台用户协议》"
+                            android:textColor="@color/login_turquoise"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="租金及其他：￥"
+                    android:textColor="@color/mn" />
+
+                <TextView
+                    android:id="@+id/order_rent_and_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="455.00"
+                    android:textColor="@color/mn" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="押金：￥"
+                    android:textColor="@color/mn" />
+
+                <TextView
+                    android:id="@+id/order_deposit2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10000.00"
+                    android:textColor="@color/mn" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/commit_order"
+            android:layout_width="140dp"
+            android:layout_height="63dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/login_turquoise"
+            android:gravity="center"
+            android:text="提交订单"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/comment_dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/a"/>
+
+
+    <LinearLayout
+        android:id="@+id/a"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/commment_input"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="40dp"
+                android:focusable="true"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:hint="发表你的评论吧！"
+                android:textColorHint="@color/grrray"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null"/>
+            <Button
+                android:id="@+id/comment_send_btn"
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:text="发送"
+                android:background="@color/login_turquoise"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

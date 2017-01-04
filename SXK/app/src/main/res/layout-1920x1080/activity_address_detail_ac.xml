@@ -59,6 +59,9 @@
                 android:inputType="phone"
                 android:textSize="14sp"
                 android:background="@null"
+                android:maxLength="11"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
                 android:textColorHint="@color/login_phone_numbercolor" />
             <View
                 android:layout_width="match_parent"

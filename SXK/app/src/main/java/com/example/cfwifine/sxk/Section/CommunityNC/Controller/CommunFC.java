@@ -533,4 +533,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initFriendMomentHeaderPicDataSource();
+    }
 }

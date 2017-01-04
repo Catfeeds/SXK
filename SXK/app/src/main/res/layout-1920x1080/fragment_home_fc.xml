@@ -23,7 +23,6 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
                     <com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"

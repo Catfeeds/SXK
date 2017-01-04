@@ -181,6 +181,10 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入联系人电话!", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
+        if (!TextUtils.isEmpty(phonenumber) &&  phonenumber.length()!=11){
+            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入正确的手机号码!", Color.WHITE, Color.parseColor("#16a6ae"));
+            return;
+        }
 
         String detailAddress = add_address_detailAddress.getText().toString().trim();
         if (TextUtils.isEmpty(detailAddress)) {
@@ -203,6 +207,8 @@ public class AddressDetailAC extends AppCompatActivity implements View.OnClickLi
                 if (!dataSource.getName().toString().equals(username)){
                     jsonObject.put("name", username);
                 }
+
+
                 if (!dataSource.getMobile().toString().equals(phonenumber)){
                     jsonObject.put("mobile", phonenumber);
                 }

@@ -13,7 +13,7 @@
     //控制边界线颜色和笔触大小
     <stroke
         android:width="0.5dp"
-        android:color="#dcdcdc" />
+        android:color="@color/white" />
 
     //控制界面颜色渐变（你这个用不到）
     <gradient

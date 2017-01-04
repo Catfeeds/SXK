@@ -11,6 +11,10 @@
         android:layout_height="44dp">
         <include layout="@layout/nav_title_simple"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
     <LinearLayout
         android:id="@+id/classify_online_view"
         android:layout_width="match_parent"

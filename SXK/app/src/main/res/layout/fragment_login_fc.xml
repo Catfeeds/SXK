@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
+        android:id="@+id/login_view"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -80,6 +82,246 @@
 
     </RelativeLayout>
 
+    <!-- 我的界面-->
+
+    <ScrollView
+        android:id="@+id/login_success_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/home_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="236dp"
+                android:background="@drawable/background_mine">
+
+                <TextView
+                    android:id="@+id/mine_perssonal_data"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="17.5dp"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/lightgray"
+                    android:layout_marginTop="35dp"
+                    android:text="个人资料"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp">
+
+                    <com.example.cfwifine.sxk.View.CircleImageView
+                        android:id="@+id/headportrait"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
+                        android:src="@drawable/personal"
+                        app:border_color="@color/lightgray"
+                        app:border_width="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
+                    <com.example.cfwifine.sxk.View.CircleImageView
+                        android:id="@+id/mine_sex"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/girl"
+                        app:border_color="@color/lightgray"
+                        app:border_width="0dp"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="151dp"
+                    android:text="好肥一只鱼"
+                    android:textColor="#4e817f"
+                    android:textSize="14sp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/username"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/mine_follow"
+                        android:layout_width="79dp"
+                        android:layout_height="26dp"
+                        android:layout_below="@+id/username"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginRight="51dp"
+                        android:background="@drawable/table_shape_mine"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="我的关注"
+                        android:textSize="12sp"/>
+
+
+                    <TextView
+                        android:id="@+id/mine_id_auth"
+                        android:layout_width="79dp"
+                        android:layout_height="26dp"
+                        android:layout_below="@+id/username"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/table_shape_mine"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="身份认证"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/mine_publishs"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/ripple_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mine_pub"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/mine_publish"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mine_pub"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="我的发布"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mine_rents"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/ripple_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mine_re"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/home_rent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mine_re"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="我的租凭"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mine_care"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/ripple_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mine_ca"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/home_care"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mine_ca"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="我的养护"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mine_recognize"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/ripple_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mine_reco"
+                        android:layout_width="25dp"
+                        android:layout_height="21dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/home_recognize"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mine_reco"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="我的鉴定"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mine_recycleView"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 
 

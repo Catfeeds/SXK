@@ -51,7 +51,7 @@ public class ViewPageAdapter extends PagerAdapter {
 //            Glide.with(context).load(new File(images.get(position))).override(400,400).thumbnail(.8f).fitCenter().into(image);
 
             File file = new File(images.get(position).toString());
-            Bitmap bitmap = ImageFactory.getBitmapFormUri(context, Uri.fromFile(file),false);
+            Bitmap bitmap = ImageFactory.getBitmapFormUrix(context, Uri.fromFile(file),false);
             image.setImageBitmap(bitmap);
 
 

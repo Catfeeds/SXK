@@ -64,6 +64,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         navi_title = (TextView) findViewById(R.id.navi_title);
         navi_title.setText("附件");
         navi_right = (TextView) findViewById(R.id.navi_right);
+        navi_right.setOnClickListener(this);
         navi_right.setText("保存");
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
 
@@ -149,6 +150,8 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                                     baobei_textview.setVisibility(View.GONE);
                                     initListRecycleView();
                                 }
+                            }else if (dataSource.size() == 0){
+                                navi_right.setText("");
                             }
 
 
@@ -221,6 +224,16 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
             case R.id.navi_back:
                 finish();
                 break;
+            case R.id.navi_right:
+                if (StringList.size()!=0){
+                    SharedPreferencesUtils.setParam(this,"STRINGLIST",StringList);
+                    finish();
+//                    SharedPreferencesUtils.setParam(this,"STRINGLISTNAME","");
+                }else {
+                    SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
+                }
+                break;
+
         }
     }
 }

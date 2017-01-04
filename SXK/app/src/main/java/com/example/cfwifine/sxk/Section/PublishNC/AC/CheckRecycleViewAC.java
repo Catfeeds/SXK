@@ -273,15 +273,23 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.navi_right:
                 if (s == 3) {
-                    Intent intent = new Intent();
-                    intent.putExtra("CHENGSE", chengse);
-                    setResult(667, intent);
-                    finish();
+                    if (chengse.isEmpty()) {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }else {
+                        Intent intent = new Intent();
+                        intent.putExtra("CHENGSE", chengse);
+                        setResult(667, intent);
+                        finish();
+                    }
                 } else if (s == 4) {
-                    Intent intent = new Intent();
-                    intent.putExtra("CHENGSE", chengse);
-                    setResult(668, intent);
-                    finish();
+                    if (chengse.isEmpty()) {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    } else{
+                        Intent intent = new Intent();
+                        intent.putExtra("CHENGSE", chengse);
+                        setResult(668, intent);
+                        finish();
+                    }
                 } else if (s == 5) {
                     if (chengse.isEmpty()) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));

@@ -180,7 +180,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         });
 
         product_address = (TextView) findViewById(R.id.product_address);
-        product_address.setOnClickListener(this);
+        product_address.setText("请选择收货地址");
         setValueForView();
     }
 
@@ -382,7 +382,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", productDetailModel.getRent().getRentid());
-            jsonObject.put("isRisk", isChecked);
+            jsonObject.put("isRisk", 2);
             jsonObject.put("tenancy", js);
             jsonObject.put("total", total);
             jsonObject.put("receiverid", RECEIVEDID);
@@ -426,8 +426,13 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     protected void onResume() {
         super.onResume();
         ADDRESSS = String.valueOf(SharedPreferencesUtils.getParam(PayOrderAC.this, "DEFAULTADDRESS", ""));
+        if (ADDRESSS==""){
+            product_address.setText("请选择收货地址");
+        }else {
+            product_address.setText(ADDRESSS);
+        }
         RECEIVEDID = (int) SharedPreferencesUtils.getParam(PayOrderAC.this, "RECRIVEDID", -1);
-        product_address.setText(ADDRESSS);
+
     }
 
     public void initSnackBar(String value) {
