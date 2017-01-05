@@ -1,17 +1,17 @@
-package com.example.cfwifine.sxk.Section.MineNC.Model;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model;
 
 import java.util.List;
 
 /**
- * Created by cfwifine on 16/12/30.
+ * Created by cfwifine on 16/12/28.
  */
 
-public class MineItemNoPassModel {
+public class MineItemPublishingModel {
 
     /**
      * code : 1
-     * total : 2
-     * rentList : [{"userid":10,"name":"黯然报名","imgList":["sxk_userPic_201612301425500","sxk_userPic_201612301425521","sxk_userPic_201612301425532","sxk_userPic_201612301425543","sxk_userPic_201612301425554","sxk_userPic_201612301425565","sxk_userPic_201612301425566","sxk_userPic_201612301425577","sxk_userPic_201612301426008"],"keyword":"啦啦叫我","description":"Jack了分开","counterPrice":20000,"categoryid":3,"color":"红色","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":5,"rentid":39,"createtime":1483079161,"updatetime":1483079351},{"userid":10,"name":"啊模特","imgList":["sxk_userPic_201612301426140","sxk_userPic_201612301426141","sxk_userPic_201612301426152","sxk_userPic_201612301426163","sxk_userPic_201612301426184","sxk_userPic_201612301426205","sxk_userPic_201612301426206","sxk_userPic_201612301426217","sxk_userPic_201612301426238"],"keyword":"啦啦叫我","description":"Jack了分开","counterPrice":20000,"categoryid":3,"color":"红色","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":5,"rentid":40,"createtime":1483079184,"updatetime":1483079342}]
+     * total : 1
+     * rentList : [{"userid":10,"name":"安啦","imgList":["sxk_userPic_201612291413240","sxk_userPic_201612291413251","sxk_userPic_201612291413262","sxk_userPic_201612291413263","sxk_userPic_201612291413274","sxk_userPic_201612291413275","sxk_userPic_201612291413286","sxk_userPic_201612291413287","sxk_userPic_201612291413298"],"keyword":"JJ错么5啦咯啦咯啦咯啦咯啦咯啦咯啦咯兔兔咯了考虑兔兔突击涂土土图兔兔V领图兔兔图图V领TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤","description":"dzzzz","counterPrice":2000,"categoryid":3,"color":"红色","condition":3,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":0,"sort":0,"status":2,"rentid":30,"createtime":1482992009,"updatetime":1482992150,"marketPrice":99900,"rentPrice":88800,"risk":900,"three":1,"seven":1,"fiften":1,"twentyFive":1}]
      */
 
     private int code;
@@ -45,23 +45,30 @@ public class MineItemNoPassModel {
     public static class RentListBean {
         /**
          * userid : 10
-         * name : 黯然报名
-         * imgList : ["sxk_userPic_201612301425500","sxk_userPic_201612301425521","sxk_userPic_201612301425532","sxk_userPic_201612301425543","sxk_userPic_201612301425554","sxk_userPic_201612301425565","sxk_userPic_201612301425566","sxk_userPic_201612301425577","sxk_userPic_201612301426008"]
-         * keyword : 啦啦叫我
-         * description : Jack了分开
-         * counterPrice : 20000
+         * name : 安啦
+         * imgList : ["sxk_userPic_201612291413240","sxk_userPic_201612291413251","sxk_userPic_201612291413262","sxk_userPic_201612291413263","sxk_userPic_201612291413274","sxk_userPic_201612291413275","sxk_userPic_201612291413286","sxk_userPic_201612291413287","sxk_userPic_201612291413298"]
+         * keyword : JJ错么5啦咯啦咯啦咯啦咯啦咯啦咯啦咯兔兔咯了考虑兔兔突击涂土土图兔兔V领图兔兔图图V领TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤TUT兔兔吐了咯啦咯啦土土图兔兔图图T恤
+         * description : dzzzz
+         * counterPrice : 2000
          * categoryid : 3
          * color : 红色
-         * condition : 4
+         * condition : 3
          * crowd : 2
          * attachList : [{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * commentList : []
          * sale : 0
          * sort : 0
-         * status : 5
-         * rentid : 39
-         * createtime : 1483079161
-         * updatetime : 1483079351
+         * status : 2
+         * rentid : 30
+         * createtime : 1482992009
+         * updatetime : 1482992150
+         * marketPrice : 99900
+         * rentPrice : 88800
+         * risk : 900
+         * three : 1
+         * seven : 1
+         * fiften : 1
+         * twentyFive : 1
          */
 
         private int userid;
@@ -79,6 +86,13 @@ public class MineItemNoPassModel {
         private int rentid;
         private int createtime;
         private int updatetime;
+        private int marketPrice;
+        private int rentPrice;
+        private int risk;
+        private int three;
+        private int seven;
+        private int fiften;
+        private int twentyFive;
         private List<String> imgList;
         private List<AttachListBean> attachList;
         private List<?> commentList;
@@ -201,6 +215,62 @@ public class MineItemNoPassModel {
 
         public void setUpdatetime(int updatetime) {
             this.updatetime = updatetime;
+        }
+
+        public int getMarketPrice() {
+            return marketPrice;
+        }
+
+        public void setMarketPrice(int marketPrice) {
+            this.marketPrice = marketPrice;
+        }
+
+        public int getRentPrice() {
+            return rentPrice;
+        }
+
+        public void setRentPrice(int rentPrice) {
+            this.rentPrice = rentPrice;
+        }
+
+        public int getRisk() {
+            return risk;
+        }
+
+        public void setRisk(int risk) {
+            this.risk = risk;
+        }
+
+        public int getThree() {
+            return three;
+        }
+
+        public void setThree(int three) {
+            this.three = three;
+        }
+
+        public int getSeven() {
+            return seven;
+        }
+
+        public void setSeven(int seven) {
+            this.seven = seven;
+        }
+
+        public int getFiften() {
+            return fiften;
+        }
+
+        public void setFiften(int fiften) {
+            this.fiften = fiften;
+        }
+
+        public int getTwentyFive() {
+            return twentyFive;
+        }
+
+        public void setTwentyFive(int twentyFive) {
+            this.twentyFive = twentyFive;
         }
 
         public List<String> getImgList() {

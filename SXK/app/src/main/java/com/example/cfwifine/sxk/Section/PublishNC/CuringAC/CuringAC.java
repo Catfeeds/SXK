@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringListModel;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MinePublishShenHeModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;

@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.MineItemAC;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MinePublishShenHeModel;
 
 import java.util.ArrayList;
 import java.util.List;

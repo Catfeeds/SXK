@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,46 +13,50 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemRentingModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.util.List;
 
 
-public class MineShenHeListAdapter extends RecyclerView.Adapter<MineShenHeListAdapter.ViewHolder> {
-    private final List<MinePublishShenHeModel.RentListBean> classifyDataSource;
+public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingListAdapter.ViewHolder> {
+    private final List<MineItemRentingModel.RentListBean> classifyDataSource;
     private Context mContext;
     private LayoutInflater mInflater;
 
 
-    private MineShenHeListAdapter.OnItemClickListener mOnItemClickListener;
+    private MineRentingListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
         void OnItemClick(View view, int maintainid);
     }
-    public void setOnItemClickListener(MineShenHeListAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(MineRentingListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public MineShenHeListAdapter(Context mContext, List<MinePublishShenHeModel.RentListBean> classifyDataSource) {
+    public MineRentingListAdapter(Context mContext, List<MineItemRentingModel.RentListBean> classifyDataSource) {
         this.mContext = mContext;
         this.classifyDataSource = classifyDataSource;
-        mInflater = LayoutInflater.from(mContext);
+//        mInflater = LayoutInflater.from(mContext);
     }
 
 
     @Override
-    public MineShenHeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_daishenghe_list, parent, false));
+    public MineRentingListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_renting_list, parent, false);
+        MineRentingListAdapter.ViewHolder vh = new MineRentingListAdapter.ViewHolder(view);
+        return vh;
+//        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_renting_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final MineShenHeListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final MineRentingListAdapter.ViewHolder holder, final int position) {
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()));
+        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()/100));
+//        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(classifyDataSource.get(position).get));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
@@ -80,12 +84,12 @@ public class MineShenHeListAdapter extends RecyclerView.Adapter<MineShenHeListAd
         public ViewHolder(View itemView) {
             super(itemView);
 
-            frameLayout = (LinearLayout) itemView.findViewById(R.id.curing_cell);
-            name = (TextView)itemView.findViewById(R.id.mine_publish_name);
-            description = (TextView)itemView.findViewById(R.id.mine_publish_descript);
-            price = (TextView)itemView.findViewById(R.id.mine_publish_price);
-            pic = (ImageView)itemView.findViewById(R.id.mine_publish_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.mine_publish_rentprice);
+            frameLayout = (LinearLayout) itemView.findViewById(R.id.mine_renting_cell);
+            name = (TextView)itemView.findViewById(R.id.mine_renting_name);
+            description = (TextView)itemView.findViewById(R.id.mine_renting_descript);
+            price = (TextView)itemView.findViewById(R.id.mine_renting_price);
+            pic = (ImageView)itemView.findViewById(R.id.mine_renting_pic);
+            rentPrice = (TextView)itemView.findViewById(R.id.mine_renting_marketprice);
 
         }
     }

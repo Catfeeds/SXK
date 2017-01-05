@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +15,8 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineRentingListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemRentingModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -36,7 +37,8 @@ public class RentingFC extends Fragment {
     private SwipeRefreshLayout swiperefresh;
     private HaoRecyclerView hao_recycleview;
     private MineRentingListAdapter mSheHeAdapter;
-    private List<MinePublishShenHeModel.RentListBean> rentListDataSouce;
+    private List<MineItemRentingModel.RentListBean> rentListDataSouce;
+    private MineItemRentingModel mineItemRentingModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,15 @@ public class RentingFC extends Fragment {
         if (view == null){
             view = inflater.inflate(R.layout.renting_fc, container, false);
             mineItemAC = (MineItemAC) getActivity();
-            initMineData(3,1,10);
-
+            initMineData(3,0,0);
         }
         return view;
     }
 
     private void initSheHeRV() {
         swiperefresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-                R.color.textBlueDark);
+        swiperefresh.setColorSchemeResources(R.color.login_turquoise, R.color.login_turquoise, R.color.login_turquoise,
+                R.color.login_turquoise);
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -69,8 +70,8 @@ public class RentingFC extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //注意此处
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,10);
+                        rentListDataSouce.clear();
+                        initMineData(3,0,0);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mSheHeAdapter.notifyDataSetChanged();
@@ -90,37 +91,38 @@ public class RentingFC extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hao_recycleview.setLayoutManager(layoutManager);
         //设置自定义加载中和到底了效果
-        ProgressView progressView = new ProgressView(getActivity());
-        progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
-        hao_recycleview.setFootLoadingView(progressView);
+//        ProgressView progressView = new ProgressView(getActivity());
+//        progressView.setIndicatorId(ProgressView.BallPulse);
+//        progressView.setIndicatorColor(0xff16a6ae);
+//        hao_recycleview.setFootLoadingView(progressView);
 
-        TextView textView = new TextView(getActivity());
-        textView.setText("已经到底啦~");
-        textView.setTextColor(getResources().getColor(R.color.black));
-        hao_recycleview.setFootEndView(textView);
+//        TextView textView = new TextView(getActivity());
+//        textView.setText("已经到底啦~");
+//        textView.setTextColor(getResources().getColor(R.color.black));
+//        hao_recycleview.setFootEndView(textView);
 
-        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-
-//                        pageNum += 10;
-//                        L.e("pageNum" + pageNum);
-//                        if (pageNum >= Total) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,pageNum);
-//                        mAdapter.notifyDataSetChanged();
+//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//
+////                        pageNum += 10;
+////                        L.e("pageNum" + pageNum);
+////                        if (pageNum >= Total) {
+////                            hao_recycleview.loadMoreEnd();
+////                            return;
+////                        }
+////                        CuringAC curingAC = (CuringAC) getActivity();
+////                        curingAC.initData(-2,1,pageNum);
+////                        mAdapter.notifyDataSetChanged();
+//                        hao_recycleview.loadMoreEnd();
 //                        hao_recycleview.loadMoreComplete();
-
-                    }
-                }, 1000);
-            }
-        });
+//
+//                    }
+//                }, 1000);
+//            }
+//        });
 //        mAdapter = new  (getActivity(), classifySo);
         mSheHeAdapter = new MineRentingListAdapter(getActivity(),rentListDataSouce);
         hao_recycleview.setAdapter(mSheHeAdapter);
@@ -171,24 +173,20 @@ public class RentingFC extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("我的发布", "" + response);
+                        Log.e("我的发布-租赁中", "" + response);
                         mineItemAC.dialog.dismiss();
                         Gson gson = new Gson();
                         if (status == 3) {
                             // 审核中
-//                             mineRentingListAdapter = gson.fromJson(response, MineRentingListAdapter.class);
-//                            if (minePublishShenHeModel.getCode() == 1) {
-//                                rentListDataSouce = minePublishShenHeModel.getRentList();
-//                                initSheHeRV();
-//                                LogUtil.e("审核数据的大小"+rentListDataSouce.size());
-//                                initView();
-//                                adapter.flushData(rentListDataSouce);
-//                                adapter.notifyDataSetChanged();
-//                            } else if (minePublishShenHeModel.getCode() == 0) {
-//                                mineItemAC.initSnackBar("请求失败！");
-//                            } else if (minePublishShenHeModel.getCode() == 911) {
-//                                mineItemAC.initSnackBar("登录超时，请重新登录");
-//                            }
+                            mineItemRentingModel = gson.fromJson(response, MineItemRentingModel.class);
+                            if (mineItemRentingModel.getCode() == 1) {
+                                rentListDataSouce = mineItemRentingModel.getRentList();
+                                initSheHeRV();
+                            } else if (mineItemRentingModel.getCode() == 0) {
+                                mineItemAC.initSnackBar("请求失败！");
+                            } else if (mineItemRentingModel.getCode() == 911) {
+                                mineItemAC.initSnackBar("登录超时，请重新登录");
+                            }
 
                         }
 

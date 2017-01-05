@@ -14,7 +14,7 @@ import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CuringListAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringListModel;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MinePublishShenHeModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class FragmentACuring extends CuringBaseFragment {
             //设置自定义加载中和到底了效果
             ProgressView progressView = new ProgressView(getActivity());
             progressView.setIndicatorId(ProgressView.BallPulse);
-            progressView.setIndicatorColor(0xff69b3e0);
+            progressView.setIndicatorColor(0xff16a6ae);
             hao_recycleview.setFootLoadingView(progressView);
 
             TextView textView = new TextView(getActivity());

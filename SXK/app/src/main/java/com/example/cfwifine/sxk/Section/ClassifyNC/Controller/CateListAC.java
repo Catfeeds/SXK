@@ -20,7 +20,6 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ClassifyAllListAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RentListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.MineNoPassListAdapter;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -222,8 +221,8 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
 
     private void initRecycleView() {
         swiperefresh = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-                R.color.textBlueDark);
+        swiperefresh.setColorSchemeResources(R.color.login_turquoise, R.color.login_turquoise, R.color.login_turquoise,
+                R.color.login_turquoise);
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -255,7 +254,7 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(this);
         progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
+        progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
 
         TextView textView = new TextView(this);

@@ -50,7 +50,6 @@ public class LoadingUtils {
      * 短时间的Toast提示
      *
      * @param context
-     * @param msgId
      */
     public static void showToastShort(Context context, String msg) {
 

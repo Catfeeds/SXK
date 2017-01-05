@@ -232,8 +232,8 @@
                         <ImageView
                             android:id="@+id/up33"
                             android:src="@drawable/huishang"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_width="10dp"
+                            android:layout_height="6dp"/>
                         <ImageView
                             android:id="@+id/dn33"
                             android:layout_width="10dp"

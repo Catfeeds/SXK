@@ -1,10 +1,11 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,8 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Model.MineItemPublishingModel;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemPublishingModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
 import java.util.List;
@@ -38,13 +38,16 @@ public class MinePublishingListAdapter extends RecyclerView.Adapter<MinePublishi
     public MinePublishingListAdapter(Context mContext, List<MineItemPublishingModel.RentListBean> rentListDataSouce) {
         this.mContext = mContext;
         this.rentListDataSouce = rentListDataSouce;
-        mInflater = LayoutInflater.from(mContext);
+//        mInflater = LayoutInflater.from(mContext);
     }
 
 
     @Override
     public MinePublishingListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_list, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_list, parent, false);
+        MinePublishingListAdapter.ViewHolder vh = new MinePublishingListAdapter.ViewHolder(view);
+        return vh;
+//        return new ViewHolder(mInflater.inflate(R.layout.item_mine_publish_list, parent, false));
     }
 
     @Override
@@ -53,13 +56,13 @@ public class MinePublishingListAdapter extends RecyclerView.Adapter<MinePublishi
         LogUtil.e("审核中数据源"+rentListDataSouce.get(position).getName());
         holder.name.setText(rentListDataSouce.get(position).getName());
         holder.description.setText(rentListDataSouce.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(rentListDataSouce.get(position).getCounterPrice()));
-        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(rentListDataSouce.get(position).getMarketPrice()));
+        holder.price.setText("¥ "+ String.valueOf(rentListDataSouce.get(position).getCounterPrice()/100));
+        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(rentListDataSouce.get(position).getMarketPrice()/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentListDataSouce.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
         if (mOnItemClickListener != null){
-            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+            holder.xiajai.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mOnItemClickListener.OnItemClick(view,rentListDataSouce.get(position).getRentid());
@@ -78,7 +81,7 @@ public class MinePublishingListAdapter extends RecyclerView.Adapter<MinePublishi
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
-
+        Button xiajai;
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -88,7 +91,7 @@ public class MinePublishingListAdapter extends RecyclerView.Adapter<MinePublishi
             price = (TextView)itemView.findViewById(R.id.mine_publish_price);
             pic = (ImageView)itemView.findViewById(R.id.mine_publish_pic);
             rentPrice = (TextView)itemView.findViewById(R.id.mine_publish_rentprice);
-
+            xiajai = (Button)itemView.findViewById(R.id.mine_publish_xiajia_btn);
         }
     }
 }

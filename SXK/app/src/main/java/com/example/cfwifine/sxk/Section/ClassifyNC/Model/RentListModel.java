@@ -313,10 +313,10 @@ public class RentListModel {
              * attributeValueList : ["牛皮"]
              */
 
-            private String attributeName;
-            private List<String> attributeValueList;
+            private Object attributeName;
+            private List<Object> attributeValueList;
 
-            public String getAttributeName() {
+            public Object getAttributeName() {
                 return attributeName;
             }
 
@@ -324,11 +324,11 @@ public class RentListModel {
                 this.attributeName = attributeName;
             }
 
-            public List<String> getAttributeValueList() {
+            public List<Object> getAttributeValueList() {
                 return attributeValueList;
             }
 
-            public void setAttributeValueList(List<String> attributeValueList) {
+            public void setAttributeValueList(List<Object> attributeValueList) {
                 this.attributeValueList = attributeValueList;
             }
         }

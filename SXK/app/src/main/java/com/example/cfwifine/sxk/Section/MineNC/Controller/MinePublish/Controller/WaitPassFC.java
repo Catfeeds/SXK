@@ -1,9 +1,8 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,9 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineShenHeListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -49,10 +50,10 @@ public class WaitPassFC extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.wait_pass_fc, container, false);
             mineItemAC = (MineItemAC) getActivity();
-            initMineData(1,1,10);
+            initMineData(1, 0, 0);
 
         }
         return view;
@@ -60,8 +61,8 @@ public class WaitPassFC extends Fragment {
 
     private void initSheHeRV() {
         swiperefresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-                R.color.textBlueDark);
+        swiperefresh.setColorSchemeResources(R.color.login_turquoise, R.color.login_turquoise, R.color.login_turquoise,
+                R.color.login_turquoise);
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,8 +71,7 @@ public class WaitPassFC extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //注意此处
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,10);
+                        initMineData(1, 0, 0);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mSheHeAdapter.notifyDataSetChanged();
@@ -90,67 +90,115 @@ public class WaitPassFC extends Fragment {
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hao_recycleview.setLayoutManager(layoutManager);
-        //设置自定义加载中和到底了效果
-        ProgressView progressView = new ProgressView(getActivity());
-        progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
-        hao_recycleview.setFootLoadingView(progressView);
-
-        TextView textView = new TextView(getActivity());
-        textView.setText("已经到底啦~");
-        textView.setTextColor(getResources().getColor(R.color.black));
-        hao_recycleview.setFootEndView(textView);
-
-        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-
-//                        pageNum += 10;
-//                        L.e("pageNum" + pageNum);
-//                        if (pageNum >= Total) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,pageNum);
-//                        mAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
-
-                    }
-                }, 1000);
-            }
-        });
-//        mAdapter = new  (getActivity(), classifySo);
-        mSheHeAdapter = new MineShenHeListAdapter(getActivity(),rentListDataSouce);
-        hao_recycleview.setAdapter(mSheHeAdapter);
-//        mSheHeAdapter.setOnItemClickListener(new CuringListAdapter.OnItemClickListener() {
+//        //设置自定义加载中和到底了效果
+//        ProgressView progressView = new ProgressView(getActivity());
+//        progressView.setIndicatorId(ProgressView.BallPulse);
+//        progressView.setIndicatorColor(0xff16a6ae);
+//        hao_recycleview.setFootLoadingView(progressView);
+//
+//        TextView textView = new TextView(getActivity());
+//        textView.setText("已经到底啦~");
+//        textView.setTextColor(getResources().getColor(R.color.black));
+//        hao_recycleview.setFootEndView(textView);
+//
+//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
 //            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                LogUtil.e("maintainid"+maintainid);
-//                Intent intent = new Intent(getActivity(),CuringDetailAC.class);
-//                intent.putExtra("maintainid",maintainid);
-//                startActivity(intent);
+//            public void onLoadMore() {
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//
+////                        pageNum += 10;
+////                        L.e("pageNum" + pageNum);
+////                        if (pageNum >= Total) {
+////                            hao_recycleview.loadMoreEnd();
+////                            return;
+////                        }
+////                        CuringAC curingAC = (CuringAC) getActivity();
+////                        curingAC.initData(-2,1,pageNum);
+////                        mAdapter.notifyDataSetChanged();
+////                        hao_recycleview.loadMoreComplete();
+//
+//                    }
+//                }, 1000);
 //            }
 //        });
+//        mAdapter = new  (getActivity(), classifySo);
+        mSheHeAdapter = new MineShenHeListAdapter(getActivity(), rentListDataSouce);
+        hao_recycleview.setAdapter(mSheHeAdapter);
+        mSheHeAdapter.setOnItemClickListener(new MineShenHeListAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int maintainid) {
+                // rentID
+                initDontSail(maintainid);
+            }
+        });
     }
 
-    public void initMineData(final int status, int pageNum, int pageSize){
+    /**
+     * 下架的订单
+     *
+     * @param maintainid
+     */
+    private void initDontSail(int maintainid) {
+        mineItemAC.dialog.show();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("rentid", maintainid);
+            jsonObject.put("status", 4);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString().url(BaseInterface.ChangeRent)
+                .addHeader("Cookie", "PHPSESSID=" + mineItemAC.PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mineItemAC.initSnackBar("请求失败！");
+                        mineItemAC.dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("我的待审核", "" + response);
+                        mineItemAC.dialog.dismiss();
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            initMineData(1, 0, 0);
+                            mineItemAC.initSnackBar("下架成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            mineItemAC.initSnackBar("下架失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            mineItemAC.initSnackBar("登录超时，请重新登录");
+                        }
+
+                    }
+    }
+
+    );
+
+
+}
+
+    public void initMineData(final int status, int pageNum, int pageSize) {
         mineItemAC.dialog.show();
         JSONObject order = new JSONObject();
         try {
-            order.put("rentid",-1);
+            order.put("rentid", -1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo",pageNum);
-            jsonObject.put("pageSize",pageSize);
-            jsonObject.put("order",order);
-            jsonObject.put("own",1);
-            jsonObject.put("status",status);
+            jsonObject.put("pageNo", pageNum);
+            jsonObject.put("pageSize", pageSize);
+            jsonObject.put("order", order);
+            jsonObject.put("own", 1);
+            jsonObject.put("status", status);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -181,10 +229,6 @@ public class WaitPassFC extends Fragment {
                             if (minePublishShenHeModel.getCode() == 1) {
                                 rentListDataSouce = minePublishShenHeModel.getRentList();
                                 initSheHeRV();
-//                                LogUtil.e("审核数据的大小"+rentListDataSouce.size());
-//                                initView();
-//                                adapter.flushData(rentListDataSouce);
-//                                adapter.notifyDataSetChanged();
                             } else if (minePublishShenHeModel.getCode() == 0) {
                                 mineItemAC.initSnackBar("请求失败！");
                             } else if (minePublishShenHeModel.getCode() == 911) {
@@ -197,10 +241,6 @@ public class WaitPassFC extends Fragment {
                 });
 
     }
-
-
-
-
 
 
     @Override

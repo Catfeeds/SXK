@@ -13,13 +13,13 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!--&lt;!&ndash; 通用权限 &ndash;&gt;-->
-    <!--<uses-permission android:name="android.permission.INTERNET" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
-    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
-    <!--&lt;!&ndash; 银联需要的权限 &ndash;&gt;-->
+    <!-- &lt;!&ndash; 通用权限 &ndash;&gt; -->
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    <!-- &lt;!&ndash; 银联需要的权限 &ndash;&gt; -->
     <uses-permission android:name="android.permission.NFC" />
 
     <supports-screens
@@ -28,11 +28,6 @@
         android:normalScreens="true"
         android:resizeable="true"
         android:smallScreens="true" />
-
-
-
-
-
 
     <application
         android:name=".BaseAC.MyApplication"
@@ -122,29 +117,24 @@
         <activity
             android:name=".Section.PublishNC.CuringAC.WarningAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MinePublish.MineItemAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
-
+        <activity
+            android:name=".Section.MineNC.Controller.MinePublish.Controller.MineItemAC"
+            android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.CateListAC"
-            android:theme="@style/AppThemeHasTitle">
-        </activity>
+            android:theme="@style/AppThemeHasTitle"></activity>
         <activity
             android:name=".Section.ClassifyNC.Controller.ProductDetailsAC"
-            android:theme="@style/AppThemeHasTitle">
-        </activity>
-        <activity android:name=".Section.ClassifyNC.Controller.PayOrderAC"
-            android:theme="@style/AppThemeHasTitle">
-        </activity>
-
-
+            android:theme="@style/AppThemeHasTitle"></activity>
+        <activity
+            android:name=".Section.ClassifyNC.Controller.PayOrderAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
         // 支付页面
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
 
         <!-- 微信支付 -->
         <activity-alias
@@ -157,19 +147,15 @@
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind"></activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind"></activity>
 
         <!-- 银联支付 -->
         <activity android:name="com.unionpay.uppay.PayActivity" />
-
-
         // 集成美恰相关界面
         <!-- 聊天界面 -->
         <activity
@@ -231,10 +217,8 @@
 
         <service android:name="com.meiqia.core.MeiQiaService" />
 
-
+        <activity android:name=".Section.MineNC.Controller.MineRent.Controller.MineItemRentAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
-
-
-
 
 </manifest>

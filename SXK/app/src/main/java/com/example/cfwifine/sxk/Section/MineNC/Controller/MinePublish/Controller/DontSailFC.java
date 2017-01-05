@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +15,10 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineNoSailListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemNoSailModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MinePublishShenHeModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -36,7 +39,7 @@ public class DontSailFC extends Fragment {
 	private SwipeRefreshLayout swiperefresh;
 	private HaoRecyclerView hao_recycleview;
 	private MineNoSailListAdapter mSheHeAdapter;
-	private List<MinePublishShenHeModel.RentListBean> rentListDataSouce;
+	private List<MineItemNoSailModel.RentListBean> rentListDataSouce;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +52,9 @@ public class DontSailFC extends Fragment {
 							 Bundle savedInstanceState) {
 
 		if (view == null){
-			view = inflater.inflate(R.layout.wait_pass_fc, container, false);
+			view = inflater.inflate(R.layout.dont_sail_fc, container, false);
 			mineItemAC = (MineItemAC) getActivity();
-			initMineData(4,1,10);
+			initMineData(4,0,0);
 
 		}
 		return view;
@@ -69,8 +72,7 @@ public class DontSailFC extends Fragment {
 				new Handler().postDelayed(new Runnable() {
 					public void run() {
 						//注意此处
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,10);
+						initMineData(4,0,0);
 						hao_recycleview.refreshComplete();
 						swiperefresh.setRefreshing(false);
 						mSheHeAdapter.notifyDataSetChanged();
@@ -89,50 +91,94 @@ public class DontSailFC extends Fragment {
 		};
 		layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		hao_recycleview.setLayoutManager(layoutManager);
-		//设置自定义加载中和到底了效果
-		ProgressView progressView = new ProgressView(getActivity());
-		progressView.setIndicatorId(ProgressView.BallPulse);
-		progressView.setIndicatorColor(0xff69b3e0);
-		hao_recycleview.setFootLoadingView(progressView);
-
-		TextView textView = new TextView(getActivity());
-		textView.setText("已经到底啦~");
-		textView.setTextColor(getResources().getColor(R.color.black));
-		hao_recycleview.setFootEndView(textView);
-
-		hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-			@Override
-			public void onLoadMore() {
-				new Handler().postDelayed(new Runnable() {
-					public void run() {
-
-//                        pageNum += 10;
-//                        L.e("pageNum" + pageNum);
-//                        if (pageNum >= Total) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,pageNum);
-//                        mAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
-
-					}
-				}, 1000);
-			}
-		});
+//		//设置自定义加载中和到底了效果
+//		ProgressView progressView = new ProgressView(getActivity());
+//		progressView.setIndicatorId(ProgressView.BallPulse);
+//		progressView.setIndicatorColor(0xff69b3e0);
+//		hao_recycleview.setFootLoadingView(progressView);
+//
+//		TextView textView = new TextView(getActivity());
+//		textView.setText("已经到底啦~");
+//		textView.setTextColor(getResources().getColor(R.color.black));
+//		hao_recycleview.setFootEndView(textView);
+//
+//		hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
+//			@Override
+//			public void onLoadMore() {
+//				new Handler().postDelayed(new Runnable() {
+//					public void run() {
+//
+////                        pageNum += 10;
+////                        L.e("pageNum" + pageNum);
+////                        if (pageNum >= Total) {
+////                            hao_recycleview.loadMoreEnd();
+////                            return;
+////                        }
+////                        CuringAC curingAC = (CuringAC) getActivity();
+////                        curingAC.initData(-2,1,pageNum);
+////                        mAdapter.notifyDataSetChanged();
+////                        hao_recycleview.loadMoreComplete();
+//
+//					}
+//				}, 1000);
+//			}
+//		});
 //        mAdapter = new  (getActivity(), classifySo);
 		mSheHeAdapter = new MineNoSailListAdapter(getActivity(),rentListDataSouce);
 		hao_recycleview.setAdapter(mSheHeAdapter);
-//        mSheHeAdapter.setOnItemClickListener(new CuringListAdapter.OnItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                LogUtil.e("maintainid"+maintainid);
-//                Intent intent = new Intent(getActivity(),CuringDetailAC.class);
-//                intent.putExtra("maintainid",maintainid);
-//                startActivity(intent);
-//            }
-//        });
+		mSheHeAdapter.setOnItemClickListener(new MineNoSailListAdapter.OnItemClickListener() {
+			@Override
+			public void OnItemClick(View view, int maintainid) {
+				initDelOrder(maintainid);
+			}
+		});
+	}
+
+	/**
+	 * 删除订单
+	 * @param maintainid
+     */
+	private void initDelOrder(int maintainid) {
+		mineItemAC.dialog.show();
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("rentid", maintainid);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		OkHttpUtils.postString().url(BaseInterface.DelOrder)
+				.addHeader("Cookie", "PHPSESSID=" + mineItemAC.PHPSESSION)
+				.addHeader("X-Requested-With", "XMLHttpRequest")
+				.addHeader("Content-Type", "application/json;chartset=utf-8")
+				.content(jsonObject.toString())
+				.build()
+				.execute(new StringCallback() {
+							 @Override
+							 public void onError(Call call, Exception e, int id) {
+								 mineItemAC.initSnackBar("请求失败！");
+								 mineItemAC.dialog.dismiss();
+							 }
+
+							 @Override
+							 public void onResponse(String response, int id) {
+								 Log.e("我的待审核", "" + response);
+								 mineItemAC.dialog.dismiss();
+								 Gson gson = new Gson();
+								 RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+								 if (requestStatueModel.getCode() == 1) {
+									 initMineData(4, 0, 0);
+									 mineItemAC.initSnackBar("删除成功！");
+								 } else if (requestStatueModel.getCode() == 0) {
+									 mineItemAC.initSnackBar("删除失败！");
+								 } else if (requestStatueModel.getCode() == 911) {
+									 mineItemAC.initSnackBar("登录超时，请重新登录");
+								 }
+
+							 }
+						 }
+
+				);
+
 	}
 
 	public void initMineData(final int status, int pageNum, int pageSize){
@@ -174,19 +220,19 @@ public class DontSailFC extends Fragment {
 						Log.e("我的发布", "" + response);
 						mineItemAC.dialog.dismiss();
 						Gson gson = new Gson();
-						if (status == 1) {
+						if (status == 4) {
 							// 审核中
-							MinePublishShenHeModel minePublishShenHeModel = gson.fromJson(response, MinePublishShenHeModel.class);
-							if (minePublishShenHeModel.getCode() == 1) {
-								rentListDataSouce = minePublishShenHeModel.getRentList();
+							MineItemNoSailModel mineItemNoSailModel = gson.fromJson(response, MineItemNoSailModel.class);
+							if (mineItemNoSailModel.getCode() == 1) {
+								rentListDataSouce = mineItemNoSailModel.getRentList();
 								initSheHeRV();
 //                                LogUtil.e("审核数据的大小"+rentListDataSouce.size());
 //                                initView();
 //                                adapter.flushData(rentListDataSouce);
 //                                adapter.notifyDataSetChanged();
-							} else if (minePublishShenHeModel.getCode() == 0) {
+							} else if (mineItemNoSailModel.getCode() == 0) {
 								mineItemAC.initSnackBar("请求失败！");
-							} else if (minePublishShenHeModel.getCode() == 911) {
+							} else if (mineItemNoSailModel.getCode() == 911) {
 								mineItemAC.initSnackBar("登录超时，请重新登录");
 							}
 

@@ -361,7 +361,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(getActivity());
         progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
+        progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
 
         TextView textView = new TextView(getActivity());

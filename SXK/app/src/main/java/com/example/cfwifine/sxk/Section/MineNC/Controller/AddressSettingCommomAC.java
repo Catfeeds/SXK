@@ -90,8 +90,8 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
     // TODO*********************************配置刷新RECYCLEVIEW**********************************************
     private void initAddressListView() {
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-                R.color.textBlueDark);
+        swiperefresh.setColorSchemeResources(R.color.login_turquoise, R.color.login_turquoise, R.color.login_turquoise,
+                R.color.login_turquoise);
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -130,7 +130,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(this);
         progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
+        progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
 
         TextView textView = new TextView(this);

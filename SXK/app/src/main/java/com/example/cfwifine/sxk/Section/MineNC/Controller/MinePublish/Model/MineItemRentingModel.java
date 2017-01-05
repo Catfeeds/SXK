@@ -1,18 +1,17 @@
-package com.example.cfwifine.sxk.Section.PublishNC.Model;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model;
 
 import java.util.List;
 
 /**
- * Created by cfwifine on 16/12/27.
+ * Created by cfwifine on 17/1/5.
  */
 
-public class MinePublishShenHeModel {
-
+public class MineItemRentingModel {
 
     /**
      * code : 1
      * total : 1
-     * rentList : [{"userid":10,"name":"dzz","imgList":["sxk_userPic_201612291132220","sxk_userPic_201612291132231","sxk_userPic_201612291132232","sxk_userPic_201612291132233","sxk_userPic_201612291132244","sxk_userPic_201612291132245","sxk_userPic_201612291132256","sxk_userPic_201612291132257","sxk_userPic_201612291132258"],"keyword":"啊KKK啦now","description":"dzzz","counterPrice":1000,"categoryid":3,"color":"就冷了","condition":4,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["盒子","发票"]}],"commentList":[],"sale":0,"sort":0,"status":1,"rentid":29,"createtime":1482982346,"updatetime":1482982346}]
+     * rentList : [{"userid":10,"name":"blackout","imgList":["sxk_userPic_201701051342370","sxk_userPic_201701051342381","sxk_userPic_201701051342382","sxk_userPic_201701051342383","sxk_userPic_201701051342394","sxk_userPic_201701051342395","sxk_userPic_201701051342406","sxk_userPic_201701051342407","sxk_userPic_201701051342408"],"keyword":"拉锯","description":"blackout","counterPrice":1,"categoryid":3,"color":"红","condition":3,"crowd":2,"attachList":[{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"commentList":[],"sale":1,"sort":0,"status":3,"rentid":54,"createtime":1483594961,"updatetime":1483595041,"marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"orderid":68,"oddNumber":""}]
      */
 
     private int code;
@@ -46,23 +45,32 @@ public class MinePublishShenHeModel {
     public static class RentListBean {
         /**
          * userid : 10
-         * name : dzz
-         * imgList : ["sxk_userPic_201612291132220","sxk_userPic_201612291132231","sxk_userPic_201612291132232","sxk_userPic_201612291132233","sxk_userPic_201612291132244","sxk_userPic_201612291132245","sxk_userPic_201612291132256","sxk_userPic_201612291132257","sxk_userPic_201612291132258"]
-         * keyword : 啊KKK啦now
-         * description : dzzz
-         * counterPrice : 1000
+         * name : blackout
+         * imgList : ["sxk_userPic_201701051342370","sxk_userPic_201701051342381","sxk_userPic_201701051342382","sxk_userPic_201701051342383","sxk_userPic_201701051342394","sxk_userPic_201701051342395","sxk_userPic_201701051342406","sxk_userPic_201701051342407","sxk_userPic_201701051342408"]
+         * keyword : 拉锯
+         * description : blackout
+         * counterPrice : 1
          * categoryid : 3
-         * color : 就冷了
-         * condition : 4
+         * color : 红
+         * condition : 3
          * crowd : 2
-         * attachList : [{"attributeName":"相关配件","attributeValueList":["盒子","发票"]}]
+         * attachList : [{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * commentList : []
-         * sale : 0
+         * sale : 1
          * sort : 0
-         * status : 1
-         * rentid : 29
-         * createtime : 1482982346
-         * updatetime : 1482982346
+         * status : 3
+         * rentid : 54
+         * createtime : 1483594961
+         * updatetime : 1483595041
+         * marketPrice : 1
+         * rentPrice : 1
+         * risk : 1
+         * three : 1
+         * seven : 1
+         * fiften : 1
+         * twentyFive : 1
+         * orderid : 68
+         * oddNumber :
          */
 
         private int userid;
@@ -80,7 +88,16 @@ public class MinePublishShenHeModel {
         private int rentid;
         private int createtime;
         private int updatetime;
-        private List<Object> imgList;
+        private int marketPrice;
+        private int rentPrice;
+        private int risk;
+        private int three;
+        private int seven;
+        private int fiften;
+        private int twentyFive;
+        private int orderid;
+        private String oddNumber;
+        private List<String> imgList;
         private List<AttachListBean> attachList;
         private List<?> commentList;
 
@@ -204,11 +221,83 @@ public class MinePublishShenHeModel {
             this.updatetime = updatetime;
         }
 
-        public List<Object> getImgList() {
+        public int getMarketPrice() {
+            return marketPrice;
+        }
+
+        public void setMarketPrice(int marketPrice) {
+            this.marketPrice = marketPrice;
+        }
+
+        public int getRentPrice() {
+            return rentPrice;
+        }
+
+        public void setRentPrice(int rentPrice) {
+            this.rentPrice = rentPrice;
+        }
+
+        public int getRisk() {
+            return risk;
+        }
+
+        public void setRisk(int risk) {
+            this.risk = risk;
+        }
+
+        public int getThree() {
+            return three;
+        }
+
+        public void setThree(int three) {
+            this.three = three;
+        }
+
+        public int getSeven() {
+            return seven;
+        }
+
+        public void setSeven(int seven) {
+            this.seven = seven;
+        }
+
+        public int getFiften() {
+            return fiften;
+        }
+
+        public void setFiften(int fiften) {
+            this.fiften = fiften;
+        }
+
+        public int getTwentyFive() {
+            return twentyFive;
+        }
+
+        public void setTwentyFive(int twentyFive) {
+            this.twentyFive = twentyFive;
+        }
+
+        public int getOrderid() {
+            return orderid;
+        }
+
+        public void setOrderid(int orderid) {
+            this.orderid = orderid;
+        }
+
+        public String getOddNumber() {
+            return oddNumber;
+        }
+
+        public void setOddNumber(String oddNumber) {
+            this.oddNumber = oddNumber;
+        }
+
+        public List<String> getImgList() {
             return imgList;
         }
 
-        public void setImgList(List<Object> imgList) {
+        public void setImgList(List<String> imgList) {
             this.imgList = imgList;
         }
 
@@ -231,7 +320,7 @@ public class MinePublishShenHeModel {
         public static class AttachListBean {
             /**
              * attributeName : 相关配件
-             * attributeValueList : ["盒子","发票"]
+             * attributeValueList : ["保修卡","防尘袋"]
              */
 
             private String attributeName;

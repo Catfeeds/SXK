@@ -418,6 +418,8 @@
                     android:hint="给啵主留言（250字以内）"
                     android:paddingLeft="15dp"
                     android:paddingTop="15dp"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:textColor="@color/navi_title_color"
                     android:textColorHint="@color/login_phone_numbercolor"
                     android:textSize="13sp" />

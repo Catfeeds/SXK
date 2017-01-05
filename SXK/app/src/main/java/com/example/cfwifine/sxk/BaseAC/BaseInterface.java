@@ -87,14 +87,21 @@ public class BaseInterface {
     // 租赁列表
     public static String RentList = root + "/app/rent/listpost";
     // 修改租赁
-    public static String ChangeRent = root + "/app/rent/listpost";
+    public static String ChangeRent = root + "/app/rent/setpost";
     // 获取租赁
     public static String GetRentDetail = root + "/app/rent/getpost";
-
-
     // 删除租赁
+    public static String DelOrder = root + "/app/rent/delpost";
+
+
+    // 租赁订单列表
+    public static String MineRent = root + "/app/rentorder/listpost";
+
+
     // 生成订单
     // 获取租赁
+
+
 
     // 支付
     public static String PayOrder = root + "/app/payment/chargepost";

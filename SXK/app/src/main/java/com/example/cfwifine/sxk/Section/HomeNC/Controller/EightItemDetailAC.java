@@ -175,7 +175,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(this);
         progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff69b3e0);
+        progressView.setIndicatorColor(0xff16a6ae);
         activity_recycleview.setFootLoadingView(progressView);
 
         TextView textView = new TextView(this);
