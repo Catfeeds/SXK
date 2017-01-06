@@ -56,8 +56,9 @@ public class MinePublishingListAdapter extends RecyclerView.Adapter<MinePublishi
         LogUtil.e("审核中数据源"+rentListDataSouce.get(position).getName());
         holder.name.setText(rentListDataSouce.get(position).getName());
         holder.description.setText(rentListDataSouce.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(rentListDataSouce.get(position).getCounterPrice()/100));
-        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(rentListDataSouce.get(position).getMarketPrice()/100));
+//        holder.price.setText("¥ "+ String.valueOf(rentListDataSouce.get(position).getCounterPrice()/100));
+        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(rentListDataSouce.get(position).getCounterPrice())/100.0))+"/天");
+        holder.rentPrice.setText("市场价 ¥ "+String.valueOf((double)(Math.round(rentListDataSouce.get(position).getMarketPrice())/100.0)));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentListDataSouce.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 

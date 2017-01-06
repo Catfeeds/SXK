@@ -17,13 +17,20 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
+import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 
 import java.util.ArrayList;
@@ -54,6 +61,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private RelativeLayout mRecognize;
     RelativeLayout loginView;
     ScrollView loginSucView;
+    private MainAC mainAC;
+    private TextView username;
+    private String userinfo;
 
 
     @Override
@@ -67,26 +77,34 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        if (view == null){
         view = inflater.inflate(R.layout.fragment_login_fc, container, false);
-        initUserInfo();
+        mainAC = (MainAC) getActivity();
+        mainAC.initUserData();
         initView();
         initLoginBtn();
         initLoginOk();
 
+        LogUtil.e("是否登录" + mainAC.isLogin());
+//        }
 
         return view;
     }
 
-    private void initUserInfo() {
-
-    }
 
     // TODO**************************************初始化界面******************************************
     private void initView() {
         loginView = (RelativeLayout) view.findViewById(R.id.login_view);
         loginSucView = (ScrollView) view.findViewById(R.id.login_success_view);
-        loginView.setVisibility(View.VISIBLE);
-        loginSucView.setVisibility(View.GONE);
+
+        if (mainAC.isLogin()) {
+            loginSucView.setVisibility(View.VISIBLE);
+            loginView.setVisibility(View.GONE);
+        } else {
+            loginView.setVisibility(View.VISIBLE);
+            loginSucView.setVisibility(View.GONE);
+        }
+
     }
 
     // TODO**************************************登录按钮******************************************
@@ -101,7 +119,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     // TODO**************************************登录成功******************************************
     private void initLoginOk() {
         mRecycles = (RecyclerView) view.findViewById(R.id.mine_recycleView);
-
+        username = (TextView) view.findViewById(R.id.username);
+        username.setOnClickListener(this);
         mSex = (ImageView) view.findViewById(R.id.mine_sex);
         mHeadportrait = (ImageView) view.findViewById(R.id.headportrait);
         mPerssonaldata = (TextView) view.findViewById(R.id.mine_perssonal_data);
@@ -149,13 +168,28 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             }
         });
         mRecycles.setAdapter(adapter);
+
+        setValueForUserInfoView();
+
+    }
+
+    //登录成功后初始化个人信息
+    private void setValueForUserInfoView() {
+        userinfo = mainAC.getUserInfo();
+        if (userinfo!=null){
+            Gson gson = new Gson();
+            UserInfoModel userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
+            String picUrl = userInfoModel.getUser().getHeadimgurl();
+            Glide.with(getActivity()).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(mHeadportrait);
+            username.setText(userInfoModel.getUser().getNickname());
+        }
     }
 
     private void jump(int position) {
         // 根据position跳转
-        if (position == 7){
+        if (position == 7) {
             initMeiQiaView();
-        }else {
+        } else {
             startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
 
@@ -202,11 +236,11 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_publishs:
                 // 我的发布
-                startActivity(MineItemAC.class,1);
+                startActivity(MineItemAC.class, 1);
                 break;
             case R.id.mine_rents:
                 // 我的租赁
-                startActivity(MineItemRentAC.class,1);
+                startActivity(MineItemRentAC.class, 1);
                 break;
             case R.id.mine_care:
                 // 我的养护
@@ -263,5 +297,13 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         circleImageView.setVisibility(View.VISIBLE);
         layouts.setVisibility(View.VISIBLE);
         layoutx.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainAC.initUserData();
+        userinfo = mainAC.getUserInfo();
+//        initView();
     }
 }

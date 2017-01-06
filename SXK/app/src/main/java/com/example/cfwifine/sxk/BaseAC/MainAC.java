@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.BaseAC;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
@@ -16,13 +17,25 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC;
 import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunFC;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Controller.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
 import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.AppraisasAC;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Call;
 
 public class MainAC extends BaseAC  {
 
@@ -53,12 +66,69 @@ public class MainAC extends BaseAC  {
             "社区",
             "我的",
     };
+    private UserInfoModel userInfoModel;
+    private String USERINFO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_ac);
         initView();
+        // 初始化个人信息，如果登录超时 LoginFC展示为登录界面   否则则展示个人中心界面
+        initUserData();
+
     }
+
+    public void initUserData() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(MainAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.GetUserInfo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("似乎断网了w(ﾟДﾟ)w");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("初始化个人信息", "" + response);
+                        Gson gson = new Gson();
+                        userInfoModel = gson.fromJson(response,UserInfoModel.class);
+                        if (userInfoModel.getCode() == 1) {
+                            //
+                            USERINFO = response;
+                        } else if (userInfoModel.getCode() == 0) {
+                        } else if (userInfoModel.getCode() == 911) {
+                            initSnackBar("您还没有登录哦！");
+                        }
+                    }
+                });
+
+    }
+    public boolean isLogin(){
+        if (userInfoModel.getCode()==1){
+            return true;
+        }else if (userInfoModel.getCode() ==911){
+            return false;
+        }else if (userInfoModel.getCode() == 0){
+            return false;
+        }
+        return false;
+    }
+    public String getUserInfo(){
+        return USERINFO;
+    }
+
 
     private void initView() {
         inflater=LayoutInflater.from(this);
@@ -99,10 +169,6 @@ public class MainAC extends BaseAC  {
         });
 
 
-    }
-    private Fragment getFragment(int tabId)
-    {
-        return getSupportFragmentManager().findFragmentByTag("TAB_TAG_" + tabId);
     }
 
     //为弹出窗口实现监听类
@@ -155,6 +221,8 @@ public class MainAC extends BaseAC  {
         Intent intent = new Intent(MainAC.this, cls);
         startActivity(intent);
     }
-
+    private void initSnackBar(String value){
+        SnackbarUtils.showShortSnackbar(MainAC.this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
 
 }

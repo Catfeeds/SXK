@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
     private MineRentingListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int maintainid);
+        void OnItemClick(View view, int maintainid,int type);
     }
     public void setOnItemClickListener(MineRentingListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -55,16 +56,16 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
         LogUtil.e("审核中数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()/100));
+        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getCounterPrice())/100.0))+"/天");
 //        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(classifyDataSource.get(position).get));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
         if (mOnItemClickListener != null){
-            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+            holder.inputOrderNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid());
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid(),1);
                 }
             });
         }
@@ -77,6 +78,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView rentPrice;
+        private final Button inputOrderNumber;
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
@@ -90,7 +92,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
             price = (TextView)itemView.findViewById(R.id.mine_renting_price);
             pic = (ImageView)itemView.findViewById(R.id.mine_renting_pic);
             rentPrice = (TextView)itemView.findViewById(R.id.mine_renting_marketprice);
-
+            inputOrderNumber = (Button)itemView.findViewById(R.id.mine_renting_inputOrderNumber_btn);
         }
     }
 }

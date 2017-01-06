@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--登录界面-->
     <RelativeLayout
         android:id="@+id/login_view"
-        android:visibility="invisible"
+        android:visibility="visible"
+        android:background="@color/home_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -86,6 +88,7 @@
 
     <ScrollView
         android:id="@+id/login_success_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -125,7 +128,7 @@
                         android:id="@+id/headportrait"
                         android:layout_width="86dp"
                         android:layout_height="86dp"
-                        android:src="@drawable/personal"
+                        android:src="@drawable/user_header_image_placeholder"
                         app:border_color="@color/lightgray"
                         app:border_width="1dp"
                         android:layout_alignParentTop="true"

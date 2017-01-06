@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Adapter;
 
 import android.content.Context;
+import android.icu.text.DecimalFormat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,29 +15,30 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemNoPassModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemHasReceGoodsModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemWaitReceGoodsModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
+
 
 import java.util.List;
 
 
-public class MineWaitReceGoodsListAdapter extends RecyclerView.Adapter<MineWaitReceGoodsListAdapter.ViewHolder> {
-    private final List<MineItemWaitReceGoodsModel.BrandListBean> classifyDataSource;
+public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasReceGoodsListAdapter.ViewHolder> {
+    private final List<MineItemHasReceGoodsModel.BrandListBean> classifyDataSource;
     private Context mContext;
     private LayoutInflater mInflater;
 
 
-    private MineWaitReceGoodsListAdapter.OnItemClickListener mOnItemClickListener;
+    private MineHasReceGoodsListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int maintainid,String oddNumber);
+        void OnItemClick(View view, int maintainid, String oddNumber);
     }
-    public void setOnItemClickListener(MineWaitReceGoodsListAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(MineHasReceGoodsListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public MineWaitReceGoodsListAdapter(Context mContext, List<MineItemWaitReceGoodsModel.BrandListBean> classifyDataSource) {
+    public MineHasReceGoodsListAdapter(Context mContext, List<MineItemHasReceGoodsModel.BrandListBean> classifyDataSource) {
 //        mInflater = LayoutInflater.from(mContext);
         this.mContext = mContext;
         this.classifyDataSource = classifyDataSource;
@@ -44,15 +46,15 @@ public class MineWaitReceGoodsListAdapter extends RecyclerView.Adapter<MineWaitR
 
 
     @Override
-    public MineWaitReceGoodsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_waitreceivegoods_list, parent, false);
-        MineWaitReceGoodsListAdapter.ViewHolder vh = new MineWaitReceGoodsListAdapter.ViewHolder(view);
+    public MineHasReceGoodsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_hasreceivegoods_list, parent, false);
+        MineHasReceGoodsListAdapter.ViewHolder vh = new MineHasReceGoodsListAdapter.ViewHolder(view);
         return vh;
 //        return new ViewHolder(mInflater.inflate(R.layout.item_mine_nopass_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final MineWaitReceGoodsListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final MineHasReceGoodsListAdapter.ViewHolder holder, final int position) {
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getRent().getName());

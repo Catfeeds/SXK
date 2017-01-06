@@ -42,7 +42,7 @@ public class MineItemRentAC extends AppCompatActivity implements View.OnClickLis
     }
     private void initView() {
         String[] s = new String[]{
-                "待收货", "已收货", "已完成", "已退回"
+                "啵客待收", "进行中", "啵主确认", "已完成"
         };
         datas = new ArrayList<>();
         for (int i = 0; i < s.length; i++) {

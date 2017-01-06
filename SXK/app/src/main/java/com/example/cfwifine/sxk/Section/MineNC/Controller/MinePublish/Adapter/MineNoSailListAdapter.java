@@ -59,7 +59,8 @@ public class MineNoSailListAdapter extends RecyclerView.Adapter<MineNoSailListAd
         LogUtil.e("审核中数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()/100));
+//        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getCounterPrice()/100));
+        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getCounterPrice())/100.0))+"/天");
 //        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(classifyDataSource.get(position)));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);

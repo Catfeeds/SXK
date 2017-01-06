@@ -8,13 +8,9 @@ import java.util.List;
 
 public class MineItemWaitReceGoodsModel {
     /**
-     * 待收货
-     */
-
-    /**
      * code : 1
      * total : 1
-     * brandList : [{"orderNo":"2017010513434133311","rentid":54,"rent":{"name":"blackout","img":"sxk_userPic_201701051342370","keyword":"拉锯","marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"userid":10},"isRisk":2,"tenancy":{"name":"seven","value":1},"total":2,"userid":10,"receiver":{"userid":10,"name":"张三","mobile":"15539910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"河南省南阳市","receiverid":113,"createtime":1483091186,"updatetime":1483595007,"isdefault":1},"message":"悲伤的歌","status":2,"orderid":68,"createtime":1483595021,"updatetime":1483595041,"notifyid":11}]
+     * brandList : [{"orderNo":"2017010513434133311","rentid":54,"rent":{"name":"blackout","img":"sxk_userPic_201701051342370","keyword":"拉锯","marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"userid":10},"isRisk":2,"tenancy":{"name":"seven","value":1},"total":2,"userid":10,"receiver":{"userid":10,"name":"张三","mobile":"15539910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"河南省南阳市","receiverid":113,"createtime":1483091186,"updatetime":1483595007,"isdefault":1},"message":"悲伤的歌","status":2,"orderid":68,"createtime":1483595021,"updatetime":1483675082,"notifyid":11,"oddNumber":"2222hhhfghhh"}]
      */
 
     private int code;
@@ -59,8 +55,9 @@ public class MineItemWaitReceGoodsModel {
          * status : 2
          * orderid : 68
          * createtime : 1483595021
-         * updatetime : 1483595041
+         * updatetime : 1483675082
          * notifyid : 11
+         * oddNumber : 2222hhhfghhh
          */
 
         private String orderNo;
@@ -77,6 +74,7 @@ public class MineItemWaitReceGoodsModel {
         private int createtime;
         private int updatetime;
         private int notifyid;
+        private String oddNumber;
 
         public String getOrderNo() {
             return orderNo;
@@ -188,6 +186,14 @@ public class MineItemWaitReceGoodsModel {
 
         public void setNotifyid(int notifyid) {
             this.notifyid = notifyid;
+        }
+
+        public String getOddNumber() {
+            return oddNumber;
+        }
+
+        public void setOddNumber(String oddNumber) {
+            this.oddNumber = oddNumber;
         }
 
         public static class RentBean {
@@ -448,4 +454,9 @@ public class MineItemWaitReceGoodsModel {
             }
         }
     }
+    /**
+     * 待收货
+     */
+
+
 }

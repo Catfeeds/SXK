@@ -16,7 +16,10 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineRentingListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Dialog.CustomDialog_inputOrderNumber;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemRentingModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -126,15 +129,78 @@ public class RentingFC extends Fragment {
 //        mAdapter = new  (getActivity(), classifySo);
         mSheHeAdapter = new MineRentingListAdapter(getActivity(),rentListDataSouce);
         hao_recycleview.setAdapter(mSheHeAdapter);
-//        mSheHeAdapter.setOnItemClickListener(new CuringListAdapter.OnItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                LogUtil.e("maintainid"+maintainid);
-//                Intent intent = new Intent(getActivity(),CuringDetailAC.class);
-//                intent.putExtra("maintainid",maintainid);
-//                startActivity(intent);
-//            }
-//        });
+        mSheHeAdapter.setOnItemClickListener(new MineRentingListAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, final int maintainid, int type) {
+
+                // 1 是输入订单号 2 确认回收
+                if (type == 1){
+                    CustomDialog_inputOrderNumber customDialog_inputOrderNumber = new CustomDialog_inputOrderNumber(getActivity(), new CustomDialog_inputOrderNumber.ICustomDialogEventListener() {
+                        @Override
+                        public void customDialogEvent(String id) {
+                            LogUtil.e("单号为"+id);
+                            if (id.length() == 0){
+                                mineItemAC.initSnackBar("您还没有输入订单号！");
+                            }else {
+                                initInputOrderNumber(maintainid,id);
+                            }
+
+                        }
+                    },R.style.style_dialog);
+                    customDialog_inputOrderNumber.show();
+                }else if (type == 2){
+                    initConfirmReback(maintainid);
+                }
+            }
+        });
+    }
+
+    private void initInputOrderNumber(int maintainid, String id) {
+        mineItemAC.dialog.show();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("rentid", maintainid);
+            jsonObject.put("oddNumber",id);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString().url(BaseInterface.ChangeRent)
+                .addHeader("Cookie", "PHPSESSID=" + mineItemAC.PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                             @Override
+                             public void onError(Call call, Exception e, int id) {
+                                 mineItemAC.initSnackBar("请求失败！");
+                                 mineItemAC.dialog.dismiss();
+                             }
+
+                             @Override
+                             public void onResponse(String response, int id) {
+                                 Log.e("输入订单号", "" + response);
+                                 mineItemAC.dialog.dismiss();
+                                 Gson gson = new Gson();
+                                 RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                                 if (requestStatueModel.getCode() == 1) {
+                                     initMineData(3, 0, 0);
+                                     mineItemAC.initSnackBar("添加成功！");
+                                 } else if (requestStatueModel.getCode() == 0) {
+                                     mineItemAC.initSnackBar("添加失败！");
+                                 } else if (requestStatueModel.getCode() == 911) {
+                                     mineItemAC.initSnackBar("登录超时，请重新登录");
+                                 }
+
+                             }
+                         }
+
+                );
+    }
+
+    private void initConfirmReback(int maintainid) {
+
     }
 
     public void initMineData(final int status, int pageNum, int pageSize){
