@@ -182,7 +182,13 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 // 点击发表朋友圈
                 LogUtil.e("number的值" + number);
                 LogUtil.e("uploadData" + uploadDatasource);
-                releaseTopic();
+                mloading.show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        releaseTopic();
+                    }
+                }).start();
                 break;
             case R.id.friend_publish_pic:
                 addPic();
@@ -388,7 +394,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             }
             return;
         }
-        if (requestCode == 733){
+        if (requestCode == 733) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //权限被授予
                 choosePhotoFromCamera();
@@ -438,8 +444,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     sb.append(result).append("\n");
                 }
             }
-        }else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA) {
+            if (resultCode == RESULT_OK) {
                 mResults.add(mCameraPicPath);
             }
         } else if (requestCode == 777) {

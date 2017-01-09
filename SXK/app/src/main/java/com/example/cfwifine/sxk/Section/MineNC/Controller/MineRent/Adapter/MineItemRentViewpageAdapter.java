@@ -36,10 +36,10 @@ public class MineItemRentViewpageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 HasReceGoodsFC hasReceGoodsFC = new HasReceGoodsFC();
                 return hasReceGoodsFC;
-            case 2:
+            case 3:
                 CompletedOrderFC completedOrderFC = new CompletedOrderFC();
                 return  completedOrderFC;
-            case 3:
+            case 2:
                 RebackGoodsFC rebackGoodsFC = new RebackGoodsFC();
                 return rebackGoodsFC;
             default:

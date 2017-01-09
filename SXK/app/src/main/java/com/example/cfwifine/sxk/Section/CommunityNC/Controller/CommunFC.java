@@ -62,7 +62,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private ArrayList<String> listData = new ArrayList<>();
     private int limit = 10;
     String picUrl = "";
-    List<CommunityTopicListModel.ModuleListBean> topic;
+    List<CommunityTopicListModel.ModuleListBean> topic=null;
     List<TopicListModel.TopicListBean> topicList;
     LinearLayout rightLay;
     Dialog mloading;
@@ -310,6 +310,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         ImageView rightPubFriendMoment = (ImageView) view.findViewById(R.id.left_pic);
         rightPubFriendMoment.setBackgroundResource(R.drawable.com_pubfriendmoment);
 
+        // 断网的情况下，隐藏按钮
         rightLay = (LinearLayout) view.findViewById(R.id.navi_right_pic_click_lay);
         rightLay.setOnClickListener(this);
 
@@ -525,16 +526,20 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navi_right_pic_click_lay:
-                topicName = new ArrayList<>();
-                topicModelID = new ArrayList<>();
-                for (int i = 0; i < topic.size(); i++) {
-                    topicName.add(i, topic.get(i).getName());
-                    topicModelID.add(i, topic.get(i).getModuleid());
+                if (topic !=null){
+                    topicName = new ArrayList<>();
+                    topicModelID = new ArrayList<>();
+                    for (int i = 0; i < topic.size(); i++) {
+                        topicName.add(i, topic.get(i).getName());
+                        topicModelID.add(i, topic.get(i).getModuleid());
+                    }
+                    Intent intent = new Intent(getActivity(), CommunityPublishTopicAC.class);
+                    intent.putExtra("TOPIC", topicName);
+                    intent.putExtra("TOPICMODELID", topicModelID);
+                    startActivity(intent);
+                }else {
+                    SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "数据走丢了!", Color.WHITE, Color.parseColor("#16a6ae"));
                 }
-                Intent intent = new Intent(getActivity(), CommunityPublishTopicAC.class);
-                intent.putExtra("TOPIC", topicName);
-                intent.putExtra("TOPICMODELID", topicModelID);
-                startActivity(intent);
                 break;
         }
 

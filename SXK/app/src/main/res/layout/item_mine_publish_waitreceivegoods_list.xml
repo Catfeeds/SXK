@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/wait_cell"
+            android:id="@+id/waits_cell"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:background="@drawable/ripple_bg"
@@ -20,7 +20,7 @@
             android:layout_marginBottom="15dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/wait_pic"
+                android:id="@+id/waits_pic"
                 android:layout_width="150dp"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
@@ -32,13 +32,13 @@
                 android:paddingRight="15dp"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/wait_name"
+                    android:id="@+id/waits_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="14sp"/>
                 <TextView
-                    android:id="@+id/wait_descript"
+                    android:id="@+id/waits_descript"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -56,14 +56,14 @@
                         android:text="租价 "
                         android:textColor="@color/black"/>
                     <TextView
-                        android:id="@+id/wait_price"
+                        android:id="@+id/waits_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
                         android:textColor="@color/login_turquoise"/>
                 </LinearLayout>
                 <TextView
-                    android:id="@+id/wait_rentprice"
+                    android:id="@+id/waits_rentprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
@@ -80,7 +80,7 @@
                         android:text="单号"
                         android:textColor="@color/black"/>
                     <TextView
-                        android:id="@+id/wait_ordernumber"
+                        android:id="@+id/waits_ordernumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/wait_confirm_btn"
+                android:id="@+id/waits_confirm_btn"
                 android:layout_width="92dp"
                 android:layout_height="26dp"
                 android:layout_marginRight="15dp"

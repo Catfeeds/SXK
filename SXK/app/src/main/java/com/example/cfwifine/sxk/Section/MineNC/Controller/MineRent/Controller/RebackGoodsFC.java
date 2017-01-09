@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Adapter.MineBoZhuWaitListAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Adapter.MineHasReceGoodsListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemBoZhuWaitReceModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemHasReceGoodsModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -36,9 +38,9 @@ public class RebackGoodsFC extends Fragment {
     private View view;
     private SwipeRefreshLayout swiperefresh;
     private HaoRecyclerView hao_recycleview;
-    private MineHasReceGoodsListAdapter mSheHeAdapter;
+    private MineBoZhuWaitListAdapter mSheHeAdapter;
     private MineItemRentAC mineItemAC;
-    private List<MineItemHasReceGoodsModel.BrandListBean> DataSouce;
+    private List<MineItemBoZhuWaitReceModel.BrandListBean> DataSouce;
     public RebackGoodsFC() {
         // Required empty public constructor
     }
@@ -94,15 +96,15 @@ public class RebackGoodsFC extends Fragment {
                         Gson gson = new Gson();
                         if (status == 4) {
                             // 博主确认
-//                            MineItemHasReceGoodsModel mineItemHasReceGoodsModel = gson.fromJson(response, MineItemHasReceGoodsModel.class);
-//                            if (mineItemHasReceGoodsModel.getCode() == 1) {
-//                                DataSouce = mineItemHasReceGoodsModel.getBrandList();
-//                                initSheHeRV();
-//                            } else if (mineItemHasReceGoodsModel.getCode() == 0) {
-//                                mineItemAC.initSnackBar("请求失败！");
-//                            } else if (mineItemHasReceGoodsModel.getCode() == 911) {
-//                                mineItemAC.initSnackBar("登录超时，请重新登录");
-//                            }
+                            MineItemBoZhuWaitReceModel mineItemBoZhuWaitReceModel = gson.fromJson(response, MineItemBoZhuWaitReceModel.class);
+                            if (mineItemBoZhuWaitReceModel.getCode() == 1) {
+                                DataSouce = mineItemBoZhuWaitReceModel.getBrandList();
+                                initSheHeRV();
+                            } else if (mineItemBoZhuWaitReceModel.getCode() == 0) {
+                                mineItemAC.initSnackBar("请求失败！");
+                            } else if (mineItemBoZhuWaitReceModel.getCode() == 911) {
+                                mineItemAC.initSnackBar("登录超时，请重新登录");
+                            }
 
                         }
 
@@ -177,7 +179,7 @@ public class RebackGoodsFC extends Fragment {
 //            }
 //        });
 //        mAdapter = new  (getActivity(), classifySo);
-        mSheHeAdapter = new MineHasReceGoodsListAdapter(getActivity(), DataSouce);
+        mSheHeAdapter = new MineBoZhuWaitListAdapter(getActivity(), DataSouce);
         hao_recycleview.setAdapter(mSheHeAdapter);
 
     }

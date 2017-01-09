@@ -20,6 +20,7 @@ import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunFC;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Controller.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
@@ -107,6 +108,8 @@ public class MainAC extends BaseAC  {
                         if (userInfoModel.getCode() == 1) {
                             //
                             USERINFO = response;
+                            SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.NICKNAME,userInfoModel.getUser().getNickname());
+
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");

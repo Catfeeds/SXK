@@ -1,7 +1,6 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Adapter;
 
 import android.content.Context;
-import android.icu.text.DecimalFormat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,30 +14,29 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemBoZhuWaitReceModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemHasReceGoodsModel;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model.MineItemWaitReceGoodsModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
-
 
 import java.util.List;
 
 
-public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasReceGoodsListAdapter.ViewHolder> {
-    private final List<MineItemHasReceGoodsModel.BrandListBean> classifyDataSource;
+public class MineBoZhuWaitListAdapter extends RecyclerView.Adapter<MineBoZhuWaitListAdapter.ViewHolder> {
+    private final List<MineItemBoZhuWaitReceModel.BrandListBean> classifyDataSource;
     private Context mContext;
     private LayoutInflater mInflater;
 
 
-    private MineHasReceGoodsListAdapter.OnItemClickListener mOnItemClickListener;
+    private MineBoZhuWaitListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
         void OnItemClick(View view, int maintainid, String oddNumber, int i);
     }
-    public void setOnItemClickListener(MineHasReceGoodsListAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(MineBoZhuWaitListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public MineHasReceGoodsListAdapter(Context mContext, List<MineItemHasReceGoodsModel.BrandListBean> classifyDataSource) {
+    public MineBoZhuWaitListAdapter(Context mContext, List<MineItemBoZhuWaitReceModel.BrandListBean> classifyDataSource) {
 //        mInflater = LayoutInflater.from(mContext);
         this.mContext = mContext;
         this.classifyDataSource = classifyDataSource;
@@ -46,33 +44,33 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
 
 
     @Override
-    public MineHasReceGoodsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_hasreceivegoods_list, parent, false);
-        MineHasReceGoodsListAdapter.ViewHolder vh = new MineHasReceGoodsListAdapter.ViewHolder(view);
+    public MineBoZhuWaitListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_bozhuwaitreceivegoods_list, parent, false);
+        MineBoZhuWaitListAdapter.ViewHolder vh = new MineBoZhuWaitListAdapter.ViewHolder(view);
         return vh;
 //        return new ViewHolder(mInflater.inflate(R.layout.item_mine_nopass_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final MineHasReceGoodsListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final MineBoZhuWaitListAdapter.ViewHolder holder, final int position) {
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getRent().getName());
         holder.description.setText(classifyDataSource.get(position).getRent().getKeyword());
         holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getRent().getRentPrice())/100.0))+"/天");
         holder.rentPrice.setText("市场价 ¥ "+String.valueOf((double)(Math.round(classifyDataSource.get(position).getRent().getMarketPrice())/100.0)));
-        holder.ordernumber.setText(classifyDataSource.get(position).getOddNumber());
+        holder.ordernumber.setText(classifyDataSource.get(position).getBackOddNumber());
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getRent().getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
-        if (mOnItemClickListener != null){
-            holder.reback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid(),classifyDataSource.get(position).getOddNumber(),1);
-                }
-            });
-        }
+//        if (mOnItemClickListener != null){
+//            holder.reback.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid(),classifyDataSource.get(position).getOddNumber(),1);
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -85,19 +83,19 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
         LinearLayout frameLayout;
         TextView name,description,price,ordernumber;
         ImageView pic;
-        Button want,reback;
+        Button delete,reback;
         public ViewHolder(View itemView) {
             super(itemView);
 
-            frameLayout = (LinearLayout) itemView.findViewById(R.id.wait_cell);
-            name = (TextView)itemView.findViewById(R.id.wait_name);
-            description = (TextView)itemView.findViewById(R.id.wait_descript);
-            price = (TextView)itemView.findViewById(R.id.wait_price);
-            pic = (ImageView)itemView.findViewById(R.id.wait_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.wait_rentprice);
-            want = (Button)itemView.findViewById(R.id.wait_want_btn);
-            ordernumber = (TextView)itemView.findViewById(R.id.wait_ordernumber);
-            reback = (Button)itemView.findViewById(R.id.wait_reback_btn);
+            frameLayout = (LinearLayout) itemView.findViewById(R.id.bozhuwait_cell);
+            name = (TextView)itemView.findViewById(R.id.bozhuwait_name);
+            description = (TextView)itemView.findViewById(R.id.bozhuwait_descript);
+            price = (TextView)itemView.findViewById(R.id.bozhuwait_price);
+            pic = (ImageView)itemView.findViewById(R.id.bozhuwait_pic);
+            rentPrice = (TextView)itemView.findViewById(R.id.bozhuwait_rentprice);
+            delete = (Button)itemView.findViewById(R.id.bozhuwait_confirm_btn);
+            ordernumber = (TextView)itemView.findViewById(R.id.bozhuwait_ordernumber);
+//            reback = (Button)itemView.findViewById(R.id.bozhuwait_reback_btn);
         }
     }
 }

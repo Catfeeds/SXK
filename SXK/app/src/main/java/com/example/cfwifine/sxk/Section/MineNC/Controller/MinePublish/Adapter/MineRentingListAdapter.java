@@ -29,7 +29,7 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
     private MineRentingListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int maintainid,int type);
+        void OnItemClick(View view, int maintainid, int type,int pos);
     }
     public void setOnItemClickListener(MineRentingListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -57,18 +57,33 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
         holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getCounterPrice())/100.0))+"/天");
-//        holder.rentPrice.setText("市场价 ¥ "+String.valueOf(classifyDataSource.get(position).get));
+        holder.rentPrice.setText("市场价 ¥ "+String.valueOf((double)(Math.round(classifyDataSource.get(position).getMarketPrice())/100.0)));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
-
+        holder.ordernumberedit.setText("  "+classifyDataSource.get(position).getOddNumber());
         if (mOnItemClickListener != null){
             holder.inputOrderNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid(),1);
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid(), 1,position);
                 }
             });
         }
+
+        if (mOnItemClickListener!=null){
+            holder.reBackNumber.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getRentid(),2,position);
+                }
+            });
+        }
+//        // 给Edittext添加监听事件
+//        holder.ordernumberedit.addTextChangedListener(new TextSwitcher(holder));
+//        holder.ordernumberedit.setTag(position);
+
+
+
     }
 
     @Override
@@ -78,10 +93,12 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView rentPrice;
-        private final Button inputOrderNumber;
+        private final Button inputOrderNumber,reBackNumber;
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
+        TextView ordernumberedit;
+        String oddNumber;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +110,42 @@ public class MineRentingListAdapter extends RecyclerView.Adapter<MineRentingList
             pic = (ImageView)itemView.findViewById(R.id.mine_renting_pic);
             rentPrice = (TextView)itemView.findViewById(R.id.mine_renting_marketprice);
             inputOrderNumber = (Button)itemView.findViewById(R.id.mine_renting_inputOrderNumber_btn);
+            ordernumberedit = (TextView)itemView.findViewById(R.id.mine_renting_ordernumber);
+            reBackNumber = (Button)itemView.findViewById(R.id.mine_renting_confirmreuse_btn);
+//            oddNumber = ordernumberedit.getText().toString().trim();
+
+
         }
     }
+
+//    //自定义EditText的监听类
+//    class TextSwitcher implements TextWatcher {
+//
+//        private ViewHolder mHolder;
+//
+//        public TextSwitcher(ViewHolder mHolder) {
+//            this.mHolder = mHolder;
+//        }
+//
+//        @Override
+//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable s) {
+//            //用户输入完毕后，处理输入数据，回调给主界面处理
+////            SaveEditListener listener= (SaveEditListener) mContext;
+//            if(s!=null){
+//                mOnItemClickListener.SaveEdit(Integer.parseInt(mHolder.ordernumberedit.getTag().toString()),s.toString());
+//            }
+//
+//        }
+//    }
+
 }

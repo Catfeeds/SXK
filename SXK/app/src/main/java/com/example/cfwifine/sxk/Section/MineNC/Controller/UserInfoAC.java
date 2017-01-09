@@ -108,7 +108,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     long Birthday=0;
     String personalIntro="";
     String mobile="";
-    private UserInfoModel.UserBean dataSource;
+    private UserInfoModel.UserBean dataSource=null;
     Dialog mloading;
     String HEADERPIC="";
     @Override
@@ -321,7 +321,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 } else if (id.equals("女")) {
                     Sex = 2;
                 }
-                initUserInfo(0, 1);
+                if (dataSource != null){
+                    initUserInfo(0, 1);
+                }else {
+                    initSnackBar("修改失败！");
+                }
             }
         }, R.style.Dialog);
         customDialog_sex.show();
@@ -338,7 +342,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 if (!id.isEmpty()) {
                     SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.USERNAME, id);
                     nickName = id;
-                    initUserInfo(0, 0);
+                    if (dataSource != null){
+                        initUserInfo(0, 0);
+                    }else {
+                        initSnackBar("修改失败！");
+                    }
                 }else {
                     initSnackBar("你还没有选择哦！");
                 }
@@ -359,7 +367,12 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     long mills = TimeUtils.string2Milliseconds(time,DEFAULT_SDFS)/1000;
                     LogUtil.e("时间戳"+mills);
                     Birthday = mills;
-                    initUserInfo(0,2);
+                    if (dataSource !=null){
+                        initUserInfo(0,2);
+                    }else {
+                        initSnackBar("修改失败！");
+                    }
+
                 }else {
                     initSnackBar("你还没有选择哦！");
                 }

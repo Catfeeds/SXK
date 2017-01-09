@@ -87,14 +87,14 @@ public class MineWaitReceGoodsListAdapter extends RecyclerView.Adapter<MineWaitR
         public ViewHolder(View itemView) {
             super(itemView);
 
-            frameLayout = (LinearLayout) itemView.findViewById(R.id.wait_cell);
-            name = (TextView)itemView.findViewById(R.id.wait_name);
-            description = (TextView)itemView.findViewById(R.id.wait_descript);
-            price = (TextView)itemView.findViewById(R.id.wait_price);
-            pic = (ImageView)itemView.findViewById(R.id.wait_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.wait_rentprice);
-            delete = (Button)itemView.findViewById(R.id.wait_confirm_btn);
-            ordernumber = (TextView)itemView.findViewById(R.id.wait_ordernumber);
+            frameLayout = (LinearLayout) itemView.findViewById(R.id.waits_cell);
+            name = (TextView)itemView.findViewById(R.id.waits_name);
+            description = (TextView)itemView.findViewById(R.id.waits_descript);
+            price = (TextView)itemView.findViewById(R.id.waits_price);
+            pic = (ImageView)itemView.findViewById(R.id.waits_pic);
+            rentPrice = (TextView)itemView.findViewById(R.id.waits_rentprice);
+            delete = (Button)itemView.findViewById(R.id.waits_confirm_btn);
+            ordernumber = (TextView)itemView.findViewById(R.id.waits_ordernumber);
         }
     }
 }

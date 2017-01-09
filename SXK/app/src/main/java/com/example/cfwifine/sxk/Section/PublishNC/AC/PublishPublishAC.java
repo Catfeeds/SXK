@@ -585,12 +585,16 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-
+        dialog.show();
         // TODO 开始发布商品
-        // 先上传图片，再发请求
-        uploadNinePic();
 
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 先上传图片，再发请求
+                uploadNinePic();
+            }
+        }).start();
     }
 
     private void uploadNinePic() {

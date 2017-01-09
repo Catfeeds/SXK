@@ -6,15 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineRentingListAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Dialog.CustomDialog_inputOrderNumber;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemRentingModel;
@@ -30,7 +29,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import me.fangx.haorefresh.HaoRecyclerView;
-import me.fangx.haorefresh.LoadMoreListener;
 import okhttp3.Call;
 
 public class RentingFC extends Fragment {
@@ -53,10 +51,10 @@ public class RentingFC extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.renting_fc, container, false);
             mineItemAC = (MineItemAC) getActivity();
-            initMineData(3,0,0);
+            initMineData(3, 0, 0);
         }
         return view;
     }
@@ -74,7 +72,7 @@ public class RentingFC extends Fragment {
                     public void run() {
                         //注意此处
                         rentListDataSouce.clear();
-                        initMineData(3,0,0);
+                        initMineData(3, 0, 0);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mSheHeAdapter.notifyDataSetChanged();
@@ -127,32 +125,38 @@ public class RentingFC extends Fragment {
 //            }
 //        });
 //        mAdapter = new  (getActivity(), classifySo);
-        mSheHeAdapter = new MineRentingListAdapter(getActivity(),rentListDataSouce);
+        mSheHeAdapter = new MineRentingListAdapter(getActivity(), rentListDataSouce);
         hao_recycleview.setAdapter(mSheHeAdapter);
         mSheHeAdapter.setOnItemClickListener(new MineRentingListAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, final int maintainid, int type) {
+            public void OnItemClick(View view, final int maintainid, int type, final int pos) {
 
                 // 1 是输入订单号 2 确认回收
-                if (type == 1){
+                if (type == 1) {
                     CustomDialog_inputOrderNumber customDialog_inputOrderNumber = new CustomDialog_inputOrderNumber(getActivity(), new CustomDialog_inputOrderNumber.ICustomDialogEventListener() {
                         @Override
                         public void customDialogEvent(String id) {
-                            LogUtil.e("单号为"+id);
-                            if (id.length() == 0){
+                            LogUtil.e("单号为" + id);
+                            if (id.length() == 0) {
                                 mineItemAC.initSnackBar("您还没有输入订单号！");
-                            }else {
-                                initInputOrderNumber(maintainid,id);
+                            } else {
+                                initInputOrderNumber(maintainid, id);
                             }
 
                         }
-                    },R.style.style_dialog);
+                    }, R.style.style_dialog);
                     customDialog_inputOrderNumber.show();
-                }else if (type == 2){
+                } else if (type == 2) {
                     initConfirmReback(maintainid);
                 }
+
             }
         });
+
+
+
+
+
     }
 
     private void initInputOrderNumber(int maintainid, String id) {
@@ -160,7 +164,7 @@ public class RentingFC extends Fragment {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", maintainid);
-            jsonObject.put("oddNumber",id);
+            jsonObject.put("oddNumber", id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -183,8 +187,10 @@ public class RentingFC extends Fragment {
                                  Log.e("输入订单号", "" + response);
                                  mineItemAC.dialog.dismiss();
                                  Gson gson = new Gson();
-                                 RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                                 RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                                  if (requestStatueModel.getCode() == 1) {
+//                                     rentListDataSouce.get(pos).setOddNumber(id);
+//                                     mSheHeAdapter.notifyDataSetChanged();
                                      initMineData(3, 0, 0);
                                      mineItemAC.initSnackBar("添加成功！");
                                  } else if (requestStatueModel.getCode() == 0) {
@@ -200,24 +206,62 @@ public class RentingFC extends Fragment {
     }
 
     private void initConfirmReback(int maintainid) {
+        mineItemAC.dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("rentid", maintainid);
+            js.put("status", 2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString().url(BaseInterface.ChangeRent)
+                .addHeader("Cookie", "PHPSESSID=" + mineItemAC.PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mineItemAC.initSnackBar("请求失败！");
+                        mineItemAC.dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mineItemAC.dialog.dismiss();
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            initMineData(3, 0, 0);
+                        } else if (requestStatueModel.getCode() == 0) {
+                            mineItemAC.initSnackBar("请求失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            mineItemAC.initSnackBar("登录超时，请重新登录");
+                        }
+
+
+                    }
+                });
+
 
     }
 
-    public void initMineData(final int status, int pageNum, int pageSize){
+    public void initMineData(final int status, int pageNum, int pageSize) {
         mineItemAC.dialog.show();
         JSONObject order = new JSONObject();
         try {
-            order.put("rentid",-1);
+            order.put("rentid", -1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo",pageNum);
-            jsonObject.put("pageSize",pageSize);
-            jsonObject.put("order",order);
-            jsonObject.put("own",1);
-            jsonObject.put("status",status);
+            jsonObject.put("pageNo", pageNum);
+            jsonObject.put("pageSize", pageSize);
+            jsonObject.put("order", order);
+            jsonObject.put("own", 1);
+            jsonObject.put("status", status);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,10 +304,6 @@ public class RentingFC extends Fragment {
                 });
 
     }
-
-
-
-
 
 
     @Override

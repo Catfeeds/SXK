@@ -41,6 +41,8 @@
                     android:maxLines="5"
                     android:gravity="top"
                     android:enabled="true"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:hint="描述下您的宝贝吧..."
                     android:textColorHint="#b6b6b6"
                     android:textSize="13sp"

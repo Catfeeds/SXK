@@ -41,7 +41,7 @@
                     android:id="@+id/mine_renting_descript"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="@color/gray_40"
                     android:textSize="11sp"/>
                 <LinearLayout
@@ -79,14 +79,13 @@
                         android:text="单号"
                         android:textColor="@color/black"
                         android:textSize="13sp"/>
-                    <EditText
+                    <TextView
                         android:id="@+id/mine_renting_ordernumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="     请输入单号"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grrray"
                         android:textSize="13sp"
-                        android:textCursorDrawable="@null"
                         android:textColorHint="@color/grrray"/>
                 </LinearLayout>
             </LinearLayout>

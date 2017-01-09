@@ -198,5 +198,9 @@ public class HasReceGoodsFC extends Fragment {
 
     }
 
-
+    @Override
+    public void onResume() {
+        initData(3,0,0);
+        super.onResume();
+    }
 }

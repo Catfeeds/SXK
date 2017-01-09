@@ -98,7 +98,8 @@ public class BaseInterface {
     public static String MineRent = root + "/app/rentorder/listpost";
     // 修改租赁订单
     public static String ChangeRentOrder = root + "/app/rentorder/setpost";
-
+    // 租赁评论
+    public static String RentComment = root + "/app/rentcomment/addpost";
     // 生成订单
     // 获取租赁
 

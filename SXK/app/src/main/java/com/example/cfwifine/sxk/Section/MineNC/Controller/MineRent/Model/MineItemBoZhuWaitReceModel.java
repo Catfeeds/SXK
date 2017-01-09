@@ -3,15 +3,15 @@ package com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Model;
 import java.util.List;
 
 /**
- * Created by cfwifine on 17/1/5.
+ * Created by cfwifine on 17/1/9.
  */
 
-public class MineItemCompletedGoodsModel {
+public class MineItemBoZhuWaitReceModel {
 
     /**
      * code : 1
      * total : 1
-     * brandList : [{"orderNo":"2017010513434133311","rentid":54,"rent":{"name":"blackout","img":"sxk_userPic_201701051342370","keyword":"拉锯","marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"userid":10},"isRisk":2,"tenancy":{"name":"seven","value":1},"total":2,"userid":10,"receiver":{"userid":10,"name":"张三","mobile":"15539910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"河南省南阳市","receiverid":113,"createtime":1483091186,"updatetime":1483595007,"isdefault":1},"message":"悲伤的歌","status":5,"orderid":68,"createtime":1483595021,"updatetime":1483958052,"notifyid":11,"oddNumber":"123456789KKK","backOddNumber":"1234567890"}]
+     * brandList : [{"orderNo":"2017010318135644858","rentid":7,"rent":{"name":"我是你","img":"FvpCpGbSKJrNGjXg43gjmrOI8_Ia","keyword":"手机哦的","marketPrice":2000000,"rentPrice":200000,"risk":5000,"three":10000,"seven":20000,"fiften":50000,"twentyFive":70000,"userid":4},"isRisk":2,"tenancy":{"name":"twentyFive","value":70000},"total":2070000,"userid":10,"receiver":{"userid":10,"name":"张三","mobile":"15539910985","state":"湖北省","city":"鄂州市","district":"鄂城区","address":"all佛祖JJ","receiverid":113,"createtime":1483091186,"updatetime":1483438299,"isdefault":1},"message":"测试","status":4,"orderid":54,"createtime":1483438436,"updatetime":1483944693,"backOddNumber":"123456789"}]
      */
 
     private int code;
@@ -44,22 +44,20 @@ public class MineItemCompletedGoodsModel {
 
     public static class BrandListBean {
         /**
-         * orderNo : 2017010513434133311
-         * rentid : 54
-         * rent : {"name":"blackout","img":"sxk_userPic_201701051342370","keyword":"拉锯","marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"userid":10}
+         * orderNo : 2017010318135644858
+         * rentid : 7
+         * rent : {"name":"我是你","img":"FvpCpGbSKJrNGjXg43gjmrOI8_Ia","keyword":"手机哦的","marketPrice":2000000,"rentPrice":200000,"risk":5000,"three":10000,"seven":20000,"fiften":50000,"twentyFive":70000,"userid":4}
          * isRisk : 2
-         * tenancy : {"name":"seven","value":1}
-         * total : 2
+         * tenancy : {"name":"twentyFive","value":70000}
+         * total : 2070000
          * userid : 10
-         * receiver : {"userid":10,"name":"张三","mobile":"15539910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"河南省南阳市","receiverid":113,"createtime":1483091186,"updatetime":1483595007,"isdefault":1}
-         * message : 悲伤的歌
-         * status : 5
-         * orderid : 68
-         * createtime : 1483595021
-         * updatetime : 1483958052
-         * notifyid : 11
-         * oddNumber : 123456789KKK
-         * backOddNumber : 1234567890
+         * receiver : {"userid":10,"name":"张三","mobile":"15539910985","state":"湖北省","city":"鄂州市","district":"鄂城区","address":"all佛祖JJ","receiverid":113,"createtime":1483091186,"updatetime":1483438299,"isdefault":1}
+         * message : 测试
+         * status : 4
+         * orderid : 54
+         * createtime : 1483438436
+         * updatetime : 1483944693
+         * backOddNumber : 123456789
          */
 
         private String orderNo;
@@ -75,8 +73,6 @@ public class MineItemCompletedGoodsModel {
         private int orderid;
         private int createtime;
         private int updatetime;
-        private int notifyid;
-        private String oddNumber;
         private String backOddNumber;
 
         public String getOrderNo() {
@@ -183,22 +179,6 @@ public class MineItemCompletedGoodsModel {
             this.updatetime = updatetime;
         }
 
-        public int getNotifyid() {
-            return notifyid;
-        }
-
-        public void setNotifyid(int notifyid) {
-            this.notifyid = notifyid;
-        }
-
-        public String getOddNumber() {
-            return oddNumber;
-        }
-
-        public void setOddNumber(String oddNumber) {
-            this.oddNumber = oddNumber;
-        }
-
         public String getBackOddNumber() {
             return backOddNumber;
         }
@@ -209,17 +189,17 @@ public class MineItemCompletedGoodsModel {
 
         public static class RentBean {
             /**
-             * name : blackout
-             * img : sxk_userPic_201701051342370
-             * keyword : 拉锯
-             * marketPrice : 1
-             * rentPrice : 1
-             * risk : 1
-             * three : 1
-             * seven : 1
-             * fiften : 1
-             * twentyFive : 1
-             * userid : 10
+             * name : 我是你
+             * img : FvpCpGbSKJrNGjXg43gjmrOI8_Ia
+             * keyword : 手机哦的
+             * marketPrice : 2000000
+             * rentPrice : 200000
+             * risk : 5000
+             * three : 10000
+             * seven : 20000
+             * fiften : 50000
+             * twentyFive : 70000
+             * userid : 4
              */
 
             private String name;
@@ -325,8 +305,8 @@ public class MineItemCompletedGoodsModel {
 
         public static class TenancyBean {
             /**
-             * name : seven
-             * value : 1
+             * name : twentyFive
+             * value : 70000
              */
 
             private String name;
@@ -354,13 +334,13 @@ public class MineItemCompletedGoodsModel {
              * userid : 10
              * name : 张三
              * mobile : 15539910985
-             * state : 安徽省
-             * city : 安庆市
-             * district : 枞阳县
-             * address : 河南省南阳市
+             * state : 湖北省
+             * city : 鄂州市
+             * district : 鄂城区
+             * address : all佛祖JJ
              * receiverid : 113
              * createtime : 1483091186
-             * updatetime : 1483595007
+             * updatetime : 1483438299
              * isdefault : 1
              */
 
