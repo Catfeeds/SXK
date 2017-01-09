@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -183,6 +184,17 @@ public class HasReceGoodsFC extends Fragment {
 //        mAdapter = new  (getActivity(), classifySo);
         mSheHeAdapter = new MineHasReceGoodsListAdapter(getActivity(), DataSouce);
         hao_recycleview.setAdapter(mSheHeAdapter);
+        mSheHeAdapter.setOnItemClickListener(new MineHasReceGoodsListAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int maintainid, String oddNumber, int i) {
+                if (i == 1){
+                    // 退回
+                    Intent intent = new Intent(getActivity(),ReBackGoodsAC.class);
+                    intent.putExtra("ORDERID",maintainid);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 

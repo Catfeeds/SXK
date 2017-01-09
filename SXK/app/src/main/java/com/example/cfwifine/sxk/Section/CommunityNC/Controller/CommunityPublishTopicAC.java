@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.IntegerRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.PublishFriendMomentRecycleAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
@@ -119,7 +121,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         topicModelList = getIntent().getIntegerArrayListExtra("TOPICMODELID");
         LogUtil.e("topicNameList" + topicNameList);
         LogUtil.e("topicModelList" + topicModelList);
-        mloading = LoadingUtils.createLoadingDialog(this,"正在努力发布中...");
+        mloading = LoadingUtils.createLoadingDialog(this, "正在努力发布中...");
         topicListModle = new ArrayList<>();
         for (int i = 0; i < topicNameList.size(); i++) {
             testModel = new TestModel(topicNameList.get(i).toString(), false);
@@ -178,8 +180,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 break;
             case R.id.navi_right_lays:
                 // 点击发表朋友圈
-                LogUtil.e("number的值"+number);
-                LogUtil.e("uploadData"+uploadDatasource);
+                LogUtil.e("number的值" + number);
+                LogUtil.e("uploadData" + uploadDatasource);
                 releaseTopic();
                 break;
             case R.id.friend_publish_pic:
@@ -192,11 +194,11 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     private void releaseTopic() {
         // 先上传图片，再上传数据
         list = new ArrayList<>();
-        s= 0;
+        s = 0;
         if (number != 0) {
-            LogUtil.e("number"+number);
+            LogUtil.e("number" + number);
             String token = creatTokenLocal();
-            LogUtil.e("数组"+uploadDatasource);
+            LogUtil.e("数组" + uploadDatasource);
             uploadImageToQiniu(uploadDatasource.get(0), token);
         } else {
             initReleaseFriendMoment(list);
@@ -227,7 +229,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
                     Log.e("上传返回JSONObject", "" + arg2);
 
-                    if (s < uploadDatasource.size()-1) {
+                    if (s < uploadDatasource.size() - 1) {
                         s += 1;
                         String token = creatTokenLocal();
                         uploadImageToQiniu(uploadDatasource.get(s), token);
@@ -238,8 +240,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     }
                 } else {
 //                     图片上传失败屌
-                    LogUtil.e("图片上传失败"+list);
-                        return;
+                    LogUtil.e("图片上传失败" + list);
+                    return;
 
                 }
             }
@@ -248,7 +250,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
     private void initReleaseFriendMoment(ArrayList<String> list) {
         String edittext = friend_edittext.getText().toString().trim();
-        if (edittext.toString().trim().isEmpty()){
+        if (edittext.toString().trim().isEmpty()) {
             SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "内容不能为空哦!", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
@@ -257,7 +259,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             return;
         }
         mloading.show();
-        LogUtil.e("图片列表"+list);
+        LogUtil.e("图片列表" + list);
         JSONArray jsonArray1 = new JSONArray();
 
         for (int i = 0; i < list.size(); i++) {
@@ -301,7 +303,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                         Log.e("发表结果", "" + response);
                         mloading.dismiss();
                         Gson gson = new Gson();
-                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
                             finish();
                         } else if (requestStatueModel.getCode() == 0) {
@@ -346,7 +348,17 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 sheetView.dismiss();
-                startActivityForResult(MQPhotoPickerActivity.newIntent(CommunityPublishTopicAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+
+                // 安卓6.0权限适配
+                if (ContextCompat.checkSelfPermission(CommunityPublishTopicAC.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CommunityPublishTopicAC.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE);
+                } else {//权限被授予
+                    startActivityForResult(MQPhotoPickerActivity.newIntent(CommunityPublishTopicAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+                }
+
             }
         }).addMenu("拍一张", new View.OnClickListener() {
             @Override
@@ -357,17 +369,43 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                     ActivityCompat.requestPermissions(CommunityPublishTopicAC.this, new String[]{Manifest.permission.CAMERA}, 733);
                 } else {
                     //有授权，直接开启摄像头
-//                    takePhoto();
                     choosePhotoFromCamera();
                 }
             }
         }).create();
         sheetView.show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                startActivityForResult(MQPhotoPickerActivity.newIntent(CommunityPublishTopicAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+            } else {
+                // Permission Denied
+                Toast.makeText(CommunityPublishTopicAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if (requestCode == 733){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                choosePhotoFromCamera();
+            } else {
+                // Permission Denied
+                Toast.makeText(CommunityPublishTopicAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     /**
      * 打开相机
      */
     private String mCameraPicPath;
+
     private void choosePhotoFromCamera() {
         MQUtils.closeKeyboard(CommunityPublishTopicAC.this);
 
@@ -383,7 +421,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         } catch (Exception e) {
             MQUtils.show(this, com.meiqia.meiqiasdk.R.string.mq_photo_not_support);
         }
-        mResults.add(mCameraPicPath);
+
     }
 
     @Override
@@ -396,9 +434,13 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 // show results in textview
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                for(String result : mResults) {
+                for (String result : mResults) {
                     sb.append(result).append("\n");
                 }
+            }
+        }else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA){
+            if (resultCode == RESULT_OK){
+                mResults.add(mCameraPicPath);
             }
         } else if (requestCode == 777) {
             if (resultCode == -1) {
@@ -460,9 +502,9 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 Log.e("dataSource", "" + dataSource);
                 int s = dataSource.size() - 2;
                 if (position == s) {
-                    if (mResults.size()>=9){
+                    if (mResults.size() >= 9) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "最多只能选择九张哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-                    }else {
+                    } else {
                         addPic();
                     }
                 } else if (position == s + 1) {

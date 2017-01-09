@@ -122,13 +122,13 @@
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.CateListAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
+            android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.ProductDetailsAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
+            android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.PayOrderAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
+            android:theme="@style/AppThemeHasTitle" />
         // 支付页面
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
@@ -147,12 +147,12 @@
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="behind" />
 
         <!-- 银联支付 -->
         <activity android:name="com.unionpay.uppay.PayActivity" />
@@ -217,7 +217,10 @@
 
         <service android:name="com.meiqia.core.MeiQiaService" />
 
-        <activity android:name=".Section.MineNC.Controller.MineRent.Controller.MineItemRentAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineRent.Controller.MineItemRentAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

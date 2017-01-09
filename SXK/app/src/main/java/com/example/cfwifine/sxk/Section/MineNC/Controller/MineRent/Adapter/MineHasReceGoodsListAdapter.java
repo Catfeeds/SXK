@@ -32,7 +32,7 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
     private MineHasReceGoodsListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int maintainid, String oddNumber);
+        void OnItemClick(View view, int maintainid, String oddNumber, int i);
     }
     public void setOnItemClickListener(MineHasReceGoodsListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -66,10 +66,10 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
         if (mOnItemClickListener != null){
-            holder.delete.setOnClickListener(new View.OnClickListener() {
+            holder.reback.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid(),classifyDataSource.get(position).getOddNumber());
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid(),classifyDataSource.get(position).getOddNumber(),1);
                 }
             });
         }
@@ -85,7 +85,7 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
         LinearLayout frameLayout;
         TextView name,description,price,ordernumber;
         ImageView pic;
-        Button delete;
+        Button delete,reback;
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -97,6 +97,7 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
             rentPrice = (TextView)itemView.findViewById(R.id.wait_rentprice);
             delete = (Button)itemView.findViewById(R.id.wait_confirm_btn);
             ordernumber = (TextView)itemView.findViewById(R.id.wait_ordernumber);
+            reback = (Button)itemView.findViewById(R.id.wait_reback_btn);
         }
     }
 }

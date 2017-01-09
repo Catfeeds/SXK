@@ -116,6 +116,9 @@ public class MainAC extends BaseAC  {
 
     }
     public boolean isLogin(){
+        if (userInfoModel == null){
+            return false;
+        }
         if (userInfoModel.getCode()==1){
             return true;
         }else if (userInfoModel.getCode() ==911){
