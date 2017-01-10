@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,9 +23,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunityPublishTopicAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
@@ -287,6 +290,10 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 peoplexxxx = data.getStringExtra("CHENGSE");
                 publish_people_text.setText(peoplexxxx);
             }
+        }else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA){
+            if (resultCode == RESULT_OK){
+                mResults.add(mCameraPicPath);
+            }
         }
 
         if (mResults.size() != 0) {
@@ -312,6 +319,30 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+            } else {
+                // Permission Denied
+                Toast.makeText(PublishPublishAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if (requestCode == 733) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                choosePhotoFromCamera();
+            } else {
+                // Permission Denied
+                Toast.makeText(PublishPublishAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
     /**
      * 打开相机
@@ -333,7 +364,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         } catch (Exception e) {
             MQUtils.show(this, com.meiqia.meiqiasdk.R.string.mq_photo_not_support);
         }
-        mResults.add(mCameraPicPath);
+
     }
 
 
@@ -452,7 +483,17 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 sheetView.dismiss();
-                startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+                // 安卓6.0权限适配
+                if (ContextCompat.checkSelfPermission(PublishPublishAC.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(PublishPublishAC.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE);
+                } else {//权限被授予
+                    startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
+                }
+
+//                startActivityForResult(MQPhotoPickerActivity.newIntent(PublishPublishAC.this, null, 9, mResults, "完成"), REQUEST_CODE);
             }
         }).addMenu("拍一张", new View.OnClickListener() {
             @Override

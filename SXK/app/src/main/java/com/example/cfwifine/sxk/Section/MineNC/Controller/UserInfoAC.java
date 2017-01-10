@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -411,7 +412,15 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         shitView.dismiss();
-                        addPic();
+                        // 安卓6.0权限适配
+                        if (ContextCompat.checkSelfPermission(UserInfoAC.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(UserInfoAC.this,
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    REQUEST_CODE);
+                        } else {//权限被授予
+                            startActivityForResult(MQPhotoPickerActivity.newIntent(UserInfoAC.this, null, 1, mResults, "完成"), REQUEST_CODE);
+                        }
                     }
                 }).addMenu("拍一张", new View.OnClickListener() {
                     @Override
@@ -432,10 +441,29 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 }).create();
         shitView.show();
     }
-
-    private void addPic() {
-        startActivityForResult(MQPhotoPickerActivity.newIntent(UserInfoAC.this, null, 1, mResults, "完成"), REQUEST_CODE);
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                startActivityForResult(MQPhotoPickerActivity.newIntent(UserInfoAC.this, null, 1, mResults, "完成"), REQUEST_CODE);
+            } else {
+                // Permission Denied
+                Toast.makeText(UserInfoAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if (requestCode == 733) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                takePhoto();
+            } else {
+                // Permission Denied
+                Toast.makeText(UserInfoAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     String mPicDirectory = "SXK";
