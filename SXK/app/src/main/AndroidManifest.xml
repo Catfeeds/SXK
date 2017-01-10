@@ -220,7 +220,10 @@
         <activity
             android:name=".Section.MineNC.Controller.MineRent.Controller.MineItemRentAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

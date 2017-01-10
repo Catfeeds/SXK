@@ -52,7 +52,8 @@ public class CuringListAdapter extends RecyclerView.Adapter<CuringListAdapter.Vi
         LogUtil.e("分类数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
         holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf(classifyDataSource.get(position).getPrice()));
+        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getPrice())/100.0))+"/天");
+
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 

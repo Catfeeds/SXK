@@ -137,7 +137,7 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
         Glide.with(this).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(curing_pic);
         curing_name.setText(curingDetailModel.getMaintain().getName());
         curing_descript.setText(curingDetailModel.getMaintain().getKeyword());
-        curing_price.setText("¥ "+String.valueOf(curingDetailModel.getMaintain().getPrice()));
+        curing_price.setText("¥ "+ String.valueOf((double)(Math.round(curingDetailModel.getMaintain().getPrice())/100.0))+"/天");
         initContent();
 
     }
