@@ -223,7 +223,10 @@
         <activity
             android:name=".Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.CuringAC.CuringPayOrderAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

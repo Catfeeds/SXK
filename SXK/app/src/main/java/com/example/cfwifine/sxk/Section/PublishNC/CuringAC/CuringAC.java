@@ -64,7 +64,7 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
 
         initView();
 
-        initData(0, 0);
+        initData(1, 10);
 
     }
 
@@ -118,6 +118,7 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
                             DATASOURCE = new ArrayList<CuringListModel.MaintainListBean>();
                             for (int i = 0; i<mainListDataSource.size();i++){
                                 if (mainListDataSource.get(i).getClassifyid() == classifyDataSource.get(i).getClassifyid()){
+                                    // 第一个tab的数据
                                     DATASOURCE.add(i,mainListDataSource.get(i));
                                 }
 
@@ -144,28 +145,11 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
         // 初始化界面
         for (int i = 0; i < classifyDataSource.size(); i++) {
             LogUtil.e("我是ID"+classifyDataSource.get(i).getClassifyid());
-            mFagments.add(CuringComListFC.getInstance(DATASOURCE));
+            mFagments.add(CuringComListFC.getInstance(DATASOURCE,classifyDataSource,classifyDataSource.get(i).getClassifyid()));
         }
         //getChildFragmentManager() 如果是嵌套在fragment中就要用这个
         adapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LogUtil.e("滚定监听" + position);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                LogUtil.e("滚定监听选中" + position);
-//                initTabView();
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
 
         size = new String[classifyDataSource.size()];

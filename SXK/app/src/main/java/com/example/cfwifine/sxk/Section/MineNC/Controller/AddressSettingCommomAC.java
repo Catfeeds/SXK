@@ -237,7 +237,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                             for (int i = 0; i<data.size();i++){
                                 if (data.get(i).getReceiverid() == receiverid){
                                     data.get(i).setIsdefault(1);
-                                    SharedPreferencesUtils.setParam(AddressSettingCommomAC.this,"DEFAULTADDRESS",data.get(i).getAddress());
+                                    SharedPreferencesUtils.setParam(AddressSettingCommomAC.this,"DEFAULTADDRESS","收货人："+data.get(i).getName()+"  "+data.get(i).getMobile()+"\n"+data.get(i).getState()+data.get(i).getCity()+data.get(i).getDistrict()+data.get(i).getAddress());
                                     SharedPreferencesUtils.setParam(AddressSettingCommomAC.this,"RECRIVEDID",receiverid);
                                 }else {
                                     data.get(i).setIsdefault(0);

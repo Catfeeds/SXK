@@ -27,7 +27,7 @@ public class AppraisasCheckRecycleViewAdapter extends RecyclerView.Adapter<Appra
     private AppraisasCheckRecycleViewAdapter.OnItemClickListener mOnItemClickListener = null;
 
     public interface OnItemClickListener {
-        void OnItemClick(View view, int position);
+        void OnItemClick(View view, int positionl,String value);
     }
 
     public void setOnItemClickListener(AppraisasCheckRecycleViewAdapter.OnItemClickListener onItemClickListener) {
@@ -71,7 +71,7 @@ public class AppraisasCheckRecycleViewAdapter extends RecyclerView.Adapter<Appra
                 }
                 datasource.get(position).setState(true);
                 notifyDataSetChanged();
-                mOnItemClickListener.OnItemClick(view,position);
+                mOnItemClickListener.OnItemClick(view,position,datasource.get(position).getText());
             }
         });
 

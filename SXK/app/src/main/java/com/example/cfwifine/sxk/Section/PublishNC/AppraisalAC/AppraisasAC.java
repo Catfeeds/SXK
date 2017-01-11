@@ -132,8 +132,8 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         appraisal_rv.setAdapter(appraisasCheckRecycleViewAdapter);
         appraisasCheckRecycleViewAdapter.setOnItemClickListener(new AppraisasCheckRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, int position) {
-                LogUtil.e("点击了" + position);
+            public void OnItemClick(View view, int positionl, String value) {
+                LogUtil.e("选中了"+value);
             }
         });
 

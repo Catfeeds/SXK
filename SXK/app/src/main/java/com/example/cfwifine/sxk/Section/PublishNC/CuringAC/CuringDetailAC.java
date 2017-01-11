@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.Section.PublishNC.CuringAC;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +53,7 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
     private LinearLayout activity_curing_detail_ac;
     Dialog dialog;
     private CuringDetailModel curingDetailModel;
+    private String CURDETAIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +121,7 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                         curingDetailModel = gson.fromJson(response,CuringDetailModel.class);
                         if (curingDetailModel.getCode() == 1) {
                             setValueForDetail();
+                            CURDETAIL = response;
                         } else if (curingDetailModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(CuringDetailAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (curingDetailModel.getCode() == 911) {
@@ -191,7 +194,9 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.curing_pause_right_now:
-
+                Intent intent = new Intent(CuringDetailAC.this,CuringPayOrderAC.class);
+                intent.putExtra("CURINGDETAIL",CURDETAIL);
+                startActivity(intent);
                 break;
             case R.id.navi_back:
                 finish();
