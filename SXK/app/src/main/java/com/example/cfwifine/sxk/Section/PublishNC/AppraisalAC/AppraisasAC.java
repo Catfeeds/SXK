@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.CheckRecycleViewAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishBrandAC;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AppraisasCheckRecycleViewAdapter;
@@ -66,6 +68,10 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
     private String BRANDNAME;
     private TextView appraisal_total_money;
     private LinearLayout appraisal_selected_address;
+    private String ADDRESSS;
+    private int RECEIVEDID;
+    private TextView address;
+    private String PAYTYPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,8 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         SharedPreferencesUtils.setParam(this, "APPRAISACATE", "");
         SharedPreferencesUtils.setParam(this, "BRANDID", 0);
         SharedPreferencesUtils.setParam(this, "BRANDNAME", "");
+        SharedPreferencesUtils.setParam(this, "DEFAULTADDRESS", "");
+        SharedPreferencesUtils.setParam(this, "RECRIVEDID", -1);
         initView();
     }
 
@@ -97,15 +105,15 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         appraisal_rv = (RecyclerView) findViewById(R.id.appraisal_rv);
         pay = (TextView) findViewById(R.id.pay);
         activity_appraisal = (LinearLayout) findViewById(R.id.activity_appraisal);
-
         initRecycleView();
-
         dialog = LoadingUtils.createLoadingDialog(this, "正在加载中...");
         initRecycleData();
         appraisal_total_money = (TextView) findViewById(R.id.appraisal_total_money);
         appraisal_total_money.setOnClickListener(this);
         appraisal_selected_address = (LinearLayout) findViewById(R.id.appraisal_selected_address);
         appraisal_selected_address.setOnClickListener(this);
+        address = (TextView) findViewById(R.id.address);
+        initDefaultAddress();
     }
 
     private void initRecycleView() {
@@ -116,7 +124,6 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         for (int i = 0; i < 3; i++) {
             picList.add(i, picArrList[i]);
         }
-
         String[] name = new String[]{
                 "微信支付", "支付宝", "余额支付"
         };
@@ -133,10 +140,58 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         appraisasCheckRecycleViewAdapter.setOnItemClickListener(new AppraisasCheckRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int positionl, String value) {
-                LogUtil.e("选中了"+value);
+                if (positionl == 0) {
+                    PAYTYPE = "wx";
+                } else if (positionl == 1) {
+                    PAYTYPE = "alipay";
+                } else if (positionl == 2) {
+                    PAYTYPE = "upacp";
+                }
             }
         });
+    }
 
+    // 获取收货地址
+    private void initDefaultAddress() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.SettingGetReceiveGoods)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        AddressDetailModel addressDetailModel = gson.fromJson(response, AddressDetailModel.class);
+                        if (addressDetailModel.getCode() == 1) {
+                            L.e("详细信息" + response);
+                            if (addressDetailModel.getReceiver() != null) {
+                                address.setText("收货人：" + addressDetailModel.getReceiver().getName() + "  " + addressDetailModel.getReceiver().getMobile() + "\n" + addressDetailModel.getReceiver().getState() + addressDetailModel.getReceiver().getCity() + addressDetailModel.getReceiver().getDistrict() + addressDetailModel.getReceiver().getAddress());
+                                RECEIVEDID = addressDetailModel.getReceiver().getReceiverid();
+                            } else {
+                                address.setText("请选择收货地址");
+                            }
+                        } else if (addressDetailModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
     }
 
     private void initRecycleData() {
@@ -158,11 +213,8 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(AppraisasAC.this.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
                         dialog.dismiss();
                     }
-
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("中间鉴定详情", "" + response);
@@ -175,13 +227,9 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                             SnackbarUtils.showShortSnackbar(AppraisasAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (appraisalModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(AppraisasAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                            classify_online_view.setVisibility(View.GONE);
-//                            classify_nonet_view.setVisibility(View.VISIBLE);
                         }
                     }
                 });
-
-
     }
 
     private void setValueForDetail() {
@@ -200,15 +248,19 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                     appraisal_total_money.setText("¥ " + String.valueOf(appraisalModel.getGenreList().get(i).getPrice()));
                 }
             }
-
         }
         BRANDID = (int) SharedPreferencesUtils.getParam(this, "BRANDID", 0);
         BRANDNAME = String.valueOf(SharedPreferencesUtils.getParam(this, "BRANDNAME", ""));
         if (!BRANDNAME.isEmpty()) {
             appraisal_cateory_txt.setText(BRANDNAME);
         }
-
-
+        ADDRESSS = String.valueOf(SharedPreferencesUtils.getParam(this, "DEFAULTADDRESS", ""));
+        if (ADDRESSS == "") {
+            address.setText("请选择收货地址");
+        } else {
+            address.setText(ADDRESSS);
+        }
+        RECEIVEDID = (int) SharedPreferencesUtils.getParam(this, "RECRIVEDID", -1);
     }
 
     @Override

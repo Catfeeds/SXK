@@ -59,6 +59,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private ArrayList<String> attachmentdata;
     private ArrayList<String> baobeifujianData;
     private ArrayList<String> appraisaCateList;
+    private int FUJIANPOSITION=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +152,8 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             public void OnItemClick(View view, int position, String title) {
                 LogUtil.e("成色为" + title);
                 chengse = title;
+                FUJIANPOSITION = position;
+                LogUtil.e("成色为pos"+position);
             }
         });
         recyclerView.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +239,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
         this.title.setText(title);
         right = (TextView) findViewById(R.id.navi_right);
         right.setText("完成");
+        right.setTextColor(getResources().getColor(R.color.login_turquoise));
         right.setOnClickListener(this);
 
 
@@ -291,10 +295,11 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                         finish();
                     }
                 } else if (s == 5) {
-                    if (chengse.isEmpty()) {
+                    if (FUJIANPOSITION==-1) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
                     } else {
-                        SharedPreferencesUtils.setParam(this, "FUJIAN", chengse);
+//                        SharedPreferencesUtils.setParam(this, "FUJIAN", chengse);
+                        SharedPreferencesUtils.setParam(this,"FUJIANPOSITION",FUJIANPOSITION);
                         finish();
                     }
                 } else if (s == 6) {

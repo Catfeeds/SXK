@@ -84,6 +84,11 @@ public class BaseInterface {
     public static String GetCuring = root + "/app/maintain/getpost";
     // 养护下单生成订单
     public static String CuringPayOrderForChange = root + "/app/maintainorder/addpost";
+    // 获取养护订单
+    public static String GetCuringListOrder = root + "/app/maintainorder/listpost";
+    // 养护确认完成
+    public static String CuringConfirmDone = root + "/app/maintainorder/setpost";
+
     // 获取中间设置
     public static String GetCenterSetting = root + "/app/identifysetup/getpost";
     // 租赁列表

@@ -23,9 +23,11 @@ import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,11 +51,17 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private ArrayList<TestModel> listData;
     private ArrayList<String> StringList;
     private ArrayList<String> nameList;
+    private String material="";
+    private int FUJIANPOSITION=-1;
+    private AttachmentTopAdapter attachmentTopAdapter=null;
+    private String FUJIAN;
+    private int ATTRIBUTENAMEPOSITION=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attach_ment_ac);
+        SharedPreferencesUtils.setParam(this,"FUJIANPOSITION",-1);
         initView();
     }
 
@@ -66,6 +74,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right.setOnClickListener(this);
         navi_right.setText("保存");
+        navi_right.setTextColor(getResources().getColor(R.color.login_turquoise));
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
 
         baobei_textview = (TextView) findViewById(R.id.baobei_textview);
@@ -194,12 +203,13 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         attachment_rv.setLayoutManager(layoutManager);
-        AttachmentTopAdapter attachmentTopAdapter = new AttachmentTopAdapter(this, dataSource);
+        attachmentTopAdapter = new AttachmentTopAdapter(this, dataSource,FUJIANPOSITION);
         attachment_rv.setAdapter(attachmentTopAdapter);
         attachmentTopAdapter.setOnItemClickListener(new AttachmentTopAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, List<String> name, String attributeName) {
+            public void OnItemClick(View view, List<String> name, String attributeName,int position) {
                 LogUtil.e("数组" + name);
+                ATTRIBUTENAMEPOSITION = position;
                 nameList = new ArrayList<>();
                 for (int i = 0; i<name.size();i++){
                     nameList.add(i,name.get(i));
@@ -210,13 +220,23 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("TITLESS",attributeName);
                 intent.putExtra("CHENGSE",5);
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
 
 
     }
 
+    @Override
+    protected void onResume() {
+        FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this,"FUJIANPOSITION",-1);
+        if (attachmentTopAdapter!=null){
+            LogUtil.e("包袋材质"+FUJIANPOSITION);
+//            attachmentTopAdapter.notifyDataSetChanged();
+            attachmentTopAdapter.setData(FUJIANPOSITION);
+        }
+        super.onResume();
+    }
 
     @Override
     public void onClick(View view) {
@@ -225,13 +245,29 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.navi_right:
-                if (StringList.size()!=0){
-                    SharedPreferencesUtils.setParam(this,"STRINGLIST",StringList);
-                    finish();
-//                    SharedPreferencesUtils.setParam(this,"STRINGLISTNAME","");
-                }else {
+//                if (StringList.size()!=0){
+//                    SharedPreferencesUtils.setParam(this,"STRINGLIST",StringList);
+//                    finish();
+////                    SharedPreferencesUtils.setParam(this,"STRINGLISTNAME","");
+//                }else {
+//                    SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
+//                }
+                if (FUJIANPOSITION == -1&&StringList.size() == 0){
                     SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
+                    return;
+                }else {
+                    JSONArray jsonArray = new JSONArray();
+                    jsonArray.equals(StringList);
+                    JSONObject js  = new JSONObject();
+                    try {
+                        js.put("attributeName",dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName());
+                        js.put("attributeValueList",jsonArray);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
                 break;
 
         }

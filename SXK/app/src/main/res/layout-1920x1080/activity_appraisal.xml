@@ -12,8 +12,8 @@
         <include layout="@layout/nav_title_no_line" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/home_bg" />
+            android:layout_height="0.3dp"
+            android:background="@color/gray_40" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -128,6 +128,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"

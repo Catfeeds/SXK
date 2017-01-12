@@ -25,17 +25,18 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     private Context mContext;
     private LayoutInflater mInflater;
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSource;
-
+    int pos =-1;
     private AttachmentTopAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, List<String> name, String attributeName);
+        void OnItemClick(View view, List<String> name, String attributeName,int pos);
     }
     public void setOnItemClickListener(AttachmentTopAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public AttachmentTopAdapter(Context mContext, List<AttachmentModel.CategoryListBean.AttachListBean> dataSource) {
+    public AttachmentTopAdapter(Context mContext, List<AttachmentModel.CategoryListBean.AttachListBean> dataSource, int material) {
+        this.pos = material;
         this.mContext = mContext;
         this.dataSource = dataSource;
         mInflater = LayoutInflater.from(mContext);
@@ -50,14 +51,25 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     @Override
     public void onBindViewHolder(final AttachmentTopAdapter.ViewHolder holder, final int position) {
         holder.tvCity.setText(dataSource.get(position).getAttributeName());
+        if (pos != -1){
+            holder.material.setText(dataSource.get(position).getAttributeValueList().get(pos));
+        }else {
+            holder.material.setText("");
+        }
+
         if (mOnItemClickListener != null){
             holder.frameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getAttributeValueList(),dataSource.get(position).getAttributeName());
+                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getAttributeValueList(),dataSource.get(position).getAttributeName(),position);
                 }
             });
         }
+    }
+
+    public void setData(int pos){
+        this.pos = pos;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,13 +78,14 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCity;
+        TextView tvCity,material;
         RelativeLayout frameLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvCity = (TextView) itemView.findViewById(R.id.attach_text);
             frameLayout = (RelativeLayout) itemView.findViewById(R.id.attach_cell);
+            material = (TextView)itemView.findViewById(R.id.attach_textdetail);
         }
     }
 }

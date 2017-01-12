@@ -25,11 +25,22 @@
             android:paddingLeft="15dp"
             android:textSize="14sp"
             tools:text=""/>
-
+        <TextView
+            android:id="@+id/attach_textdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="#a1a1a1"
+            android:layout_marginRight="25dp"/>
         <ImageView
             android:id="@+id/attach_pic"
             android:layout_width="6dp"
             android:layout_height="11dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:background="@drawable/publish_publish_go"/>

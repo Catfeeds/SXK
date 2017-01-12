@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -115,10 +116,10 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private AttachmentModel.CategoryListBean.AttachListBean SECONDDATA;
     private String FUJIAN;
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSourcess;
-    private String BAOBEIFUJIAN;
+    private String BAOBEIFUJIAN="";
     private ArrayList<String> FUJIANARR;
     Dialog dialog;
-    private String StringList;
+    private String StringList="";
     private static final int TAKE_PHOTO = 733;
     private JSONArray jsonArray;
 
@@ -126,14 +127,15 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_publish_ac);
-        dialog = LoadingUtils.createLoadingDialog(this,"发布中...");
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        dialog = LoadingUtils.createLoadingDialog(this, "发布中...");
         SharedPreferencesUtils.setParam(this, "RESULT", "");
         SharedPreferencesUtils.setParam(this, "CATEGORYID", 0);
         SharedPreferencesUtils.setParam(this, "BRANDID", 0);
         SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", "");
         SharedPreferencesUtils.setParam(this, "SECONDDATA", "");
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
-        SharedPreferencesUtils.getParam(this,"STRINGLIST","");
+        SharedPreferencesUtils.getParam(this, "STRINGLIST", "");
         configurationNaviTitle();
         initView();
 
@@ -212,8 +214,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(PublishPublishAC.this.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -228,8 +228,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                                     dataSourcess = attachmentModel.getCategoryList().get(i).getAttachList();
                                 }
                             }
-
-
                         } else if (attachmentModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(PublishPublishAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (attachmentModel.getCode() == 911) {
@@ -290,8 +288,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 peoplexxxx = data.getStringExtra("CHENGSE");
                 publish_people_text.setText(peoplexxxx);
             }
-        }else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA){
-            if (resultCode == RESULT_OK){
+        } else if (requestCode == MQConversationActivity.REQUEST_CODE_CAMERA) {
+            if (resultCode == RESULT_OK) {
                 mResults.add(mCameraPicPath);
             }
         }
@@ -319,6 +317,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
@@ -437,9 +436,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 startActivity(PublishBrandAC.class, 666);
                 break;
             case R.id.publish_material:
-                Intent intent = new Intent(PublishPublishAC.this, CheckRecycleViewAC.class);
-                intent.putExtra("CHENGSE", 3);
-                startActivityForResult(intent, 667);
+                startActivity(PublishMaterialAC.class,667);
                 break;
             case R.id.publish_suitpersonal:
                 Intent intents = new Intent(PublishPublishAC.this, CheckRecycleViewAC.class);
@@ -460,8 +457,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.publish_user_protocal_text:
-                Intent intent1 = new Intent(PublishPublishAC.this,UserPrctocalAC.class);
-                intent1.putExtra("SETJUMPPOSITION",222);
+                Intent intent1 = new Intent(PublishPublishAC.this, UserPrctocalAC.class);
+                intent1.putExtra("SETJUMPPOSITION", 222);
                 startActivity(intent1);
                 break;
             default:
@@ -513,20 +510,9 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         }).create();
         sheetView.show();
     }
+
     private static final int REQUESTCODE_CUTTING = 2;
     private static final String IMAGE_FILE_NAME = "avatarImage.jpg";
-    private void takePhoto() {
-
-
-
-        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // 下面这句指定调用相机拍照后照片存储的位置
-        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(new File(Environment.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
-        startActivityForResult(takeIntent, TAKE_PHOTO);
-
-    }
-
 
     private void startActivity(Class<?> cls, int CALLBACKCODE) {
         Intent intent = new Intent(PublishPublishAC.this, cls);
@@ -540,9 +526,9 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         super.onResume();
         // 回调传至
         catetext = String.valueOf(SharedPreferencesUtils.getParam(this, "RESULT", ""));
-        if (catetext ==""){
+        if (catetext == "") {
             cateoryTxt.setText("（必选）");
-        }else {
+        } else {
             cateoryTxt.setText(catetext);
         }
         CATEGORYID = (int) SharedPreferencesUtils.getParam(this, "CATEGORYID", 0);
@@ -552,12 +538,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         FUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
         LogUtil.e("附件参数" + FUJIAN);
         BAOBEIFUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "BAOBEIFUJIAN", ""));
-
         LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
-
-        StringList = String.valueOf(SharedPreferencesUtils.getParam(this,"STRINGLIST",""));
-
-
+        StringList = String.valueOf(SharedPreferencesUtils.getParam(this, "STRINGLIST", ""));
     }
 
     private void check() {
@@ -689,62 +671,18 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void initReleaseData(ArrayList<String> urlList) {
-        //        {
-//            "name": "string, 必填, 产品名称",
-//                "keywrod": "string, 必填, 关键字描述",
-//                "imgList": "array, 必填, 图片名称列表，至少一张图片，最多9张",
-//                "counterPrice": "integer, 必填, 专柜价, 单位为分",
-//                "description": "string, 必填, 产品描述",
-//                "categoryid": "integer, 必填，所选择的分类的id, 选择分类后, 根据分类的parentid, 通过调用获取分类接口，获取分类附件所需要的数据, 后面的attachList为必填数据",
-//                "brandid": "integer, 必填, 选择的品牌的id",
-//                "color": "string, 必填, 产品颜色",
-//                "condition": "1、2、3、4、5和6, 数字, 必填, 成色, 对应99成新，98成新, ......",
-//                "crowd": "1、2、3, 必填, 数字，人群, 对应所有人，男士和女士",
-//                "attachList": [
-//            {
-//                "attributeName": "属性名",
-//                    "attributeValueList": [
-//                "属性值1",
-//                        "属性值2",
-//                        "..."
-//                ]
-//            },
-//            {
-//                "attributeName": "属性名"
-//            }
-//            ]
-//        }
 
-//        Gson gson = new Gson();
-//         gson.fromJson(BAOBEIFUJIAN,);
 
-//        try {
-//            JSONArray arr = new JSONArray(BAOBEIFUJIAN);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-        // 附件
-//        JSONArray arr = new JSONArray();
-////        arr.put("保修啊");
-////        arr.put("发票");
-//        arr = J;
         jsonArray = new JSONArray();
-        if (StringList.isEmpty()&&BAOBEIFUJIAN.isEmpty()){
-//            JSONObject json = new JSONObject();
-//            try {
-//                json.put("","");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+        if (StringList.isEmpty() && BAOBEIFUJIAN.isEmpty()) {
             jsonArray.put("");
-        }else {
+        } else {
             JSONObject attributeArr = new JSONObject();
             try {
-                attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size()-1).getAttributeName());
-                if (BAOBEIFUJIAN != ""){
+                attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size() - 1).getAttributeName().toString());
+                if (BAOBEIFUJIAN != "") {
                     attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
-                }else {
+                } else {
                     attributeArr.put("attributeValueList", new JSONArray(StringList));
                 }
 
@@ -759,20 +697,11 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         JSONArray jsonArray1 = new JSONArray();
         for (int i = 0; i < urlList.size(); i++) {
             String li = urlList.get(i);
-//            JSONArray picArray = new JSONArray();
-//            picArray.put(li);
             try {
-                jsonArray1.put(i,li);
+                jsonArray1.put(i, li);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            JSONObject jsonObjects = new JSONObject();
-//            try {
-//                jsonObjects.put("image", li);
-//                jsonArray1.put(i, jsonObjects);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
         }
 
         // 附件
@@ -781,7 +710,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             jsonObject.put("name", goodsName);
             jsonObject.put("keyword", goodsKeyword);
             jsonObject.put("imgList", jsonArray1);
-            jsonObject.put("counterPrice", Integer.valueOf((int) (Float.valueOf(goodsprice)*100)) );
+            jsonObject.put("counterPrice", Integer.valueOf((int) (Float.valueOf(goodsprice) * 100)));
             jsonObject.put("description", descript);
             jsonObject.put("categoryid", CATEGORYID);
             jsonObject.put("brandid", BRANDID);
@@ -848,7 +777,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            CustomDialog_publish_success customDialog_publish_success = new CustomDialog_publish_success(PublishPublishAC.this,R.style.style_dialog);
+                            CustomDialog_publish_success customDialog_publish_success = new CustomDialog_publish_success(PublishPublishAC.this, R.style.style_dialog);
                             customDialog_publish_success.show();
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
