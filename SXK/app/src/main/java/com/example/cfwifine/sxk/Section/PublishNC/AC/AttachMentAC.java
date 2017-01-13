@@ -245,19 +245,15 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.navi_right:
-//                if (StringList.size()!=0){
-//                    SharedPreferencesUtils.setParam(this,"STRINGLIST",StringList);
-//                    finish();
-////                    SharedPreferencesUtils.setParam(this,"STRINGLISTNAME","");
-//                }else {
-//                    SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
-//                }
+
                 if (FUJIANPOSITION == -1&&StringList.size() == 0){
                     SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
                     return;
                 }else {
+
+                    JSONArray arr = new JSONArray();
                     JSONArray jsonArray = new JSONArray();
-                    jsonArray.equals(StringList);
+                    jsonArray.put(nameList.get(FUJIANPOSITION));
                     JSONObject js  = new JSONObject();
                     try {
                         js.put("attributeName",dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName());
@@ -265,6 +261,9 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    LogUtil.e("选择的附件"+js);
+
                 }
 
 

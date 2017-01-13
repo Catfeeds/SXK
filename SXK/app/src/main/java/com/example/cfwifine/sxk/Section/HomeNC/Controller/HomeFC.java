@@ -2,28 +2,48 @@ package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.HomeBannerModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 @SuppressLint("NewApi")
@@ -35,21 +55,15 @@ public class HomeFC extends Fragment {
     HotTopicAdapter hotAdapter;
     EightItemRecycleAdapter eightItemRecycleAdapter;
     private ArrayList<String> listData = new ArrayList<>();
-
-    private String[] imageUrls = {"http://img.taodiantong.cn/v55183/infoimg/2013-07/130720115322ky.jpg",
-            "http://pic30.nipic.com/20130626/8174275_085522448172_2.jpg",
-            "http://pic18.nipic.com/20111215/577405_080531548148_2.jpg",
-            "http://pic15.nipic.com/20110722/2912365_092519919000_2.jpg",
-            "http://pic.58pic.com/58pic/12/64/27/55U58PICrdX.jpg"};
-
     public ArrayList<String> datasText = null;
     public ArrayList<Integer> datasPic = null;
+    Dialog dialog;
     String [] text = new String[]{
-            "租赁","交换","鉴定","养护","上新","活动","顾问","分享"
+            "交换","租赁","活动","鉴定","养护"
     };
     int[] pic = new int[]{
-            R.drawable.home_rent,R.drawable.home_change,R.drawable.home_recognize,R.drawable.home_care
-            ,R.drawable.home_new,R.drawable.home_activity,R.drawable.home_anwser,R.drawable.home_share
+            R.drawable.home_change,R.drawable.home_rent,R.drawable.home_activity
+            ,R.drawable.home_anwser,R.drawable.home_care
     };
 
     RecyclerBanner recyclerBanner;
@@ -68,6 +82,7 @@ public class HomeFC extends Fragment {
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
+            dialog = LoadingUtils.createLoadingDialog(getActivity(),"加载中...");
             initBannerData();
             initBanner();
 //            initHorscrollView();
@@ -80,10 +95,50 @@ public class HomeFC extends Fragment {
     }
 
     private void initBannerData() {
-        urls.add(new Entity("http://pic.58pic.com/58pic/12/46/13/03B58PICXxE.jpg"));
-        urls.add(new Entity("http://www.jitu5.com/uploads/allimg/121120/260529-121120232T546.jpg"));
-        urls.add(new Entity("http://pic34.nipic.com/20131025/2531170_132447503000_2.jpg"));
-        urls.add(new Entity("http://img5.imgtn.bdimg.com/it/u=3462610901,3870573928&fm=206&gp=0.jpg"));
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("setupid",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeRecycleBanner)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("轮播图", "" + response);
+                        Gson gson = new Gson();
+                        HomeBannerModel homeBannerModel = gson.fromJson(response, HomeBannerModel.class);
+                        if (homeBannerModel.getCode() == 1) {
+                            for (int i = 0; i<homeBannerModel.getSetup().getList().size();i++){
+                                urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl+homeBannerModel.getSetup().getList().get(i).getImg().toString(),homeBannerModel.getSetup().getList().get(i).getLink().toString()));
+                                initBanner();
+                            }
+
+                        } else if (homeBannerModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (homeBannerModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+    private void initSnackBar(String s) {
+        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
     private void initBanner() {
@@ -91,7 +146,7 @@ public class HomeFC extends Fragment {
         recyclerBanner.setOnPagerClickListener(new RecyclerBanner.OnPagerClickListener() {
             @Override
             public void onClick(RecyclerBanner.BannerEntity entity) {
-
+                LogUtil.e("网址为"+entity.getLink());
             }
         });
         recyclerBanner.setDatas(urls);
@@ -99,30 +154,35 @@ public class HomeFC extends Fragment {
     private class Entity implements RecyclerBanner.BannerEntity {
 
         String url;
-
-        public Entity(String url) {
+        String link;
+        public Entity(String url,String link) {
             this.url = url;
+            this.link = link;
         }
 
         @Override
         public String getUrl() {
             return url;
         }
+        @Override
+        public String getLink() {
+            return link;
+        }
     }
 
     // TODO ***************************************初始化8个专题***************************************
     private void initEightItemRV(){
         datasText = new ArrayList<>();
-        for (int i= 0;i<8;i++){
+        for (int i= 0;i<text.length;i++){
             datasText.add(i,text[i]);
         }
         datasPic = new ArrayList<>();
-        for (int i =0;i<8;i++){
+        for (int i =0;i<text.length;i++){
             datasPic.add(i,pic[i]);
         }
         eightRV = (RecyclerView)view.findViewById(R.id.rv_home_item);
         eightItemRecycleAdapter = new EightItemRecycleAdapter(datasPic,datasText);
-        eightRV.setLayoutManager(new GridLayoutManager(getActivity(),4));
+        eightRV.setLayoutManager(new GridLayoutManager(getActivity(),5));
         eightRV.setAdapter(eightItemRecycleAdapter);
         eightItemRecycleAdapter.setOnItemClickListener(new EightItemRecycleAdapter.OnItemClickListener() {
             @Override

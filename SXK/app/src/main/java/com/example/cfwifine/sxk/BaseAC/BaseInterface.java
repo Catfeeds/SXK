@@ -40,9 +40,12 @@ public class BaseInterface {
     public static String ClassfiyGoodsCateify = root + "/app/category/listpost";
 
     // 首页
+    // 首页轮播图
+    public static String HomeRecycleBanner = root + "/app/advertisesetup/getpost";
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";
     public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";
+
 
     // 社区
     // 获取宣传图
@@ -91,6 +94,10 @@ public class BaseInterface {
 
     // 获取中间设置
     public static String GetCenterSetting = root + "/app/identifysetup/getpost";
+    // 添加鉴定订单
+    public static String AddAppraisaOrder = root + "/app/identifyorder/addpost";
+    // 鉴定订单列表
+    public static String AppraisaOrderList = root + "/app/identifyorder/listpost";
     // 租赁列表
     public static String RentList = root + "/app/rent/listpost";
     // 修改租赁

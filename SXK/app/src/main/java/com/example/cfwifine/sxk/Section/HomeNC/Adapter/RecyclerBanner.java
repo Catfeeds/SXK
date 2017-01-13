@@ -45,6 +45,7 @@ public class RecyclerBanner extends FrameLayout {
 
     public interface BannerEntity{
         String getUrl();
+        String getLink();
     }
 
     private Handler handler = new Handler();
@@ -77,7 +78,7 @@ public class RecyclerBanner extends FrameLayout {
         selectedDrawable = new GradientDrawable();
         selectedDrawable.setSize(size,size);
         selectedDrawable.setCornerRadius(size);
-        selectedDrawable.setColor(0xff0094ff);
+        selectedDrawable.setColor(0xff16a6ae);
 
         recyclerView = new RecyclerView(context);
         LayoutParams vpLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

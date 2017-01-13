@@ -60,6 +60,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private ArrayList<String> baobeifujianData;
     private ArrayList<String> appraisaCateList;
     private int FUJIANPOSITION=-1;
+    private int CatePOSITION=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                 LogUtil.e("成色为" + title);
                 chengse = title;
                 FUJIANPOSITION = position;
+                CatePOSITION = position;
                 LogUtil.e("成色为pos"+position);
             }
         });
@@ -303,10 +305,11 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                         finish();
                     }
                 } else if (s == 6) {
-                    if (chengse.isEmpty()) {
+                    if (chengse.isEmpty()||CatePOSITION==-1) {
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));
                     } else {
                         SharedPreferencesUtils.setParam(this, "APPRAISACATE", chengse);
+                        SharedPreferencesUtils.setParam(this,"APPRAISACATEID",CatePOSITION);
                         finish();
                     }
                 } else {
