@@ -155,34 +155,32 @@ public class WaitPassFC extends Fragment {
                 .content(jsonObject.toString())
                 .build()
                 .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        mineItemAC.initSnackBar("请求失败！");
-                        mineItemAC.dialog.dismiss();
-                    }
+                             @Override
+                             public void onError(Call call, Exception e, int id) {
+                                 mineItemAC.initSnackBar("请求失败！");
+                                 mineItemAC.dialog.dismiss();
+                             }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        Log.e("我的待审核", "" + response);
-                        mineItemAC.dialog.dismiss();
-                        Gson gson = new Gson();
-                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
-                        if (requestStatueModel.getCode() == 1) {
-                            initMineData(1, 0, 0);
-                            mineItemAC.initSnackBar("下架成功！");
-                        } else if (requestStatueModel.getCode() == 0) {
-                            mineItemAC.initSnackBar("下架失败！");
-                        } else if (requestStatueModel.getCode() == 911) {
-                            mineItemAC.initSnackBar("登录超时，请重新登录");
-                        }
+                             @Override
+                             public void onResponse(String response, int id) {
+                                 Log.e("我的待审核", "" + response);
+                                 mineItemAC.dialog.dismiss();
+                                 Gson gson = new Gson();
+                                 RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                                 if (requestStatueModel.getCode() == 1) {
+                                     initMineData(1, 0, 0);
+                                     mineItemAC.initSnackBar("下架成功！");
+                                 } else if (requestStatueModel.getCode() == 0) {
+                                     mineItemAC.initSnackBar("下架失败！");
+                                 } else if (requestStatueModel.getCode() == 911) {
+                                     mineItemAC.initSnackBar("登录超时，请重新登录");
+                                 }
+                             }
+                         }
+                );
 
-                    }
+
     }
-
-    );
-
-
-}
 
     public void initMineData(final int status, int pageNum, int pageSize) {
         mineItemAC.dialog.show();

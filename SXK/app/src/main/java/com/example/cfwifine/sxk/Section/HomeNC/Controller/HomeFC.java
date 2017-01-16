@@ -15,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.HomeBannerModel;
@@ -24,10 +26,10 @@ import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
-import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Section.HomeNC.CustomDialog.AlphaScrollView;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeSelectedClassModel;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.ThreeBlockModel;
+import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -35,7 +37,6 @@ import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +48,10 @@ import okhttp3.Call;
 
 
 @SuppressLint("NewApi")
-public class HomeFC extends Fragment {
+public class HomeFC extends Fragment implements View.OnClickListener {
     private List<ImageView> views = new ArrayList<ImageView>();
     ImageView more;
-    RecyclerView recyclerView,hotcycleView,eightRV;
+    RecyclerView recyclerView, hotcycleView, eightRV;
     RecycleAdapter myAdapter;
     HotTopicAdapter hotAdapter;
     EightItemRecycleAdapter eightItemRecycleAdapter;
@@ -58,16 +59,24 @@ public class HomeFC extends Fragment {
     public ArrayList<String> datasText = null;
     public ArrayList<Integer> datasPic = null;
     Dialog dialog;
-    String [] text = new String[]{
-            "交换","租赁","活动","鉴定","养护"
+    String[] text = new String[]{
+            "交换", "租赁", "活动", "鉴定", "养护"
     };
     int[] pic = new int[]{
-            R.drawable.home_change,R.drawable.home_rent,R.drawable.home_activity
-            ,R.drawable.home_anwser,R.drawable.home_care
+            R.drawable.home_change, R.drawable.home_rent, R.drawable.home_activity
+            , R.drawable.home_anwser, R.drawable.home_care
     };
 
     RecyclerBanner recyclerBanner;
     private List<RecyclerBanner.BannerEntity> urls = new ArrayList<>();
+    private ImageView home_left_pic;
+    private ImageView home_right_top_pic;
+    private ImageView home_right_bottom_pic;
+    private AlphaScrollView home_scrollView;
+    private LinearLayout home_search_lay;
+    private boolean isFirst = true;
+    private List<HomeSelectedClassModel.ClassListBean> classDataSource;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,15 +91,64 @@ public class HomeFC extends Fragment {
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
-            dialog = LoadingUtils.createLoadingDialog(getActivity(),"加载中...");
+            dialog = LoadingUtils.createLoadingDialog(getActivity(), "加载中...");
             initBannerData();
             initBanner();
-//            initHorscrollView();
+            initView();
             initEightItemRV();
-            init();
+//            init();
             initHotTopic();
+            initThreeView();
+            // 精选分类
+            initSelectedClassData();
         }
         return view;
+
+    }
+
+    private void initSelectedClassData() {
+        JSONObject order = new JSONObject();
+        try {
+            order.put("sort",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("pageNo",1);
+            js.put("pageSize",2);
+            js.put("order",order);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeSelectedClass)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("精选分类", "" + response);
+                        Gson gson = new Gson();
+                        HomeSelectedClassModel homeSelectedClassModel = gson.fromJson(response, HomeSelectedClassModel.class);
+                        if (homeSelectedClassModel.getCode() == 1) {
+                            classDataSource = homeSelectedClassModel.getClassList();
+                            init();
+                        } else if (homeSelectedClassModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (homeSelectedClassModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
 
     }
 
@@ -98,7 +156,7 @@ public class HomeFC extends Fragment {
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("setupid",1);
+            js.put("setupid", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -123,8 +181,8 @@ public class HomeFC extends Fragment {
                         Gson gson = new Gson();
                         HomeBannerModel homeBannerModel = gson.fromJson(response, HomeBannerModel.class);
                         if (homeBannerModel.getCode() == 1) {
-                            for (int i = 0; i<homeBannerModel.getSetup().getList().size();i++){
-                                urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl+homeBannerModel.getSetup().getList().get(i).getImg().toString(),homeBannerModel.getSetup().getList().get(i).getLink().toString()));
+                            for (int i = 0; i < homeBannerModel.getSetup().getList().size(); i++) {
+                                urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl + homeBannerModel.getSetup().getList().get(i).getImg().toString(), homeBannerModel.getSetup().getList().get(i).getLink().toString()));
                                 initBanner();
                             }
 
@@ -142,20 +200,78 @@ public class HomeFC extends Fragment {
     }
 
     private void initBanner() {
-        recyclerBanner = (RecyclerBanner)view.findViewById(R.id.banner);
+        recyclerBanner = (RecyclerBanner) view.findViewById(R.id.banner);
         recyclerBanner.setOnPagerClickListener(new RecyclerBanner.OnPagerClickListener() {
             @Override
             public void onClick(RecyclerBanner.BannerEntity entity) {
-                LogUtil.e("网址为"+entity.getLink());
+                LogUtil.e("网址为" + entity.getLink());
             }
         });
         recyclerBanner.setDatas(urls);
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.home_left_pic:
+                startActivity(HomeThreeBlockDetailAC.class, 11);
+                break;
+            case R.id.home_right_top_pic:
+                startActivity(HomeThreeBlockDetailAC.class, 12);
+                break;
+            case R.id.home_right_bottom_pic:
+                startActivity(HomeThreeBlockDetailAC.class, 13);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void initView() {
+        home_search_lay = (LinearLayout) view.findViewById(R.id.home_search_lay);
+        home_search_lay.setOnClickListener(this);
+        home_scrollView = (AlphaScrollView) view.findViewById(R.id.home_scrollView);
+        home_scrollView.setScrollViewListener(new AlphaScrollView.ScrollViewListener() {
+            @Override
+            public void onScrollChanged(View scrollView, int x, int y, int oldx, int oldy) {
+                if (isFirst){
+                    isFirst = false;
+                }
+                titleAnim(oldy,y);
+            }
+        });
+
+    }
+
+    private void titleAnim(int oldy, int y) {
+        if (y < 800) {
+            float alpha = 1 - ((float) y) / 800;
+            home_search_lay.setAlpha(alpha);
+            if (alpha==0)
+            {
+                home_search_lay.setClickable(false);
+            }else
+            {
+                home_search_lay.setClickable(true);
+            }
+        } else {
+            //下滑显示标题栏
+            if (oldy > y) {
+                home_search_lay.setAlpha(1);
+                home_search_lay.setClickable(true);
+            } else {
+                home_search_lay.setAlpha(0);
+                home_search_lay.setClickable(false);
+            }
+        }
+    }
+
     private class Entity implements RecyclerBanner.BannerEntity {
 
         String url;
         String link;
-        public Entity(String url,String link) {
+
+        public Entity(String url, String link) {
             this.url = url;
             this.link = link;
         }
@@ -164,44 +280,190 @@ public class HomeFC extends Fragment {
         public String getUrl() {
             return url;
         }
+
         @Override
         public String getLink() {
             return link;
         }
     }
 
+    private void initThreeView() {
+        home_left_pic = (ImageView) view.findViewById(R.id.home_left_pic);
+        home_right_top_pic = (ImageView) view.findViewById(R.id.home_right_top_pic);
+        home_right_bottom_pic = (ImageView) view.findViewById(R.id.home_right_bottom_pic);
+        home_left_pic.setOnClickListener(this);
+        home_right_top_pic.setOnClickListener(this);
+        home_right_bottom_pic.setOnClickListener(this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initThreeViewData();
+            }
+        }).start();
+    }
+
+    /**
+     * 初始化三个木块的数据
+     */
+    private void initThreeViewData() {
+        initLeftPicData();
+        initRightTopData();
+        initRightBottom();
+    }
+
+    private void initRightBottom() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("setupid", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeRightBottomPic)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("三块的数据-右下", "" + response);
+                        Gson gson = new Gson();
+                        ThreeBlockModel threeBlockModel = gson.fromJson(response, ThreeBlockModel.class);
+                        if (threeBlockModel.getCode() == 1) {
+                            String leftpic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + threeBlockModel.getSetup().getImg();
+                            Glide.with(getActivity()).load(leftpic).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(home_right_bottom_pic);
+                        } else if (threeBlockModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (threeBlockModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+    private void initRightTopData() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("setupid", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeRightTopPic)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("三块的数据-右上", "" + response);
+                        Gson gson = new Gson();
+                        ThreeBlockModel threeBlockModel = gson.fromJson(response, ThreeBlockModel.class);
+                        if (threeBlockModel.getCode() == 1) {
+                            String leftpic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + threeBlockModel.getSetup().getImg();
+                            Glide.with(getActivity()).load(leftpic).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(home_right_top_pic);
+                        } else if (threeBlockModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (threeBlockModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+    private void initLeftPicData() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("setupid", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeLeftThreeBlock)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(jsonObject.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("三块的数据-左", "" + response);
+                        Gson gson = new Gson();
+                        ThreeBlockModel threeBlockModel = gson.fromJson(response, ThreeBlockModel.class);
+                        if (threeBlockModel.getCode() == 1) {
+                            String leftpic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + threeBlockModel.getSetup().getImg();
+                            Glide.with(getActivity()).load(leftpic).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(home_left_pic);
+                        } else if (threeBlockModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (threeBlockModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+
     // TODO ***************************************初始化8个专题***************************************
-    private void initEightItemRV(){
+    private void initEightItemRV() {
         datasText = new ArrayList<>();
-        for (int i= 0;i<text.length;i++){
-            datasText.add(i,text[i]);
+        for (int i = 0; i < text.length; i++) {
+            datasText.add(i, text[i]);
         }
         datasPic = new ArrayList<>();
-        for (int i =0;i<text.length;i++){
-            datasPic.add(i,pic[i]);
+        for (int i = 0; i < text.length; i++) {
+            datasPic.add(i, pic[i]);
         }
-        eightRV = (RecyclerView)view.findViewById(R.id.rv_home_item);
-        eightItemRecycleAdapter = new EightItemRecycleAdapter(datasPic,datasText);
-        eightRV.setLayoutManager(new GridLayoutManager(getActivity(),5));
+        eightRV = (RecyclerView) view.findViewById(R.id.rv_home_item);
+        eightItemRecycleAdapter = new EightItemRecycleAdapter(datasPic, datasText);
+        eightRV.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         eightRV.setAdapter(eightItemRecycleAdapter);
         eightItemRecycleAdapter.setOnItemClickListener(new EightItemRecycleAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                LogUtil.e("点击了第几个"+position);
+                LogUtil.e("点击了第几个" + position);
                 JumpForPage(position);
             }
         });
     }
 
     private void JumpForPage(int position) {
-        startActivity(EightItemDetailAC.class,position);
+        if (position == 0 || position == 1) {
+            startActivity(ExchangeAndRentAC.class, position);
+        } else if (position == 2) {
+            startActivity(EightItemDetailAC.class, position);
+        } else if (position == 3) {
+            startActivity(AppraisaAllAC.class, position);
+        } else if (position == 4) {
+            startActivity(CuringAC.class, position);
+        }
+
     }
 
 
     // TODO ***************************************初始化热门专题***************************************
     private void initHotTopic() {
-        hotcycleView = (RecyclerView)view.findViewById(R.id.home_hot_recycleView);
-        LinearLayoutManager layoutManagers = new LinearLayoutManager(getActivity()){
+        hotcycleView = (RecyclerView) view.findViewById(R.id.home_hot_recycleView);
+        LinearLayoutManager layoutManagers = new LinearLayoutManager(getActivity()) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -209,24 +471,17 @@ public class HomeFC extends Fragment {
         };
         layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
         hotcycleView.setLayoutManager(layoutManagers);
-        hotAdapter = new HotTopicAdapter(listData,getActivity());
+        hotAdapter = new HotTopicAdapter(listData, getActivity());
         hotAdapter.notifyDataSetChanged();
         hotcycleView.setAdapter(hotAdapter);
     }
 
-
-
-
-
     // TODO ***************************************初始化精选分类***************************************
 
     private void init() {
-        for (int i = 0; i < 2; i++) {
-            listData.add(i + "");
-        }
 
-        recyclerView = (RecyclerView)view.findViewById(R.id.recycleView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()){
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -234,80 +489,15 @@ public class HomeFC extends Fragment {
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-
-
-//        RelativeLayout lay = (RelativeLayout)view.findViewById(R.id.home_classify_lay);
-//
-//
-//        WindowManager windowManager = (WindowManager) getActivity().getSystemService(getActivity().WINDOW_SERVICE);
-//        int width = windowManager.getDefaultDisplay().getWidth();
-//        int height = windowManager.getDefaultDisplay().getHeight();
-////
-//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) lay.getLayoutParams();
-//        params.width = width;
-//        params.height = 812;
-//        lay.setLayoutParams(params);
-
-
-        myAdapter = new RecycleAdapter(listData,getActivity());
+        myAdapter = new RecycleAdapter(classDataSource, getActivity());
         myAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(myAdapter);
     }
-//    private void initHorscrollView() {
-//        mInflater = LayoutInflater.from(getActivity());
-//        initHorscrollViewData();
-//        initHorscrollViewView();
-//    }
-//    @SuppressLint("NewApi")
-//    private void initHorscrollViewView() {
-//        horizontalScrollView = (HorizontalScrollView)view.findViewById(R.id.id_horscrollview);
-//        horizontalScrollView.setOnScrollChangeListener(this);
-//
-//        more = (ImageView)view.findViewById(R.id.id_more);
-//        mGallery = (LinearLayout) view.findViewById(R.id.id_gallerys);
-//
-//        for (int i = 0; i < mImgIds.length; i++)
-//        {
-//
-//            View view = mInflater.inflate(R.layout.activity_index_gallery_item,
-//                    mGallery, false);
-//            ImageView img = (ImageView) view
-//                    .findViewById(R.id.id_index_gallery_item_image);
-//            img.setImageResource(mImgIds[i]);
-//            TextView txt = (TextView) view
-//                    .findViewById(R.id.id_index_gallery_item_text);
-//            txt.setText("我是图");
-//            // 自适应屏幕
-//            RelativeLayout lay = (RelativeLayout)view.findViewById(R.id.change_size);
-//            WindowManager windowManager = (WindowManager)getActivity().getSystemService(getActivity().WINDOW_SERVICE);
-//            int width = windowManager.getDefaultDisplay().getWidth();
-//            int height = windowManager.getDefaultDisplay().getHeight();
-//
-//            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)lay.getLayoutParams();
-//            params.width = width/3;
-//            params.height = 400;
-//            lay.setLayoutParams(params);
-//
-//            // 点击事件
-//            view.setId(i);
-//            view.setTag("美女第"+i+"位");
-//            view.setOnClickListener(this);
-//            mGallery.addView(view);
-//        }
-//    }
-//
-//    private void initHorscrollViewData() {
-//        mImgIds = new int[] { R.drawable.home_placeholder, R.drawable.home_placeholder, R.drawable.home_placeholder,
-//                R.drawable.home_placeholder, R.drawable.home_placeholder, R.drawable.home_placeholder, R.drawable.home_placeholder,
-//                R.drawable.home_placeholder, R.drawable.home_placeholder };
-//    }
 
 
-    // TODO ***************************************初始化轮播图***************************************
-
-    private void startActivity(Class<?> cls,Integer jumpvalue) {
+    private void startActivity(Class<?> cls, Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);
-        intent.putExtra("JUMPEIGHTITEMDETAIL",jumpvalue);
+        intent.putExtra("JUMPEIGHTITEMDETAIL", jumpvalue);
         startActivity(intent);
     }
 
@@ -315,7 +505,6 @@ public class HomeFC extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
-
 
 
 }

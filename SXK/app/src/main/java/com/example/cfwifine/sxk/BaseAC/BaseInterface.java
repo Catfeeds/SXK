@@ -42,6 +42,16 @@ public class BaseInterface {
     // 首页
     // 首页轮播图
     public static String HomeRecycleBanner = root + "/app/advertisesetup/getpost";
+    // 首页左上
+    public static String HomeLeftThreeBlock = root + "/app/leftsetup/getpost";
+    // 首页右上
+    public static String HomeRightTopPic = root + "/app/rightupsetup/getpost";
+    // 首页右下
+    public static String HomeRightBottomPic = root + "/app/rightdownsetup/getpost";
+    // 首页精选分类
+    public static String HomeSelectedClass = root + "/app/class/listpost";
+
+
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";
     public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";

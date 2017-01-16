@@ -56,12 +56,15 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private AttachmentTopAdapter attachmentTopAdapter=null;
     private String FUJIAN;
     private int ATTRIBUTENAMEPOSITION=-1;
+    private String FUJIANNAME="";
+    private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attach_ment_ac);
         SharedPreferencesUtils.setParam(this,"FUJIANPOSITION",-1);
+        SharedPreferencesUtils.setParam(this,"FUJIAN","");
         initView();
     }
 
@@ -84,6 +87,10 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         int cateoryid = getIntent().getIntExtra("CATEID",0);
         LogUtil.e("测试id"+cateoryid);
         initData(cateoryid);
+
+        jsonArray = new JSONArray();
+
+
     }
 
     private void initData(final int parentid) {
@@ -229,12 +236,32 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onResume() {
+
+        FUJIANNAME = String.valueOf(SharedPreferencesUtils.getParam(this,"FUJIAN",""));
         FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this,"FUJIANPOSITION",-1);
         if (attachmentTopAdapter!=null){
             LogUtil.e("包袋材质"+FUJIANPOSITION);
 //            attachmentTopAdapter.notifyDataSetChanged();
-            attachmentTopAdapter.setData(FUJIANPOSITION);
+            if (FUJIANPOSITION != -1){
+//                dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().set(FUJIANPOSITION,dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
+                attachmentTopAdapter.setData(ATTRIBUTENAMEPOSITION,FUJIANPOSITION);
+//                attachmentTopAdapter.notifyDataSetChanged();
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(),dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                jsonArray.put(jsonObject);
+
+                LogUtil.e("返回的json"+jsonArray.toString());
+
+            }
         }
+
+
+
         super.onResume();
     }
 

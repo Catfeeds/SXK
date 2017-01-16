@@ -229,7 +229,16 @@
         <activity
             android:name=".Section.PublishNC.CuringAC.CuringPayOrderAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.HomeNC.Controller.ExchangeAndRentAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.HomeNC.Controller.AppraisaAllAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.HomeNC.Controller.HomeThreeBlockDetailAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
