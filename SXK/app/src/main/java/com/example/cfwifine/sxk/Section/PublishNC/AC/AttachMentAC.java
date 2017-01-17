@@ -51,20 +51,20 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private ArrayList<TestModel> listData;
     private ArrayList<String> StringList;
     private ArrayList<String> nameList;
-    private String material="";
-    private int FUJIANPOSITION=-1;
-    private AttachmentTopAdapter attachmentTopAdapter=null;
+    private String material = "";
+    private int FUJIANPOSITION = -1;
+    private AttachmentTopAdapter attachmentTopAdapter = null;
     private String FUJIAN;
-    private int ATTRIBUTENAMEPOSITION=-1;
-    private String FUJIANNAME="";
+    private int ATTRIBUTENAMEPOSITION = -1;
+    private String FUJIANNAME = "";
     private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attach_ment_ac);
-        SharedPreferencesUtils.setParam(this,"FUJIANPOSITION",-1);
-        SharedPreferencesUtils.setParam(this,"FUJIAN","");
+        SharedPreferencesUtils.setParam(this, "FUJIANPOSITION", -1);
+        SharedPreferencesUtils.setParam(this, "FUJIAN", "");
         initView();
     }
 
@@ -84,8 +84,8 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
         activity_attach_ment_ac = (LinearLayout) findViewById(R.id.activity_attach_ment_ac);
 
-        int cateoryid = getIntent().getIntExtra("CATEID",0);
-        LogUtil.e("测试id"+cateoryid);
+        int cateoryid = getIntent().getIntExtra("CATEID", 0);
+        LogUtil.e("测试id" + cateoryid);
         initData(cateoryid);
 
         jsonArray = new JSONArray();
@@ -139,38 +139,23 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                                     dataSource = attachmentModel.getCategoryList().get(i).getAttachList();
                                 }
                             }
-
-                            if (dataSource != null) {
-                                // 取最后一个数组，如果里面不为空，则有最后一栏，如果为空，就不展示最后一个界面
+                            if (dataSource.size() != 0) {
                                 listData = new ArrayList<TestModel>();
-
-                                if (dataSource.size() > 1) {
-                                    if (dataSource.get(dataSource.size() - 1).getAttributeValueList().size() == 0) {
-                                        baobei_textview.setVisibility(View.GONE);
-                                        return;
-                                    }else {
-                                        // 注意，必须先初始化底部的数组再移除最后一个
-                                        // 初始化底部的多选的数据呢
-                                        for (int i = 0; i < dataSource.get(dataSource.size() - 1).getAttributeValueList().size(); i++) {
-                                            TestModel testModel = new TestModel(dataSource.get(dataSource.size() - 1).getAttributeValueList().get(i), false);
-                                            listData.add(i, testModel);
+                                for (int i = 0; i < dataSource.size(); i++) {
+                                    if (dataSource.get(i).getAttributeName().trim().equals("相关配件")) {
+                                        for (int j = 0; j<dataSource.get(i).getAttributeValueList().size();j++){
+                                            TestModel testModel = new TestModel(dataSource.get(i).getAttributeValueList().get(j), false);
+                                            listData.add(j, testModel);
                                         }
-
-                                        // 将数组传回到第一个页面
-                                        dataSource.remove(dataSource.size()-1);
-                                        initListRecycleView();
-                                        initCollectionRecycleView();
+                                        dataSource.remove(i);
                                     }
-
-                                }else {
-                                    baobei_textview.setVisibility(View.GONE);
-                                    initListRecycleView();
                                 }
-                            }else if (dataSource.size() == 0){
-                                navi_right.setText("");
+                                initListRecycleView();
+                                initCollectionRecycleView();
+                            }else {
+                                baobei_textview.setVisibility(View.GONE);
+                                navi_right.setOnClickListener(null);
                             }
-
-
                         } else if (attachmentModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (attachmentModel.getCode() == 911) {
@@ -210,22 +195,22 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         attachment_rv.setLayoutManager(layoutManager);
-        attachmentTopAdapter = new AttachmentTopAdapter(this, dataSource,FUJIANPOSITION);
+        attachmentTopAdapter = new AttachmentTopAdapter(this, dataSource, FUJIANPOSITION);
         attachment_rv.setAdapter(attachmentTopAdapter);
         attachmentTopAdapter.setOnItemClickListener(new AttachmentTopAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, List<String> name, String attributeName,int position) {
+            public void OnItemClick(View view, List<String> name, String attributeName, int position) {
                 LogUtil.e("数组" + name);
                 ATTRIBUTENAMEPOSITION = position;
                 nameList = new ArrayList<>();
-                for (int i = 0; i<name.size();i++){
-                    nameList.add(i,name.get(i));
+                for (int i = 0; i < name.size(); i++) {
+                    nameList.add(i, name.get(i));
                 }
-                Intent intent = new Intent(AttachMentAC.this,CheckRecycleViewAC.class);
-                intent.putStringArrayListExtra("ATTACHMENT",nameList);
-                intent.putStringArrayListExtra("BAOBEIFUJIAN",StringList);
-                intent.putExtra("TITLESS",attributeName);
-                intent.putExtra("CHENGSE",5);
+                Intent intent = new Intent(AttachMentAC.this, CheckRecycleViewAC.class);
+                intent.putStringArrayListExtra("ATTACHMENT", nameList);
+                intent.putStringArrayListExtra("BAOBEIFUJIAN", StringList);
+                intent.putExtra("TITLESS", attributeName);
+                intent.putExtra("CHENGSE", 5);
                 startActivity(intent);
 //                finish();
             }
@@ -237,29 +222,46 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
 
-        FUJIANNAME = String.valueOf(SharedPreferencesUtils.getParam(this,"FUJIAN",""));
-        FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this,"FUJIANPOSITION",-1);
-        if (attachmentTopAdapter!=null){
-            LogUtil.e("包袋材质"+FUJIANPOSITION);
+        FUJIANNAME = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
+        FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this, "FUJIANPOSITION", -1);
+        if (attachmentTopAdapter != null) {
+            LogUtil.e("包袋材质" + FUJIANPOSITION);
 //            attachmentTopAdapter.notifyDataSetChanged();
-            if (FUJIANPOSITION != -1){
+            if (FUJIANPOSITION != -1) {
 //                dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().set(FUJIANPOSITION,dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
-                attachmentTopAdapter.setData(ATTRIBUTENAMEPOSITION,FUJIANPOSITION);
+                attachmentTopAdapter.setData(ATTRIBUTENAMEPOSITION, FUJIANPOSITION);
 //                attachmentTopAdapter.notifyDataSetChanged();
 
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(),dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
+                    jsonObject.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(), dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                for (int i = 0; i<jsonArray.length();i++){
+                    try {
+                        String s = String.valueOf(jsonArray.get(i));
+                        JSONObject js = new JSONObject(s);
+                        String v = String.valueOf(js.opt(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName()));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+//                    try {
+//                        if (jsonArray.getString(i).equals(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName())){
+//
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+
                 jsonArray.put(jsonObject);
 
-                LogUtil.e("返回的json"+jsonArray.toString());
+                LogUtil.e("返回的json" + jsonArray.toString());
 
             }
         }
-
 
 
         super.onResume();
@@ -273,23 +275,23 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.navi_right:
 
-                if (FUJIANPOSITION == -1&&StringList.size() == 0){
+                if (FUJIANPOSITION == -1 && StringList.size() == 0) {
                     SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
                     return;
-                }else {
+                } else {
 
                     JSONArray arr = new JSONArray();
                     JSONArray jsonArray = new JSONArray();
                     jsonArray.put(nameList.get(FUJIANPOSITION));
-                    JSONObject js  = new JSONObject();
+                    JSONObject js = new JSONObject();
                     try {
-                        js.put("attributeName",dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName());
-                        js.put("attributeValueList",jsonArray);
+                        js.put("attributeName", dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName());
+                        js.put("attributeValueList", jsonArray);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    LogUtil.e("选择的附件"+js);
+                    LogUtil.e("选择的附件" + js);
 
                 }
 

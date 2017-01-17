@@ -24,6 +24,7 @@
             android:layout_width="100dp"
             android:layout_height="44dp"
             android:text="标题"
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/navi_title_color"
             android:gravity="center"

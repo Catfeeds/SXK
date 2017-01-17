@@ -61,7 +61,6 @@ public class EightItemActivityRecycleAdapter extends RecyclerView.Adapter<EightI
         Glide.with(mContext)
                 .load(picUrl)
                 .placeholder(R.drawable.home_placeholder)
-                .crossFade()
                 .into(viewHolder.imageView);
         viewHolder.title.setText(dataSource.get(position).getName());
         // 处理时间戳

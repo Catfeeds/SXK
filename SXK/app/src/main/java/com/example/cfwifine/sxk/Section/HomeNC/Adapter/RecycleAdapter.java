@@ -1,8 +1,10 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeSelectedClassModel;
 
 import java.util.ArrayList;
@@ -34,6 +37,16 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
      * @param context
      */
     private Context mContext;
+
+    private RecycleAdapter.OnItemClickListener mOnItemClickListener;
+
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(RecycleAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
 
     /**
      * 修改 增加context参数
@@ -56,9 +69,30 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + datas.get(position).getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(viewHolder.titlePic);
+        JingSelectedRecycleAdapter jingSelectedRecycleAdapter = new JingSelectedRecycleAdapter(mContext,datas.get(position).getRentList());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        viewHolder.recyclerView.setLayoutManager(layoutManager);
+        viewHolder.recyclerView.setAdapter(jingSelectedRecycleAdapter);
+        jingSelectedRecycleAdapter.setOnItemClickListener(new JingSelectedRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int rentid) {
+                Intent intent = new Intent(mContext, ProductDetailsAC.class);
+                intent.putExtra("RENTID",rentid);
+                mContext.startActivity(intent);
+            }
+        });
+        if (mOnItemClickListener!= null){
+            viewHolder.titlePic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view,datas.get(position).getClassid());
+                }
+            });
+        }
 
 
     }

@@ -51,29 +51,31 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
     private LinearLayout activity_eight_item_detail_ac;
     EightItemActivityRecycleAdapter eightItemActivityRecycleAdapter;
     List<ActivityListModel.ActivityListBean> dataSource;
+    private int pageSize=10;
+    private int pageNum=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eight_item_detail_ac);
         initView();
-        initListData();
+        initListData(1,10);
     }
 
     /**
      * 初始化数据
      */
-    private void initListData() {
+    private void initListData(int pageNo,int pageSize) {
         JSONObject order = new JSONObject();
         try {
-            order.put("sort", 1);
+            order.put("sort", -1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo", 1);
-            jsonObject.put("pageSize", 10);
+            jsonObject.put("pageNo", pageNo);
+            jsonObject.put("pageSize", pageSize);
             jsonObject.put("order", order);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -138,13 +140,13 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        initListData();
+                        initListData(1,10);
                         //注意此处
                         activity_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         eightItemActivityRecycleAdapter.notifyDataSetChanged();
                     }
-                }, 3000);
+                }, 1000);
 
             }
         });
@@ -164,14 +166,6 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         activity_recycleview.setLayoutManager(layoutManager);
 
-        // 设置头
-//        RecyclerViewHeader recyclerViewHeader = (RecyclerViewHeader)view.findViewById(R.id.headerssss);
-//        recyclerViewHeader.attachTo(hao_recycleview,true);
-
-
-
-
-
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(this);
         progressView.setIndicatorId(ProgressView.BallPulse);
@@ -189,11 +183,13 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-//                        if (listData.size() >= 3 * limit) {
-//                            activity_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-                        initListData();
+                        pageSize += 10;
+                        pageNum += 1;
+                        if (pageNum >= dataSource.size()) {
+                            activity_recycleview.loadMoreEnd();
+                            return;
+                        }
+                        initListData(pageNum,pageSize);
                         eightItemActivityRecycleAdapter.notifyDataSetChanged();
                         activity_recycleview.loadMoreComplete();
 
@@ -201,27 +197,8 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                 }, 1000);
             }
         });
-
-//        initFriendMomentData();
         eightItemActivityRecycleAdapter = new EightItemActivityRecycleAdapter(this,dataSource);
         activity_recycleview.setAdapter(eightItemActivityRecycleAdapter);
-
-
-        activity_recycleview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(EightItemDetailAC.this, "click-----position" + i, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        activity_recycleview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(EightItemDetailAC.this, "long click------position" + i, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
 
         eightItemActivityRecycleAdapter.setOnItemClickListener(new EightItemActivityRecycleAdapter.OnItemClickListener() {
             @Override

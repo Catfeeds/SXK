@@ -50,7 +50,12 @@ public class BaseInterface {
     public static String HomeRightBottomPic = root + "/app/rightdownsetup/getpost";
     // 首页精选分类
     public static String HomeSelectedClass = root + "/app/class/listpost";
-
+    // 首页精选分类主图
+    public static String HomeClassSelected = root + "/app/class/getpost";
+    //  首页热门话题列表
+    public static String HomeHotTopList = root + "/app/topic/listpost";
+    // 首页获取话题
+    public static String HomeHotDetail = root + "/app/topic/getpost";
 
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";

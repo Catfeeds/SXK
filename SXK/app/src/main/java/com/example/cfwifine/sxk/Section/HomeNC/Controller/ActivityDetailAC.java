@@ -60,7 +60,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_ac);
-        mLoading = LoadingUtils.createLoadingDialog(this,"正在努力加载中...");
+        mLoading = LoadingUtils.createLoadingDialog(this,"加载中...");
         mLoading.show();
         initView();
         initData();
@@ -119,7 +119,6 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
         Glide.with(this)
                 .load(picUrl)
                 .placeholder(R.drawable.home_placeholder)
-                .crossFade()
                 .into(activity_detail_iamge);
         activity_detail_title.setText(activityDetailModel.getActivity().getName());
         activity_detail_address.setText(activityDetailModel.getActivity().getPlace());

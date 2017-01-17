@@ -11,12 +11,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeHotListModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HotTopicAdapter extends RecyclerView.Adapter<HotTopicAdapter.ViewHolder> {
-    public ArrayList<String> datas = null;
+    public List<HomeHotListModel.TopicListBean> datas = null;
 
     /**
      * 修改 增加context
@@ -24,12 +29,22 @@ public class HotTopicAdapter extends RecyclerView.Adapter<HotTopicAdapter.ViewHo
      * @param context
      */
     private Context mContext;
+    private HotTopicAdapter.OnItemClickListener mOnItemClickListener;
+
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(HotTopicAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
     /**
      * 修改 增加context参数
      * @param datas
      * @param context
      */
-    public HotTopicAdapter(ArrayList<String> datas, Context context) {
+    public HotTopicAdapter(List<HomeHotListModel.TopicListBean> datas, Context context) {
         mContext = context;
         this.datas = datas;
     }
@@ -45,25 +60,15 @@ public class HotTopicAdapter extends RecyclerView.Adapter<HotTopicAdapter.ViewHo
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-//        viewHolder.mTextView.setText(datas.get(position));
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-//        viewHolder.tag_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        viewHolder.title_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-        viewHolder.contents_layout.setOnClickListener(new View.OnClickListener() {
+        viewHolder.title.setText(datas.get(position).getName().toString());
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+datas.get(position).getImg();
+        Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(viewHolder.imageView);
+        viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mOnItemClickListener.OnItemClick(view,datas.get(position).getTopicid());
             }
         });
     }

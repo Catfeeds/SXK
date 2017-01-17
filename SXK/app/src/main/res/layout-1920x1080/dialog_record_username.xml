@@ -49,8 +49,9 @@
                 android:background="@drawable/table_shape_edittext_style"
                 android:textSize="14sp"
                 android:maxLength="10"
+
                 android:inputType="text"
-                android:textColor="@color/grrray"
+                android:textColor="@color/black"
                 android:hint="请输入昵称"
                 android:textColorHint="@color/grrray"
                 android:gravity="center"

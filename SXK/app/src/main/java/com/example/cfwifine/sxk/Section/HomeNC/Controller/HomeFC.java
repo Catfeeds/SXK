@@ -27,6 +27,8 @@ import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.HomeNC.CustomDialog.AlphaScrollView;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeClassSelectedModel;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeHotListModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeSelectedClassModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ThreeBlockModel;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
@@ -76,6 +78,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private LinearLayout home_search_lay;
     private boolean isFirst = true;
     private List<HomeSelectedClassModel.ClassListBean> classDataSource;
+    private List<HomeHotListModel.TopicListBean> hotDataSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,13 +99,59 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             initBanner();
             initView();
             initEightItemRV();
-//            init();
-            initHotTopic();
             initThreeView();
-            // 精选分类
             initSelectedClassData();
+            initHotData();
+            // 精选分类
         }
         return view;
+
+    }
+    // 初始化热门专题
+    private void initHotData() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("sort",-1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("pageNo",1);
+            js.put("pageSize",2);
+            js.put("order",jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeHotTopList)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("热门分类", "" + response);
+                        Gson gson = new Gson();
+                        HomeHotListModel homeHotListModel = gson.fromJson(response, HomeHotListModel.class);
+                        if (homeHotListModel.getCode() == 1) {
+                            hotDataSource = homeHotListModel.getTopicList();
+                            initHotTopic();
+                        } else if (homeHotListModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (homeHotListModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
 
     }
 
@@ -240,6 +289,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 titleAnim(oldy,y);
             }
         });
+
 
     }
 
@@ -471,15 +521,24 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         };
         layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
         hotcycleView.setLayoutManager(layoutManagers);
-        hotAdapter = new HotTopicAdapter(listData, getActivity());
+        hotAdapter = new HotTopicAdapter(hotDataSource, getActivity());
         hotAdapter.notifyDataSetChanged();
         hotcycleView.setAdapter(hotAdapter);
+        hotAdapter.setOnItemClickListener(new HotTopicAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int topicid) {
+                Intent intent = new Intent(getActivity(), HomeThreeBlockDetailAC.class);
+                intent.putExtra("JUMPEIGHTITEMDETAIL", 16);
+                intent.putExtra("TOPICID",topicid);
+                startActivity(intent);
+            }
+        });
+
     }
 
     // TODO ***************************************初始化精选分类***************************************
 
     private void init() {
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()) {
             @Override
@@ -492,6 +551,53 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         myAdapter = new RecycleAdapter(classDataSource, getActivity());
         myAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(myAdapter);
+        myAdapter.setOnItemClickListener(new RecycleAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int classid) {
+                initClassidData(classid);
+            }
+        });
+    }
+
+    private void initClassidData(final int classid) {
+        JSONObject js  = new JSONObject();
+        try {
+            js.put("classid",classid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeClassSelected)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("精选分类主图", "" + response);
+                        Gson gson = new Gson();
+                        HomeClassSelectedModel homeClassSelectedModel = gson.fromJson(response, HomeClassSelectedModel.class);
+                        if (homeClassSelectedModel.getCode() == 1) {
+                            Intent intent = new Intent(getActivity(), HomeThreeBlockDetailAC.class);
+                            intent.putExtra("JUMPEIGHTITEMDETAIL", 14);
+                            intent.putExtra("CLASSID",classid);
+                            startActivity(intent);
+                        } else if (homeClassSelectedModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (homeClassSelectedModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
     }
 
 

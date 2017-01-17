@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,6 +106,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_publish_topic_ac);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initTopicData();
         initView();
 
@@ -182,7 +184,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 // 点击发表朋友圈
                 LogUtil.e("number的值" + number);
                 LogUtil.e("uploadData" + uploadDatasource);
-                mloading.show();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
