@@ -27,9 +27,9 @@ import java.util.List;
 
 public class NineGridViewAdapter extends NineGridAdapter {
 
-    private List<TopicListModel.TopicListBean.ImgListBean> data = null;
+    private List<Object> data = null;
 
-    public NineGridViewAdapter(Context context, List<TopicListModel.TopicListBean.ImgListBean> list) {
+    public NineGridViewAdapter(Context context, List<Object> list) {
         super(context, list);
         this.data = list;
     }
@@ -61,7 +61,7 @@ public class NineGridViewAdapter extends NineGridAdapter {
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
         LogUtil.e("图片地址"+list.get(i));
-        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+ data.get(i).getImage();
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+ data.get(i);
 //        Picasso.with(context).load(list.get(i).toString()).placeholder(new ColorDrawable(Color.parseColor("#f5f5f5"))).into(iv);
 //        Glide.with(context).load(picUrl).fitCenter().placeholder(R.drawable.home_placeholder).into(iv);
         Glide.with(context).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(iv);

@@ -238,8 +238,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         mloading.dismiss();
                         topicList = new ArrayList<TopicListModel.TopicListBean>();
                         Gson gson = new Gson();
-                        TopicListModel topicListModel = gson.fromJson(response, new TypeToken<TopicListModel>() {
-                        }.getType());
+                        TopicListModel topicListModel = gson.fromJson(response, TopicListModel.class);
 //                        List<TopicListModel> topicListModels =
 
                         if (topicListModel.getCode() == 1) {
@@ -439,7 +438,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         LogUtil.e("数组" + topicList.get(pos).getImgList());
 
         for (int i = 0; i < topicList.get(pos).getImgList().size(); i++) {
-            dataSource.add(BaseInterface.ClassfiyGetAllHotBrandImgUrl + topicList.get(pos).getImgList().get(i).getImage().toString());
+            dataSource.add(BaseInterface.ClassfiyGetAllHotBrandImgUrl + topicList.get(pos).getImgList().get(i).toString());
         }
         LogUtil.e("图片数组" + dataSource);
         Intent intent = new Intent(getActivity(), ImageBrowseActivity.class);

@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,7 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 
@@ -58,6 +61,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private int ATTRIBUTENAMEPOSITION = -1;
     private String FUJIANNAME = "";
     private JSONArray jsonArray;
+    private HashMap<Integer, Map<String,String>> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         LogUtil.e("测试id" + cateoryid);
         initData(cateoryid);
 
-        jsonArray = new JSONArray();
+
 
 
     }
@@ -219,9 +223,10 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onResume() {
-
+        jsonArray = new JSONArray();
         FUJIANNAME = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
         FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this, "FUJIANPOSITION", -1);
         if (attachmentTopAdapter != null) {
@@ -239,26 +244,18 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 for (int i = 0; i<jsonArray.length();i++){
-                    try {
-                        String s = String.valueOf(jsonArray.get(i));
-                        JSONObject js = new JSONObject(s);
-                        String v = String.valueOf(js.opt(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName()));
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-//                    try {
-//                        if (jsonArray.getString(i).equals(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName())){
-//
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
                 }
-
+                jsonArray.remove(ATTRIBUTENAMEPOSITION);
                 jsonArray.put(jsonObject);
 
                 LogUtil.e("返回的json" + jsonArray.toString());
+
+//                map = new HashMap<>();
+//                map.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(),dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
+//                LogUtil.e("map的值" + map);
+
+
 
             }
         }

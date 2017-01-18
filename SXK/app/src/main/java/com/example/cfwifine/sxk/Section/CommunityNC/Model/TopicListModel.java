@@ -7,13 +7,7 @@ import java.util.List;
  * Created by Mr.Yang on 2016/12/15.
  */
 
-public class TopicListModel implements Serializable{
-
-    /**
-     * code : 1
-     * total : 42
-     * topicList : [{"userid":4,"nickname":"杨伟康","headimgurl":null,"content":"我们的","imgList":[{"image":"FvpCpGbSKJrNGjXg43gjmrOI8_Ia"}],"moduleid":4,"likeList":[{"userid":4,"nickname":"杨伟康"}],"commentList":[{"userid":4,"nickname":"杨伟康","comment":"我的地方反反复复风格"},{"userid":4,"nickname":"杨伟康","comment":"i 看见大家简单简单简单简单就吵架"},{"userid":4,"nickname":"杨伟康","comment":"想到当年妇女大家简单简单减肥减肥交界处"}],"status":1,"topicid":79,"createtime":1481774109,"updatetime":1481780753},{"userid":4,"nickname":"杨伟康","headimgurl":null,"content":"我","imgList":[{"image":"FvpCpGbSKJrNGjXg43gjmrOI8_Ia"}],"moduleid":4,"likeList":[{"userid":4,"nickname":"杨伟康"}],"commentList":[{"userid":4,"nickname":"杨伟康","comment":"到底简单就简单简单简单解放军"},{"userid":4,"nickname":"杨伟康","comment":"回家看见简单简单就"}],"status":1,"topicid":78,"createtime":1481773878,"updatetime":1481780785},{"userid":4,"nickname":"杨伟康","headimgurl":null,"content":"国会反对","imgList":[{"image":"FoeRnSv-kK_9h4QqvpEAmPljMvW6"},{"image":"FoeRnSv-kK_9h4QqvpEAmPljMvW6"},{"image":"FqQSZBySEPyyaVHv06i-pCOrXJG0"}],"moduleid":4,"likeList":[{"userid":4,"nickname":"杨伟康"}],"commentList":[],"status":1,"topicid":77,"createtime":1481773546,"updatetime":1481775268},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"啊啊啊KKK","imgList":[{"image":"sxk_userPic_201612151132470"},{"image":"sxk_userPic_201612151132511"}],"moduleid":3,"likeList":[{"userid":4,"nickname":"杨伟康"}],"commentList":[],"status":1,"topicid":76,"createtime":1481772774,"updatetime":1481775291},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"啊啊啊KKK","imgList":[{"image":"sxk_userPic_201612151132120"},{"image":"sxk_userPic_201612151132151"}],"moduleid":3,"likeList":[{"userid":4,"nickname":"杨伟康"}],"commentList":[],"status":1,"topicid":75,"createtime":1481772740,"updatetime":1481775296},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"knoll","imgList":[{"image":"sxk_userPic_201612151127400"},{"image":"sxk_userPic_201612151127431"}],"moduleid":4,"likeList":[],"commentList":[],"status":1,"topicid":74,"createtime":1481772467,"updatetime":1481772467},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"knoll","imgList":[{"image":"sxk_userPic_201612151127290"},{"image":"sxk_userPic_201612151127331"}],"moduleid":4,"likeList":[],"commentList":[],"status":1,"topicid":73,"createtime":1481772456,"updatetime":1481772456},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"knoll","imgList":[{"image":"sxk_userPic_201612151127170"},{"image":"sxk_userPic_201612151127211"}],"moduleid":4,"likeList":[],"commentList":[],"status":1,"topicid":72,"createtime":1481772444,"updatetime":1481772444},{"userid":10,"nickname":"okile1","headimgurl":null,"content":"来咯哦哦找我","imgList":[{"image":"sxk_userPic_201612151124240"},{"image":"sxk_userPic_201612151124301"}],"moduleid":3,"likeList":[],"commentList":[],"status":1,"topicid":71,"createtime":1481772274,"updatetime":1481772274}]
-     */
+public class TopicListModel {
 
     private int code;
     private int total;
@@ -45,18 +39,18 @@ public class TopicListModel implements Serializable{
 
     public static class TopicListBean {
         /**
-         * userid : 4
-         * nickname : 杨伟康
-         * headimgurl : null
-         * content : 我们的
-         * imgList : [{"image":"FvpCpGbSKJrNGjXg43gjmrOI8_Ia"}]
+         * userid : 12
+         * nickname :
+         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170110103802
+         * content : 啵呗
+         * imgList : ["Fuz3YyfbB8IkNj5hTOxNdHM-EFb1","Fm2n3Iq_KTUWFejsudNGJ3BjUgLO","FqiDXvS3lXThkLcawPTp5fCPrmMW","Fny0RkfHsnApVmsqd2WMwIN6Vifj","ForBT3ekTM6NsMalBwwu313UR0f0","FrLnjF7CqBkdOUSxWDOTgr0IGEpL"]
          * moduleid : 4
-         * likeList : [{"userid":4,"nickname":"杨伟康"}]
-         * commentList : [{"userid":4,"nickname":"杨伟康","comment":"我的地方反反复复风格"},{"userid":4,"nickname":"杨伟康","comment":"i 看见大家简单简单简单简单就吵架"},{"userid":4,"nickname":"杨伟康","comment":"想到当年妇女大家简单简单减肥减肥交界处"}]
+         * likeList : [{"userid":23,"nickname":"It's me"}]
+         * commentList : [{"userid":23,"nickname":"It's me","comment":"深刻"}]
          * status : 1
-         * topicid : 79
-         * createtime : 1481774109
-         * updatetime : 1481780753
+         * topicid : 168
+         * createtime : 1484711100
+         * updatetime : 1484711283
          */
 
         private int userid;
@@ -68,7 +62,7 @@ public class TopicListModel implements Serializable{
         private int topicid;
         private int createtime;
         private int updatetime;
-        private List<ImgListBean> imgList;
+        private List<Object> imgList;
         private List<LikeListBean> likeList;
         private List<CommentListBean> commentList;
 
@@ -144,11 +138,11 @@ public class TopicListModel implements Serializable{
             this.updatetime = updatetime;
         }
 
-        public List<ImgListBean> getImgList() {
+        public List<Object> getImgList() {
             return imgList;
         }
 
-        public void setImgList(List<ImgListBean> imgList) {
+        public void setImgList(List<Object> imgList) {
             this.imgList = imgList;
         }
 
@@ -168,25 +162,10 @@ public class TopicListModel implements Serializable{
             this.commentList = commentList;
         }
 
-        public static class ImgListBean{
-            /**
-             * image : FvpCpGbSKJrNGjXg43gjmrOI8_Ia
-             */
-            private String image;
-
-            public String getImage() {
-                return image;
-            }
-
-            public void setImage(String image) {
-                this.image = image;
-            }
-        }
-
         public static class LikeListBean {
             /**
-             * userid : 4
-             * nickname : 杨伟康
+             * userid : 23
+             * nickname : It's me
              */
 
             private int userid;
@@ -211,9 +190,9 @@ public class TopicListModel implements Serializable{
 
         public static class CommentListBean {
             /**
-             * userid : 4
-             * nickname : 杨伟康
-             * comment : 我的地方反反复复风格
+             * userid : 23
+             * nickname : It's me
+             * comment : 深刻
              */
 
             private int userid;

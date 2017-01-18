@@ -268,15 +268,12 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         }
         mloading.show();
         LogUtil.e("图片列表" + list);
+        // 图片数组
         JSONArray jsonArray1 = new JSONArray();
-
         for (int i = 0; i < list.size(); i++) {
-
             String li = list.get(i);
-            JSONObject jsonObjects = new JSONObject();
             try {
-                jsonObjects.put("image", li);
-                jsonArray1.put(i, jsonObjects);
+                jsonArray1.put(i, li);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
