@@ -62,6 +62,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private int FUJIANPOSITION=-1;
     private int CatePOSITION=-1;
     private String FUJIAN="";
+    private int CATEID=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             initAppraisaCateData();
         } else {
             position = getIntent().getIntExtra("POSITION", -1);
-            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", position);
+
             String title = getIntent().getStringExtra("TITLE");
             Log.e("传递的parentid", "" + position);
             configurationNaviTitle(title);
@@ -264,6 +265,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             public void OnItemClick(View view, int position, String tits) {
                 LogUtil.e("点击了" + tits);
                 tit = tits;
+                CATEID = position;
             }
         });
         recyclerView.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +333,8 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private void sendValue() {
         if (tit != null) {
             SharedPreferencesUtils.setParam(this, "RESULT", tit);
+            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", CATEID);
+            Log.e("传递的parentidS", "" + CATEID);
             finish();
         } else {
             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "您还没有选择哦!", Color.WHITE, Color.parseColor("#16a6ae"));

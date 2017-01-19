@@ -16,8 +16,31 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+//        release{
+//            minifyEnabled false
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//        debug{
+//            minifyEnabled false
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
     }
+
+//    signingConfigs {
+//        debug {
+//            storeFile file('SXK.jks')
+//            storePassword "android"
+//            keyAlias "SXK"
+//            keyPassword "android"
+//        }
+//    }
+
 }
+
+
+
 
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -27,20 +50,33 @@ dependencies {
     compile files('libs/volley.jar')
     compile files('libs/gson-2.8.0.jar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-//    compile project(':multiple-images-selector')
+    //    compile project(':multiple-images-selector')
     compile project(':indexlib')
     //    compile 'com.android.support:appcompat-v7:24.0.0'
     compile project(':NineLayout')
     compile project(':haorefresh')
     //    compile 'com.bartoszlipinski.recyclerviewheader:library:1.2.0'
+
     //    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile files('libs/qiniuyun-api-zhb.jar')
-
     // 支付
+
     //必须添加
+
     //使用支付宝时添加
+
     //使用银联支付时添加
+
     //使用微信支付时添加
+    compile files('libs/mta-sdk-1.6.2.jar')
+    compile files('libs/open_sdk_r5778_lite.jar')
+    compile files('libs/SocialSDK_QQ_Full.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.zhy:okhttputils:2.6.2'

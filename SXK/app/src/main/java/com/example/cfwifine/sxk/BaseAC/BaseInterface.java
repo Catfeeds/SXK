@@ -12,6 +12,21 @@ public class BaseInterface {
     public static String UserRegister= root + "/app/applogin/registerpost";
     // 登录
     public static String UserLogin = root + "/app/applogin/loginpost";
+    // 微信，qq，新浪登录
+    public static String LoginUserThird = root + "/app/applogin/authloginpost";
+    // 租用流程
+    public static String RentWater = root + "/app/processsetup/getpost";
+    // 出租收益
+    public static String RentInput = root+"/app/profitsetup/getpost";
+    // 平台保障
+    public static String PingtaiKeep = root+"/app/guaranteesetup/getpost";
+    // 破损处理
+    public static String BrokenDeal = root+"/app/damagesetup/getpost";
+    // 平台服务费
+    public static String PingTaiFuWuFei = root+"/app/chargesetup/getpost";
+    // 长租
+    public static String LongRent = root+"/app/longtermsetup/getpost";
+
     // 获取用户信息
     public static String GetUserInfo = root + "/app/user/getpost";
     // 修改用户信息

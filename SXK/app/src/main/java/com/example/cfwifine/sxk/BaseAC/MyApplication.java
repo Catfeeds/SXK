@@ -2,6 +2,9 @@ package com.example.cfwifine.sxk.BaseAC;
 
 import android.app.Application;
 
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
@@ -42,6 +45,14 @@ public class MyApplication extends Application {
                 .build();
         OkHttpUtils.initClient(okHttpClient);
         // the following line is important
+        // 友盟登录相关
+        UMShareAPI.get(this);
+//        Config.DEBUG = true;
+        PlatformConfig.setWeixin("wx4bfb2d22ce82d40d", "6c5dcb4c683017363d5c580309ed1eff");
+        PlatformConfig.setSinaWeibo("1084074774", "26533dc2809fc7f5d6a0f1c2e0f68920");
+        PlatformConfig.setQQZone("1105855252", "zOjjoUfd6sC1MTlh");
+        Config.REDIRECT_URL = "https://sns.whalecloud.com/sina2/callback";
+
 
     }
 }

@@ -87,7 +87,7 @@ public class CheckRecycleViewAdapter extends RecyclerView.Adapter<CheckRecycleVi
                     }
                     datas.get(position).setState(true);
                     notifyDataSetChanged();
-                    mOnItemClickListener.OnItemClick(view,-1,datasource.get(position).getName());
+                    mOnItemClickListener.OnItemClick(view,datasource.get(position).getCategoryid(),datasource.get(position).getName());
                 }
             });
         }

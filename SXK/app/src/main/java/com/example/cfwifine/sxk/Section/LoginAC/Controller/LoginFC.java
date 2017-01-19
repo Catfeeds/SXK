@@ -1,10 +1,13 @@
 package com.example.cfwifine.sxk.Section.LoginAC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,21 +25,42 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.ShareHelper.UmShareLoginUtils;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.handler.UMWXHandler;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
 
 
 public class LoginFC extends Fragment implements View.OnClickListener, PopupWindow.OnDismissListener {
@@ -66,6 +90,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private MainAC mainAC;
     private TextView username;
     private String userinfo;
+    private UMShareAPI umShareAPI;
+    Dialog dialog;
 
 
     @Override
@@ -83,6 +109,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         view = inflater.inflate(R.layout.fragment_login_fc, container, false);
         mainAC = (MainAC) getActivity();
         mainAC.initUserData();
+        dialog = LoadingUtils.createLoadingDialog(getActivity(),"登录中...");
         initView();
         initLoginBtn();
         initLoginOk();
@@ -191,6 +218,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         // 根据position跳转
         if (position == 7) {
             initMeiQiaView();
+        }else if (position == 4){
+            startActivity(MineServerCenterAC.class,position);
         } else {
             startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
@@ -224,17 +253,13 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 loginPupWindow.setOnDismissListener(this);
                 break;
             case R.id.headportrait:
-                Toast.makeText(getContext(), "设置头像", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mine_perssonal_data:
-                Toast.makeText(getContext(), "个人资料", Toast.LENGTH_SHORT).show();
                 startActivity(UserInfoAC.class, 111);
                 break;
             case R.id.mine_follow:
-                Toast.makeText(getContext(), "我的关注", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mine_id_auth:
-                Toast.makeText(getContext(), "身份认证", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mine_publishs:
                 // 我的发布
@@ -274,7 +299,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                     startActivity(LoginUseBoobeAC.class, 111);
                     break;
                 case R.id.login_usewexin:
-
+                    loginUseWX();
                     break;
                 case R.id.login_usesina:
 
@@ -289,7 +314,107 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         }
 
     };
+    // 微信第三方登录
+    private void loginUseWX() {
+        umShareAPI = UMShareAPI.get(getActivity());
+        umShareAPI.getPlatformInfo(getActivity(),SHARE_MEDIA.WEIXIN,authListeners);
+//        UmShareLoginUtils umShareLoginUtils = new UmShareLoginUtils();
+//        umShareLoginUtils.login(getActivity(),SHARE_MEDIA.WEIXIN);
+    }
 
+    private String nickName;
+    private String iconUrl;
+    private String openid;
+    UMAuthListener authListeners = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            String temp = "";
+            for (String key : data.keySet()) {
+                temp = temp + key + " : " + data.get(key) + "\n";
+
+            }
+            nickName = data.get("name");
+            iconUrl = data.get("iconurl");
+            openid = data.get("openid");
+            LogUtil.e("打印个人信息"+data.toString());
+            loginWithWX(nickName,iconUrl,openid);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            initSnackBar("登录失败！");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            initSnackBar("登录取消！");
+        }
+    };
+    // 微信登录
+    private void loginWithWX(String nickName, String iconUrl, String openid) {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("openid",openid);
+            js.put("nickname",nickName);
+            js.put("headimgurl",iconUrl);
+            js.put("pf",3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.LoginUserThird)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("微信登录", "" + response);
+                        Gson gson = new Gson();
+                        UserLoginModel requestStatueModel = gson.fromJson(response, UserLoginModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            loginView.setVisibility(View.GONE);
+                            loginSucView.setVisibility(View.VISIBLE);
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, requestStatueModel.getPHPSESSID());
+                            initSnackBar("登录成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(getActivity()).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(getActivity()).release();
+    }
+
+
+
+    public void initSnackBar(String content) {
+        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), content, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
     private void startActivity(Class<?> cls, Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);
         intent.putExtra("JUMPPOSITION", jumpvalue);
