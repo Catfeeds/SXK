@@ -24,7 +24,6 @@ import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -60,8 +59,13 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     private String FUJIAN;
     private int ATTRIBUTENAMEPOSITION = -1;
     private String FUJIANNAME = "";
-    private JSONArray jsonArray;
+    private JSONArray jsonArray = null;
     private HashMap<Integer, Map<String,String>> map;
+    Map<Integer, String> mapMap = new HashMap<>();
+    private JSONObject js;
+    private JSONObject jss=null;
+    private JSONArray finalJsonArr=null;
+    private String xxx=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,8 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                                             listData.add(j, testModel);
                                         }
                                         dataSource.remove(i);
+
+
                                     }
                                 }
                                 initListRecycleView();
@@ -188,7 +194,27 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                         StringList.add(check.get(i).getText());
                     }
                 }
-                Log.e("选中的有", "" + StringList);
+                JSONObject x = new JSONObject();
+                try {
+                    x.put("attributeName","相关配件");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                JSONObject y = new JSONObject();
+                try {
+                    y.put("attributeValueList",StringList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                xxx = "{"+x+","+y+"}";
+
+//                jss = new JSONObject();
+//                try {
+//                    jss.put("相关配件",StringList);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                Log.e("选中的有", "" + xxx);
             }
         });
 
@@ -226,36 +252,61 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NewApi")
     @Override
     protected void onResume() {
-        jsonArray = new JSONArray();
+
         FUJIANNAME = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
         FUJIANPOSITION = (int) SharedPreferencesUtils.getParam(this, "FUJIANPOSITION", -1);
         if (attachmentTopAdapter != null) {
             LogUtil.e("包袋材质" + FUJIANPOSITION);
 //            attachmentTopAdapter.notifyDataSetChanged();
             if (FUJIANPOSITION != -1) {
-//                dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().set(FUJIANPOSITION,dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
-                attachmentTopAdapter.setData(ATTRIBUTENAMEPOSITION, FUJIANPOSITION);
+                dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().set(FUJIANPOSITION,dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
 //                attachmentTopAdapter.notifyDataSetChanged();
+                attachmentTopAdapter.setData(ATTRIBUTENAMEPOSITION, FUJIANPOSITION);
+                for (int i = 0; i<dataSource.size();i++){
+                    if (ATTRIBUTENAMEPOSITION == i){
+                        JSONArray arr = new JSONArray();
+                        arr.put(dataSource.get(i).getAttributeValueList().get(FUJIANPOSITION));
+                        JSONObject arrs = new JSONObject();
+                        try {
+                            arrs.put("attributeValueList",arr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONObject ke = new JSONObject();
+                        try {
+                            ke.put("attributeName",dataSource.get(i).getAttributeName());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+//                        JSONObject DIC = new JSONObject();
+                        String xib = "{"+ke+","+arrs+"}";
 
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(), dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+//                        Map<JSONObject, JSONObject> maps = new HashMap<>();
+//                        maps.put(ke,arrs);
+                        mapMap.put(i,xib.replace("\\",""));
+                    }
                 }
-                for (int i = 0; i<jsonArray.length();i++){
+                LogUtil.e("集合",mapMap.toString());
+                jsonArray = new JSONArray();
+                for (Map.Entry entry : mapMap.entrySet()) {
+//                    jsonArray = new JSONArray();
+                    Object key = entry.getKey( );
+                    Object value = entry.getValue();
+                    LogUtil.e("key值"+key);
+                    LogUtil.e("key值"+value);
+                    jsonArray.put(value);
+//                    LogUtil.e("json数组"+js.toString());
+//                    try {
+//                        js = new JSONObject(String.valueOf(value));
+//                        LogUtil.e("json数组"+js.toString());
+//
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
 
                 }
-                jsonArray.remove(ATTRIBUTENAMEPOSITION);
-                jsonArray.put(jsonObject);
-
-                LogUtil.e("返回的json" + jsonArray.toString());
-
-//                map = new HashMap<>();
-//                map.put(dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName(),dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeValueList().get(FUJIANPOSITION));
-//                LogUtil.e("map的值" + map);
-
-
+                LogUtil.e("jda数组"+jsonArray.toString());
 
             }
         }
@@ -272,26 +323,24 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.navi_right:
 
-                if (FUJIANPOSITION == -1 && StringList.size() == 0) {
+                if (jsonArray == null && xxx.replace("\\","") == null) {
                     SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
                     return;
                 } else {
-
-                    JSONArray arr = new JSONArray();
-                    JSONArray jsonArray = new JSONArray();
-                    jsonArray.put(nameList.get(FUJIANPOSITION));
-                    JSONObject js = new JSONObject();
-                    try {
-                        js.put("attributeName", dataSource.get(ATTRIBUTENAMEPOSITION).getAttributeName());
-                        js.put("attributeValueList", jsonArray);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    LogUtil.e("选择的附件" + js);
-
+                   if (jsonArray == null&&xxx.replace("\\","")!=null){
+                       jsonArray = new JSONArray();
+                       jsonArray.put(xxx.replace("\\",""));
+//                       finalJsonArr = jsonArray;
+                   }else if (jsonArray != null&&xxx.replace("\\","") != null){
+//                       finalJsonArr = jsonArray;
+                       jsonArray.put(xxx.replace("\\",""));
+                   }
                 }
+                LogUtil.e("最终的数组"+jsonArray);
+                JSONArray A = new JSONArray();
 
+                SharedPreferencesUtils.setParam(this,"FINALLYARR",jsonArray);
+                finish();
 
                 break;
 

@@ -27,7 +27,7 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSource;
     int pos =-1;
     private AttachmentTopAdapter.OnItemClickListener mOnItemClickListener;
-    private int positions;
+    private int positions=-1;
 
     public interface  OnItemClickListener{
         void OnItemClick(View view, List<String> name, String attributeName,int pos);
@@ -52,10 +52,10 @@ public class AttachmentTopAdapter extends RecyclerView.Adapter<AttachmentTopAdap
     @Override
     public void onBindViewHolder(final AttachmentTopAdapter.ViewHolder holder, final int position) {
         holder.tvCity.setText(dataSource.get(position).getAttributeName());
-        if (pos != -1){
-            holder.material.setText(dataSource.get(positions).getAttributeValueList().get(pos));
+        if (position == positions){
+            holder.material.setText(dataSource.get(position).getAttributeValueList().get(pos));
         }else {
-            holder.material.setText("");
+//            holder.material.setText(dataSource.get(position).getAttributeValueList().get(pos));
         }
 
         if (mOnItemClickListener != null){

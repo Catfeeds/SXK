@@ -122,6 +122,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private String StringList="";
     private static final int TAKE_PHOTO = 733;
     private JSONArray jsonArray;
+    private Object FUJIANLIST= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,8 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         SharedPreferencesUtils.setParam(this, "BAOBEIFUJIAN", "");
         SharedPreferencesUtils.setParam(this, "SECONDDATA", "");
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
-        SharedPreferencesUtils.getParam(this, "STRINGLIST", "");
+        SharedPreferencesUtils.setParam(this, "STRINGLIST", "");
+        SharedPreferencesUtils.setParam(this,"FINALLYARR","");
         configurationNaviTitle();
         initView();
 
@@ -540,6 +542,9 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         BAOBEIFUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "BAOBEIFUJIAN", ""));
         LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
         StringList = String.valueOf(SharedPreferencesUtils.getParam(this, "STRINGLIST", ""));
+
+        FUJIANLIST = (SharedPreferencesUtils.getParam(this,"FINALLYARR",""));
+        LogUtil.e("附件参数1"+FUJIANLIST);
     }
 
     private void check() {
@@ -673,24 +678,24 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private void initReleaseData(ArrayList<String> urlList) {
 
 
-        jsonArray = new JSONArray();
-        if (StringList.isEmpty() && BAOBEIFUJIAN.isEmpty()) {
-            jsonArray.put("");
-        } else {
-            JSONObject attributeArr = new JSONObject();
-            try {
-                attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size() - 1).getAttributeName().toString());
-                if (BAOBEIFUJIAN != "") {
-                    attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
-                } else {
-                    attributeArr.put("attributeValueList", new JSONArray(StringList));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            jsonArray.put(attributeArr);
-        }
+//        jsonArray = new JSONArray();
+//        if (StringList.isEmpty() && BAOBEIFUJIAN.isEmpty()) {
+//            jsonArray.put("");
+//        } else {
+//            JSONObject attributeArr = new JSONObject();
+//            try {
+//                attributeArr.put("attributeName", dataSourcess.get(dataSourcess.size() - 1).getAttributeName().toString());
+//                if (BAOBEIFUJIAN != "") {
+//                    attributeArr.put("attributeValueList", new JSONArray(BAOBEIFUJIAN));
+//                } else {
+//                    attributeArr.put("attributeValueList", new JSONArray(StringList));
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            jsonArray.put(attributeArr);
+//        }
 
 
         // 图片数组
@@ -721,17 +726,20 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 case "99成新（未使用）":
                     cheng = 1;
                     break;
-                case "95新":
+                case "98成新":
                     cheng = 2;
                     break;
-                case "9成新":
+                case "95成新":
                     cheng = 3;
                     break;
-                case "85成新":
+                case "9成新":
                     cheng = 4;
                     break;
-                case "8成新":
+                case "85成新":
                     cheng = 5;
+                    break;
+                case "8成新":
+                    cheng = 6;
                     break;
                 default:
                     break;
@@ -751,7 +759,15 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                     break;
             }
             jsonObject.put("crowd", p);
-            jsonObject.put("attachList", jsonArray);
+            if (FUJIANLIST == ""){
+                JSONArray arr = new JSONArray();
+                jsonObject.put("attachList",arr);
+            }else {
+                JSONArray arr = new JSONArray();
+                LogUtil.e("附件3"+FUJIANLIST);
+                arr.equals(FUJIANLIST);
+                jsonObject.put("attachList",FUJIANLIST);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
