@@ -84,6 +84,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private int ordeID;
     private int isChecked;
     private String message;
+    private String PAYTYPE="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,8 +190,8 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         Glide.with(this).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_img);
         product_name.setText(productDetailModel.getRent().getName().toString());
         product_keyword.setText(productDetailModel.getRent().getKeyword().toString());
-        product_money.setText("市场价： ¥ " + String.valueOf(productDetailModel.getRent().getMarketPrice()));
-        product_lowest_price.setText("¥ " + String.valueOf(productDetailModel.getRent().getRentPrice()) + "/天");
+        product_money.setText("市场价： ¥ " + String.valueOf((double) (Math.round(productDetailModel.getRent().getMarketPrice()) / 100.0)));
+        product_lowest_price.setText("¥ " + String.valueOf((double) (Math.round(productDetailModel.getRent().getRentPrice()) / 100.0)) + "/天");
     }
 
     @Override
@@ -218,24 +219,26 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         shitView.dismiss();
+                        PAYTYPE = "alipay";
                         useAliPays();
                     }
                 }).addMenu("微信支付", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         shitView.dismiss();
-
+                        PAYTYPE = "wx";
+                        useAliPays();
                     }
                 }).create();
         shitView.show();
     }
 
-    private void useAliPay() {
+    private void useAliPay(String type) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("orderid", ordeID);
             jsonObject.put("type", 1);
-            jsonObject.put("channel", "alipay");
+            jsonObject.put("channel", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -410,7 +413,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
                         CreateOrderModel createOrderModel = gson.fromJson(response,CreateOrderModel.class);
                         if (createOrderModel.getCode() == 1) {
                             ordeID = createOrderModel.getOrderid();
-                            useAliPay();
+                            useAliPay(PAYTYPE);
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(PayOrderAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (createOrderModel.getCode() == 0) {

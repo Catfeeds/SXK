@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,17 +27,15 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.MineFollowAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
-import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
-import com.example.cfwifine.sxk.ShareHelper.UmShareLoginUtils;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -49,7 +46,6 @@ import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.handler.UMWXHandler;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -109,7 +105,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         view = inflater.inflate(R.layout.fragment_login_fc, container, false);
         mainAC = (MainAC) getActivity();
         mainAC.initUserData();
-        dialog = LoadingUtils.createLoadingDialog(getActivity(),"登录中...");
+        dialog = LoadingUtils.createLoadingDialog(getActivity(), "登录中...");
         initView();
         initLoginBtn();
         initLoginOk();
@@ -205,7 +201,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     //登录成功后初始化个人信息
     private void setValueForUserInfoView() {
         userinfo = mainAC.getUserInfo();
-        if (userinfo!=null){
+        if (userinfo != null) {
             Gson gson = new Gson();
             UserInfoModel userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
             String picUrl = userInfoModel.getUser().getHeadimgurl();
@@ -218,8 +214,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         // 根据position跳转
         if (position == 7) {
             initMeiQiaView();
-        }else if (position == 4){
-            startActivity(MineServerCenterAC.class,position);
+        } else if (position == 4) {
+            startActivity(MineServerCenterAC.class, position);
+        } else if (position == 6) {
+            startActivity(MineCollectionAC.class,position);
         } else {
             startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
@@ -258,6 +256,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 startActivity(UserInfoAC.class, 111);
                 break;
             case R.id.mine_follow:
+                Intent intent = new Intent(getActivity(), MineFollowAC.class);
+                startActivity(intent);
                 break;
             case R.id.mine_id_auth:
                 break;
@@ -275,7 +275,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_recognize:
                 // 我的鉴定
-                startActivity(MineItemAppraisaAC.class,1);
+                startActivity(MineItemAppraisaAC.class, 1);
                 break;
             default:
                 break;
@@ -314,10 +314,11 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         }
 
     };
+
     // 微信第三方登录
     private void loginUseWX() {
         umShareAPI = UMShareAPI.get(getActivity());
-        umShareAPI.getPlatformInfo(getActivity(),SHARE_MEDIA.WEIXIN,authListeners);
+        umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListeners);
 //        UmShareLoginUtils umShareLoginUtils = new UmShareLoginUtils();
 //        umShareLoginUtils.login(getActivity(),SHARE_MEDIA.WEIXIN);
     }
@@ -336,8 +337,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             nickName = data.get("name");
             iconUrl = data.get("iconurl");
             openid = data.get("openid");
-            LogUtil.e("打印个人信息"+data.toString());
-            loginWithWX(nickName,iconUrl,openid);
+            LogUtil.e("打印个人信息" + data.toString());
+            loginWithWX(nickName, iconUrl, openid);
         }
 
         @Override
@@ -350,21 +351,21 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             initSnackBar("登录取消！");
         }
     };
+
     // 微信登录
     private void loginWithWX(String nickName, String iconUrl, String openid) {
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("openid",openid);
-            js.put("nickname",nickName);
-            js.put("headimgurl",iconUrl);
-            js.put("pf",3);
+            js.put("openid", openid);
+            js.put("nickname", nickName);
+            js.put("headimgurl", iconUrl);
+            js.put("pf", 3);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
         OkHttpUtils.postString().url(BaseInterface.LoginUserThird)
-                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
                 .content(js.toString())
@@ -386,7 +387,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                             loginView.setVisibility(View.GONE);
                             loginSucView.setVisibility(View.VISIBLE);
                             SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, requestStatueModel.getPHPSESSID());
+                            mainAC.initUserData();
+//                            userinfo = mainAC.getUserInfo();
                             initSnackBar("登录成功！");
+
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
@@ -411,10 +415,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     }
 
 
-
     public void initSnackBar(String content) {
         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), content, Color.WHITE, Color.parseColor("#16a6ae"));
     }
+
     private void startActivity(Class<?> cls, Integer jumpvalue) {
         Intent intent = new Intent(getActivity(), cls);
         intent.putExtra("JUMPPOSITION", jumpvalue);

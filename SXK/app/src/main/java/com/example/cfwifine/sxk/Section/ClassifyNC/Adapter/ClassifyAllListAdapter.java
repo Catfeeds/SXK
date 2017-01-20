@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RentListModel;
@@ -54,15 +55,9 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
 
         holder.mTitle.setText(rentList.get(position).getName()+"");
         holder.mComment.setText(rentList.get(position).getKeyword()+"");
-        holder.mMoney.setText(rentList.get(position).getCounterPrice()+"");
-
+        holder.mMoney.setText(String.valueOf((double) (Math.round(rentList.get(position).getCounterPrice()) / 100.0))+"");
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentList.get(position).getImgList().get(position).toString();
-        Glide.with(mContext)
-                .load(picUrl)
-                .centerCrop()
-                .placeholder(R.drawable.home_placeholder)
-                .crossFade()
-                .into(holder.mImg);
+        Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.mImg);
 //        holder.mImg.setImageResource(R.drawable.home_placeholder);
 
 

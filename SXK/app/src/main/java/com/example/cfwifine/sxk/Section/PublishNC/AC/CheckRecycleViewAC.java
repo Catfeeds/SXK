@@ -98,7 +98,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
             initAppraisaCateData();
         } else {
             position = getIntent().getIntExtra("POSITION", -1);
-
+            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", position);
             String title = getIntent().getStringExtra("TITLE");
             Log.e("传递的parentid", "" + position);
             configurationNaviTitle(title);
@@ -333,7 +333,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private void sendValue() {
         if (tit != null) {
             SharedPreferencesUtils.setParam(this, "RESULT", tit);
-            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this, "CATEGORYID", CATEID);
+
             Log.e("传递的parentidS", "" + CATEID);
             finish();
         } else {

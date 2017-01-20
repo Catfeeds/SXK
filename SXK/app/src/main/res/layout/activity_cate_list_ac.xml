@@ -28,6 +28,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="包袋"
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/navi_title_color"
             android:textSize="16sp"/>
@@ -264,10 +265,10 @@
 
     <!--列表-->
     <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/catelistRecyclerview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:overScrollMode="never">-->
+    <!--android:id="@+id/catelistRecyclerview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:overScrollMode="never">-->
 
     <!--</android.support.v7.widget.RecyclerView>-->
 

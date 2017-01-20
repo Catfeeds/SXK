@@ -15,14 +15,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.FollowSuccessModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
+import com.sina.weibo.sdk.api.share.Base;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -66,21 +73,24 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private int RentID;
     Dialog dialog;
     private ProductDetailModel.RentBean rentDetail;
+    private CircleImageView headPic;
+    private String crowds="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details_ac);
-        RentID = getIntent().getIntExtra("RENTID",0);
-        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
+        RentID = getIntent().getIntExtra("RENTID", 0);
+        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         initView();
     }
+
     // 初始化商品详情
     private void initDetailData() {
         dialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("rentid",RentID);
+            jsonObject.put("rentid", RentID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,14 +107,15 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                         initSnackBar("请求出错!");
                         dialog.dismiss();
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("获取租赁", "" + response);
                         dialog.dismiss();
                         Gson gson = new Gson();
-                        ProductDetailModel productDetailModel = gson.fromJson(response,ProductDetailModel.class);
+                        ProductDetailModel productDetailModel = gson.fromJson(response, ProductDetailModel.class);
                         if (productDetailModel.getCode() == 1) {
-                            SharedPreferencesUtils.setParam(ProductDetailsAC.this,"RENTDETAILMODEL",response.toString());
+                            SharedPreferencesUtils.setParam(ProductDetailsAC.this, "RENTDETAILMODEL", response.toString());
                             rentDetail = productDetailModel.getRent();
                             setValueForView();
                         } else if (productDetailModel.getCode() == 0) {
@@ -115,6 +126,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
     private void initView() {
         product_details_share = (LinearLayout) findViewById(R.id.product_details_share);
         product_details_back = (LinearLayout) findViewById(R.id.product_details_back);
@@ -153,17 +165,68 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
         initDetailData();
 
+        headPic = (CircleImageView) findViewById(R.id.headPic);
+        headPic.setOnClickListener(this);
     }
+
     private void setValueForView() {
         initBannerData();
         product_name.setText(rentDetail.getName().toString());
-//        product_category.setText(rentDetail);
+        int condition = rentDetail.getCondition();
+        String conditions = "";
+        switch (condition) {
+            case 1:
+                conditions = "99成新（未使用）";
+                break;
+            case 2:
+                conditions = "98成新";
+                break;
+            case 3:
+                conditions = "95成新";
+                break;
+            case 4:
+                conditions = "9成新";
+                break;
+            case 5:
+                conditions = "85成新";
+                break;
+            case 6:
+                conditions = "8成新";
+                break;
+            default:
+                break;
+        }
+        int crowd = rentDetail.getCrowd();
+        switch (crowd) {
+            case 1:
+                crowds = "所有人";
+                break;
+            case 2:
+                crowds = "男士";
+                break;
+            case 3:
+                crowds = "女士";
+                break;
+        }
+        product_style.setText(conditions + "   " + rentDetail.getKeyword());
+        product_money_everyday.setText("¥" + String.valueOf((double) (Math.round(rentDetail.getRentPrice()) / 100.0)) + "/天");
+        product_money_everyday.setTextSize(14);
+        product_money.setText("市场价：¥" + String.valueOf((Math.round(rentDetail.getMarketPrice()) / 100.0)));
+        username.setText(rentDetail.getUser().getNickname());
+        String picUrl = rentDetail.getUser().getHeadimgurl();
+        Glide.with(this).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(headPic);
+        product_content.setText(rentDetail.getDescription());
+        product_category.setText(rentDetail.getCategory().getName());//类别
+        product_brand.setText(rentDetail.getBrand().getName());//品牌
+        product_color.setText(rentDetail.getColor());//颜色
+        product_condition.setText(conditions);//成色
+        product_intended_for_person.setText(crowds);//适用人群
+
+        product_enclosure.setText("暂时空");//附件
+        String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentDetail.getBrand().getStory();
+        Glide.with(this).load(brandStory).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_details_brand_pic);
 
     }
-
-
-
-
 
 
     // TODO ***************************************初始化轮播图**************************************
@@ -183,8 +246,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void initBannerData() {
-        for (int i=0;i<rentDetail.getImgList().size();i++){
-            urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl +rentDetail.getImgList().get(i)));
+        for (int i = 0; i < rentDetail.getImgList().size(); i++) {
+            urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentDetail.getImgList().get(i)));
         }
         banner.setDatas(urls, now_num);
     }
@@ -194,7 +257,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_comment_list_rv.setLayoutManager(new LinearLayoutManager(this));
 
     }
-    public void initSnackBar(String value){
+
+    public void initSnackBar(String value) {
         SnackbarUtils.showShortSnackbar(ProductDetailsAC.this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
@@ -210,14 +274,14 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "分享到第三方", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.lease_btn:
-                Intent intent = new Intent(ProductDetailsAC.this,PayOrderAC.class);
+                Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
                 startActivity(intent);
                 break;
             case R.id.bo_one:
                 Toast.makeText(this, "啵一个", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.follow:
-                Toast.makeText(this, "关注啵主", Toast.LENGTH_SHORT).show();
+                initFollow();
                 break;
             case R.id.chat:
                 Toast.makeText(this, "跟啵主聊天", Toast.LENGTH_SHORT).show();
@@ -225,16 +289,47 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
             case R.id.more_comment:
                 Toast.makeText(this, "更多评价", Toast.LENGTH_SHORT).show();
                 break;
+
         }
     }
 
-    // TODO ***************************************商品参数设置**************************************
-    private void setCommodityparameter() {
-        product_category.setText("");//类别
-        product_brand.setText("");//品牌
-        product_color.setText("");//颜色
-        product_condition.setText("");//成色
-        product_intended_for_person.setText("");//适用人群
-        product_enclosure.setText("");//附件
+    private void initFollow() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("userid",rentDetail.getUser().getUserid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.FollowAdd)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("关注", "" + response);
+                        Gson gson = new Gson();
+                        FollowSuccessModel requestStatueModel = gson.fromJson(response, FollowSuccessModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            initSnackBar("关注成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }else if (requestStatueModel.getCode() == 2003){
+                            initSnackBar(requestStatueModel.getMessage());
+                        }
+                    }
+                });
+
+
     }
+
 }

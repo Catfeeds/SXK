@@ -144,23 +144,27 @@ public class BaseInterface {
     public static String ChangeRentOrder = root + "/app/rentorder/setpost";
     // 租赁评论
     public static String RentComment = root + "/app/rentcomment/addpost";
-    // 生成订单
-    // 获取租赁
-
+    // 关注列表
+    public static String FollowList = root + "/app/follow/getpost";
+    // 添加关注
+    public static String FollowAdd = root + "/app/follow/addpost";
+    // 删除关注
+    public static String FollowDel = root + "/app/follow/delpost";
+    // 收藏列表
+    public static String CollectionList = root + "/app/collection/getpost";
+    // 添加收藏
+    public static String CollectionADD = root + "/app/collection/addpost";
+    // 删除收藏
+    public static String CollectionDel = root + "/app/collection/delpost";
 
 
     // 支付
     public static String PayOrder = root + "/app/payment/chargepost";
-
     // 生成订单
     public static String CreateOrder = root + "/app/rentorder/addpost";
 
-
     // 关于啵呗
     public static String AboutBOBEI = root + "/app/aboutsetup/getpost";
-
-
-
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";

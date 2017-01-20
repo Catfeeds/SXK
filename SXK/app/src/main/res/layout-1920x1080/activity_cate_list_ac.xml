@@ -28,6 +28,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="包袋"
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/navi_title_color"
             android:textSize="16sp"/>

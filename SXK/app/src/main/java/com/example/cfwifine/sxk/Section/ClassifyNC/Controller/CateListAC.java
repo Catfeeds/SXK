@@ -73,6 +73,8 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
     private SwipeRefreshLayout swiperefresh;
     private HaoRecyclerView hao_recycleview;
     private ClassifyAllListAdapter mClassiftAdapter;
+    private int pageNums = 10;
+    private int Total= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,8 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_cate_list_ac);
         initView();
 //        mCatelistRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        mloading = LoadingUtils.createLoadingDialog(CateListAC.this,"正在努力加载中...");
-        initCateRentlist();
+        mloading = LoadingUtils.createLoadingDialog(CateListAC.this,"加载中...");
+        initCateRentlist(1,10);
 
     }
 
@@ -127,7 +129,7 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
 
     // TODO********************************配置租赁列表数据********************************
     //获取包袋租赁列表
-    private void initCateRentlist() {
+    private void initCateRentlist(int pageNo, int pageSize) {
         mloading.show();
         JSONObject order = new JSONObject();
         try {
@@ -166,6 +168,7 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
                         RentListModel rentListData = gson.fromJson(response, RentListModel.class);
                         if (rentListData.getCode() == 1) {
                             rentList = rentListData.getRentList();
+                            Total = rentListData.getTotal();
                             initRecycleView();
                         } else if (rentListData.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(CateListAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -231,8 +234,7 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         //注意此处
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,10);
+                        initCateRentlist(1,10);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mClassiftAdapter.notifyDataSetChanged();
@@ -268,16 +270,14 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-//                        pageNum += 10;
-//                        L.e("pageNum" + pageNum);
-//                        if (pageNum >= Total) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        CuringAC curingAC = (CuringAC) getActivity();
-//                        curingAC.initData(-2,1,pageNum);
-//                        mAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
+                        pageNums += 10;
+                        if (pageNums >= Total) {
+                            hao_recycleview.loadMoreEnd();
+                            return;
+                        }
+                        initCateRentlist(1,pageNums);
+                        mClassiftAdapter.notifyDataSetChanged();
+                        hao_recycleview.loadMoreComplete();
 
                     }
                 }, 1000);

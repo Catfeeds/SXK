@@ -299,7 +299,13 @@
         <!-- <service -->
         <!-- android:name="com.sina.weibo.sdk.net.DownloadService" -->
         <!-- android:exported="false"></service> -->
-        <activity android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.MineFollow.MineFollowAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

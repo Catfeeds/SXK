@@ -222,9 +222,9 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
             return;
         }
         // 支付宝支付，生成订单
-        if (PAYTYPE == "alipay") {
-            initOrderData();
-        }
+        LogUtil.e("支付方式"+PAYTYPE);
+        initOrderData();
+
 
 
     }
@@ -265,7 +265,7 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
                         CreateOrderModel createOrderModel = gson.fromJson(response, CreateOrderModel.class);
                         if (createOrderModel.getCode() == 1) {
                             orderID = createOrderModel.getOrderid();
-                            useAliPay();
+                            useAliPay(PAYTYPE);
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else {
@@ -279,13 +279,14 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
 
     /**
      * 支付包支付
+     * @param PAYTYPEs
      */
-    private void useAliPay() {
+    private void useAliPay(String PAYTYPEs) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("orderid", orderID);
             jsonObject.put("type", 2);
-            jsonObject.put("channel", "alipay");
+            jsonObject.put("channel", PAYTYPEs);
         } catch (JSONException e) {
             e.printStackTrace();
         }

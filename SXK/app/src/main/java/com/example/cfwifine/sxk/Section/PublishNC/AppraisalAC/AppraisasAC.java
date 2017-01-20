@@ -66,7 +66,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
     private TextView pay;
     private LinearLayout activity_appraisal;
     Dialog dialog;
-    private AppraisalModel appraisalModel;
+    private AppraisalModel appraisalModel= null;
     private ArrayList<TestModel> nameList;
     private Integer[] picArrList;
     private ArrayList<Integer> picList;
@@ -121,7 +121,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         pay.setOnClickListener(this);
         activity_appraisal = (LinearLayout) findViewById(R.id.activity_appraisal);
         initRecycleView();
-        dialog = LoadingUtils.createLoadingDialog(this, "正在加载中...");
+        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         initRecycleData();
         appraisal_total_money = (TextView) findViewById(R.id.appraisal_total_money);
         appraisal_total_money.setOnClickListener(this);
@@ -301,17 +301,20 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.appraisal_cateory:
                 appCateList = new ArrayList<>();
-                if (appraisalModel.getGenreList().size() != 0) {
-                    for (int i = 0; i < appraisalModel.getGenreList().size(); i++) {
-                        appCateList.add(i, appraisalModel.getGenreList().get(i).getName());
+                if (appraisalModel != null){
+                    if (appraisalModel.getGenreList().size() != 0) {
+                        for (int i = 0; i < appraisalModel.getGenreList().size(); i++) {
+                            appCateList.add(i, appraisalModel.getGenreList().get(i).getName());
+                        }
+                        Intent intent = new Intent(AppraisasAC.this, CheckRecycleViewAC.class);
+                        intent.putExtra("CHENGSE", 6);
+                        intent.putStringArrayListExtra("APPRAISACATE", appCateList);
+                        startActivity(intent);
+                    } else {
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "暂时还没有分类!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
-                    Intent intent = new Intent(AppraisasAC.this, CheckRecycleViewAC.class);
-                    intent.putExtra("CHENGSE", 6);
-                    intent.putStringArrayListExtra("APPRAISACATE", appCateList);
-                    startActivity(intent);
-                } else {
-                    SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "暂时还没有分类!", Color.WHITE, Color.parseColor("#16a6ae"));
                 }
+
                 break;
             case R.id.appraisal_brand:
                 Intent intent = new Intent(this, PublishBrandAC.class);
@@ -348,9 +351,9 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
             initSnackBar("你还没有选择支付方式！");
             return;
         }
-        if (PAYTYPE == "alipay"){
+//        if (PAYTYPE == "alipay"){
             initOrder();
-        }
+//        }
 
 
 
@@ -381,13 +384,12 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                     }
                     @Override
                     public void onResponse(String response, int id) {
-                        dialog.dismiss();
                         L.e("支付返回信息" + response);
                         Gson gson = new Gson();
                         CreateOrderModel createOrderModel = gson.fromJson(response, CreateOrderModel.class);
                         if (createOrderModel.getCode() == 1) {
                             orderID = createOrderModel.getOrderid();
-                            useAliPay();
+                            useAliPay(PAYTYPE);
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else {
@@ -398,12 +400,12 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
 
 
     }
-    private void useAliPay() {
+    private void useAliPay(String PAYTYPE) {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("orderid", orderID);
             jsonObject.put("type", 3);
-            jsonObject.put("channel", "alipay");
+            jsonObject.put("channel", PAYTYPE);
         } catch (JSONException e) {
             e.printStackTrace();
         }

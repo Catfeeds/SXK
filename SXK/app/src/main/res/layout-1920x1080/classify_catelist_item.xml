@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:background="@drawable/ripple_bg"
         android:gravity="center_vertical">
 
@@ -16,9 +17,7 @@
             android:id="@+id/img"
             android:layout_width="151dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +29,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DIOR迪奥"
+                android:text=""
                 android:textColor="#2c2c2c"
                 android:textSize="14sp"/>
 
@@ -40,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
-                android:text="DIOR牌香水，就是那么香"
+                android:text=""
                 android:textColor="#a1a1a1"
                 android:textSize="11sp"/>
 
@@ -64,7 +63,7 @@
                     android:id="@+id/money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1500"
+                    android:text=""
                     android:textColor="@color/login_turquoise"/>
                 <TextView
                     android:layout_width="wrap_content"
