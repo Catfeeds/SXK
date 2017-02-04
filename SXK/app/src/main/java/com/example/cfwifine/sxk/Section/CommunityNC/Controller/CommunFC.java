@@ -62,7 +62,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private ArrayList<String> listData = new ArrayList<>();
     private int limit = 10;
     String picUrl = "";
-    List<CommunityTopicListModel.ModuleListBean> topic=null;
+    List<CommunityTopicListModel.ModuleListBean> topic = null;
     List<TopicListModel.TopicListBean> topicList;
     LinearLayout rightLay;
     Dialog mloading;
@@ -70,6 +70,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private String COMMENT;
     private String USERNAME;
     private ArrayList<String> dataSource;
+    private List<TopicListModel.TopicListBean> newTopicListModel = null;
+    private int MODLEID=-1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_commun_fc, container, false);
             configurationNaviTitle();
-            mloading = LoadingUtils.createLoadingDialog(getActivity(), "正在努力加载中...");
+            mloading = LoadingUtils.createLoadingDialog(getActivity(), "加载中...");
             initFriendMomentHeaderPicDataSource();
         }
         return view;
@@ -147,7 +149,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private void initFriendMomentGetTopicListDataSource() {
         JSONObject order = new JSONObject();
         try {
-            order.put("sort", 1);
+            order.put("sort", -1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -242,7 +244,16 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 //                        List<TopicListModel> topicListModels =
 
                         if (topicListModel.getCode() == 1) {
-                            topicList = topicListModel.getTopicList();
+                            newTopicListModel = topicListModel.getTopicList();
+                            if (MODLEID == -1){
+                                MODLEID = topic.get(0).getModuleid();
+                            }
+                            for (int i = 0 ; i<topicListModel.getTotal(); i++){
+                                if (topicListModel.getTopicList().get(i).getModuleid() == MODLEID){
+                                    topicList.add(topicListModel.getTopicList().get(i));
+                                }
+                            }
+//                            topicList = topicListModel.getTopicList();
 
                             initFriendMomentView();
                         } else if (topicListModel.getCode() == 0) {
@@ -400,7 +411,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         hao_recycleview.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ComRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View views, final int topicid, final int position, final int cateid, int picPosition) {
+            public void OnItemClick(View views, final int topicid, final int position, final int cateid, int picPosition,int modleid) {
                 if (cateid == -1) {
                     // 点赞
                     initLikeData(topicid, position, cateid);
@@ -424,6 +435,18 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     LogUtil.e("图片点击了" + topicid + "个" + picPosition);
 
                     initPreviewPic(picPosition, topicid, position);
+
+                }else if (cateid == -7){
+                    LogUtil.e("选中的modle"+modleid);
+                    MODLEID = modleid;
+                    topicList.clear();
+                    for (int i = 0; i < newTopicListModel.size();i++){
+                        if (newTopicListModel.get(i).getModuleid() == modleid){
+                            topicList.add(newTopicListModel.get(i));
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged();
+
 
                 }
 
@@ -525,7 +548,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navi_right_pic_click_lay:
-                if (topic !=null){
+                if (topic != null) {
                     topicName = new ArrayList<>();
                     topicModelID = new ArrayList<>();
                     for (int i = 0; i < topic.size(); i++) {
@@ -536,7 +559,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     intent.putExtra("TOPIC", topicName);
                     intent.putExtra("TOPICMODELID", topicModelID);
                     startActivity(intent);
-                }else {
+                } else {
                     SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "数据走丢了!", Color.WHITE, Color.parseColor("#16a6ae"));
                 }
                 break;
@@ -548,7 +571,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         initFriendMomentHeaderPicDataSource();
-        MainAC mainAC = (MainAC)getActivity();
+        MainAC mainAC = (MainAC) getActivity();
         mainAC.initUserData();
     }
 }

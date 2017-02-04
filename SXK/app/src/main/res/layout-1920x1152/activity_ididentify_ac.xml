@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ididentify_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <include layout="@layout/nav_title_no_line" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/renzheng" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="请如实填写您本人的身份信息以认证为实名用户。此信息将用于为您购买运输期间的保险，同时也用于保障您账户钱包的安全，我们将确保其安全性。"
+                    android:textColor="@color/gray_40"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/home_bg" />
+
+            <RelativeLayout
+                android:id="@+id/publish_name"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="姓名"
+                    android:textColor="@color/navi_title_color"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/id_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:inputType="text"
+                    android:gravity="end|center_vertical"
+                    android:hint="请输入"
+                    android:paddingRight="11dp"
+                    android:textColor="#a1a1a1"
+                    android:textColorHint="#a1a1a1"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/gray_40" />
+
+            <RelativeLayout
+                android:id="@+id/publish_color"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="身份证号码"
+                    android:textColor="@color/navi_title_color"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/id_idnumber_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:gravity="end|center_vertical"
+                    android:hint="请输入"
+                    android:maxLength="18"
+                    android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:paddingRight="11dp"
+                    android:textColor="#a1a1a1"
+                    android:textColorHint="#a1a1a1"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/gray_40" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="上传身份证正反面照片（支持jpg、png格式）"
+                android:textColor="@color/navi_title_color"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/idcard_pp"
+                    android:layout_width="152dp"
+                    android:layout_height="105dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/xiangji" />
+
+                <ImageView
+                    android:id="@+id/idcard_bb"
+                    android:layout_width="152dp"
+                    android:layout_height="105dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/xiangji" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/idcard_publish_btn"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/table_shape_login_button"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

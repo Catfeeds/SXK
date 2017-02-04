@@ -30,6 +30,7 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemA
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.MineFollowAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC;
@@ -260,6 +261,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 startActivity(intent);
                 break;
             case R.id.mine_id_auth:
+                startActivity(IDIdentifyAC.class,111);
                 break;
             case R.id.mine_publishs:
                 // 我的发布

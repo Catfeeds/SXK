@@ -25,6 +25,7 @@ import com.example.cfwifine.sxk.Utils.TimeUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.w4lle.library.NineGridlayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAdapter.ViewHolder> {
@@ -35,9 +36,11 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
     private Activity context;
 
     private ComRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+    private int MODLEID = -1;
+    private List<TopicListModel.TopicListBean> newTopicList= null;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int topicid, int position, int cateid, int picPosition);
+        void OnItemClick(View view, int topicid, int position, int cateid, int picPosition,int modleid);
     }
     public void setOnItemClickListener(ComRecycleViewAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -82,6 +85,14 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             viewHolder.topicListRV.setLayoutManager(layoutManager);
             viewHolder.topicListRV.setAdapter(topicListRecycleAdapter);
+            topicListRecycleAdapter.setOnItemClickListener(new TopicListRecycleAdapter.OnItemClickListener() {
+                @Override
+                public void OnItemClick(View view, int topicid) {
+                    LogUtil.e("打印的话题分类id"+topicid);
+//                    MODLEID = topicid;
+                    mOnItemClickListener.OnItemClick(view,-7,-7,-7,-7,topicid);
+                }
+            });
         } else {
             viewHolder.headerView.setVisibility(View.GONE);
         }
@@ -105,7 +116,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             @Override
             public void onItemClick(View view, int picPosition) {
                 Log.e("点击了", "" + picPosition);
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-3,picPosition);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-3,picPosition,-6);
 
             }
         });
@@ -150,7 +161,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         viewHolder.raiseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-1, -1);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-1, -1,-6);
 
 
             }
@@ -161,7 +172,7 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             public void onClick(View view) {
 //                InputMethodManager inputMethodManager = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                inputMethodManager.showSoftInput(view,InputMethodManager.SHOW_FORCED);
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-2, -1);
+                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-2, -1,-6);
             }
         });
 

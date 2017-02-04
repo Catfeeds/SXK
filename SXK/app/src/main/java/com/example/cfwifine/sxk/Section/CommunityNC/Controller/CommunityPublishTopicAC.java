@@ -101,6 +101,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     Dialog mloading;
     LikeIOSSheetDialog sheetView;
     private String headUrl;
+    private String content="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         topicModelList = getIntent().getIntegerArrayListExtra("TOPICMODELID");
         LogUtil.e("topicNameList" + topicNameList);
         LogUtil.e("topicModelList" + topicModelList);
-        mloading = LoadingUtils.createLoadingDialog(this, "正在努力发布中...");
+        mloading = LoadingUtils.createLoadingDialog(this, "发布中...");
         topicListModle = new ArrayList<>();
         for (int i = 0; i < topicNameList.size(); i++) {
             testModel = new TestModel(topicNameList.get(i).toString(), false);
@@ -184,7 +185,16 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
                 // 点击发表朋友圈
                 LogUtil.e("number的值" + number);
                 LogUtil.e("uploadData" + uploadDatasource);
-
+                content = friend_edittext.getText().toString().trim();
+                if (content.toString().trim().isEmpty()) {
+                    SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "内容不能为空哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    return;
+                }
+                if (modelid == -1) {
+                    SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "你还没有选择分类哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    return;
+                }
+                mloading.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -257,16 +267,6 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     }
 
     private void initReleaseFriendMoment(ArrayList<String> list) {
-        String edittext = friend_edittext.getText().toString().trim();
-        if (edittext.toString().trim().isEmpty()) {
-            SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "内容不能为空哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-            return;
-        }
-        if (modelid == -1) {
-            SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "你还没有选择分类哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-            return;
-        }
-        mloading.show();
         LogUtil.e("图片列表" + list);
         // 图片数组
         JSONArray jsonArray1 = new JSONArray();
@@ -282,7 +282,7 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("content", edittext);
+            jsonObject.put("content", content);
             jsonObject.put("imgList", jsonArray1);
             jsonObject.put("moduleid", modelid);
         } catch (JSONException e) {

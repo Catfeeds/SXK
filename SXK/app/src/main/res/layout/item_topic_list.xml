@@ -25,7 +25,8 @@
             <ImageView
                 android:id="@+id/topiclist_pic"
                 android:layout_width="78dp"
-                android:layout_height="78dp" />
+                android:layout_height="78dp"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/topiclist_text"

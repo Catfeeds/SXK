@@ -124,7 +124,6 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         initView();
         configurationNaviTitle();
         initRecycleData();
-
     }
 
     /**
@@ -203,7 +202,6 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("个人信息", "" + response);
                         LogUtil.e("个人信息" + response);
                         mloading.dismiss();
                         if (value == 1) {

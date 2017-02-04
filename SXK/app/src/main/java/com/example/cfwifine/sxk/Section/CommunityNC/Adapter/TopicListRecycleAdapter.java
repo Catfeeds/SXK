@@ -22,7 +22,14 @@ public class TopicListRecycleAdapter extends RecyclerView.Adapter<TopicListRecyc
         this.context = context;
         this.datas = datas;
     }
+    private TopicListRecycleAdapter.OnItemClickListener mOnItemClickListener;
 
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int topicid);
+    }
+    public void setOnItemClickListener(TopicListRecycleAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -33,8 +40,14 @@ public class TopicListRecycleAdapter extends RecyclerView.Adapter<TopicListRecyc
 
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Glide.with(context).load(BaseInterface.ClassfiyGetAllHotBrandImgUrl + datas.get(position).getImg()).placeholder(R.drawable.home_placeholder).into(viewHolder.topPic);
+        viewHolder.topPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemClickListener.OnItemClick(view,datas.get(position).getModuleid());
+            }
+        });
 //        viewHolder.detail.setText(datas.get(position).getName());
     }
 

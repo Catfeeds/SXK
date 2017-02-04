@@ -46,13 +46,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoTitle">
-        <activity android:name=".Section.WelcomeNC.WelcomeAC">
+        <activity android:name=".Section.WelcomeNC.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Section.WelcomeNC.WelcomeAC"/>
         <activity
             android:name=".BaseAC.BaseAC"
             android:theme="@style/AppTheme" />
@@ -305,7 +306,10 @@
         <activity
             android:name=".Section.MineNC.Controller.MineFollow.MineFollowAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
