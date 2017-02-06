@@ -23,9 +23,16 @@ import okhttp3.OkHttpClient;
  */
 
 public class MyApplication extends Application {
+    public static Application instance;
+
+    public static Application getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         CookieJarImpl cookieJar = new CookieJarImpl(new PersistentCookieStore(getApplicationContext()));
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -52,7 +59,6 @@ public class MyApplication extends Application {
         PlatformConfig.setSinaWeibo("1084074774", "26533dc2809fc7f5d6a0f1c2e0f68920");
         PlatformConfig.setQQZone("1105855252", "zOjjoUfd6sC1MTlh");
         Config.REDIRECT_URL = "https://sns.whalecloud.com/sina2/callback";
-
 
     }
 }

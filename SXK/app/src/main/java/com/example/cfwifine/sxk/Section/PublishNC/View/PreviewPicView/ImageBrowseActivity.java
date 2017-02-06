@@ -3,18 +3,23 @@ package com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.cfwifine.sxk.R.color.colorBlue;
 
 public class ImageBrowseActivity extends Activity implements ViewPager.OnPageChangeListener, View.OnClickListener, ImageBrowseView {
 
@@ -64,6 +69,7 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
         TAG = i;
         if (i == 999) {
             save.setText("保存");
+//            save.setTextColor(getResources().getColor(colorBlue));
             LogUtil.e("点击了预览" + i);
             if (images != null && images.size() != 0) {
                 images.remove("TAG");
@@ -73,6 +79,7 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
                 vp.setAdapter(CommuAdapter);
                 vp.setCurrentItem(position);
                 vp.addOnPageChangeListener(this);
+//                hint.setTextColor(getResources().getColor(colorBlue));
                 hint.setText(vp.getCurrentItem() + 1 + "/" + mList.size());
             }
         } else {
@@ -121,7 +128,9 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
                 if (TAG == 999) {
                     // 保存一张图
                     int cur = vp.getCurrentItem();
-                    presenter.saveImage(cur);
+                    Log.e("图片------",cur+"");
+                    presenter.saveImage(cur,this);
+                    SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), "图片已保存成功!", Color.WHITE, Color.parseColor("#16a6ae"));
 
                 } else {
                     // 删除一张图片
@@ -141,7 +150,6 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
                         finish();
                     }
                 }
-
                 break;
             default:
                 break;
@@ -156,6 +164,4 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
         intent.putExtra("position", position);
         context.startActivity(intent);
     }
-
-
 }

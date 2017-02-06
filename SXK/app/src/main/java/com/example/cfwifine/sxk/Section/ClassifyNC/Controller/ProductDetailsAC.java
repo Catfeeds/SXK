@@ -22,14 +22,11 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.FollowSuccessModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
-import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
-import com.sina.weibo.sdk.api.share.Base;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -74,7 +71,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     Dialog dialog;
     private ProductDetailModel.RentBean rentDetail;
     private CircleImageView headPic;
-    private String crowds="";
+    private String crowds = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +220,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_intended_for_person.setText(crowds);//适用人群
 
         product_enclosure.setText("暂时空");//附件
-        String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentDetail.getBrand().getStory();
+        String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentDetail.getBrand().getStory();
         Glide.with(this).load(brandStory).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_details_brand_pic);
 
     }
@@ -271,32 +268,76 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.product_details_share:
-                Toast.makeText(this, "分享到第三方", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "分享到第三方", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.lease_btn:
                 Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
                 startActivity(intent);
                 break;
             case R.id.bo_one:
-                Toast.makeText(this, "啵一个", Toast.LENGTH_SHORT).show();
+                initCollection();
+//                Toast.makeText(this, "啵一个", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.follow:
                 initFollow();
                 break;
             case R.id.chat:
-                Toast.makeText(this, "跟啵主聊天", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "跟啵主聊天", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.more_comment:
-                Toast.makeText(this, "更多评价", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "更多评价", Toast.LENGTH_SHORT).show();
                 break;
 
+
         }
+    }
+    // 收藏商品
+    private void initCollection() {
+        dialog.show();
+        JSONObject JS = new JSONObject();
+        try {
+            JS.put("rentid",rentDetail.getRentid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.CollectionADD)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(JS.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("收藏商品", "" + response);
+                        Gson gson = new Gson();
+                        FollowSuccessModel requestStatueModel = gson.fromJson(response, FollowSuccessModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            initSnackBar("收藏成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        } else if (requestStatueModel.getCode() == 2003) {
+                            initSnackBar(requestStatueModel.getMessage());
+                        }
+                    }
+                });
+
     }
 
     private void initFollow() {
         JSONObject js = new JSONObject();
         try {
-            js.put("userid",rentDetail.getUser().getUserid());
+            js.put("userid", rentDetail.getUser().getUserid());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -312,6 +353,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                     public void onError(Call call, Exception e, int id) {
                         initSnackBar("请求出错！");
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("关注", "" + response);
@@ -323,7 +365,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
                             initSnackBar("登录超时，请重新登录！");
-                        }else if (requestStatueModel.getCode() == 2003){
+                        } else if (requestStatueModel.getCode() == 2003) {
                             initSnackBar(requestStatueModel.getMessage());
                         }
                     }

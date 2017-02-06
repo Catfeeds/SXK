@@ -34,8 +34,9 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineIDIdentify.IDIdent
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoRecycleViewCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserInfoAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.UserInfoRecycleViewCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -218,7 +219,11 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         } else if (position == 4) {
             startActivity(MineServerCenterAC.class, position);
         } else if (position == 6) {
-            startActivity(MineCollectionAC.class,position);
+            startActivity(MineCollectionAC.class, position);
+        } else if (position == 2) {
+            Intent inte = new Intent(getActivity(),UserPrctocalAC.class);
+            inte.putExtra("SETJUMPPOSITION",555);
+            startActivity(inte);
         } else {
             startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
@@ -261,7 +266,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 startActivity(intent);
                 break;
             case R.id.mine_id_auth:
-                startActivity(IDIdentifyAC.class,111);
+                startActivity(IDIdentifyAC.class, 111);
                 break;
             case R.id.mine_publishs:
                 // 我的发布

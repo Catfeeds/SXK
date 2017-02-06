@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;

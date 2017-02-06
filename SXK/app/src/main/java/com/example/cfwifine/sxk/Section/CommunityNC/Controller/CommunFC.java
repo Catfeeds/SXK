@@ -71,7 +71,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private String USERNAME;
     private ArrayList<String> dataSource;
     private List<TopicListModel.TopicListBean> newTopicListModel = null;
-    private int MODLEID=-1;
+    private int MODLEID = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -245,11 +245,11 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
                         if (topicListModel.getCode() == 1) {
                             newTopicListModel = topicListModel.getTopicList();
-                            if (MODLEID == -1){
+                            if (MODLEID == -1) {
                                 MODLEID = topic.get(0).getModuleid();
                             }
-                            for (int i = 0 ; i<topicListModel.getTotal(); i++){
-                                if (topicListModel.getTopicList().get(i).getModuleid() == MODLEID){
+                            for (int i = 0; i < topicListModel.getTotal(); i++) {
+                                if (topicListModel.getTopicList().get(i).getModuleid() == MODLEID) {
                                     topicList.add(topicListModel.getTopicList().get(i));
                                 }
                             }
@@ -411,7 +411,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         hao_recycleview.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ComRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View views, final int topicid, final int position, final int cateid, int picPosition,int modleid) {
+            public void OnItemClick(View views, final int topicid, final int position, final int cateid, int picPosition, int modleid) {
                 if (cateid == -1) {
                     // 点赞
                     initLikeData(topicid, position, cateid);
@@ -436,18 +436,16 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
                     initPreviewPic(picPosition, topicid, position);
 
-                }else if (cateid == -7){
-                    LogUtil.e("选中的modle"+modleid);
+                } else if (cateid == -7) {
+                    LogUtil.e("选中的modle" + modleid);
                     MODLEID = modleid;
                     topicList.clear();
-                    for (int i = 0; i < newTopicListModel.size();i++){
-                        if (newTopicListModel.get(i).getModuleid() == modleid){
+                    for (int i = 0; i < newTopicListModel.size(); i++) {
+                        if (newTopicListModel.get(i).getModuleid() == modleid) {
                             topicList.add(newTopicListModel.get(i));
                         }
                     }
                     mAdapter.notifyDataSetChanged();
-
-
                 }
 
             }

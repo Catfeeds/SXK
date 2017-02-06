@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.SettingRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.PersonalIntroAndChangePswAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideCatchUtil;
 
 import java.util.ArrayList;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements View.OnClickListener {
 
@@ -138,9 +142,60 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
                 break;
             case 6:
                 startActivity(UserPrctocalAC.class,111);
+                break;
+            case 2:
+                clearCache();
+                break;
             default:
                 break;
         }
+    }
+
+    private void clearCache() {
+//        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+//                .setTitleText("确定清除？")
+//                .setContentText("将清理缓存图片以及相关商品信息！")
+//                .setCancelText("取消操作")
+//                .setConfirmText("清理缓存")
+//                .showCancelButton(true)
+//                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                    @Override
+//                    public void onClick(SweetAlertDialog sDialog) {
+//                        // reuse previous dialog instance, keep widget user state, reset them if you need
+//                        sDialog.setTitleText("取消操作")
+//                                .setContentText("请及时清理缓存哦！")
+//                                .setConfirmText("确定")
+//                                .showCancelButton(false)
+//                                .setCancelClickListener(null)
+//                                .setConfirmClickListener(null)
+//                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+//                    }
+//                })
+//                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                    @Override
+//                    public void onClick(SweetAlertDialog sDialog) {
+//                        sDialog.setTitleText("缓存已清理")
+//                                .setContentText("一共清理缓存"+"M")
+//                                .setConfirmText("确定")
+//                                .showCancelButton(false)
+//                                .setCancelClickListener(null)
+//                                .setConfirmClickListener(null)
+//                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                    }
+//                })
+//                .show();
+        // 计算缓存大小
+        String cacheSize = GlideCatchUtil.getInstance().getCacheSize();
+//        GlideCatchUtil.getInstance().cleanCatchDisk();
+        GlideCatchUtil.getInstance().clearCacheDiskSelf();
+        GlideCatchUtil.getInstance().clearCacheMemory();
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
+        sweetAlertDialog.setTitleText("缓存已清理！");
+        sweetAlertDialog.setContentText("共清理缓存"+cacheSize);
+        sweetAlertDialog.getProgressHelper().setBarColor(R.color.login_turquoise);
+        sweetAlertDialog.showCancelButton(false);
+        sweetAlertDialog.show();
+
     }
 
 

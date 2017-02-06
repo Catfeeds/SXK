@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -17,6 +17,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Model.RentWaterModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AboutBoBeiModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.SharePresentModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserProtocalModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -50,7 +51,7 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_prctocal_ac);
-        dialog = LoadingUtils.createLoadingDialog(this,"正在努力加载中...");
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
 
         initView();
     }
@@ -110,8 +111,54 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
                     break;
             }
             initRentWater();
+        }else if (value == 555){
+            navi_title.setText("分享奖励");
+            initSharePresent();
         }
     }
+
+    private void initSharePresent() {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("setupid",1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.SharePresent)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtil.e("分享奖励"+response);
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        SharePresentModel sharePresentModel = gson.fromJson(response,SharePresentModel.class);
+                        if (sharePresentModel.getCode() == 1) {
+                            String content = sharePresentModel.getSetup().getContent();
+                            initContent(content);
+                        } else if (sharePresentModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (sharePresentModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
+    }
+
     // 服务中心的数据
     private void initRentWater() {
         dialog.show();

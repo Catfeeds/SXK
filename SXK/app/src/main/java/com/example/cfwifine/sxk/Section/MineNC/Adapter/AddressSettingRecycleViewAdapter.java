@@ -1,6 +1,5 @@
 package com.example.cfwifine.sxk.Section.MineNC.Adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressDetailAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressListModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

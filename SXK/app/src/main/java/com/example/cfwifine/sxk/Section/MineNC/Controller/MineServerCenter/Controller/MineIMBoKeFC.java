@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Adapter.TwoItemRecycleAdapter;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 
 import java.util.ArrayList;
 

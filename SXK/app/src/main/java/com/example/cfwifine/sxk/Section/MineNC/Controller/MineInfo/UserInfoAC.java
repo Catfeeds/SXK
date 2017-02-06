@@ -1,10 +1,8 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,10 +24,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityDetailModel;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.ForgetPawAC;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.UserInfoRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_Sex;
@@ -39,16 +35,13 @@ import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_phone;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Utils.DFileUtils;
-import com.example.cfwifine.sxk.Utils.FileManager;
 import com.example.cfwifine.sxk.Utils.ImageFactory;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.Utils.TimeUtils;
-import com.example.cfwifine.sxk.Utils.ToastUtil;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity;
@@ -65,15 +58,11 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.SimpleFormatter;
 
 
-import android.app.AlertDialog;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONException;

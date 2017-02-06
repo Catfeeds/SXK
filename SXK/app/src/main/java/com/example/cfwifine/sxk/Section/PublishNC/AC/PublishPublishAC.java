@@ -28,14 +28,11 @@ import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunityPublishTopicAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout;
@@ -63,7 +60,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

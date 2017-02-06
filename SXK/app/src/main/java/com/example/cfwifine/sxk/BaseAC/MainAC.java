@@ -3,7 +3,6 @@ package com.example.cfwifine.sxk.BaseAC;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,15 +16,13 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC;
 import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunFC;
-import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityHeaderImageModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Controller.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
-import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.AppraisasAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.FreeAppraisaAC;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -193,7 +190,7 @@ public class MainAC extends BaseAC  {
                     break;
                 case R.id.rec_lay:
                     Log.e("点击了鉴定",""+v.getId());
-                    startActivity(AppraisasAC.class);
+                    startActivity(FreeAppraisaAC.class);
                     break;
                 default:
                     break;

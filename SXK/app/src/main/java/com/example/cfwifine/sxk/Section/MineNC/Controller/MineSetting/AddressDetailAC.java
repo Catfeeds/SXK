@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting;
 
 import android.app.Dialog;
 import android.content.res.AssetManager;
@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;

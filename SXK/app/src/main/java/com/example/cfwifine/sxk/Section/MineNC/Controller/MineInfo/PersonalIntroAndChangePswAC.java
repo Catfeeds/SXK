@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo;
 
 import android.graphics.Color;
 import android.os.Bundle;

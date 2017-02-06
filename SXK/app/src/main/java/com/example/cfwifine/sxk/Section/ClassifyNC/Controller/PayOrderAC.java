@@ -19,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,7 +26,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;

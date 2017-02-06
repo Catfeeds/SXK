@@ -1,11 +1,26 @@
 package com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+
+import static android.R.attr.path;
 
 
 public class ImageBrowsePresenter {
@@ -54,88 +69,52 @@ public class ImageBrowsePresenter {
     }
 
 
-    public void saveImage(int position){
-        //利用Picasso加载图片
-        LogUtil.e("保存一张图" + position);
+    public void saveImage(int position, final ImageBrowseActivity imageBrowseActivity){
 
+        LogUtil.e("保存一张图" + images.get(position).toString()+"");
+        String url = images.get(position).toString();
+        RequestQueue mQueue = Volley.newRequestQueue(imageBrowseActivity);
+        ImageRequest request = new ImageRequest(url, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap bitmap) {
+                Log.e("Bitmap=====",bitmap.toString()+"" );
 
-//        String imageUrl = images.get(position).toString();
-//        Log.e("address",""+imageUrl);
-//        Picasso.with(view.getMyContext()).load(new File(imageUrl)).error(R.drawable.image_selected).into(view.);
+                // 首先保存图片
+                File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+                if (!appDir.exists()) {
+                    appDir.mkdir();
+                }
+                String fileName = System.currentTimeMillis() + ".jpg";
+                File file = new File(appDir, fileName);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-//        Picasso.with(view.getMyContext()).load(new File(imageUrl)).error(R.drawable.image_selected).into(new Target() {
-//            @Override
-//            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//
-//            }
-//
-//            @Override
-//            public void onBitmapFailed(Drawable errorDrawable) {
-//
-//            }
-//
-//            @Override
-//            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//            }
-//        });
+                // 其次把文件插入到系统图库
+                try {
+                    MediaStore.Images.Media.insertImage(imageBrowseActivity.getContentResolver(),
+                            file.getAbsolutePath(), fileName, null);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                // 最后通知图库更新
+                imageBrowseActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
 
-//        if (imageUrl.equals("TAG")){
-//            .setImageResource(R.drawable.image_selected);
-//        }else if (list.get(i).equals("MORE")){
-//            iv.setImageResource(R.drawable.image_unselected);
-//        }else {
-//            Picasso.with(context).load(new File(list.get(i).toString())).error(R.drawable.image_selected).into(iv);
-//        }
+            }
+        }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
 
-
-//        Picasso.with(view.getMyContext()).load(imageUrl).into(new Target() {
-//            @Override
-//            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                // 创建目录
-//                File appDir = new File(Environment.getExternalStorageDirectory(), "JellyImage");
-//                if (!appDir.exists()) {
-//                    appDir.mkdir();
-//                }
-//
-//                String imageType = getImageType(imageUrl); //获取图片类型
-//                String fileName = System.currentTimeMillis() + "." + imageType;
-//                File file = new File(appDir, fileName);
-//                //保存图片
-//                try {
-//                    FileOutputStream fos = new FileOutputStream(file);
-//                    if(TextUtils.equals(imageType,"jpg")) imageType = "jpeg";
-//                    imageType = imageType.toUpperCase();
-//                    bitmap.compress(Bitmap.CompressFormat.valueOf(imageType), 100, fos);
-//                    fos.flush();
-//                    fos.close();
-//                    Toast.makeText(view.getMyContext(),"保存成功",Toast.LENGTH_SHORT).show(); //Toast
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                // 其次把文件插入到系统图库
-//                try {
-//                    MediaStore.Images.Media.insertImage(view.getMyContext().getContentResolver(), file.getAbsolutePath(), fileName, null);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                // 最后通知图库更新
-//                view.getMyContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getPath())));
-//            }
-//
-//            @Override
-//            public void onBitmapFailed(Drawable errorDrawable) {
-//
-//            }
-//
-//            @Override
-//            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//            }
-//        });
+            }
+        });
+        mQueue.add(request);
     }
 
     public String getPositionImage(){

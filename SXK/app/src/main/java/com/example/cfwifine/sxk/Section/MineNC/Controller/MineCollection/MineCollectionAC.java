@@ -17,6 +17,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.SlideViewRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -36,8 +37,7 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     private TextView navi_title;
     private TextView navi_right;
     private LinearLayout navi_right_lays;
-    private RecyclerView follow_rv;
-    private LinearLayout activity_mine_follow_ac;
+    private RecyclerView collection_rv;
     Dialog dialog;
     private MineCollectionModel.CollectionBean dataSource;
     private CollectionSlideViewRecycleViewAdapter mAdapter;
@@ -46,7 +46,7 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_collection_ac);
-        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
+        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         initView();
     }
 
@@ -58,8 +58,7 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         navi_title.setText("我的收藏");
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
-        follow_rv = (RecyclerView) findViewById(R.id.follow_rv);
-        activity_mine_follow_ac = (LinearLayout) findViewById(R.id.activity_mine_follow_ac);
+        collection_rv = (RecyclerView) findViewById(R.id.collection_rv);
 
         initCollectionData();
     }
@@ -68,7 +67,7 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("","");
+            js.put("", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -85,6 +84,7 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
                         initSnackBar("请求出错！");
                         dialog.dismiss();
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
@@ -110,23 +110,66 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     }
 
     private void setAdapter() {
-        follow_rv.setLayoutManager(new LinearLayoutManager(this));
-        follow_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this,dataSource));
-        follow_rv.setItemAnimator(new DefaultItemAnimator());
+        collection_rv.setLayoutManager(new LinearLayoutManager(this));
+        collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, dataSource));
+        collection_rv.setItemAnimator(new DefaultItemAnimator());
     }
+
     @Override
     public void onItemClick(View view, int position) {
 
     }
 
     @Override
-    public void onDeleteBtnCilck(View view, int userid, int position) {
-//        initCancelFollow(userid,position);
+    public void onDeleteBtnCilck(View view, int rentid, int position) {
+        initCancelCollection(rentid, position);
+    }
+
+    private void initCancelCollection(int rentid, final int position) {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("rentid", rentid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.CollectionDel)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            mAdapter.removeData(position);
+                            initSnackBar("取消收藏成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("取消收藏失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_back:
                 finish();
                 break;

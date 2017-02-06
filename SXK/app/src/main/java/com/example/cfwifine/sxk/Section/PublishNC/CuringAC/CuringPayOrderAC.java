@@ -18,16 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.PayOrderAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressSettingCommomAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AppraisasCheckRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringDetailModel;

@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.AddressDetailAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.OnWheelChangedListener;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.WheelView;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.AddressPickerView.adapters.ArrayWheelAdapter;

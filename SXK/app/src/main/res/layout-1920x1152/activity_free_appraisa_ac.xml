@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_publish_publish_ac"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/navi"
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <include layout="@layout/nav_title_no_line"></include>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/publish_input_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:inputType="textMultiLine"
+                    android:background="@null"
+                    android:minLines="4"
+                    android:maxLines="5"
+                    android:gravity="top"
+                    android:enabled="true"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
+                    android:hint="描述下您的宝贝吧..."
+                    android:textColorHint="#b6b6b6"
+                    android:textSize="13sp"
+
+                    android:scrollbars="vertical"/>
+                <LinearLayout
+                    android:id="@+id/publish_add_pic_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+                    <com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout
+                        android:id="@+id/results"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout>
+                    <ImageView
+                        android:id="@+id/publish_publish_add_pic_imageview"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/publish_publish_addpic" />
+                    <ImageView
+                        android:id="@+id/publish_publish_howto_pic_imageview"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/publish_publish_howtophoto" />
+
+                    <ImageView
+                        android:id="@+id/publish_publish_max_nine_pic"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="12dp"
+                        android:background="@drawable/publish_must_nine" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="11dp"
+                    android:layout_height="15dp"
+                    android:background="#f7f7f7"/>
+
+
+
+                <RelativeLayout
+                    android:id="@+id/appraisal_cateory"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/ripple_bg">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="类别"
+                        android:paddingLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:textSize="14sp"
+                        android:textColor="@color/navi_title_color"/>
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="13dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/publish_publish_go"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/appraisal_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="（必选）"
+                        android:paddingRight="25dp"
+                        android:textSize="14sp"
+                        android:textColor="#a1a1a1"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="#dcdcdc"/>
+                <RelativeLayout
+                    android:id="@+id/appraisal_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/ripple_bg">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="品牌"
+                        android:paddingLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:textSize="14sp"
+                        android:textColor="@color/navi_title_color"/>
+
+                    <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="13dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/publish_publish_go"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+
+                    <TextView
+                        android:id="@+id/appraisal_cateory_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="（必选）"
+                        android:paddingRight="25dp"
+                        android:textSize="14sp"
+                        android:textColor="#a1a1a1"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="#f7f7f7"/>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="0dp"
+                    android:background="@color/home_bg"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <View
+                            android:layout_width="60dp"
+                            android:layout_height="0.3dp"
+                            android:background="@color/gray_40"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="鉴定须知"
+                            android:textSize="13sp"
+                            android:textColor="@color/gray_40"/>
+                        <View
+                            android:layout_width="60dp"
+                            android:layout_height="0.3dp"
+                            android:background="@color/gray_40"/>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:text="只通过图片鉴定存在一定局限性，完整的鉴定流程需结合实物的皮质、气味、金属刻字、走线技术等各种细节综合考虑，鉴定结果仅供参考。此鉴定不具权威性。仅供参考，不做其他平台退换货凭证。"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray_40"/>
+                    <Button
+                        android:id="@+id/publish_appraisa_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginBottom="40dp"
+                        android:text="我要鉴定"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:background="@drawable/table_shape_login_button"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

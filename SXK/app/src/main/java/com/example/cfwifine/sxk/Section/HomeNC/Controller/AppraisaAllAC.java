@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.AppraisasAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.FreeAppraisaAC;
 
 public class AppraisaAllAC extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,7 +52,8 @@ public class AppraisaAllAC extends AppCompatActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.free_appraisa:
-
+                Intent intents = new Intent(AppraisaAllAC.this,FreeAppraisaAC.class);
+                startActivity(intents);
                 break;
             case R.id.center_appraisa:
                 Intent intent = new Intent(AppraisaAllAC.this,AppraisasAC.class);

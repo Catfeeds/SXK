@@ -136,7 +136,8 @@ public class BaseInterface {
     public static String GetRentDetail = root + "/app/rent/getpost";
     // 删除租赁
     public static String DelOrder = root + "/app/rent/delpost";
-
+    // 分享奖励
+    public static String SharePresent = root + "/app/rewardsetup/getpost";
 
     // 租赁订单列表
     public static String MineRent = root + "/app/rentorder/listpost";

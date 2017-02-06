@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller;
+package com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -11,11 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
@@ -27,7 +25,6 @@ import com.example.cfwifine.sxk.Section.MineNC.Adapter.MyClickOnListener;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
-import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;

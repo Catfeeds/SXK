@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.cfwifine.sxk">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -45,7 +46,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeNoTitle">
+        android:theme="@style/AppThemeNoTitle"
+        tools:replace="android:icon">
+        <meta-data
+            android:name="com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideConfiguration"
+            android:value="GlideModule" />
         <activity android:name=".Section.WelcomeNC.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Section.WelcomeNC.WelcomeAC"/>
+        <activity android:name=".Section.WelcomeNC.WelcomeAC" />
         <activity
             android:name=".BaseAC.BaseAC"
             android:theme="@style/AppTheme" />
@@ -84,22 +89,22 @@
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.PublishNC.View.PreviewPicView.ImageBrowseActivity" />
         <activity
-            android:name=".Section.MineNC.Controller.UserInfoAC"
+            android:name=".Section.MineNC.Controller.MineInfo.UserInfoAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.PersonalIntroAndChangePswAC"
+            android:name=".Section.MineNC.Controller.MineInfo.PersonalIntroAndChangePswAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.UserPrctocalAC"
+            android:name=".Section.MineNC.Controller.MineInfo.UserPrctocalAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.UserInfoRecycleViewCommomAC"
+            android:name=".Section.MineNC.Controller.MineSetting.UserInfoRecycleViewCommomAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.AddressSettingCommomAC"
+            android:name=".Section.MineNC.Controller.MineSetting.AddressSettingCommomAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.AddressDetailAC"
+            android:name=".Section.MineNC.Controller.MineSetting.AddressDetailAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.EightItemDetailAC"
@@ -309,7 +314,10 @@
         <activity
             android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
