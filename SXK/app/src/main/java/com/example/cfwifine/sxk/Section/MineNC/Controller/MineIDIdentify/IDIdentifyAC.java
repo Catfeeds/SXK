@@ -164,11 +164,11 @@ public class IDIdentifyAC extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
-        if (ppBitMap==null){
+        if (ppBitMap == null) {
             initSnackBar("没有上传正面身份证信息！");
             return;
         }
-        if (bbBitMap == null){
+        if (bbBitMap == null) {
             initSnackBar("没有上传背面身份证信息！");
             return;
         }
@@ -224,7 +224,7 @@ public class IDIdentifyAC extends AppCompatActivity implements View.OnClickListe
                 if (key.toString().equals(arg0)) {
                     String headPic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
                     HEADERPIC.add(1, headPic);
-                    LogUtil.e("返回的数组1"+HEADERPIC.toString());
+                    LogUtil.e("返回的数组1" + HEADERPIC.toString());
                     initUserInfo(HEADERPIC);
                 } else {
                     dialog.dismiss();
@@ -235,7 +235,7 @@ public class IDIdentifyAC extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initUserInfo(ArrayList<String> list) {
-        LogUtil.e("上传返回的图片素组"+list.toString());
+        LogUtil.e("上传返回的图片素组" + list.toString());
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("name", name);
@@ -259,30 +259,31 @@ public class IDIdentifyAC extends AppCompatActivity implements View.OnClickListe
                 .content(buyer.toString())
                 .build()
                 .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        dialog.dismiss();
-                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-                    }
+                             @Override
+                             public void onError(Call call, Exception e, int id) {
+                                 dialog.dismiss();
+                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                             }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtil.e("个人信息" + response);
-                        dialog.dismiss();
-                        Gson gson = new Gson();
-                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
-                        if (requestStatueModel.getCode() == 1) {
-                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            finish();
-                        } else if (requestStatueModel.getCode() == 0) {
-                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-                        } else if (requestStatueModel.getCode() == 911) {
-                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                        }
-                    }
-                }
-    );
-}
+                             @Override
+                             public void onResponse(String response, int id) {
+                                 LogUtil.e("个人信息" + response);
+                                 dialog.dismiss();
+                                 Gson gson = new Gson();
+                                 RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                                 if (requestStatueModel.getCode() == 1) {
+                                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                                     finish();
+                                 } else if (requestStatueModel.getCode() == 0) {
+                                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                                 } else if (requestStatueModel.getCode() == 911) {
+                                     SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                                 }
+                             }
+                         }
+                );
+    }
+
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";
     public static String SK = "RxiQnoa8NqIe7lzSip-RRnBdX9_pwOQmBBPqGWvv";
     public static String SCOPE = "shexiangke-jcq";

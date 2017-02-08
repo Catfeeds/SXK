@@ -218,7 +218,7 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/home_hot_recycleView"
                             android:layout_width="match_parent"
-                            android:layout_height="500dp"></android.support.v7.widget.RecyclerView>
+                            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
 
                     </LinearLayout>

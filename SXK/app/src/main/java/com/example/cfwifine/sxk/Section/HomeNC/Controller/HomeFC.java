@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.HomeBannerModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
@@ -31,6 +32,7 @@ import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeClassSelectedModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeHotListModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeSelectedClassModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ThreeBlockModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -79,6 +81,9 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private boolean isFirst = true;
     private List<HomeSelectedClassModel.ClassListBean> classDataSource;
     private List<HomeHotListModel.TopicListBean> hotDataSource;
+    private MainAC mainAC;
+    private String userinfo=null;
+    private UserInfoModel userInfoModel=null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
             dialog = LoadingUtils.createLoadingDialog(getActivity(), "加载中...");
+            mainAC = (MainAC) getActivity();
             initBannerData();
             initBanner();
             initView();
@@ -104,6 +110,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             initHotData();
             // 精选分类
         }
+
         return view;
 
     }
@@ -117,8 +124,8 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         }
         JSONObject js = new JSONObject();
         try {
-            js.put("pageNo",1);
-            js.put("pageSize",2);
+            js.put("pageNo",0);
+            js.put("pageSize",0);
             js.put("order",jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -164,8 +171,8 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         }
         JSONObject js = new JSONObject();
         try {
-            js.put("pageNo",1);
-            js.put("pageSize",2);
+            js.put("pageNo",0);
+            js.put("pageSize",0);
             js.put("order",order);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -498,7 +505,15 @@ public class HomeFC extends Fragment implements View.OnClickListener {
 
     private void JumpForPage(int position) {
         if (position == 0 || position == 1) {
-            startActivity(ExchangeAndRentAC.class, position);
+//            startActivity(ExchangeAndRentAC.class, position);
+            userinfo = mainAC.getUserInfo();
+            if (userinfo!= null){
+                Intent intent = new Intent(getActivity(),ExchangeAndRentAC.class);
+                intent.putExtra("JUMPEIGHTITEMDETAIL",position);
+                intent.putExtra("USERINFO",userinfo);
+                startActivity(intent);
+            }
+
         } else if (position == 2) {
             startActivity(EightItemDetailAC.class, position);
         } else if (position == 3) {
@@ -506,10 +521,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         } else if (position == 4) {
             startActivity(CuringAC.class, position);
         }
-
     }
-
-
     // TODO ***************************************初始化热门专题***************************************
     private void initHotTopic() {
         hotcycleView = (RecyclerView) view.findViewById(R.id.home_hot_recycleView);
@@ -533,9 +545,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-
     }
-
     // TODO ***************************************初始化精选分类***************************************
 
     private void init() {
@@ -558,7 +568,6 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             }
         });
     }
-
     private void initClassidData(final int classid) {
         JSONObject js  = new JSONObject();
         try {
@@ -596,8 +605,6 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
-
-
     }
 
 

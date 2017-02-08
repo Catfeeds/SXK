@@ -51,6 +51,7 @@
         <meta-data
             android:name="com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideConfiguration"
             android:value="GlideModule" />
+
         <activity android:name=".Section.WelcomeNC.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -317,7 +318,10 @@
         <activity
             android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"
+        <activity
+            android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineBuyPlus.Controller.MineBuyPlusAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

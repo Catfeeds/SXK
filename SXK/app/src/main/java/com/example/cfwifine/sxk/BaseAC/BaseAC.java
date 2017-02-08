@@ -43,6 +43,7 @@ public class BaseAC extends AppCompatActivity {
     }
 
     private void inITMeIQia() {
+
         MQConfig.init(this, "8a2358a00969823007f4ea328ad95bfa", new OnInitCallback() {
             @Override
             public void onSuccess(String clientId) {

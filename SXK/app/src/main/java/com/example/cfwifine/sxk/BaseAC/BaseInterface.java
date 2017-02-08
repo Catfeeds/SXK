@@ -167,6 +167,9 @@ public class BaseInterface {
     // 关于啵呗
     public static String AboutBOBEI = root + "/app/aboutsetup/getpost";
 
+    // 融云接口
+    public static String RONGYUNDemo = root + "/app/rongyun/gettokenpost";
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";

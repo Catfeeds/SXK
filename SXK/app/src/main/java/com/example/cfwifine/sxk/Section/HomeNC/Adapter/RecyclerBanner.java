@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.R;
 
 import java.util.ArrayList;
@@ -223,7 +224,9 @@ public class RecyclerBanner extends FrameLayout {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ImageView img = (ImageView) holder.itemView.findViewById(R.id.icon);
-            Glide.with(img.getContext()).load(datas.get(position % datas.size()).getUrl()).placeholder(R.mipmap.ic_launcher).into(img);
+//            Glide.with(img.getContext()).load(datas.get(position % datas.size()).getUrl()).placeholder(R.mipmap.ic_launcher).into(img);
+            Glide.with(img.getContext()).load(datas.get(position % datas.size()).getUrl()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.mipmap.ic_launcher).animate(R.anim.glide_animal).into(img);
+
         }
 
         @Override
