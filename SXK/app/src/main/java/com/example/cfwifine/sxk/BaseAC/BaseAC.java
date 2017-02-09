@@ -40,6 +40,7 @@ public class BaseAC extends AppCompatActivity {
 //        translucentStatusBar();
         // 初始化美恰
         inITMeIQia();
+
     }
 
     private void inITMeIQia() {

@@ -176,4 +176,6 @@ public class BaseInterface {
     public static String PASSWORD = "PASSWORD";
     public static String PHONENUMBER = "PHONENUMBER";
     public static String PHPSESSION = "PHPSESSION";
+    public static String USERID = "USERID";
+    public static String PORITA = "PORITA";
 }

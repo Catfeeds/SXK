@@ -1,1 +1,1 @@
-include ':app', ':indexlib', ':haorefresh', ':NineLayout'
+include ':app', ':indexlib', ':haorefresh', ':NineLayout', ':IMKit', ':IMLib'

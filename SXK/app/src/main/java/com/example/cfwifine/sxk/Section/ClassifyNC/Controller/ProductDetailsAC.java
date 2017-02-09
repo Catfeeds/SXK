@@ -3,6 +3,7 @@ package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +19,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.FollowSuccessModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
@@ -36,9 +40,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 import okhttp3.Call;
 
-public class ProductDetailsAC extends AppCompatActivity implements View.OnClickListener {
+public class ProductDetailsAC extends AppCompatActivity implements View.OnClickListener, RongIM.UserInfoProvider {
 
     private LinearLayout product_details_share;//产品分享
     private LinearLayout product_details_back;//返回
@@ -72,6 +80,11 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private ProductDetailModel.RentBean rentDetail;
     private CircleImageView headPic;
     private String crowds = "";
+    private String RongToken;
+    private String TAG;
+    private int mineUserId=0;
+    private String PORITE = "";
+    private String NICKNAME="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +92,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_product_details_ac);
         RentID = getIntent().getIntExtra("RENTID", 0);
         dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
+        PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA,"");
+        NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME,"");
         initView();
     }
 
@@ -225,6 +240,11 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
     }
 
+    @Override
+    public UserInfo getUserInfo(String s) {
+        return null;
+    }
+
 
     // TODO ***************************************初始化轮播图**************************************
 
@@ -282,7 +302,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 initFollow();
                 break;
             case R.id.chat:
-//                Toast.makeText(this, "跟啵主聊天", Toast.LENGTH_SHORT).show();
+                initRongData();
                 break;
             case R.id.more_comment:
 //                Toast.makeText(this, "更多评价", Toast.LENGTH_SHORT).show();
@@ -291,6 +311,87 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
         }
     }
+    // 初始化聊天
+    private void initRongData() {
+        mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID,0);
+        LogUtil.e("我的ID"+mineUserId);
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("userid",mineUserId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.RONGYUNDemo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("获取Token", "" + response);
+                        Gson gson = new Gson();
+                        RongTokenModel rongTokenModel = gson.fromJson(response, RongTokenModel.class);
+                        if (rongTokenModel.getCode() == 1) {
+                            RongToken = rongTokenModel.getToken();
+                            connectRongServer(RongToken);
+                        } else if (rongTokenModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (rongTokenModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
+    }
+
+    private void connectRongServer(String token) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onSuccess(String userId) {
+                LogUtil.e("返回的userID1"+userId);
+                LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
+                    LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
+                    if (RongIM.getInstance()!=null){
+                        UserInfo userInfo = new UserInfo(String.valueOf(mineUserId), NICKNAME, Uri.parse(PORITE));
+                        RongIM.getInstance().setCurrentUserInfo(userInfo);
+                        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                            @Override
+                            public UserInfo getUserInfo(String userId) {
+                                return new UserInfo(String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname(), Uri.parse(rentDetail.getUser().getHeadimgurl()));
+                            }
+                        }, true);
+                        RongIM.getInstance().startConversation(ProductDetailsAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(rentDetail.getUser().getUserid()),rentDetail.getUser().getNickname());
+                    }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Toast.makeText(ProductDetailsAC.this, "连接服务器失败！请稍后重试！", Toast.LENGTH_SHORT).show();
+//                Log.e(TAG, "connect failure errorCode is : " + errorCode.getValue());
+            }
+
+            @Override
+            public void onTokenIncorrect() {
+//                Toast.makeText(ProductDetailsAC.this, "token错误，请检查token和appkey是否正确！", Toast.LENGTH_SHORT).show();
+                LogUtil.e("TOKEN不正确！");
+//                Log.e(TAG, "token is error ,please check token and appkey");
+            }
+        });
+
+    }
+
     // 收藏商品
     private void initCollection() {
         dialog.show();
