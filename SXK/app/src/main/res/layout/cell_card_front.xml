@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/main_fl_card_front"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:contentDescription="@null"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:src="@drawable/toast"/>
+
+    <TextView
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:textSize="10sp"
+        android:text="点击这里就可以发布属于你自己的商品和使用鉴定服务哦！"
+        android:textColor="@android:color/black"
+        android:id="@+id/textView" />
+
+</FrameLayout>

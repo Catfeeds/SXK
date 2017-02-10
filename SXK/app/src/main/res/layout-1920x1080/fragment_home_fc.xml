@@ -243,12 +243,14 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/scan"
                 android:layout_width="26dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/home_search" />
 
             <LinearLayout
+                android:id="@+id/search"
                 android:layout_width="250dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
@@ -274,12 +276,32 @@
             </LinearLayout>
 
             <ImageButton
+                android:id="@+id/message"
                 android:layout_width="26dp"
                 android:layout_height="22dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/home_message" />
         </LinearLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
+        <FrameLayout
+            android:id="@+id/home_toast_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <include
+                layout="@layout/cell_card_back"/>
+
+            <include
+                layout="@layout/cell_card_front"/>
+
+        </FrameLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

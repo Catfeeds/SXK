@@ -349,6 +349,25 @@
                 android:resource="@xml/rc_file_path" />
         </provider>
 
+        <!-- 会话列表 -->
+        <activity
+            android:name=".Section.HomeNC.Controller.ConversiationListAC"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeHasTitle"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.example.cfwifine.sxk"
+                    android:pathPrefix="/conversationlist"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Section.HomeNC.Controller.BannerDetailAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
 </manifest>

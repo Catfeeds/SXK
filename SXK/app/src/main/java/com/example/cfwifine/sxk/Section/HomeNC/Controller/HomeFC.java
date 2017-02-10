@@ -1,11 +1,18 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.annotation.BoolRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,15 +21,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.HomeBannerModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.explosionfield.ExplosionField;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotTopicAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RecycleAdapter;
@@ -46,8 +60,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 import okhttp3.Call;
 
 
@@ -84,7 +104,17 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private MainAC mainAC;
     private String userinfo=null;
     private UserInfoModel userInfoModel=null;
+    private ImageButton homeMessage;
+    private int mineUserId=0;
+    private String RongToken="";
+    private FrameLayout homeToastView;
+    private AnimatorSet mRightOutSet; // 右出动画
+    private AnimatorSet mLeftInSet; // 左入动画
 
+    private boolean mIsShowBack;
+    FrameLayout mFlCardBack;
+    FrameLayout mFlCardFront;
+    private ExplosionField mExplosionField;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +131,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             view = inflater.inflate(R.layout.fragment_home_fc, container, false);
             dialog = LoadingUtils.createLoadingDialog(getActivity(), "加载中...");
             mainAC = (MainAC) getActivity();
+            mExplosionField = ExplosionField.attach2Window(getActivity());
             initBannerData();
             initBanner();
             initView();
@@ -241,7 +272,6 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                                 urls.add(new Entity(BaseInterface.ClassfiyGetAllHotBrandImgUrl + homeBannerModel.getSetup().getList().get(i).getImg().toString(), homeBannerModel.getSetup().getList().get(i).getLink().toString()));
                                 initBanner();
                             }
-
                         } else if (homeBannerModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (homeBannerModel.getCode() == 911) {
@@ -261,6 +291,9 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(RecyclerBanner.BannerEntity entity) {
                 LogUtil.e("网址为" + entity.getLink());
+                Intent intent = new Intent(getActivity(),BannerDetailAC.class);
+                intent.putExtra("URLINK",entity.getLink());
+                startActivity(intent);
             }
         });
         recyclerBanner.setDatas(urls);
@@ -278,12 +311,109 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             case R.id.home_right_bottom_pic:
                 startActivity(HomeThreeBlockDetailAC.class, 13);
                 break;
+            case R.id.message:
+                initRongMessageList();
+                break;
             default:
                 break;
         }
     }
 
+    private void initRongMessageList() {
+        mineUserId = (int) SharedPreferencesUtils.getParam(getActivity(), BaseInterface.USERID,0);
+        LogUtil.e("我的ID"+mineUserId);
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("userid",mineUserId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.RONGYUNDemo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("获取Token", "" + response);
+                        Gson gson = new Gson();
+                        RongTokenModel rongTokenModel = gson.fromJson(response, RongTokenModel.class);
+                        if (rongTokenModel.getCode() == 1) {
+                            RongToken = rongTokenModel.getToken();
+                            connectRongServer(RongToken);
+                        } else if (rongTokenModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (rongTokenModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+    private void connectRongServer(String token) {
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onSuccess(String userId) {
+//                LogUtil.e("返回的userID1"+userId);
+//                LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
+//                LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
+                if (RongIM.getInstance()!=null){
+                    Map<String,Boolean> supportedConversation = new HashMap<String, Boolean>();
+                    supportedConversation.put(Conversation.ConversationType.PRIVATE.getName(),false);
+                    RongIM.getInstance().startConversationList(getActivity(),supportedConversation);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Toast.makeText(getActivity(), "连接服务器失败！请稍后重试！", Toast.LENGTH_SHORT).show();
+//                Log.e(TAG, "connect failure errorCode is : " + errorCode.getValue());
+            }
+
+            @Override
+            public void onTokenIncorrect() {
+//                Toast.makeText(ProductDetailsAC.this, "token错误，请检查token和appkey是否正确！", Toast.LENGTH_SHORT).show();
+                LogUtil.e("TOKEN不正确！");
+//                Log.e(TAG, "token is error ,please check token and appkey");
+            }
+        });
+
+    }
+
+
     private void initView() {
+        homeToastView = (FrameLayout)view.findViewById(R.id.home_toast_lay);
+//        homeToastView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                flipCard(view);
+//            }
+//        });
+        mFlCardBack = (FrameLayout)view.findViewById(R.id.main_fl_card_back) ;
+        mFlCardFront = (FrameLayout)view.findViewById(R.id.main_fl_card_front);
+        // 点击实现爆炸效果
+        homeToastView.setClickable(true);
+        homeToastView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mExplosionField.explode(homeToastView);
+                homeToastView.setVisibility(View.GONE);
+            }
+        });
+
+        homeMessage = (ImageButton)view.findViewById(R.id.message);
+        homeMessage.setOnClickListener(this);
         home_search_lay = (LinearLayout) view.findViewById(R.id.home_search_lay);
         home_search_lay.setOnClickListener(this);
         home_scrollView = (AlphaScrollView) view.findViewById(R.id.home_scrollView);
@@ -297,9 +427,68 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             }
         });
 
+        // 设置底部反转动画
+        setAnimators(); // 设置动画
+        setCameraDistance(); // 设置镜头距离
+    }
+    // 设置动画
+    private void setAnimators() {
+        mRightOutSet = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.anim_out);
+        mLeftInSet = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.anim_in);
+
+//         设置点击事件
+        mRightOutSet.addListener(new AnimatorListenerAdapter() {
+            @Override public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                homeToastView.setClickable(true);
+            }
+        });
+        mLeftInSet.addListener(new AnimatorListenerAdapter() {
+            @Override public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                homeToastView.setClickable(true);
+            }
+        });
 
     }
 
+    // 改变视角距离, 贴近屏幕
+    private void setCameraDistance() {
+        int distance = 16000;
+        float scale = getResources().getDisplayMetrics().density * distance;
+        mFlCardFront.setCameraDistance(scale);
+        mFlCardBack.setCameraDistance(scale);
+        new CountDownTimer(20000, 2000) {
+            public void onTick(long millisUntilFinished) {
+                flipCard(view);
+            }
+
+            public void onFinish() {
+                mExplosionField.explode(homeToastView);
+//                homeToastView.setOnClickListener(null);
+                homeToastView.setVisibility(View.GONE);
+            }
+        }.start();
+
+    }
+
+    //     翻转卡片
+    public void flipCard(View view) {
+        // 正面朝上
+        if (!mIsShowBack) {
+            mRightOutSet.setTarget(mFlCardFront);
+            mLeftInSet.setTarget(mFlCardBack);
+            mRightOutSet.start();
+            mLeftInSet.start();
+            mIsShowBack = true;
+        } else { // 背面朝上
+            mRightOutSet.setTarget(mFlCardBack);
+            mLeftInSet.setTarget(mFlCardFront);
+            mRightOutSet.start();
+            mLeftInSet.start();
+            mIsShowBack = false;
+        }
+    }
     private void titleAnim(int oldy, int y) {
         if (y < 800) {
             float alpha = 1 - ((float) y) / 800;

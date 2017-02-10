@@ -568,7 +568,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        initFriendMomentHeaderPicDataSource();
+//        initFriendMomentHeaderPicDataSource();
         MainAC mainAC = (MainAC) getActivity();
         mainAC.initUserData();
     }
