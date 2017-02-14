@@ -487,6 +487,7 @@ int drawable u270c 0x7f020199
 int drawable u270f 0x7f02019a
 int drawable u2744 0x7f02019b
 int drawable u2b50 0x7f02019c
+int drawable user_header_image_placeholder 0x7f02019d
 int id C 0x7f0a0039
 int id CE 0x7f0a003a
 int id EC 0x7f0a003b

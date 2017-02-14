@@ -16,8 +16,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
+import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CateifyAdapter;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -88,101 +91,115 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             topicListRecycleAdapter.setOnItemClickListener(new TopicListRecycleAdapter.OnItemClickListener() {
                 @Override
                 public void OnItemClick(View view, int topicid) {
-                    LogUtil.e("打印的话题分类id"+topicid);
+                    LogUtil.e("打印的话题分类id" + topicid);
 //                    MODLEID = topicid;
-                    mOnItemClickListener.OnItemClick(view,-7,-7,-7,-7,topicid);
+                    mOnItemClickListener.OnItemClick(view, -7, -7, -7, -7, topicid);
                 }
             });
         } else {
             viewHolder.headerView.setVisibility(View.GONE);
         }
+        if (topicList.size() == 0) {
+            viewHolder.commentView.setVisibility(View.GONE);
+            return;
+        } else {
 
-        /**
-         * 朋友圈详情
-         */
-        String topicHeaderUserUrl = topicList.get(position).getHeadimgurl();
-        Glide.with(context).load(topicHeaderUserUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(viewHolder.tiopicHeaderPic);
+
+            /**
+             * 朋友圈详情
+             */
+            String topicHeaderUserUrl = topicList.get(position).getHeadimgurl();
+            Glide.with(context).load(topicHeaderUserUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(viewHolder.tiopicHeaderPic);
 //        ImageLoader.getInstance().displayImage(topicHeaderUserUrl,viewHolder.tiopicHeaderPic);
-        viewHolder.topic_username.setText(topicList.get(position).getNickname());
-        viewHolder.topic_content.setText(topicList.get(position).getContent());
+            viewHolder.topic_username.setText(topicList.get(position).getNickname());
+            viewHolder.topic_content.setText(topicList.get(position).getContent());
 
-        LogUtil.e("" + TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
-        viewHolder.topic_during.setText(TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
+            LogUtil.e("" + TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
+            viewHolder.topic_during.setText(TimeUtils.milliseconds2String(topicList.get(position).getCreatetime() * 1000l));
 
-        // 图片
-        NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context, topicList.get(position).getImgList());
-        viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
-        viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
-            @Override
-            public void onItemClick(View view, int picPosition) {
-                Log.e("点击了", "" + picPosition);
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-3,picPosition,-6);
+            // 图片
+            NineGridViewAdapter nineGridViewAdapter = new NineGridViewAdapter(context, topicList.get(position).getImgList());
+            viewHolder.nineGridlayout.setAdapter(nineGridViewAdapter);
+            viewHolder.nineGridlayout.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
+                @Override
+                public void onItemClick(View view, int picPosition) {
+                    Log.e("点击了", "" + picPosition);
+                    mOnItemClickListener.OnItemClick(view, topicList.get(position).getTopicid(), position, -3, picPosition, -6);
 
+                }
+            });
+
+            /**
+             * 注意！！！复用机制的原理，必须对没有起作用的cell也进行处理
+             */
+            if (topicList.get(position).getLikeList().size() == 0) {
+                viewHolder.raiseRV.setVisibility(View.GONE);
+            } else {
+                viewHolder.raiseRV.setVisibility(View.VISIBLE);
             }
-        });
-
-        /**
-         * 注意！！！复用机制的原理，必须对没有起作用的cell也进行处理
-         */
-        if (topicList.get(position).getLikeList().size() == 0) {
-            viewHolder.raiseRV.setVisibility(View.GONE);
-        } else {
-            viewHolder.raiseRV.setVisibility(View.VISIBLE);
-        }
-        if (topicList.get(position).getCommentList().size() == 0) {
-            viewHolder.commentRV.setVisibility(View.GONE);
-        } else {
-            viewHolder.commentRV.setVisibility(View.VISIBLE);
-        }
-        if (topicList.get(position).getCommentList().size() == 0 && topicList.get(position).getLikeList().size() == 0) {
-            viewHolder.sanjiaoxing.setVisibility(View.GONE);
-        } else {
-            viewHolder.sanjiaoxing.setVisibility(View.VISIBLE);
-        }
-
-        String username = String.valueOf(SharedPreferencesUtils.getParam(context, BaseInterface.USERNAME,""));
-        // 点赞RecycleView
-        RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(topicList.get(position).getLikeList());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        viewHolder.raiseRV.setLayoutManager(layoutManager);
-        viewHolder.raiseRV.setAdapter(raiseRecycleAdapter);
-
-
-        // 评论 RecycleView
-        CommentRecycleAdapter commentRecycleAdapter = new CommentRecycleAdapter(topicList.get(position).getCommentList());
-        LinearLayoutManager layoutManagers = new LinearLayoutManager(context);
-        layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
-        viewHolder.commentRV.setLayoutManager(layoutManagers);
-        viewHolder.commentRV.setAdapter(commentRecycleAdapter);
-
-
-        // 点赞按钮
-        viewHolder.raiseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-1, -1,-6);
-
-
+            if (topicList.get(position).getCommentList().size() == 0) {
+                viewHolder.commentRV.setVisibility(View.GONE);
+            } else {
+                viewHolder.commentRV.setVisibility(View.VISIBLE);
             }
-        });
-        // 评论按钮
-        viewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            if (topicList.get(position).getCommentList().size() == 0 && topicList.get(position).getLikeList().size() == 0) {
+                viewHolder.sanjiaoxing.setVisibility(View.GONE);
+            } else {
+                viewHolder.sanjiaoxing.setVisibility(View.VISIBLE);
+            }
+
+            String username = String.valueOf(SharedPreferencesUtils.getParam(context, BaseInterface.USERNAME, ""));
+            // 点赞RecycleView
+            RaiseRecycleAdapter raiseRecycleAdapter = new RaiseRecycleAdapter(topicList.get(position).getLikeList());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            viewHolder.raiseRV.setLayoutManager(layoutManager);
+            viewHolder.raiseRV.setAdapter(raiseRecycleAdapter);
+
+
+            // 评论 RecycleView
+            CommentRecycleAdapter commentRecycleAdapter = new CommentRecycleAdapter(topicList.get(position).getCommentList());
+            LinearLayoutManager layoutManagers = new LinearLayoutManager(context);
+            layoutManagers.setOrientation(LinearLayoutManager.VERTICAL);
+            viewHolder.commentRV.setLayoutManager(layoutManagers);
+            viewHolder.commentRV.setAdapter(commentRecycleAdapter);
+
+
+            // 点赞按钮
+            viewHolder.raiseBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view, topicList.get(position).getTopicid(), position, -1, -1, -6);
+
+
+                }
+            });
+            // 评论按钮
+            viewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 //                InputMethodManager inputMethodManager = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                inputMethodManager.showSoftInput(view,InputMethodManager.SHOW_FORCED);
-                mOnItemClickListener.OnItemClick(view,topicList.get(position).getTopicid(),position,-2, -1,-6);
-            }
-        });
+                    mOnItemClickListener.OnItemClick(view, topicList.get(position).getTopicid(), position, -2, -1, -6);
+                }
+            });
 
+        }
     }
 
 
     //获取数据的数量
     @Override
     public int getItemCount() {
+        if (topicList.size()==0){
+            return 1;
+        }
         return topicList.size();
+    }
+    public ComRecycleViewAdapter setDatas(List<TopicListModel.TopicListBean> topicList) {
+        this.topicList = topicList;
+        this.notifyDataSetChanged();
+        return this;
     }
 
     @Override

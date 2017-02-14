@@ -7479,7 +7479,7 @@
                     "startOffset": 35456,
                     "endLine": 777,
                     "endColumn": 12,
-                    "endOffset": 35659
+                    "endOffset": 35667
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
@@ -7489,7 +7489,7 @@
                         "startOffset": 34738,
                         "endLine": 765,
                         "endColumn": 12,
-                        "endOffset": 34941
+                        "endOffset": 34949
                     }
                 }
             },
@@ -7497,20 +7497,20 @@
                 "to": {
                     "startLine": 778,
                     "startColumn": 4,
-                    "startOffset": 35664,
+                    "startOffset": 35672,
                     "endLine": 782,
                     "endColumn": 12,
-                    "endOffset": 35927
+                    "endOffset": 35935
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 766,
                         "startColumn": 4,
-                        "startOffset": 34946,
+                        "startOffset": 34954,
                         "endLine": 770,
                         "endColumn": 12,
-                        "endOffset": 35209
+                        "endOffset": 35217
                     }
                 }
             },
@@ -7518,20 +7518,20 @@
                 "to": {
                     "startLine": 783,
                     "startColumn": 4,
-                    "startOffset": 35932,
+                    "startOffset": 35940,
                     "endLine": 789,
                     "endColumn": 12,
-                    "endOffset": 36317
+                    "endOffset": 36325
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 771,
                         "startColumn": 4,
-                        "startOffset": 35214,
+                        "startOffset": 35222,
                         "endLine": 777,
                         "endColumn": 12,
-                        "endOffset": 35599
+                        "endOffset": 35607
                     }
                 }
             },
@@ -7539,20 +7539,20 @@
                 "to": {
                     "startLine": 790,
                     "startColumn": 4,
-                    "startOffset": 36322,
+                    "startOffset": 36330,
                     "endLine": 798,
                     "endColumn": 12,
-                    "endOffset": 36812
+                    "endOffset": 36820
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 778,
                         "startColumn": 4,
-                        "startOffset": 35604,
+                        "startOffset": 35612,
                         "endLine": 786,
                         "endColumn": 12,
-                        "endOffset": 36094
+                        "endOffset": 36102
                     }
                 }
             },
@@ -7560,20 +7560,20 @@
                 "to": {
                     "startLine": 799,
                     "startColumn": 4,
-                    "startOffset": 36817,
+                    "startOffset": 36825,
                     "endLine": 801,
                     "endColumn": 12,
-                    "endOffset": 36895
+                    "endOffset": 36903
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 787,
                         "startColumn": 4,
-                        "startOffset": 36099,
+                        "startOffset": 36107,
                         "endLine": 789,
                         "endColumn": 12,
-                        "endOffset": 36177
+                        "endOffset": 36185
                     }
                 }
             },
@@ -7581,20 +7581,20 @@
                 "to": {
                     "startLine": 802,
                     "startColumn": 4,
-                    "startOffset": 36900,
+                    "startOffset": 36908,
                     "endLine": 804,
                     "endColumn": 12,
-                    "endOffset": 36977
+                    "endOffset": 36985
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 790,
                         "startColumn": 4,
-                        "startOffset": 36182,
+                        "startOffset": 36190,
                         "endLine": 792,
                         "endColumn": 12,
-                        "endOffset": 36259
+                        "endOffset": 36267
                     }
                 }
             },
@@ -7602,20 +7602,20 @@
                 "to": {
                     "startLine": 805,
                     "startColumn": 4,
-                    "startOffset": 36982,
+                    "startOffset": 36990,
                     "endLine": 807,
                     "endColumn": 12,
-                    "endOffset": 37155
+                    "endOffset": 37163
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 793,
                         "startColumn": 4,
-                        "startOffset": 36264,
+                        "startOffset": 36272,
                         "endLine": 795,
                         "endColumn": 12,
-                        "endOffset": 36437
+                        "endOffset": 36445
                     }
                 }
             },
@@ -7623,20 +7623,20 @@
                 "to": {
                     "startLine": 808,
                     "startColumn": 4,
-                    "startOffset": 37160,
+                    "startOffset": 37168,
                     "endLine": 810,
                     "endColumn": 12,
-                    "endOffset": 37238
+                    "endOffset": 37246
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 796,
                         "startColumn": 4,
-                        "startOffset": 36442,
+                        "startOffset": 36450,
                         "endLine": 798,
                         "endColumn": 12,
-                        "endOffset": 36520
+                        "endOffset": 36528
                     }
                 }
             },
@@ -7644,20 +7644,20 @@
                 "to": {
                     "startLine": 811,
                     "startColumn": 4,
-                    "startOffset": 37243,
+                    "startOffset": 37251,
                     "endLine": 815,
                     "endColumn": 12,
-                    "endOffset": 37526
+                    "endOffset": 37534
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 799,
                         "startColumn": 4,
-                        "startOffset": 36525,
+                        "startOffset": 36533,
                         "endLine": 803,
                         "endColumn": 12,
-                        "endOffset": 36808
+                        "endOffset": 36816
                     }
                 }
             },
@@ -7665,20 +7665,20 @@
                 "to": {
                     "startLine": 816,
                     "startColumn": 4,
-                    "startOffset": 37531,
+                    "startOffset": 37539,
                     "endLine": 818,
                     "endColumn": 12,
-                    "endOffset": 37608
+                    "endOffset": 37616
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 804,
                         "startColumn": 4,
-                        "startOffset": 36813,
+                        "startOffset": 36821,
                         "endLine": 806,
                         "endColumn": 12,
-                        "endOffset": 36890
+                        "endOffset": 36898
                     }
                 }
             },
@@ -7686,20 +7686,20 @@
                 "to": {
                     "startLine": 819,
                     "startColumn": 4,
-                    "startOffset": 37613,
+                    "startOffset": 37621,
                     "endLine": 826,
                     "endColumn": 12,
-                    "endOffset": 38070
+                    "endOffset": 38078
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 807,
                         "startColumn": 4,
-                        "startOffset": 36895,
+                        "startOffset": 36903,
                         "endLine": 814,
                         "endColumn": 12,
-                        "endOffset": 37352
+                        "endOffset": 37360
                     }
                 }
             },
@@ -7707,20 +7707,20 @@
                 "to": {
                     "startLine": 827,
                     "startColumn": 4,
-                    "startOffset": 38075,
+                    "startOffset": 38083,
                     "endLine": 831,
                     "endColumn": 12,
-                    "endOffset": 38324
+                    "endOffset": 38332
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 815,
                         "startColumn": 4,
-                        "startOffset": 37357,
+                        "startOffset": 37365,
                         "endLine": 819,
                         "endColumn": 12,
-                        "endOffset": 37606
+                        "endOffset": 37614
                     }
                 }
             },
@@ -7728,20 +7728,20 @@
                 "to": {
                     "startLine": 832,
                     "startColumn": 4,
-                    "startOffset": 38329,
+                    "startOffset": 38337,
                     "endLine": 838,
                     "endColumn": 12,
-                    "endOffset": 38697
+                    "endOffset": 38705
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 820,
                         "startColumn": 4,
-                        "startOffset": 37611,
+                        "startOffset": 37619,
                         "endLine": 826,
                         "endColumn": 12,
-                        "endOffset": 37979
+                        "endOffset": 37987
                     }
                 }
             },
@@ -7749,20 +7749,20 @@
                 "to": {
                     "startLine": 839,
                     "startColumn": 4,
-                    "startOffset": 38702,
+                    "startOffset": 38710,
                     "endLine": 845,
                     "endColumn": 12,
-                    "endOffset": 39045
+                    "endOffset": 39053
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 827,
                         "startColumn": 4,
-                        "startOffset": 37984,
+                        "startOffset": 37992,
                         "endLine": 833,
                         "endColumn": 12,
-                        "endOffset": 38327
+                        "endOffset": 38335
                     }
                 }
             },
@@ -7770,20 +7770,20 @@
                 "to": {
                     "startLine": 846,
                     "startColumn": 4,
-                    "startOffset": 39050,
+                    "startOffset": 39058,
                     "endLine": 852,
                     "endColumn": 12,
-                    "endOffset": 39398
+                    "endOffset": 39406
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 834,
                         "startColumn": 4,
-                        "startOffset": 38332,
+                        "startOffset": 38340,
                         "endLine": 840,
                         "endColumn": 12,
-                        "endOffset": 38680
+                        "endOffset": 38688
                     }
                 }
             },
@@ -7791,20 +7791,20 @@
                 "to": {
                     "startLine": 853,
                     "startColumn": 4,
-                    "startOffset": 39403,
+                    "startOffset": 39411,
                     "endLine": 860,
                     "endColumn": 12,
-                    "endOffset": 39796
+                    "endOffset": 39804
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 841,
                         "startColumn": 4,
-                        "startOffset": 38685,
+                        "startOffset": 38693,
                         "endLine": 848,
                         "endColumn": 12,
-                        "endOffset": 39078
+                        "endOffset": 39086
                     }
                 }
             },
@@ -7812,20 +7812,20 @@
                 "to": {
                     "startLine": 861,
                     "startColumn": 4,
-                    "startOffset": 39801,
+                    "startOffset": 39809,
                     "endLine": 865,
                     "endColumn": 12,
-                    "endOffset": 40071
+                    "endOffset": 40079
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 849,
                         "startColumn": 4,
-                        "startOffset": 39083,
+                        "startOffset": 39091,
                         "endLine": 853,
                         "endColumn": 12,
-                        "endOffset": 39353
+                        "endOffset": 39361
                     }
                 }
             },
@@ -7833,20 +7833,20 @@
                 "to": {
                     "startLine": 866,
                     "startColumn": 4,
-                    "startOffset": 40076,
+                    "startOffset": 40084,
                     "endLine": 869,
                     "endColumn": 12,
-                    "endOffset": 40284
+                    "endOffset": 40292
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 854,
                         "startColumn": 4,
-                        "startOffset": 39358,
+                        "startOffset": 39366,
                         "endLine": 857,
                         "endColumn": 12,
-                        "endOffset": 39566
+                        "endOffset": 39574
                     }
                 }
             },
@@ -7854,20 +7854,20 @@
                 "to": {
                     "startLine": 870,
                     "startColumn": 4,
-                    "startOffset": 40289,
+                    "startOffset": 40297,
                     "endLine": 874,
                     "endColumn": 12,
-                    "endOffset": 40536
+                    "endOffset": 40544
                 },
                 "from": {
                     "file": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 858,
                         "startColumn": 4,
-                        "startOffset": 39571,
+                        "startOffset": 39579,
                         "endLine": 862,
                         "endColumn": 12,
-                        "endOffset": 39818
+                        "endOffset": 39826
                     }
                 }
             }

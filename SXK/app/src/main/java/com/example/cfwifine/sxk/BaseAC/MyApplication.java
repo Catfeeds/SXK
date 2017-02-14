@@ -56,10 +56,11 @@ public class MyApplication extends Application {
         // 友盟登录相关
         UMShareAPI.get(this);
 //        Config.DEBUG = true;
+        Config.REDIRECT_URL = "http://sns.whalecloud.com/sina2/callback";
         PlatformConfig.setWeixin("wx4bfb2d22ce82d40d", "6c5dcb4c683017363d5c580309ed1eff");
         PlatformConfig.setSinaWeibo("1084074774", "26533dc2809fc7f5d6a0f1c2e0f68920");
         PlatformConfig.setQQZone("1105855252", "zOjjoUfd6sC1MTlh");
-        Config.REDIRECT_URL = "https://sns.whalecloud.com/sina2/callback";
+
 
         // 初始化融云服务
         RongIM.init(this);

@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.ShareHelper;
+package com.example.cfwifine.sxk;
 
 import com.umeng.socialize.media.WBShareCallBackActivity;
 

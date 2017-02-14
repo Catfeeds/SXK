@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.CustomDialog_ShareBorad;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.FollowSuccessModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
@@ -31,6 +33,11 @@ import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.UmengTool;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -85,6 +92,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private int mineUserId=0;
     private String PORITE = "";
     private String NICKNAME="";
+    private CustomDialog_ShareBorad customDialog_shareBorad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +103,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA,"");
         NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME,"");
         initView();
+        // 产品详情页面分享链接 http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/136
+
     }
 
     // 初始化商品详情
@@ -288,7 +298,16 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.product_details_share:
-//                Toast.makeText(this, "分享到第三方", Toast.LENGTH_SHORT).show();
+                // 分享到第三方
+                customDialog_shareBorad = new CustomDialog_ShareBorad(this, new CustomDialog_ShareBorad.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(int type) {
+                        LogUtil.e("输出的类型为"+type);
+                        shareToThreePart(type);
+                    }
+                },R.style.style_dialog);
+                customDialog_shareBorad.show();
+
                 break;
             case R.id.lease_btn:
                 Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
@@ -296,7 +315,6 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.bo_one:
                 initCollection();
-//                Toast.makeText(this, "啵一个", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.follow:
                 initFollow();
@@ -311,6 +329,66 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
         }
     }
+
+    private void shareToThreePart(int type) {
+        SHARE_MEDIA SHARE_TYPE = null;
+        switch (type){
+            case 1:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN;
+                break;
+            case 2:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 3:
+                SHARE_TYPE = SHARE_MEDIA.SINA;
+                break;
+            case 4:
+                SHARE_TYPE = SHARE_MEDIA.QQ;
+                break;
+        }
+        LogUtil.e("输出类型为"+type);
+        UMImage image = new UMImage(ProductDetailsAC.this, BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentDetail.getImgList().get(0));
+        UMImage thumb =  new UMImage(this, R.mipmap.ic_launcher);
+        image.setThumb(thumb);
+        image.compressFormat = Bitmap.CompressFormat.PNG;
+
+        new ShareAction(ProductDetailsAC.this)
+                .setPlatform(SHARE_TYPE)
+                .withText(rentDetail.getKeyword().toString())
+                .withTitle(rentDetail.getName().toString())
+                .withMedia(image)
+                .withTargetUrl("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/"+rentDetail.getRentid())
+                .setCallback(umShareListener)
+                .share();
+//        UmengTool.getSignature(ProductDetailsAC.this);
+//        UmengTool.getREDICRECT_URL(ProductDetailsAC.this);
+
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享成功啦！");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享失败！");
+            if(t!=null){
+                Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享已取消！");
+        }
+    };
+
+
     // 初始化聊天
     private void initRongData() {
         mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID,0);

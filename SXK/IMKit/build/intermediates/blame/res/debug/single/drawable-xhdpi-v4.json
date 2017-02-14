@@ -104,12 +104,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u2614.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_cs_group_list_divide_line.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_cs_group_list_divide_line.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u1f4da.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u1f4da.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_cs_group_list_divide_line.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_cs_group_list_divide_line.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_cs_leave_message_bg.png",
@@ -128,12 +128,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u1f608.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u26c4.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u26c4.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_ext_plugin_image.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_ext_plugin_image.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/u26c4.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u26c4.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_cs_button_bg_hover.png",
@@ -774,6 +774,10 @@
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_voice_input_toggle.9.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_voice_input_toggle.9.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/user_header_image_placeholder.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/user_header_image_placeholder.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable-xhdpi-v4/rc_receive_voice_one.png",

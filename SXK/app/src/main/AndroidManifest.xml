@@ -261,7 +261,7 @@
 
         <!-- // 第三方登录相关 -->
         <activity
-            android:name=".ShareHelper.WBShareActivity"
+            android:name=".WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -269,7 +269,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
+        <!--<service-->
+            <!--android:name="com.sina.weibo.sdk.net.DownloadService"-->
+            <!--android:exported="false"></service>-->
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
@@ -303,9 +307,7 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="587ece6b07fe6574fc000487" />
-        <!-- <service -->
-        <!-- android:name="com.sina.weibo.sdk.net.DownloadService" -->
-        <!-- android:exported="false"></service> -->
+
         <activity
             android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"
             android:theme="@style/AppThemeHasTitle" />
@@ -368,6 +370,7 @@
         </activity>
         <activity android:name=".Section.HomeNC.Controller.BannerDetailAC"
             android:theme="@style/AppThemeHasTitle"></activity>
+        
     </application>
 
 </manifest>

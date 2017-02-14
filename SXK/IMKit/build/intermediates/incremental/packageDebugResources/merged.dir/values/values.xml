@@ -386,7 +386,7 @@
     <color name="rc_input_bg">#F4F4F4</color>
     <color name="rc_input_gap_color">#dbdbdd</color>
     <color name="rc_location_text">#7F000000</color>
-    <color name="rc_main_theme">#0195ff</color>
+    <color name="rc_main_theme">#16a5af</color>
     <color name="rc_mentioned_color">#cc3333</color>
     <color name="rc_message_user_name">#828282</color>
     <color name="rc_normal_bg">#EBEBEB</color>
@@ -399,9 +399,9 @@
     <color name="rc_picsel_grid_mask">#00000000</color>
     <color name="rc_picsel_grid_mask_pressed">#80000000</color>
     <color name="rc_picsel_toolbar">#393A3E</color>
-    <color name="rc_picsel_toolbar_send_disable">#3E7D2C</color>
-    <color name="rc_picsel_toolbar_send_normal">#45C018</color>
-    <color name="rc_picsel_toolbar_send_pressed">#3E7D2C</color>
+    <color name="rc_picsel_toolbar_send_disable">#16a5af</color>
+    <color name="rc_picsel_toolbar_send_normal">#16a5af</color>
+    <color name="rc_picsel_toolbar_send_pressed">#16a5af</color>
     <color name="rc_picsel_toolbar_send_text_disable">#AAAAAA</color>
     <color name="rc_picsel_toolbar_send_text_normal">#FFFFFF</color>
     <color name="rc_picsel_toolbar_transparent">#F0393A3E</color>
@@ -409,7 +409,7 @@
     <color name="rc_popup_dialog_list_divider_color">#dfdfdd</color>
     <color name="rc_popup_dialog_prompt_cancel_color">#999999</color>
     <color name="rc_popup_dialog_prompt_clear_color">#f43530</color>
-    <color name="rc_popup_dialog_prompt_ok_color">#0099ff</color>
+    <color name="rc_popup_dialog_prompt_ok_color">#16a5af</color>
     <color name="rc_popup_dialog_text_color">#353535</color>
     <color name="rc_read_receipt_status">#96c4ec</color>
     <color name="rc_text_color_primary">#353535</color>
@@ -418,8 +418,8 @@
     <color name="rc_text_color_tertiary">#d7d7d7</color>
     <color name="rc_text_voice">#737373</color>
     <color name="rc_voice_cancel"> #CC933432</color>
-    <color name="rc_voice_color">#0195ff</color>
-    <color name="rc_voice_color_left">#4385bf</color>
+    <color name="rc_voice_color">#16a5af</color>
+    <color name="rc_voice_color_left">#16a5af</color>
     <color name="rc_voice_color_right">#a2a2a2</color>
     <color name="rc_web_progress_bar">#9fcdfd</color>
     <declare-styleable name="AsyncImageView"><attr format="dimension" name="RCMinShortSideSize"/><attr format="dimension" name="RCCornerRadius"/><attr format="boolean" name="RCMask"/><attr name="RCShape">
@@ -762,7 +762,7 @@
     </style>
     <style name="RCTheme.Message.TextView" parent="RCTheme.TextView">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/rc_text_color_primary</item>
+        <item name="android:textColor">@color/rc_text_color_primary_inverse</item>
     </style>
     <style name="RCTheme.Message.Username.TextView" parent="RCTheme.TextView">
         <item name="android:textSize">14sp</item>

@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.Adapter.PublishFriendMomentRecycleAdapter;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
@@ -102,6 +104,8 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
     LikeIOSSheetDialog sheetView;
     private String headUrl;
     private String content="";
+    private String RESPONSE="";
+    private ArrayList<Integer> topicModelidList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,35 +114,31 @@ public class CommunityPublishTopicAC extends AppCompatActivity implements View.O
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initTopicData();
         initView();
-
-
     }
-
-    ArrayList<String> topicNameList = null;
-    ArrayList<Integer> topicModelList = null;
     ArrayList<TestModel> topicListModle = null;
     TestModel testModel = null;
 
     private void initTopicData() {
-        topicNameList = getIntent().getStringArrayListExtra("TOPIC");
-        topicModelList = getIntent().getIntegerArrayListExtra("TOPICMODELID");
-        LogUtil.e("topicNameList" + topicNameList);
-        LogUtil.e("topicModelList" + topicModelList);
+        RESPONSE = getIntent().getStringExtra("TOPIC");
+
+        Gson gson = new Gson();
+        CommunityTopicListModel communityTopicListModel = gson.fromJson(String.valueOf(RESPONSE), CommunityTopicListModel.class);
         mloading = LoadingUtils.createLoadingDialog(this, "发布中...");
         topicListModle = new ArrayList<>();
-        for (int i = 0; i < topicNameList.size(); i++) {
-            testModel = new TestModel(topicNameList.get(i).toString(), false);
-            topicListModle.add(i, testModel);
+        for (int i = 0; i < communityTopicListModel.getTotal(); i++) {
+            if (!communityTopicListModel.getModuleList().get(i).getName().toString().trim().equals("免费鉴定")){
+                testModel = new TestModel(communityTopicListModel.getModuleList().get(i).getName().toString(), false);
+                topicListModle.add(testModel);
+                topicModelidList.add(communityTopicListModel.getModuleList().get(i).getModuleid());
+            }
         }
-
         initRecycleView();
-
         uploadDatasource = new ArrayList<>();
     }
 
     private void initRecycleView() {
         hot_cate_publish = (RecyclerView) findViewById(R.id.hot_cate_publish);
-        publishFriendMomentRecycleAdapter = new PublishFriendMomentRecycleAdapter(this, topicListModle, topicModelList);
+        publishFriendMomentRecycleAdapter = new PublishFriendMomentRecycleAdapter(this, topicListModle, topicModelidList);
         hot_cate_publish.setLayoutManager(new GridLayoutManager(this, 3));
         hot_cate_publish.setAdapter(publishFriendMomentRecycleAdapter);
         publishFriendMomentRecycleAdapter.setOnItemClickListener(new PublishFriendMomentRecycleAdapter.OnItemClickListener() {

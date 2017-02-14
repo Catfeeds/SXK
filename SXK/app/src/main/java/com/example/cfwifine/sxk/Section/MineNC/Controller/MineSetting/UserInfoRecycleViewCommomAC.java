@@ -1,21 +1,33 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.CustomDialog_ShareBorad;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.SettingRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.PersonalIntroAndChangePswAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideCatchUtil;
+import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
 
@@ -39,6 +51,7 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
     int[] imageViews = {R.drawable.dizhi, R.drawable.fenxiang, R.drawable.huancun,
             R.drawable.gengxin, R.drawable.fankui, R.drawable.xieyi,
             R.drawable.guanyu};
+    private CustomDialog_ShareBorad customDialog_shareBorad;
 
 
     // 我的界面通用跳转
@@ -146,9 +159,83 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
             case 2:
                 clearCache();
                 break;
+            case 1:
+                // 分享到APP
+                // 分享到第三方
+                customDialog_shareBorad = new CustomDialog_ShareBorad(this, new CustomDialog_ShareBorad.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(int type) {
+                        LogUtil.e("输出的类型为"+type);
+                        shareToThreePart(type);
+                    }
+                },R.style.style_dialog);
+                customDialog_shareBorad.show();
+                break;
             default:
                 break;
         }
+    }
+
+    private void shareToThreePart(int type) {
+        SHARE_MEDIA SHARE_TYPE = null;
+        switch (type){
+            case 1:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN;
+                break;
+            case 2:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 3:
+                SHARE_TYPE = SHARE_MEDIA.SINA;
+                break;
+            case 4:
+                SHARE_TYPE = SHARE_MEDIA.QQ;
+                break;
+        }
+        LogUtil.e("输出类型为"+type);
+        UMImage image = new UMImage(UserInfoRecycleViewCommomAC.this, R.mipmap.ic_launcher);
+        UMImage thumb =  new UMImage(this, R.mipmap.ic_launcher);
+        image.setThumb(thumb);
+        image.compressFormat = Bitmap.CompressFormat.PNG;
+
+        new ShareAction(UserInfoRecycleViewCommomAC.this)
+                .setPlatform(SHARE_TYPE)
+                .withText("亲们快来下载啵呗吧！")
+                .withTitle("啵呗")
+                .withMedia(image)
+                .withTargetUrl("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/137")
+                .setCallback(umShareListener)
+                .share();
+//        UmengTool.getSignature(ProductDetailsAC.this);
+//        UmengTool.getREDICRECT_URL(ProductDetailsAC.this);
+
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享成功啦！");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享失败！");
+            if(t!=null){
+                Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享已取消！");
+        }
+    };
+    public void initSnackBar(String value) {
+        SnackbarUtils.showShortSnackbar(UserInfoRecycleViewCommomAC.this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
     private void clearCache() {

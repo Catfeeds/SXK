@@ -346,7 +346,7 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
             public void onItemClick(View view, int position) {
                 if (position != 0) {
 ////                    SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "选中了" + mDatas.get(position).getCity(), Color.WHITE, Color.parseColor("#16a6ae"));
-                    Toast.makeText(getContext(), mDatas.get(position).getCity() + "", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -476,7 +476,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
         adapter.setOnItemClickLitener(new ClassifyCateListAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), secondDataSource.get(position).getName().toString() + "", Toast.LENGTH_SHORT).show();
                 //跳转到详细列表界面
                 Intent intent = new Intent(getContext(), CateListAC.class);
                 startActivity(intent);

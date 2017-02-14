@@ -72,6 +72,10 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_cs_admin_selector.xml"
     },
     {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable/user_header_image_placeholder.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/user_header_image_placeholder.png"
+    },
+    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/drawable/rc_cs_list_divider_style.xml",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_cs_list_divider_style.xml"
     },

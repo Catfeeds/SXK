@@ -559,6 +559,7 @@ containing a value of this type.
         public static int u270f=0x7f02019a;
         public static int u2744=0x7f02019b;
         public static int u2b50=0x7f02019c;
+        public static int user_header_image_placeholder=0x7f02019d;
     }
     public static final class id {
         public static int C=0x7f0a0039;

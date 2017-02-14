@@ -25,12 +25,12 @@ import java.util.List;
 public class PublishFriendMomentRecycleAdapter extends RecyclerView.Adapter<PublishFriendMomentRecycleAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<Integer> ModelList = null;
+    private ArrayList<Integer> ModelidList = null;
     private ArrayList<TestModel> mData = null;
     public PublishFriendMomentRecycleAdapter(Context context, ArrayList<TestModel> datas, ArrayList<Integer> topicModelList) {
         this.context = context;
         this.mData = datas;
-        this.ModelList = topicModelList;
+        this.ModelidList = topicModelList;
     }
 
     private PublishFriendMomentRecycleAdapter.OnItemClickListener mOnItemClickListener;
@@ -77,7 +77,7 @@ public class PublishFriendMomentRecycleAdapter extends RecyclerView.Adapter<Publ
                 }
                 mData.get(position).setState(true);
                 notifyDataSetChanged();
-                mOnItemClickListener.OnItemClick(view,ModelList.get(position),position);
+                mOnItemClickListener.OnItemClick(view,ModelidList.get(position),position);
 
             }
         });

@@ -72,6 +72,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private ArrayList<String> dataSource;
     private List<TopicListModel.TopicListBean> newTopicListModel = null;
     private int MODLEID = -1;
+    private String newTopicString="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,6 +186,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         Gson gson = new Gson();
                         CommunityTopicListModel communityTopicListModel = gson.fromJson(response, CommunityTopicListModel.class);
                         if (communityTopicListModel.getCode() == 1) {
+                            newTopicString = response;
                             topic = communityTopicListModel.getModuleList();
                             initFriendMomentItemListDataSource();
                         } else if (communityTopicListModel.getCode() == 0) {
@@ -236,7 +238,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("话题列表————————", "" + response);
+                        Log.e("话题列————————", "" + response);
                         mloading.dismiss();
                         topicList = new ArrayList<TopicListModel.TopicListBean>();
                         Gson gson = new Gson();
@@ -267,49 +269,6 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                 });
     }
 
-    /**
-     * 获取话题
-     */
-    private void initFriendMomentItemDetailDataSource() {
-        JSONObject picJson = new JSONObject();
-        try {
-            picJson.put("topicid", -1);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
-        OkHttpUtils.postString().url(BaseInterface.CommunityGetTopic)
-                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
-                .addHeader("X-Requested-With", "XMLHttpRequest")
-                .addHeader("Content-Type", "application/json;chartset=utf-8")
-                .content(picJson.toString())
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        Log.e("话题详情", "" + response);
-                        Gson gson = new Gson();
-
-//                        if (communityHeaderImageModel.getCode() == 1) {
-
-//                        } else if (communityHeaderImageModel.getCode() == 0) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        } else if (communityHeaderImageModel.getCode() == 911) {
-//                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                            classify_online_view.setVisibility(View.GONE);
-//                            classify_nonet_view.setVisibility(View.VISIBLE);
-//                        }
-                    }
-                });
-    }
 
     // TODO*********************************配置导航头**********************************************
     private void configurationNaviTitle() {
@@ -445,7 +404,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             topicList.add(newTopicListModel.get(i));
                         }
                     }
-                    mAdapter.notifyDataSetChanged();
+                    mAdapter.setDatas(topicList);
+//                    mAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -554,8 +514,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         topicModelID.add(i, topic.get(i).getModuleid());
                     }
                     Intent intent = new Intent(getActivity(), CommunityPublishTopicAC.class);
-                    intent.putExtra("TOPIC", topicName);
-                    intent.putExtra("TOPICMODELID", topicModelID);
+                    intent.putExtra("TOPIC", newTopicString);
+//                    intent.putExtra("TOPICMODELID", topicModelID);
                     startActivity(intent);
                 } else {
                     SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "数据走丢了!", Color.WHITE, Color.parseColor("#16a6ae"));

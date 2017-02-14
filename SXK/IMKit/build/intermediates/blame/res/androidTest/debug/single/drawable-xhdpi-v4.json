@@ -48,12 +48,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_cs_leave_message_bg_hover.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f525.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f525.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_cs_evaluate_plugin_hover.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f525.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f525.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_voice_sent.png",
@@ -368,6 +368,10 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_ic_star_hover.png"
     },
     {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/user_header_image_placeholder.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/user_header_image_placeholder.png"
+    },
+    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_img_camera.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_img_camera.png"
     },
@@ -408,12 +412,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f48a.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f633.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f633.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u2615.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u2615.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f633.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f633.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_select_check_nor.png",
@@ -1092,12 +1096,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_btn_pub_service_follow_normal.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_setting_friends_add.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_ic_setting_friends_add.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_unresolved.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_cs_unresolved.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_ic_setting_friends_add.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_ic_setting_friends_add.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/u1f603.png",
@@ -1124,12 +1128,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/u1f4a9.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_voide_message_unread.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_voide_message_unread.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/rc_conversation_list_msg_send_failure.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/rc_cs_group_list_divide_line.png",

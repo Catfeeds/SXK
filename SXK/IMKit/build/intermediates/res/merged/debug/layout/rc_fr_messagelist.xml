@@ -25,7 +25,7 @@
         android:background="@drawable/rc_unread_message_count"
         android:gravity="center_vertical|left"
         android:paddingLeft="16dp"
-        android:textColor="#0195ff"
+        android:textColor="#16a5af"
         android:textSize="14sp"
         android:visibility="gone"/>
 
