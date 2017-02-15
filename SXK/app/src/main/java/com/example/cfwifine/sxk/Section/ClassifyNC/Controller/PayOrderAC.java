@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,12 +27,19 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
+import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
+import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.pingplusplus.android.PaymentActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -76,14 +84,24 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private RadioButton product_r4;
     private RadioGroup product_rg;
     private RadioButton checkRadioBtn;
-    private String RentDate;
+    private String RentDate="第一次";
     private String ADDRESSS;
-    private int RECEIVEDID;
+    private int RECEIVEDID=-1;
     private TextView product_address;
     private int ordeID;
-    private int isChecked;
+    private int isChecked=2;
     private String message;
     private String PAYTYPE="";
+    private double dD;
+    private double dS;
+    private double dT;
+    private double dF;
+    private double dM;
+    private double dN;
+    private double dO;
+    private double dP;
+    private double dJ;
+    private int AgreeIsChecked=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +140,22 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         leaving_message = (EditText) findViewById(R.id.leaving_message);
         rule = (TextView) findViewById(R.id.rule);
         agreement_btn = (CheckBox) findViewById(R.id.agreement_btn);
+        if (agreement_btn.isChecked()){
+            AgreeIsChecked = 1;
+        }
+        agreement_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    AgreeIsChecked = 1;
+                } else {
+                    AgreeIsChecked = 2;
+                }
+                LogUtil.e("是否选择" + AgreeIsChecked);
+            }
+        });
+
+
         user_agreement = (TextView) findViewById(R.id.user_agreement);
         order_rent_and_other = (TextView) findViewById(R.id.order_rent_and_other);
         order_deposit2 = (TextView) findViewById(R.id.order_deposit2);
@@ -141,25 +175,76 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         product_rg = (RadioGroup) findViewById(R.id.product_rg);
         product_rg.setOnClickListener(this);
         checkRadioBtn = (RadioButton) product_rg.findViewById(product_rg.getCheckedRadioButtonId());
+
+        // 默认选中的数据
+        dJ = ((productDetailModel.getRent().getThree()));
+        order_rent_and_other.setText(String.format ("%.2f",dJ/100));
+        order_rent.setText(String.format ("%.2f",dJ/100));
+        double market = productDetailModel.getRent().getMarketPrice();
+        order_deposit.setText(String.format ("%.2f",market/100));
+        order_deposit2.setText(String.format ("%.2f",market/100));
+
         product_rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int pos) {
                 checkRadioBtn = (RadioButton) product_rg.findViewById(pos);
                 LogUtil.e("选择了第几个" + checkRadioBtn.getText());
                 RentDate = checkRadioBtn.getText().toString();
-                switch (RentDate) {
-                    case "3天":
-                        order_rent_and_other.setText(String.valueOf((productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice())/100));
-                        break;
-                    case "7天":
-                        order_rent_and_other.setText(String.valueOf((productDetailModel.getRent().getSeven()+productDetailModel.getRent().getMarketPrice())/100));
-                        break;
-                    case "15天":
-                        order_rent_and_other.setText(String.valueOf((productDetailModel.getRent().getFiften()+productDetailModel.getRent().getMarketPrice())/100));
-                        break;
-                    case "25天":
-                        order_rent_and_other.setText(String.valueOf((productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getMarketPrice())/100));
-                        break;
+                if (isChecked==2){
+                    switch (RentDate) {
+                        case "3天":
+                            dD = ((productDetailModel.getRent().getThree()));
+                            order_rent_and_other.setText(String.format ("%.2f",dD/100));
+                            order_rent.setText(String.format ("%.2f",dD/100));
+                            double market = productDetailModel.getRent().getMarketPrice();
+                            order_deposit.setText(String.format ("%.2f",market/100));
+                            order_deposit2.setText(String.format ("%.2f",market/100));
+                            break;
+                        case "7天":
+                            dS = ((productDetailModel.getRent().getSeven()));
+                            order_rent_and_other.setText(String.format ("%.2f",dS/100));
+                            order_rent.setText(String.format ("%.2f",dS/100));
+                            double markets = productDetailModel.getRent().getMarketPrice();
+                            order_deposit.setText(String.format ("%.2f",markets/100));
+                            order_deposit2.setText(String.format ("%.2f",markets/100));
+                            break;
+                        case "15天":
+                            dT = ((productDetailModel.getRent().getFiften()));
+                            order_rent_and_other.setText(String.format ("%.2f",dT/100));
+                            order_rent.setText(String.format ("%.2f",dT/100));
+                            double markett = productDetailModel.getRent().getMarketPrice();
+                            order_deposit.setText(String.format ("%.2f",markett/100));
+                            order_deposit2.setText(String.format ("%.2f",markett/100));
+                            break;
+                        case "25天":
+                            dF = ((productDetailModel.getRent().getTwentyFive()));
+                            order_rent_and_other.setText(String.format ("%.2f",dF/100));
+                            order_rent.setText(String.format ("%.2f",dF/100));
+                            double marketb = productDetailModel.getRent().getMarketPrice();
+                            order_deposit.setText(String.format ("%.2f",marketb/100));
+                            order_deposit2.setText(String.format ("%.2f",marketb/100));
+                            break;
+                    }
+
+                }else {
+                    switch (RentDate) {
+                        case "3天":
+                            dM = ((productDetailModel.getRent().getThree()+productDetailModel.getRent().getRisk()));
+                            order_rent_and_other.setText(String.format ("%.2f",dM/100));
+                            break;
+                        case "7天":
+                            dN = ((productDetailModel.getRent().getSeven()+productDetailModel.getRent().getRisk()));
+                            order_rent_and_other.setText(String.format ("%.2f",dN/100));
+                            break;
+                        case "15天":
+                            dO = ((productDetailModel.getRent().getFiften()+productDetailModel.getRent().getRisk()));
+                            order_rent_and_other.setText(String.format ("%.2f",dO/100));
+                            break;
+                        case "25天":
+                            dP = ((productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getRisk()));
+                            order_rent_and_other.setText(String.format ("%.2f",dP/100));
+                            break;
+                    }
                 }
 
 
@@ -174,7 +259,59 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
                     isChecked = 1;
-//                    order_rent_and_other.setText();
+                }else {
+                    isChecked =2;
+                }
+//                LogUtil.e("是否选择"+isChecked);
+                if (isChecked == 1){
+                    if (RentDate.equals("第一次") ){
+                        double riskAndMarket = dJ+productDetailModel.getRent().getRisk();
+                        order_rent_and_other.setText(String.format("%.2f",riskAndMarket/100));
+                    }else {
+                        switch (RentDate) {
+                            case "3天":
+                                dM = ((productDetailModel.getRent().getThree()+productDetailModel.getRent().getRisk()));
+                                order_rent_and_other.setText(String.format ("%.2f",dM/100));
+                                break;
+                            case "7天":
+                                dN = ((productDetailModel.getRent().getSeven()+productDetailModel.getRent().getRisk()));
+                                order_rent_and_other.setText(String.format ("%.2f",dN/100));
+                                break;
+                            case "15天":
+                                dO = ((productDetailModel.getRent().getFiften()+productDetailModel.getRent().getRisk()));
+                                order_rent_and_other.setText(String.format ("%.2f",dO/100));
+                                break;
+                            case "25天":
+                                dP = ((productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getRisk()));
+                                order_rent_and_other.setText(String.format ("%.2f",dP/100));
+                                break;
+                        }
+                    }
+
+                }else {
+                    if (RentDate.equals("第一次")){
+//                        double riskAndMarket = productDetailModel.getRent().getMarketPrice();
+                        order_rent_and_other.setText(String.format("%.2f",dJ/100));
+                    }else {
+                        switch (RentDate) {
+                            case "3天":
+                                dD = ((productDetailModel.getRent().getThree()));
+                                order_rent_and_other.setText(String.format ("%.2f",dD/100));
+                                break;
+                            case "7天":
+                                dS = ((productDetailModel.getRent().getSeven()));
+                                order_rent_and_other.setText(String.format ("%.2f",dS/100));
+                                break;
+                            case "15天":
+                                dT = ((productDetailModel.getRent().getFiften()));
+                                order_rent_and_other.setText(String.format ("%.2f",dT/100));
+                                break;
+                            case "25天":
+                                dF = ((productDetailModel.getRent().getTwentyFive()));
+                                order_rent_and_other.setText(String.format ("%.2f",dF/100));
+                                break;
+                        }
+                    }
                 }
             }
         });
@@ -182,15 +319,66 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         product_address = (TextView) findViewById(R.id.product_address);
         product_address.setText("请选择收货地址");
         setValueForView();
+        initDefaultAddress();
     }
+    // 获取收货地址
+    private void initDefaultAddress() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.SettingGetReceiveGoods)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
 
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        AddressDetailModel addressDetailModel = gson.fromJson(response, AddressDetailModel.class);
+                        if (addressDetailModel.getCode() == 1) {
+                            L.e("详细信息" + response);
+                            if (addressDetailModel.getReceiver() != null) {
+                                product_address.setText("收货人：" + addressDetailModel.getReceiver().getName() + "  " + addressDetailModel.getReceiver().getMobile() + "\n" + addressDetailModel.getReceiver().getState() + addressDetailModel.getReceiver().getCity() + addressDetailModel.getReceiver().getDistrict() + addressDetailModel.getReceiver().getAddress());
+                                RECEIVEDID = addressDetailModel.getReceiver().getReceiverid();
+                                SharedPreferencesUtils.setParam(PayOrderAC.this, "DEFAULTADDRESS", "");
+                            } else {
+                                product_address.setText("请选择收货地址");
+                            }
+                        } else if (addressDetailModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+
+                    }
+                });
+
+
+    }
     private void setValueForView() {
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + productDetailModel.getRent().getImgList().get(0);
         Glide.with(this).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_img);
         product_name.setText(productDetailModel.getRent().getName().toString());
         product_keyword.setText(productDetailModel.getRent().getKeyword().toString());
-        product_money.setText("市场价： ¥ " + String.valueOf((double) (Math.round(productDetailModel.getRent().getMarketPrice()) / 100.0)));
-        product_lowest_price.setText("¥ " + String.valueOf((double) (Math.round(productDetailModel.getRent().getRentPrice()) / 100.0)) + "/天");
+        double dd= (productDetailModel.getRent().getMarketPrice());
+        product_money.setText("市场价： ¥ " + String.format("%.2f",dd/100));
+        double ss = productDetailModel.getRent().getRentPrice();
+        product_lowest_price.setText("¥ " + String.format("%.2f",ss/100) + "/天");
+        double insurance = productDetailModel.getRent().getRisk();
+        freight_insurance.setText(String.format("%.2f",insurance/100));
     }
 
     @Override
@@ -226,6 +414,13 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
                     public void onClick(View v) {
                         shitView.dismiss();
                         PAYTYPE = "wx";
+                        useAliPays();
+                    }
+                }).addMenu("银联支付", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        shitView.dismiss();
+                        PAYTYPE = "upacp";
                         useAliPays();
                     }
                 }).create();
@@ -324,54 +519,133 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         if (null != msg2 && msg2.length() != 0) {
             str += "\n" + msg2;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(PayOrderAC.this);
-        builder.setMessage(str);
-        builder.setTitle("提示");
-        builder.setPositiveButton("OK", null);
-        builder.create().show();
+        LogUtil.e("支付结果"+str);
+        String RESULT= "";
+        switch (title){
+            case "success":
+                RESULT = "支付成功！";
+                break;
+            case "fail":
+                RESULT = "支付失败！";
+                break;
+            case "cancel":
+                RESULT = "已取消支付！";
+                break;
+            case "invalid":
+                RESULT = "未检测到支付软件！";
+                break;
+            default:
+                break;
+        }
+        MaterialDialog(RESULT);
+    }
+
+    private void MaterialDialog(String str) {
+        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+        BaseAnimatorSet bas_out = new FadeExit();
+        final MaterialDialog dialogs = new MaterialDialog(this);
+        dialogs.title("")
+                .titleTextColor(Color.BLACK)
+                .titleTextSize(14)
+                .isTitleShow(false)
+                .content(str)//
+                .contentTextColor(Color.GRAY)
+                .btnNum(1)
+                .btnText("确定")
+                .contentGravity(Gravity.CENTER_HORIZONTAL)
+                .btnTextColor(Color.parseColor("#16a6ae"))
+                .showAnim(bas_in)//
+                .dismissAnim(bas_out)//
+                .show();
+
+        dialogs.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialogs.dismiss();
+            }
+        });
     }
 
 
     // 生成订单的接口
     private void useAliPays() {
         LogUtil.e("receivedid"+RECEIVEDID);
-        if (RentDate.length() == 0) {
-            initSnackBar("您还没有选择租期！");
-            return;
-        }
-
         message = leaving_message.getText().toString().trim();
         if (TextUtils.isEmpty(message)) {
             initSnackBar("您还没有留言！");
             return;
         }
+        if (RECEIVEDID==-1){
+            initSnackBar("你还没有选择收货地址！");
+            return;
+        }
+        if (AgreeIsChecked==2){
+            initSnackBar("你还没有同意啵呗用户协议！");
+            return;
+        }
+
 
 
 
         String va = "";
         int pri = 0;
         int total = 0;
-        switch (RentDate) {
-            case "3天":
-                va = "three";
-                pri = productDetailModel.getRent().getThree();
-                total = productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice();
-                break;
-            case "7天":
-                va = "seven";
-                pri = productDetailModel.getRent().getSeven();
-                total = productDetailModel.getRent().getSeven()+productDetailModel.getRent().getMarketPrice();
-                break;
-            case "15天":
-                va = "fiften";
-                pri = productDetailModel.getRent().getFiften();
-                total = productDetailModel.getRent().getFiften()+productDetailModel.getRent().getMarketPrice();
-                break;
-            case "25天":
-                va = "twentyFive";
-                pri = productDetailModel.getRent().getTwentyFive();
-                total = productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getMarketPrice();
-                break;
+        if (isChecked==1){
+            switch (RentDate) {
+                case "第一次":
+                    va = "three";
+                    pri = productDetailModel.getRent().getThree();
+                    total = productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice()+productDetailModel.getRent().getRisk();
+                    break;
+                case "3天":
+                    va = "three";
+                    pri = productDetailModel.getRent().getThree();
+                    total = productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice()+productDetailModel.getRent().getRisk();
+                    break;
+                case "7天":
+                    va = "seven";
+                    pri = productDetailModel.getRent().getSeven();
+                    total = productDetailModel.getRent().getSeven()+productDetailModel.getRent().getMarketPrice()+productDetailModel.getRent().getRisk();
+                    break;
+                case "15天":
+                    va = "fiften";
+                    pri = productDetailModel.getRent().getFiften();
+                    total = productDetailModel.getRent().getFiften()+productDetailModel.getRent().getMarketPrice()+productDetailModel.getRent().getRisk();
+                    break;
+                case "25天":
+                    va = "twentyFive";
+                    pri = productDetailModel.getRent().getTwentyFive();
+                    total = productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getMarketPrice()+productDetailModel.getRent().getRisk();
+                    break;
+            }
+        }else {
+            switch (RentDate) {
+                case "第一次":
+                    va = "three";
+                    pri = productDetailModel.getRent().getThree();
+                    total = productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice();
+                    break;
+                case "3天":
+                    va = "three";
+                    pri = productDetailModel.getRent().getThree();
+                    total = productDetailModel.getRent().getThree()+productDetailModel.getRent().getMarketPrice();
+                    break;
+                case "7天":
+                    va = "seven";
+                    pri = productDetailModel.getRent().getSeven();
+                    total = productDetailModel.getRent().getSeven()+productDetailModel.getRent().getMarketPrice();
+                    break;
+                case "15天":
+                    va = "fiften";
+                    pri = productDetailModel.getRent().getFiften();
+                    total = productDetailModel.getRent().getFiften()+productDetailModel.getRent().getMarketPrice();
+                    break;
+                case "25天":
+                    va = "twentyFive";
+                    pri = productDetailModel.getRent().getTwentyFive();
+                    total = productDetailModel.getRent().getTwentyFive()+productDetailModel.getRent().getMarketPrice();
+                    break;
+            }
         }
 
         JSONObject js = new JSONObject();
@@ -384,7 +658,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", productDetailModel.getRent().getRentid());
-            jsonObject.put("isRisk", 2);
+            jsonObject.put("isRisk", isChecked);
             jsonObject.put("tenancy", js);
             jsonObject.put("total", total);
             jsonObject.put("receiverid", RECEIVEDID);

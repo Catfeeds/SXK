@@ -9,17 +9,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Adapter.TwoItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
+import com.google.gson.Gson;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MineIMBoKeFC extends Fragment {
+public class MineIMBoKeFC extends Fragment implements View.OnClickListener {
 
 
     private View view;
@@ -29,9 +34,11 @@ public class MineIMBoKeFC extends Fragment {
     String[] text = new String[]{
             "租用流程", "出租收益", "平台保障", "破损处理", "平台服务费", "长租"
     };
+    Button contacts_server;
     private ArrayList<String> infoARR;
     private ArrayList<String> textARR;
     private RecyclerView tops_rv;
+    private UserInfoModel userInfoModel=null;
 
     public MineIMBoKeFC() {
         // Required empty public constructor
@@ -44,6 +51,8 @@ public class MineIMBoKeFC extends Fragment {
         // Inflate the layout for this fragment
         if (view == null){
             view = inflater.inflate(R.layout.fragment_mine_imbo_ke_fc, container, false);
+            contacts_server = (Button)view.findViewById(R.id.contacts_server);
+            contacts_server.setOnClickListener(this);
             initTopRV();
         }
 
@@ -74,6 +83,34 @@ public class MineIMBoKeFC extends Fragment {
             }
         });
     }
+    private void initMeiQia() {
+        String userinfo = getActivity().getIntent().getStringExtra("USERINFO");
+        Gson gson = new Gson();
+        userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
+        int  sexid = userInfoModel.getUser().getSex();
+        String Sex = "";
+        if (sexid == 1){
+            Sex = "男";
+        }else {
+            Sex = "女";
+        }
+        int userid = userInfoModel.getUser().getUserid();
+        HashMap<String, String> clientInfo = new HashMap<>();
+        clientInfo.put("name", userInfoModel.getUser().getNickname());
+        clientInfo.put("avatar", userInfoModel.getUser().getHeadimgurl());
+        clientInfo.put("gender",Sex);
+        clientInfo.put("tel", userInfoModel.getUser().getMobile());
+        clientInfo.put("技能1", "啵呗用户");
+        Intent intent = new MQIntentBuilder(getActivity()).setClientInfo(clientInfo).setCustomizedId(String.valueOf(userid)).build();
+        startActivity(intent);
+    }
 
-
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.contacts_server:
+                initMeiQia();
+                break;
+        }
+    }
 }

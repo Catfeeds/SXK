@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +25,11 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalA
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideCatchUtil;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -171,11 +177,39 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
                 },R.style.style_dialog);
                 customDialog_shareBorad.show();
                 break;
+            case 3:
+                MaterialDialog();
+                break;
             default:
                 break;
         }
     }
 
+    private void MaterialDialog() {
+        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+        BaseAnimatorSet bas_out = new FadeExit();
+        final MaterialDialog dialogs = new MaterialDialog(this);
+        dialogs.title("检测更新")
+                .titleTextColor(Color.BLACK)
+                .titleTextSize(14)
+                .isTitleShow(false)
+                .content("当前版本已经是最新版本！")//
+                .contentTextColor(Color.GRAY)
+                .btnNum(1)
+                .btnText("确定")
+                .contentGravity(Gravity.CENTER_HORIZONTAL)
+                .btnTextColor(Color.parseColor("#16a6ae"))
+                .showAnim(bas_in)//
+                .dismissAnim(bas_out)//
+                .show();
+
+        dialogs.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialogs.dismiss();
+            }
+        });
+    }
     private void shareToThreePart(int type) {
         SHARE_MEDIA SHARE_TYPE = null;
         switch (type){

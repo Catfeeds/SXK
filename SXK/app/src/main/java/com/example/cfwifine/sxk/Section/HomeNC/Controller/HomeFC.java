@@ -115,6 +115,8 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     FrameLayout mFlCardBack;
     FrameLayout mFlCardFront;
     private ExplosionField mExplosionField;
+    private boolean isBlooUP=false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -409,6 +411,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 mExplosionField.explode(homeToastView);
                 homeToastView.setVisibility(View.GONE);
+                isBlooUP = true;
             }
         });
 
@@ -458,15 +461,18 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         float scale = getResources().getDisplayMetrics().density * distance;
         mFlCardFront.setCameraDistance(scale);
         mFlCardBack.setCameraDistance(scale);
+
         new CountDownTimer(20000, 2000) {
             public void onTick(long millisUntilFinished) {
                 flipCard(view);
             }
 
             public void onFinish() {
-                mExplosionField.explode(homeToastView);
+                if (!isBlooUP){
+                    mExplosionField.explode(homeToastView);
 //                homeToastView.setOnClickListener(null);
-                homeToastView.setVisibility(View.GONE);
+                    homeToastView.setVisibility(View.GONE);
+                }
             }
         }.start();
 

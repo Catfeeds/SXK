@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,11 @@ import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.pingplusplus.android.PaymentActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -473,11 +479,51 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         if (null != msg2 && msg2.length() != 0) {
             str += "\n" + msg2;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(AppraisasAC.this);
-        builder.setMessage(str);
-        builder.setTitle("提示");
-        builder.setPositiveButton("OK", null);
-        builder.create().show();
+        LogUtil.e("支付结果"+str);
+        String RESULT= "";
+        switch (title){
+            case "success":
+                RESULT = "支付成功！";
+                break;
+            case "fail":
+                RESULT = "支付失败！";
+                break;
+            case "cancel":
+                RESULT = "已取消支付！";
+                break;
+            case "invalid":
+                RESULT = "未检测到支付软件！";
+                break;
+            default:
+                break;
+        }
+        MaterialDialog(RESULT);
+    }
+
+    private void MaterialDialog(String str) {
+        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+        BaseAnimatorSet bas_out = new FadeExit();
+        final MaterialDialog dialogs = new MaterialDialog(this);
+        dialogs.title("")
+                .titleTextColor(Color.BLACK)
+                .titleTextSize(14)
+                .isTitleShow(false)
+                .content(str)//
+                .contentTextColor(Color.GRAY)
+                .btnNum(1)
+                .btnText("确定")
+                .contentGravity(Gravity.CENTER_HORIZONTAL)
+                .btnTextColor(Color.parseColor("#16a6ae"))
+                .showAnim(bas_in)//
+                .dismissAnim(bas_out)//
+                .show();
+
+        dialogs.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialogs.dismiss();
+            }
+        });
     }
 
 

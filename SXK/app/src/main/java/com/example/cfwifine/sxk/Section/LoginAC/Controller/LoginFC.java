@@ -24,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.HomeNC.Controller.ExchangeAndRentAC;
 import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
@@ -91,7 +92,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private String userinfo;
     private UMShareAPI umShareAPI;
     Dialog dialog;
-    private UserInfoModel userInfoModel=null;
+    private UserInfoModel userInfoModel = null;
 
 
     @Override
@@ -217,25 +218,28 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private void jump(int position) {
         // 根据position跳转
         if (position == 7) {
-            if (userInfoModel != null){
+            if (userInfoModel != null) {
                 initMeiQiaView();
             }
 
         } else if (position == 4) {
-            startActivity(MineServerCenterAC.class, position);
+            userinfo = mainAC.getUserInfo();
+            if (userinfo!= null){
+                Intent intent = new Intent(getActivity(),MineServerCenterAC.class);
+                intent.putExtra("USERINFO",userinfo);
+                startActivity(intent);
+            }
         } else if (position == 6) {
             startActivity(MineCollectionAC.class, position);
         } else if (position == 2) {
-            Intent inte = new Intent(getActivity(),UserPrctocalAC.class);
-            inte.putExtra("SETJUMPPOSITION",555);
+            Intent inte = new Intent(getActivity(), UserPrctocalAC.class);
+            inte.putExtra("SETJUMPPOSITION", 555);
             startActivity(inte);
-        } else if (position == 5){
-            startActivity(MineBuyPlusAC.class,0);
+        } else if (position == 5) {
+            startActivity(MineBuyPlusAC.class, 0);
         } else {
             startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
-
-
     }
 
     /**
@@ -243,11 +247,11 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
      */
     private void initMeiQiaView() {
 
-        int  sexid = userInfoModel.getUser().getSex();
+        int sexid = userInfoModel.getUser().getSex();
         String Sex = "";
-        if (sexid == 1){
+        if (sexid == 1) {
             Sex = "男";
-        }else {
+        } else {
             Sex = "女";
         }
 
@@ -255,7 +259,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         HashMap<String, String> clientInfo = new HashMap<>();
         clientInfo.put("name", userInfoModel.getUser().getNickname());
         clientInfo.put("avatar", userInfoModel.getUser().getHeadimgurl());
-        clientInfo.put("gender",Sex);
+        clientInfo.put("gender", Sex);
         clientInfo.put("tel", userInfoModel.getUser().getMobile());
         clientInfo.put("技能1", "啵呗用户");
         Intent intent = new MQIntentBuilder(getActivity()).setClientInfo(clientInfo).setCustomizedId(String.valueOf(userid)).build();

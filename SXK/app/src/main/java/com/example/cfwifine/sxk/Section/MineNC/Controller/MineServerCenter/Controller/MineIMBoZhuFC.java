@@ -21,10 +21,12 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Adapt
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Adapter.TwoItemRecycleAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Model.AnswerModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.meiqia.meiqiasdk.util.MQIntentBuilder;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -32,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -58,6 +61,7 @@ public class MineIMBoZhuFC extends Fragment implements View.OnClickListener {
     private ArrayList<String> infoARR;
     private ArrayList<String> textARR;
     private String RentWater = "";
+    private UserInfoModel userInfoModel=null;
 
     public MineIMBoZhuFC() {
         // Required empty public constructor
@@ -71,6 +75,8 @@ public class MineIMBoZhuFC extends Fragment implements View.OnClickListener {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_mine_imbo_zhu_fc, container, false);
             dialog = LoadingUtils.createLoadingDialog(getActivity(), "加载中...");
+            contact_server = (Button)view.findViewById(R.id.contact_server);
+            contact_server.setOnClickListener(this);
             initTopRV();
             initAnwserData();
         }
@@ -177,9 +183,33 @@ public class MineIMBoZhuFC extends Fragment implements View.OnClickListener {
     private void initSnackBar(String s) {
         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
-
+    private void initMeiQia() {
+        String userinfo = getActivity().getIntent().getStringExtra("USERINFO");
+        Gson gson = new Gson();
+        userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
+        int  sexid = userInfoModel.getUser().getSex();
+        String Sex = "";
+        if (sexid == 1){
+            Sex = "男";
+        }else {
+            Sex = "女";
+        }
+        int userid = userInfoModel.getUser().getUserid();
+        HashMap<String, String> clientInfo = new HashMap<>();
+        clientInfo.put("name", userInfoModel.getUser().getNickname());
+        clientInfo.put("avatar", userInfoModel.getUser().getHeadimgurl());
+        clientInfo.put("gender",Sex);
+        clientInfo.put("tel", userInfoModel.getUser().getMobile());
+        clientInfo.put("技能1", "啵呗用户");
+        Intent intent = new MQIntentBuilder(getActivity()).setClientInfo(clientInfo).setCustomizedId(String.valueOf(userid)).build();
+        startActivity(intent);
+    }
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.contact_server:
+                initMeiQia();
+                break;
+        }
     }
 }

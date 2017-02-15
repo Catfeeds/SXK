@@ -177,9 +177,9 @@
                                     android:textColor="@drawable/font_check_style"
                                     android:textSize="13sp"
                                     android:gravity="center"
-                                    android:checked="false"
                                     android:button="@null"
-                                    android:background="@drawable/radio_check_style" />
+                                    android:background="@drawable/radio_check_style"
+                                    android:checked="true" />
 
                                 <RadioButton
                                     android:id="@+id/product_r2"
@@ -287,7 +287,7 @@
                                 android:id="@+id/order_rent"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="450.00"
+                                android:text="0.00"
                                 android:textColor="@color/navi_title_color"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -337,7 +337,7 @@
                                 android:id="@+id/order_deposit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10000.00"
+                                android:text="0.00"
                                 android:textColor="@color/navi_title_color"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -396,7 +396,7 @@
                                 android:id="@+id/freight_insurance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5.00"
+                                android:text="0.00"
                                 android:textColor="@color/navi_title_color"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -455,7 +455,7 @@
                             android:id="@+id/agreement_btn"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:checked="false"
+                            android:checked="true"
                             android:background="@drawable/yunshuxian"
                             android:button="@null"/>
 
