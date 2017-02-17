@@ -51,10 +51,10 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     private HaoRecyclerView hao_recycleview;
     private SwipeRefreshLayout swiperefresh;
     private ThreeBlockDetailListAdapter mAdapter;
-    private ThreeBlockModel threeBlockModel=null;
-    private int types=-1;
-    private int pageNum=1;
-    private int pageSize=10;
+    private ThreeBlockModel threeBlockModel = null;
+    private int types = -1;
+    private int pageNum = 1;
+    private int pageSize = 10;
     String url = "";
     private List<ThreeBlockModel.SetupBean.RentListBean> threeDataSource;
     private HomeClassSelectedModel classData;
@@ -62,7 +62,8 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     private ClassDetailListAdapter mAdapters;
     private List<HomeHotDetalListModel.TopicBean.RentListBean> hotDataSource;
     private HotDetailListAdapter hotAdapter;
-    private int topicid=-1;
+    private int topicid = -1;
+    private int Total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,48 +73,56 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     }
 
     private void initView() {
-        types = getIntent().getIntExtra("JUMPEIGHTITEMDETAIL",-1);
+        types = getIntent().getIntExtra("JUMPEIGHTITEMDETAIL", -1);
         // 11 左上 12 右上 13 右下
-        if (types == 11){
+        if (types == 11) {
             url = BaseInterface.HomeLeftThreeBlock;
-        }else if (types == 12){
+        } else if (types == 12) {
             url = BaseInterface.HomeRightTopPic;
-        }else if (types == 13){
+        } else if (types == 13) {
             url = BaseInterface.HomeRightBottomPic;
-        }else if (types == 14){
+        } else if (types == 14) {
             url = BaseInterface.HomeClassSelected;
-        }else if (types == 16){
+        } else if (types == 16) {
             url = BaseInterface.HomeHotDetail;
+        } else if (types == 17) {
+            url = BaseInterface.HomeExchangeGoodsList;
+        } else if (types == 18) {
+            url = BaseInterface.HomeBoobeShow;
         }
         navi_back_pic = (ImageView) findViewById(R.id.navi_back_pic);
         navi_back = (LinearLayout) findViewById(R.id.navi_back);
         navi_back.setOnClickListener(this);
         navi_title = (TextView) findViewById(R.id.navi_title);
-        if (types == 11){
+        if (types == 11) {
             navi_title.setText("私人订制");
-        }else if (types == 12){
+        } else if (types == 12) {
             navi_title.setText("啵呗优选");
-        }else if (types == 13){
+        } else if (types == 13) {
             navi_title.setText("放心租");
-        }else if (types == 14){
+        } else if (types == 14) {
             navi_title.setText("精选分类");
-        }else if (types == 16){
+        } else if (types == 16) {
             navi_title.setText("热门专题");
+        } else if (types == 17) {
+            navi_title.setText("来换包");
+        } else if (types == 18) {
+            navi_title.setText("啵呗秀");
         }
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
-        if (types != 16){
-            initData(pageNum, pageSize);
-        }else {
-            topicid = getIntent().getIntExtra("TOPICID",-1);
-            initHotData(topicid);
+        if (types != 16) {
+            initData(1, 10);
+        } else {
+            topicid = getIntent().getIntExtra("TOPICID", -1);
+            initHotData(topicid, 1, 10);
         }
     }
 
-    private void initHotData(int topicid) {
+    private void initHotData(int topicid, int pageNum, int pageSize) {
         JSONObject js = new JSONObject();
         try {
-            js.put("topicid",topicid);
+            js.put("topicid", topicid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,9 +143,10 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void onResponse(String response, int id) {
                         Log.e("热门数据列表", "" + response);
                         Gson gson = new Gson();
-                        HomeHotDetalListModel homeHotDetalListModel = gson.fromJson(response,HomeHotDetalListModel.class);
+                        HomeHotDetalListModel homeHotDetalListModel = gson.fromJson(response, HomeHotDetalListModel.class);
                         if (homeHotDetalListModel.getCode() == 1) {
                             hotDataSource = homeHotDetalListModel.getTopic().getRentList();
+                            Total = homeHotDetalListModel.getTopic().getRentList().size();
                             initHotRecycleView();
                         } else if (homeHotDetalListModel.getCode() == 0) {
                             initSnackBar("请求失败！");
@@ -161,10 +171,11 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void run() {
 //                        注意此处
                         hotDataSource.clear();
-                        initHotData(topicid);
+                        initHotData(topicid, 1, 10);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         hotAdapter.notifyDataSetChanged();
+
                     }
                 }, 1000);
 
@@ -196,17 +207,16 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
+                        pageSize += 10;
+                        if (pageSize >= Total) {
+                            hao_recycleview.loadMoreEnd();
+                            return;
+                        }
+                        initHotData(topicid, 1, pageSize);
+                        hotAdapter.notifyDataSetChanged();
+                        hao_recycleview.loadMoreComplete();
 
-//                        pageSize += 10;
-//                        pageNum += 1;
-//                        if (pageNum >= threeDataSource.size()) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        initHotData(topicid);
-//                        hotAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
-                        hao_recycleview.loadMoreEnd();
+
                     }
                 }, 1000);
             }
@@ -216,8 +226,8 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         hotAdapter.setOnItemClickListener(new HotDetailListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int maintainid) {
-                Intent intent = new Intent(HomeThreeBlockDetailAC.this,ProductDetailsAC.class);
-                intent.putExtra("RENTID",maintainid);
+                Intent intent = new Intent(HomeThreeBlockDetailAC.this, ProductDetailsAC.class);
+                intent.putExtra("RENTID", maintainid);
                 startActivity(intent);
             }
         });
@@ -227,17 +237,17 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     public void initData(int pageNum, int pageSize) {
 
         JSONObject jsonObject = new JSONObject();
-        if (types != 14){
+        if (types != 14) {
 
             try {
                 jsonObject.put("setupid", 1);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else {
-            int classid = getIntent().getIntExtra("CLASSID",-1);
+        } else {
+            int classid = getIntent().getIntExtra("CLASSID", -1);
             try {
-                jsonObject.put("classid",classid);
+                jsonObject.put("classid", classid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -260,10 +270,10 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void onResponse(String response, int id) {
                         Log.e("数据列表", "" + response);
                         Gson gson = new Gson();
-                        if (types != 14){
+                        if (types != 14) {
                             threeBlockModel = gson.fromJson(response, ThreeBlockModel.class);
                             if (threeBlockModel.getCode() == 1) {
-                                LogUtil.e("请求成功"+1);
+                                LogUtil.e("请求成功" + 1);
                                 threeDataSource = threeBlockModel.getSetup().getRentList();
                                 initRecycleView();
                             } else if (threeBlockModel.getCode() == 0) {
@@ -271,10 +281,10 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                             } else if (threeBlockModel.getCode() == 911) {
                                 initSnackBar("登录超时，请重新登录！");
                             }
-                        }else {
+                        } else {
                             classData = gson.fromJson(response, HomeClassSelectedModel.class);
                             if (classData.getCode() == 1) {
-                                LogUtil.e("请求成功"+1);
+                                LogUtil.e("请求成功" + 1);
                                 classDataSource = classData.getClassX().getRentList();
                                 initClassRecycleView();
                             } else if (classData.getCode() == 0) {
@@ -338,12 +348,11 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void run() {
 
                         pageSize += 10;
-                        pageNum += 1;
-                        if (pageNum >= classDataSource.size()) {
+                        if (pageSize >= classDataSource.size()) {
                             hao_recycleview.loadMoreEnd();
                             return;
                         }
-                        initData(pageNum, pageSize);
+                        initData(1, pageSize);
                         mAdapters.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
 
@@ -356,8 +365,8 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         mAdapters.setOnItemClickListener(new ClassDetailListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int maintainid) {
-                Intent intent = new Intent(HomeThreeBlockDetailAC.this,ProductDetailsAC.class);
-                intent.putExtra("RENTID",maintainid);
+                Intent intent = new Intent(HomeThreeBlockDetailAC.this, ProductDetailsAC.class);
+                intent.putExtra("RENTID", maintainid);
                 startActivity(intent);
             }
         });
@@ -414,12 +423,11 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void run() {
 
                         pageSize += 10;
-                        pageNum += 1;
                         if (pageNum >= threeDataSource.size()) {
                             hao_recycleview.loadMoreEnd();
                             return;
                         }
-                        initData(pageNum, pageSize);
+                        initData(1, pageSize);
                         mAdapter.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
 
@@ -432,8 +440,8 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         mAdapter.setOnItemClickListener(new ThreeBlockDetailListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int maintainid) {
-                Intent intent = new Intent(HomeThreeBlockDetailAC.this,ProductDetailsAC.class);
-                intent.putExtra("RENTID",maintainid);
+                Intent intent = new Intent(HomeThreeBlockDetailAC.this, ProductDetailsAC.class);
+                intent.putExtra("RENTID", maintainid);
                 startActivity(intent);
             }
         });
@@ -445,7 +453,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.navi_back:
                 finish();
                 break;

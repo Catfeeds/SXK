@@ -93,6 +93,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private UMShareAPI umShareAPI;
     Dialog dialog;
     private UserInfoModel userInfoModel = null;
+    private int LOGINTYPE=1;
 
 
     @Override
@@ -330,9 +331,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                     loginUseWX();
                     break;
                 case R.id.login_usesina:
-
+                    loginUseSina();
                     break;
                 case R.id.login_useqq:
+                    loginUseQQ();
                     break;
                 default:
                     break;
@@ -343,10 +345,26 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     };
 
+    private void loginUseSina() {
+        umShareAPI = UMShareAPI.get(getActivity());
+        umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.SINA, authListeners);
+        LOGINTYPE = 4;
+    }
+
+    // QQ登录
+    private void loginUseQQ() {
+        umShareAPI = UMShareAPI.get(getActivity());
+        umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListeners);
+        LOGINTYPE = 2;
+    }
+
+
+
     // 微信第三方登录
     private void loginUseWX() {
         umShareAPI = UMShareAPI.get(getActivity());
         umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListeners);
+        LOGINTYPE = 3;
 //        UmShareLoginUtils umShareLoginUtils = new UmShareLoginUtils();
 //        umShareLoginUtils.login(getActivity(),SHARE_MEDIA.WEIXIN);
     }
@@ -360,7 +378,6 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             String temp = "";
             for (String key : data.keySet()) {
                 temp = temp + key + " : " + data.get(key) + "\n";
-
             }
             nickName = data.get("name");
             iconUrl = data.get("iconurl");
@@ -388,11 +405,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             js.put("openid", openid);
             js.put("nickname", nickName);
             js.put("headimgurl", iconUrl);
-            js.put("pf", 3);
+            js.put("pf", LOGINTYPE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
         OkHttpUtils.postString().url(BaseInterface.LoginUserThird)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
@@ -404,11 +420,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                         initSnackBar("请求出错！");
                         dialog.dismiss();
                     }
-
                     @Override
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
-                        Log.e("微信登录", "" + response);
+                        Log.e("登录", "" + response);
                         Gson gson = new Gson();
                         UserLoginModel requestStatueModel = gson.fromJson(response, UserLoginModel.class);
                         if (requestStatueModel.getCode() == 1) {

@@ -64,10 +64,10 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private TextView product_style;//产品款式
     private TextView product_money_everyday;//每天的价格
     private TextView product_money;//市场价
-    private ImageView bo_one;//啵一个
+    private LinearLayout bo_one;//啵一个
     private TextView username;//啵主昵称
-    private ImageView follow;//关注
-    private ImageView chat;//聊呗
+    private LinearLayout follow;//关注
+    private LinearLayout chat;//聊呗
     private TextView comment_number;//评价条数
     private LinearLayout more_comment;//更多评价
     private RecyclerView product_comment_list_rv;//评价列表
@@ -159,10 +159,10 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_style = (TextView) findViewById(R.id.product_style);
         product_money_everyday = (TextView) findViewById(R.id.product_money_everyday);
         product_money = (TextView) findViewById(R.id.product_money);
-        bo_one = (ImageView) findViewById(R.id.bo_one);
+        bo_one = (LinearLayout) findViewById(R.id.bo_one);
         username = (TextView) findViewById(R.id.username);
-        follow = (ImageView) findViewById(R.id.follow);
-        chat = (ImageView) findViewById(R.id.chat);
+        follow = (LinearLayout) findViewById(R.id.follow);
+        chat = (LinearLayout) findViewById(R.id.chat);
         comment_number = (TextView) findViewById(R.id.comment_number);
         more_comment = (LinearLayout) findViewById(R.id.more_comment);
         product_comment_list_rv = (RecyclerView) findViewById(R.id.product_comment_list_rv);
@@ -430,8 +430,6 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 });
-
-
     }
 
     private void connectRongServer(String token) {

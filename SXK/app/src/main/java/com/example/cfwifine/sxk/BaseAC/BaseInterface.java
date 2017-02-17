@@ -75,6 +75,11 @@ public class BaseInterface {
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";
     public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";
+    // 交换商品
+    public static String HomeExchangeGoodsList = root + "/app/swapsetup/listpost";
+    // boobe秀
+    public static String HomeBoobeShow = root + "/app/showsetup/listpost";
+
 
 
     // 社区

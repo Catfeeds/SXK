@@ -291,7 +291,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
             }
         });
     }
-
     // TODO*********************************配置右侧recycleview************************************
     @SuppressLint("NewApi")
     private void initRightRecycleView() {
@@ -338,8 +337,6 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 //                });
 //            }
 //        });
-
-
         // 重写点击事件方法（全部品牌列表）
         rightRecycleView.addOnItemTouchListener(new RecycleViewListener(rightRecycleView, new RecycleViewListener.OnItemClickListener() {
             @Override
@@ -349,14 +346,11 @@ public class ClassifyFC extends Fragment implements View.OnClickListener {
 
                 }
             }
-
             @Override
             public void onItemLongClick(View view, int position) {
 
             }
         }));
-
-
         //使用indexBar
         mTvSideBarHint = (TextView) view.findViewById(R.id.tvSideBarHint);//HintTextView
         mIndexBar = (IndexBar) view.findViewById(R.id.indexBar);//IndexBar

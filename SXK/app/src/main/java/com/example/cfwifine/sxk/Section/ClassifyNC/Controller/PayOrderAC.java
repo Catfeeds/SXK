@@ -25,12 +25,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.OrderSuccessPupWindow;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.FreeAppraisaAC;
+import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -102,6 +106,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private double dP;
     private double dJ;
     private int AgreeIsChecked=2;
+    private OrderSuccessPupWindow orderSuccessPupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -541,31 +546,55 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     }
 
     private void MaterialDialog(String str) {
-        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
-        BaseAnimatorSet bas_out = new FadeExit();
-        final MaterialDialog dialogs = new MaterialDialog(this);
-        dialogs.title("")
-                .titleTextColor(Color.BLACK)
-                .titleTextSize(14)
-                .isTitleShow(false)
-                .content(str)//
-                .contentTextColor(Color.GRAY)
-                .btnNum(1)
-                .btnText("确定")
-                .contentGravity(Gravity.CENTER_HORIZONTAL)
-                .btnTextColor(Color.parseColor("#16a6ae"))
-                .showAnim(bas_in)//
-                .dismissAnim(bas_out)//
-                .show();
+//        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+//        BaseAnimatorSet bas_out = new FadeExit();
+//        final MaterialDialog dialogs = new MaterialDialog(this);
+//        dialogs.title("")
+//                .titleTextColor(Color.BLACK)
+//                .titleTextSize(14)
+//                .isTitleShow(false)
+//                .content(str)//
+//                .contentTextColor(Color.GRAY)
+//                .btnNum(1)
+//                .btnText("确定")
+//                .contentGravity(Gravity.CENTER_HORIZONTAL)
+//                .btnTextColor(Color.parseColor("#16a6ae"))
+//                .showAnim(bas_in)//
+//                .dismissAnim(bas_out)//
+//                .show();
+//
+//        dialogs.setOnBtnClickL(new OnBtnClickL() {
+//            @Override
+//            public void onBtnClick() {
+//                dialogs.dismiss();
+//            }
+//        });
 
-        dialogs.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialogs.dismiss();
-            }
-        });
+        orderSuccessPupWindow = new OrderSuccessPupWindow(this,productDetailModel,itemsOnClick);
+        orderSuccessPupWindow.showAtLocation(this.findViewById(R.id.activity_place_order), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL,0,0);
     }
+    private View.OnClickListener itemsOnClick = new View.OnClickListener(){
 
+        public void onClick(View v) {
+            orderSuccessPupWindow.dismiss();
+            switch (v.getId()) {
+                case R.id.publish_lay:
+
+                    break;
+                case R.id.care_lay:
+
+                    break;
+                case R.id.rec_lay:
+
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+    };
 
     // 生成订单的接口
     private void useAliPays() {

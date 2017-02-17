@@ -1,0 +1,88 @@
+package com.example.cfwifine.sxk.Section.ClassifyNC.Dialog;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
+
+/**
+ * Created by cfwifine on 16/10/28.
+ */
+
+public class OrderSuccessPupWindow extends PopupWindow implements OnClickListener {
+    private final LinearLayout careBtn;
+    private final ImageView picView;
+    private final TextView names;
+    private final TextView keyWord;
+    private final TextView prices;
+    private ProductDetailModel productDetail=null;
+    private View mMenueView;
+
+    @SuppressLint("NewApi")
+    public OrderSuccessPupWindow(Activity context, ProductDetailModel productDetailModel, OnClickListener itemsOnclick) {
+        super(context);
+        this.productDetail = productDetailModel;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mMenueView = inflater.inflate(R.layout.order_success_layout, null);
+        careBtn = (LinearLayout) mMenueView.findViewById(R.id.care_lay);
+        careBtn.setOnClickListener(itemsOnclick);
+
+        picView = (ImageView)mMenueView.findViewById(R.id.goods_pic);
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + productDetail.getRent().getImgList().get(0);
+        Glide.with(context).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(picView);
+        names = (TextView)mMenueView.findViewById(R.id.goods_name);
+        names.setText(productDetail.getRent().getName());
+        keyWord =(TextView)mMenueView.findViewById(R.id.goods_keyword);
+        keyWord.setText(productDetail.getRent().getKeyword());
+        prices = (TextView)mMenueView.findViewById(R.id.goods_price);
+        prices.setText(String.valueOf(productDetail.getRent().getRentPrice())+"/天");
+        this.setContentView(mMenueView);
+        //设置SelectPicPopupWindow弹出窗体的宽
+        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        //设置SelectPicPopupWindow弹出窗体的高
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        //设置SelectPicPopupWindow弹出窗体可点击
+        this.setFocusable(true);
+        this.setOutsideTouchable(true);
+        this.setTouchable(true);
+//        this.setTouchInterceptor(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
+//                    dismiss();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+        //设置SelectPicPopupWindow弹出窗体动画效果
+        this.setAnimationStyle(R.style.take_photo_anim);
+        //实例化一个ColorDrawable颜色为半透明
+        ColorDrawable dw = new ColorDrawable(0xffffff);
+        //设置SelectPicPopupWindow弹出窗体的背景
+        this.setBackgroundDrawable(dw);
+        // 设置背景模糊
+        mMenueView.setAlpha((float) 1);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+}

@@ -59,12 +59,14 @@
                     android:paddingTop="5dp">
 
                     <ImageView
+                        android:id="@+id/home_exchangebag"
                         android:layout_width="172dp"
                         android:layout_height="150dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/huanbao" />
 
                     <ImageView
+                        android:id="@+id/home_boobeshow"
                         android:layout_width="172dp"
                         android:layout_height="150dp"
                         android:background="@drawable/bobeixiu" />
@@ -292,8 +294,7 @@
             android:id="@+id/home_toast_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:onClick="flipCard"
+            android:layout_marginTop="0dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
             <include

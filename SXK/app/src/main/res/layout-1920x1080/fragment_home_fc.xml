@@ -59,12 +59,14 @@
                     android:paddingTop="5dp">
 
                     <ImageView
+                        android:id="@+id/home_exchangebag"
                         android:layout_width="172dp"
                         android:layout_height="150dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/huanbao" />
 
                     <ImageView
+                        android:id="@+id/home_boobeshow"
                         android:layout_width="172dp"
                         android:layout_height="150dp"
                         android:background="@drawable/bobeixiu" />
