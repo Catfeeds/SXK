@@ -34,6 +34,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
 
@@ -232,12 +233,15 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
         image.setThumb(thumb);
         image.compressFormat = Bitmap.CompressFormat.PNG;
 
+        UMWeb web = new UMWeb("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/137");
+        web.setTitle("啵呗");//标题
+        web.setThumb(image);  //缩略图
+        web.setDescription("亲们快来下载啵呗吧！");//描述
+
+
         new ShareAction(UserInfoRecycleViewCommomAC.this)
                 .setPlatform(SHARE_TYPE)
-                .withText("亲们快来下载啵呗吧！")
-                .withTitle("啵呗")
-                .withMedia(image)
-                .withTargetUrl("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/137")
+                .withMedia(web)
                 .setCallback(umShareListener)
                 .share();
 //        UmengTool.getSignature(ProductDetailsAC.this);
@@ -246,6 +250,11 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
 
         @Override
         public void onResult(SHARE_MEDIA platform) {

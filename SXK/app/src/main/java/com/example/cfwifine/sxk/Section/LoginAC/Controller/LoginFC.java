@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -47,8 +48,11 @@ import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -365,20 +369,51 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         umShareAPI = UMShareAPI.get(getActivity());
         umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListeners);
         LOGINTYPE = 3;
-//        UmShareLoginUtils umShareLoginUtils = new UmShareLoginUtils();
-//        umShareLoginUtils.login(getActivity(),SHARE_MEDIA.WEIXIN);
     }
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            LogUtil.e("测试结果"+data.toString());
+            Toast.makeText(getActivity(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+            umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListeners);
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText(getActivity(), "Authorize fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText(getActivity(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
 
     private String nickName;
     private String iconUrl;
     private String openid;
     UMAuthListener authListeners = new UMAuthListener() {
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             String temp = "";
             for (String key : data.keySet()) {
                 temp = temp + key + " : " + data.get(key) + "\n";
             }
+            LogUtil.e("QQ的值"+data.toString());
             nickName = data.get("name");
             iconUrl = data.get("iconurl");
             openid = data.get("openid");

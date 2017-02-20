@@ -52,6 +52,11 @@ public class UmShareLoginUtils {
         }
 
         @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
         public void onResult(SHARE_MEDIA platform) {
 
             if (platform.name().equals("WEIXIN_FAVORITE")) {
@@ -82,6 +87,11 @@ public class UmShareLoginUtils {
 
 
     UMAuthListener authListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             //得到的用户信息

@@ -38,6 +38,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.UmengTool;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -352,12 +353,14 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         image.setThumb(thumb);
         image.compressFormat = Bitmap.CompressFormat.PNG;
 
+        UMWeb  web = new UMWeb("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/"+rentDetail.getRentid());
+        web.setTitle(rentDetail.getName().toString());//标题
+        web.setThumb(image);  //缩略图
+        web.setDescription(rentDetail.getKeyword().toString());//描述
+
         new ShareAction(ProductDetailsAC.this)
                 .setPlatform(SHARE_TYPE)
-                .withText(rentDetail.getKeyword().toString())
-                .withTitle(rentDetail.getName().toString())
-                .withMedia(image)
-                .withTargetUrl("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/"+rentDetail.getRentid())
+                .withMedia(web)
                 .setCallback(umShareListener)
                 .share();
 //        UmengTool.getSignature(ProductDetailsAC.this);
@@ -366,6 +369,11 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
             customDialog_shareBorad.dismiss();
