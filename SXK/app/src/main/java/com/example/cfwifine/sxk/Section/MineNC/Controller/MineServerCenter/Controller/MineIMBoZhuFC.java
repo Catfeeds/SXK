@@ -56,7 +56,7 @@ public class MineIMBoZhuFC extends Fragment implements View.OnClickListener {
             R.drawable.bizhu4, R.drawable.bozhu5, R.drawable.bozhu6};
     private ArrayList<Integer> arrList;
     String[] text = new String[]{
-            "租用流程", "出租收益", "平台保障", "破损处理", "平台服务费", "长租"
+            "租用流程", "租赁费用", "注册审核", "破损处理", "APP指导", "平台保障"
     };
     private ArrayList<String> infoARR;
     private ArrayList<String> textARR;
@@ -172,10 +172,15 @@ public class MineIMBoZhuFC extends Fragment implements View.OnClickListener {
         twoItemRecycleAdapter.setOnItemClickListener(new TwoItemRecycleAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), UserPrctocalAC.class);
-                intent.putExtra("SETJUMPPOSITION", 444);
-                intent.putExtra("POSI", position);
-                startActivity(intent);
+                if (position != 2){
+                    Intent intent = new Intent(getActivity(), UserPrctocalAC.class);
+                    intent.putExtra("SETJUMPPOSITION", 666);
+                    intent.putExtra("POSI", position);
+                    startActivity(intent);
+                }else {
+                    Intent intents = new Intent(getActivity(),RegisterSecurityAC.class);
+                    startActivity(intents);
+                }
             }
         });
     }

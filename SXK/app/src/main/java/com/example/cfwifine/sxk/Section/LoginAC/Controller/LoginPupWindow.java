@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
 
@@ -20,6 +21,7 @@ import com.example.cfwifine.sxk.R;
 
 public class LoginPupWindow extends PopupWindow implements OnClickListener {
 
+    private final TextView userprotacal;
     private View mMenueView;
     private ImageButton logincancel;
     private LinearLayout useboobe,usewechat,usesina,useqq;
@@ -37,11 +39,13 @@ public class LoginPupWindow extends PopupWindow implements OnClickListener {
         usewechat = (LinearLayout)mMenueView.findViewById(R.id.login_usewexin);
         usesina = (LinearLayout)mMenueView.findViewById(R.id.login_usesina);
         useqq = (LinearLayout)mMenueView.findViewById(R.id.login_useqq);
+        userprotacal = (TextView)mMenueView.findViewById(R.id.user_proctal);
         logincancel.setOnClickListener(itemsOnclick);
         useboobe.setOnClickListener(itemsOnclick);
         useqq.setOnClickListener(itemsOnclick);
         usesina.setOnClickListener(itemsOnclick);
         usewechat.setOnClickListener(itemsOnclick);
+        userprotacal.setOnClickListener(itemsOnclick);
 
         this.setContentView(mMenueView);
         //设置SelectPicPopupWindow弹出窗体的宽

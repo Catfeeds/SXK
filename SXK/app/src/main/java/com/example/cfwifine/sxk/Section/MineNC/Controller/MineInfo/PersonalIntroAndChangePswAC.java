@@ -43,8 +43,6 @@ public class PersonalIntroAndChangePswAC extends AppCompatActivity implements Vi
         initView();
         pager = getIntent().getIntExtra("CHANGEPSW", 0);
         number = getIntent().getIntExtra("SETJUMPPOSITION", 0);
-
-
         configurationNaviTitle();
     }
 
@@ -99,9 +97,13 @@ public class PersonalIntroAndChangePswAC extends AppCompatActivity implements Vi
      * 修改用户信息
      */
     private void initUserIntroView() {
+        if (edittext_personal_intro.getText().toString().trim().length() >= 500){
+            initSnackBar("字数不能超过500！");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("nickname", edittext_personal_intro.getText().toString().trim());
+            jsonObject.put("profile", edittext_personal_intro.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }

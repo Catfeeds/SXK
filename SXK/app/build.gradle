@@ -14,9 +14,16 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled true
+            signingConfig signingConfigs.debug
+            proguardFiles 'proguard-rules.pro'
+        }
+
 //        release{
 //            minifyEnabled false
 //            signingConfig signingConfigs.debug
@@ -34,14 +41,14 @@ android {
         }
     }
 
-//    signingConfigs {
-//        debug {
-//            storeFile file('SXK.jks')
-//            storePassword "android"
-//            keyAlias "SXK"
-//            keyPassword "android"
-//        }
-//    }
+    signingConfigs {
+        debug {
+            storeFile file('../SXK.jks')
+            storePassword "android"
+            keyAlias "SXK"
+            keyPassword "android"
+        }
+    }
 
 }
 
@@ -49,6 +56,8 @@ android {
 
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -108,4 +117,5 @@ dependencies {
     compile project(':IMKit')
     compile files('libs/open_sdk_r5781.jar')
     compile files('libs/wechat-sdk-android-without-mta-1.0.2.jar')
+    compile 'com.android.support:cardview-v7:24.2.1'
 }

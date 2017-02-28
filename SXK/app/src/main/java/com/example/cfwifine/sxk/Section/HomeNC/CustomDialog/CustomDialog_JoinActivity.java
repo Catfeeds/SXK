@@ -24,7 +24,7 @@ public class CustomDialog_JoinActivity extends Dialog{
 
     //增加一个回调函数,用以从外部接收返回值
     public interface ICustomDialogEventListener {
-        public void customDialogEvent(String id);
+        public void customDialogEvent(String id,String nickName);
     }
 
     public interface ICustomSaveEventListener {
@@ -65,7 +65,7 @@ public class CustomDialog_JoinActivity extends Dialog{
             public void onClick (View v) {
 //                try {
 //                    if (Float.parseFloat(editText.getText().toString()) > 30.0 && Float.parseFloat(editText.getText().toString()) < 150.0) {
-                        mCustomDialogEventListener.customDialogEvent(String.valueOf(editText.getText()));
+                        mCustomDialogEventListener.customDialogEvent(String.valueOf(editText.getText()),String.valueOf(nickNames));
                         dismiss();
 //                    } else {
 //                        XToast.show("您输入的数字不合法");

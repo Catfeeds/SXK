@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,11 +19,18 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.CustomDialog.CustomDialog_JoinActivity;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityDetailModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineWallet.WithDrawAC;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.Utils.TimeUtils;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -167,8 +175,9 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                 }
                 CustomDialog_JoinActivity customDialog_joinActivity = new CustomDialog_JoinActivity(this, nickName, phoneNumber, new CustomDialog_JoinActivity.ICustomDialogEventListener() {
                     @Override
-                    public void customDialogEvent(String id) {
-                        LogUtil.e("返回值" + id);
+                    public void customDialogEvent(String id, String nickName) {
+                        LogUtil.e("返回值" + id+nickName);
+                        initJoinActivity(id,nickName);
                     }
                 }, R.style.Dialog);
                 customDialog_joinActivity.show();
@@ -183,6 +192,80 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
             default:
                 break;
         }
+    }
+
+    private void initJoinActivity(String id, String nickName) {
+        mLoading.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("activityid",activityDetailModel.getActivity().getActivityid());
+            js.put("nickname",nickName);
+            js.put("mobile",id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(ActivityDetailAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.HomeActivityJoin)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mLoading.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mLoading.dismiss();
+                        Log.e("参加活动", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            MaterialDialog("报名成功！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
+
+
+
+    }
+    private void MaterialDialog(String str) {
+        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+        BaseAnimatorSet bas_out = new FadeExit();
+        final MaterialDialog dialogs = new MaterialDialog(this);
+        dialogs.title("")
+                .titleTextColor(Color.BLACK)
+                .titleTextSize(14)
+                .isTitleShow(false)
+                .content(str)//
+                .contentTextColor(Color.GRAY)
+                .btnNum(1)
+                .btnText("确定")
+                .contentGravity(Gravity.CENTER_HORIZONTAL)
+                .btnTextColor(Color.parseColor("#16a6ae"))
+                .showAnim(bas_in)//
+                .dismissAnim(bas_out)//
+                .show();
+        dialogs.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialogs.dismiss();
+                finish();
+            }
+        });
+    }
+    private void initSnackBar(String s) {
+        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
+
     }
 
 }

@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public class UserInfoRecycleViewAdapter extends RecyclerView.Adapter<UserInfoRecycleViewAdapter.ViewHolder> {
 
+    private ArrayList<String> userInfo=null;
     private ArrayList<String> applicationName = null;
     private ArrayList<String> data = null;
     private OnItemClickListener mOnItemClickListener;
@@ -29,9 +31,10 @@ public class UserInfoRecycleViewAdapter extends RecyclerView.Adapter<UserInfoRec
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public UserInfoRecycleViewAdapter(ArrayList<String> applicationName,ArrayList<String> data) {
+    public UserInfoRecycleViewAdapter(ArrayList<String> applicationName, ArrayList<String> data, ArrayList<String> user) {
         this.applicationName = applicationName;
         this.data = data;
+        this.userInfo = user;
 
     }
     @Override
@@ -43,10 +46,11 @@ public class UserInfoRecycleViewAdapter extends RecyclerView.Adapter<UserInfoRec
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        if (data.size()!=0){
-            holder.rTextView.setText(data.get(position));
+        if (position !=5){
+            holder.rTextView.setText(userInfo.get(position));
         }
         holder.mTextView.setText(applicationName.get(position));
+//        holder.rTextView.setText(userInfo.get(position));
 //        if (position == 4){
 //            holder.lineView.setVisibility(View.VISIBLE);
 //        }

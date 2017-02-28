@@ -6,10 +6,9 @@ package com.example.cfwifine.sxk.Section.MineNC.Model;
 
 public class UserInfoModel {
 
-
     /**
      * code : 1
-     * user : {"mobile":"15539910985","password":"$2y$10$gRQSTvbUHLfXF1SEv2WfyeFko5jOX/m3TllbS.ruXn3TqVqT4SPEe","userid":10,"createtime":1480922278,"updatetime":1481875357,"nickname":"杨伟康","sex":1,"birthday":946656000,"profile":"测试手册按时发生大幅度","role":1,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20161216160154"}
+     * user : {"mobile":"15539910985","password":"$2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq","userid":10,"createtime":1480922278,"updatetime":1487925219,"nickname":"测试","sex":1,"birthday":825609600,"profile":"测试手册按时发生大幅度","role":2,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":0}
      */
 
     private int code;
@@ -34,16 +33,18 @@ public class UserInfoModel {
     public static class UserBean {
         /**
          * mobile : 15539910985
-         * password : $2y$10$gRQSTvbUHLfXF1SEv2WfyeFko5jOX/m3TllbS.ruXn3TqVqT4SPEe
+         * password : $2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq
          * userid : 10
          * createtime : 1480922278
-         * updatetime : 1481875357
-         * nickname : 杨伟康
+         * updatetime : 1487925219
+         * nickname : 测试
          * sex : 1
-         * birthday : 946656000
+         * birthday : 825609600
          * profile : 测试手册按时发生大幅度
-         * role : 1
-         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20161216160154
+         * role : 2
+         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749
+         * buyer : {"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"}
+         * balance : 0
          */
 
         private String mobile;
@@ -57,6 +58,8 @@ public class UserInfoModel {
         private String profile;
         private int role;
         private String headimgurl;
+        private BuyerBean buyer;
+        private int balance;
 
         public String getMobile() {
             return mobile;
@@ -144,6 +147,68 @@ public class UserInfoModel {
 
         public void setHeadimgurl(String headimgurl) {
             this.headimgurl = headimgurl;
+        }
+
+        public BuyerBean getBuyer() {
+            return buyer;
+        }
+
+        public void setBuyer(BuyerBean buyer) {
+            this.buyer = buyer;
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+
+        public void setBalance(int balance) {
+            this.balance = balance;
+        }
+
+        public static class BuyerBean {
+            /**
+             * name : ghjn
+             * idNumber : 43138119870827275X
+             * front : buyer_front_1486370551
+             * back : buyer_back_1486370551
+             */
+
+            private String name;
+            private String idNumber;
+            private String front;
+            private String back;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getIdNumber() {
+                return idNumber;
+            }
+
+            public void setIdNumber(String idNumber) {
+                this.idNumber = idNumber;
+            }
+
+            public String getFront() {
+                return front;
+            }
+
+            public void setFront(String front) {
+                this.front = front;
+            }
+
+            public String getBack() {
+                return back;
+            }
+
+            public void setBack(String back) {
+                this.back = back;
+            }
         }
     }
 }

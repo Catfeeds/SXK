@@ -33,7 +33,24 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- <uses-permission android:name="android.permission.SET_DEBUG_APP" /> -->
+    <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> -->
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.USE_CREDENTIALS" /> -->
+    <!-- <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" /> -->
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -46,9 +63,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoTitle"
-        android:sharedUserId="android.uid.system"
         tools:replace="android:icon">
         <meta-data
             android:name="com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideConfiguration"
@@ -62,9 +79,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Section.WelcomeNC.WelcomeAC" />
-        <activity
-            android:name=".BaseAC.BaseAC"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".BaseAC.BaseAC" />
         <activity android:name=".BaseAC.MainAC" />
         <activity
             android:name=".Section.LoginAC.Controller.LoginUseBoobeAC"
@@ -159,11 +174,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <!--<service-->
-        <!--android:name="com.sina.weibo.sdk.net.DownloadService"-->
-        <!--android:exported="false"></service>-->
+        <!-- <service -->
+        <!-- android:name="com.sina.weibo.sdk.net.DownloadService" -->
+        <!-- android:exported="false"></service> -->
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
@@ -197,8 +211,6 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="587ece6b07fe6574fc000487" />
-
-
         // 支付页面
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
@@ -311,7 +323,6 @@
         <activity
             android:name=".Section.HomeNC.Controller.HomeThreeBlockDetailAC"
             android:theme="@style/AppThemeHasTitle" />
-
         <activity
             android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"
             android:theme="@style/AppThemeHasTitle" />
@@ -372,9 +383,23 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <activity android:name=".Section.HomeNC.Controller.BannerDetailAC"
+        <activity
+            android:name=".Section.HomeNC.Controller.BannerDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.MineWallet.MineWalletAC"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Section.MineNC.Controller.MineWallet.ReChargeAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.LoginAC.Controller.BandPhoneNumberAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.MineWallet.WithDrawAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineServerCenter.Controller.RegisterSecurityAC"
             android:theme="@style/AppThemeHasTitle"></activity>
-        
     </application>
 
 </manifest>

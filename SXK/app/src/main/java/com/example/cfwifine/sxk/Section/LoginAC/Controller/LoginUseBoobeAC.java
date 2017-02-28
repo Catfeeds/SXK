@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +37,8 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
     private EditText login_phonenumber_editext;
     private EditText login_password_edittext;
     private Button logon_login_btn;
+    private ImageView look_pasw;
+    private boolean isLook = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,9 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
         login_password_edittext = (EditText) findViewById(R.id.login_password_edittext);
         logon_login_btn = (Button) findViewById(R.id.logon_login_btn);
         logon_login_btn.setOnClickListener(this);
+        look_pasw = (ImageView) findViewById(R.id.look_pasw);
+        look_pasw.setOnClickListener(this);
+        look_pasw.setImageResource(R.drawable.eye);
     }
 
     // TODO*********************************配置导航头**********************************************
@@ -87,6 +95,19 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.logon_login_btn:
                 submit();
+                break;
+            case R.id.look_pasw:
+                if(isLook){
+                    look_pasw.setImageResource(R.drawable.yanjingss);
+                    //如果选中，显示密码
+                    login_password_edittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    isLook = false;
+                }else{
+                    look_pasw.setImageResource(R.drawable.eye);
+                    //否则隐藏密码
+                    login_password_edittext.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    isLook = true;
+                }
                 break;
         }
     }
@@ -133,7 +154,7 @@ public class LoginUseBoobeAC extends AppCompatActivity implements View.OnClickLi
                         UserLoginModel userLoginModel = gson.fromJson(response, UserLoginModel.class);
                         if (userLoginModel.getCode() == 1) {
                             SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.PHPSESSION, userLoginModel.getPHPSESSID());
-                            SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.PHONENUMBER, username);
+                            SharedPreferencesUtils.setParam(LoginUseBoobeAC.this, BaseInterface.PHONENUMBER, username);
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             finish();
                         } else {

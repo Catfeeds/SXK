@@ -131,7 +131,11 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
 
     public void removeData(int position){
         mDatas.getRentList().remove(position);
-        notifyItemRemoved(position);
+//        notifyItemRemoved(position);
+        notifyDataSetChanged();
+        if (menuIsOpen()) {
+            closeMenu();
+        }
 
     }
 

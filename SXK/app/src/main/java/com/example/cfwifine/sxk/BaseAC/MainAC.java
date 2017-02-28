@@ -27,6 +27,7 @@ import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -73,7 +74,7 @@ public class MainAC extends BaseAC  {
         setContentView(R.layout.activity_main_ac);
         initView();
         // 初始化个人信息，如果登录超时 LoginFC展示为登录界面   否则则展示个人中心界面
-        initUserData();
+//        initUserData();
 
     }
 
@@ -116,19 +117,32 @@ public class MainAC extends BaseAC  {
                 });
 
     }
-    public boolean isLogin(){
-        if (userInfoModel == null){
-            return false;
-        }
-        if (userInfoModel.getCode()==1){
-            return true;
-        }else if (userInfoModel.getCode() ==911){
-            return false;
-        }else if (userInfoModel.getCode() == 0){
-            return false;
-        }
-        return false;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(this).release();
+    }
+
+//    public boolean isLogin(){
+//        if (userInfoModel == null){
+//            return false;
+//        }
+//        if (userInfoModel.getCode()==1){
+//            return true;
+//        }else if (userInfoModel.getCode() ==911){
+//            return false;
+//        }else if (userInfoModel.getCode() == 0){
+//            return false;
+//        }
+//        return false;
+//    }
     public String getUserInfo(){
         return USERINFO;
     }

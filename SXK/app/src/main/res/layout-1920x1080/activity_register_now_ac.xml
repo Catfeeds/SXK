@@ -12,7 +12,10 @@
         android:layout_height="44dp">
         <include layout="@layout/nav_title_simple"></include>
     </RelativeLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -33,6 +36,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="    请输入手机号码"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
                 android:background="@null"
                 android:padding="5dp"
                 android:textSize="14sp"
@@ -64,22 +70,29 @@
                 android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="    请输入密码（至少6位数）"
+                android:hint="  请输入密码（至少6位数）"
                 android:padding="5dp"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
+                android:inputType="numberPassword"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:textSize="14sp"
                 android:background="@null"
                 android:layout_weight="0.98"
                 android:textColorHint="@color/login_phone_numbercolor"/>
             <LinearLayout
                 android:id="@+id/register_look_password"
-                android:layout_width="18dp"
-                android:layout_height="18dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/look_passs"
                     android:layout_width="18dp"
                     android:layout_height="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="2dp"
-                    android:background="@drawable/eye"/>
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:background="@null"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -110,6 +123,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="    请输入手机验证码"
+                android:inputType="number"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
                 android:padding="5dp"
                 android:textSize="14sp"
                 android:background="@null"

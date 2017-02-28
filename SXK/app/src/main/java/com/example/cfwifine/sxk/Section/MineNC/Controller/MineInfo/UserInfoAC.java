@@ -19,13 +19,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.LoginAC.Controller.BandPhoneNumberAC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.ForgetPawAC;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.UserInfoRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_Sex;
@@ -80,7 +84,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             "修改密码"};
     ArrayList<String> callBackString = new ArrayList<>();
     LikeIOSSheetDialog shitView;
-
+    ArrayList<String> infoArr = new ArrayList<>();
     private String selectDate, selectTime;
     //选择时间与当前时间，用于判断用户选择的是否是以前的时间
     private int currentHour, currentMinute, currentDay, selectHour, selectMinute, selectDay;
@@ -101,6 +105,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private UserInfoModel.UserBean dataSource=null;
     Dialog mloading;
     String HEADERPIC="";
+    private UserInfoModel userInfoModel = null;
+    private UserInfoModel userInfoModels = null;
+    private UserInfoModel userInfoModelss;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,6 +228,15 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                                 if (nickName != null){
                                     SharedPreferencesUtils.setParam(UserInfoAC.this, BaseInterface.NICKNAME,nickName);
                                 }
+                                initNewUserData();
+//                                if (nickName != ""||Sex != 0||Birthday != 0){
+//                                    userInfoModelss.getUser().setNickname(nickName);
+//                                    userInfoModelss.getUser().setSex(Sex);
+//                                    userInfoModelss.getUser().setBirthday((int) Birthday);
+////                                userInfoModelss.getUser().setProfile();
+//                                    userInfoRecycleViewAdapter.notifyDataSetChanged();
+//                                }
+
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             } else if (requestStatueModel.getCode() == 0) {
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "修改失败!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -243,13 +261,64 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         title.setText("个人资料");
         TextView rightTitle = (TextView) findViewById(R.id.navi_right);
         rightTitle.setText("");
+
+    }
+
+    public void initNewUserData() {
+        mloading.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.GetUserInfo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mloading.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("初始化个人信息", "" + response);
+                        mloading.dismiss();
+                        Gson gson = new Gson();
+                        userInfoModelss = gson.fromJson(response, UserInfoModel.class);
+                        if (userInfoModelss.getCode() == 1) {
+                            infoArr.add(0,userInfoModelss.getUser().getNickname());
+                            if (userInfoModelss.getUser().getSex()==1){
+                                infoArr.add(1,"男");
+                            }else {
+                                infoArr.add(1,"女");
+                            }
+                            infoArr.add(2,TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l));
+                            infoArr.add(3,userInfoModelss.getUser().getProfile().toString());
+                            infoArr.add(4,userInfoModelss.getUser().getMobile());
+                            initRecycleView();
+                        } else if (userInfoModelss.getCode() == 0) {
+                        } else if (userInfoModelss.getCode() == 911) {
+                            initSnackBar("您还没有登录哦！");
+                        }
+                    }
+                });
     }
 
     private void initRecycleData() {
         for (int i = 0; i < itemString.length; i++) {
             itemSource.add(itemString[i]);
         }
-        initRecycleView();
+
+       initNewUserData();
+
+
     }
 
     // TODO**************************************初始化分栏******************************************
@@ -261,7 +330,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 return false;
             }
         });
-        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource, callBackString);
+        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource, callBackString,infoArr);
         userRV.setAdapter(userInfoRecycleViewAdapter);
         userInfoRecycleViewAdapter.setOnItemClickListener(new UserInfoRecycleViewAdapter.OnItemClickListener() {
             @Override
@@ -280,7 +349,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                         initChangePsw(3);
                         break;
                     case 4:
-                        initChangePhone();
+//                        initChangePhone();
                         break;
                     case 5:
                         Intent intent = new Intent(UserInfoAC.this, ForgetPawAC.class);
@@ -611,6 +680,12 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         intent.putExtra("outputY", 300);
         intent.putExtra("return-data", true);
         startActivityForResult(intent, REQUESTCODE_CUTTING);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNewUserData();
     }
 
     private void initSnackBar(String name) {

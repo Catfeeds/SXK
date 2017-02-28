@@ -12,7 +12,10 @@
         android:layout_height="44dp">
         <include layout="@layout/nav_title_simple"></include>
     </RelativeLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/gray_40"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -32,7 +35,10 @@
                 android:id="@+id/login_phonenumber_editext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:hint="    请输入手机号码"
+                android:textCursorDrawable="@null"
+                android:cursorVisible="true"
                 android:background="@null"
                 android:padding="5dp"
                 android:textSize="14sp"
@@ -64,17 +70,22 @@
                 android:id="@+id/login_password_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="    请输入密码"
+                android:hint=" 请输入密码"
+                android:inputType="numberPassword"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:padding="5dp"
+                android:cursorVisible="true"
                 android:textSize="14sp"
                 android:background="@null"
+                android:textCursorDrawable="@null"
                 android:textColorHint="@color/login_phone_numbercolor"
                 android:layout_weight="0.98" />
             <ImageView
+                android:id="@+id/look_pasw"
                 android:layout_width="18dp"
                 android:layout_height="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/eye"/>
+                android:background="@null"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"

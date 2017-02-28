@@ -114,6 +114,33 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
         }else if (value == 555){
             navi_title.setText("分享奖励");
             initSharePresent();
+        }else if (value == 666){
+            int posi = getIntent().getIntExtra("POSI",-1);
+            switch (posi){
+                case 0:
+                    navi_title.setText("租用流程");
+                    URLS = BaseInterface.RentWater;
+                    break;
+                case 1:
+                    navi_title.setText("租赁费用");
+                    URLS = BaseInterface.RentFee;
+                    break;
+                case 3:
+                    navi_title.setText("破损处理");
+                    URLS = BaseInterface.BrokenDeal;
+                    break;
+                case 4:
+                    navi_title.setText("APP指导");
+                    URLS = BaseInterface.APPIntro;
+                    break;
+                case 5:
+                    navi_title.setText("平台保障");
+                    URLS = BaseInterface.PlatformSEC;
+                    break;
+                default:
+                    break;
+            }
+            initRentWater();
         }
     }
 

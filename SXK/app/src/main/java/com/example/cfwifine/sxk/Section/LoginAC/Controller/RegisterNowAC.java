@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -37,6 +41,8 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
     private Button register_register_btn;
     private TextView register_user_protocal;
     private static final int LOGON_SUCESS = 110;
+    private ImageView look_passs;
+    private boolean isLook = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         TextView rightTitle = (TextView) findViewById(R.id.navi_right);
         rightTitle.setText("");
     }
+
     // TODO*********************************配置注册界面**********************************************
     private void initView() {
 
@@ -73,6 +80,9 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         register_register_btn.setOnClickListener(this);
         register_user_protocal = (TextView) findViewById(R.id.register_user_protocal);
         register_user_protocal.setOnClickListener(this);
+        look_passs = (ImageView) findViewById(R.id.look_passs);
+        look_passs.setOnClickListener(this);
+        look_passs.setImageResource(R.drawable.eye);
     }
 
 
@@ -82,8 +92,7 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
             case R.id.navi_back:
                 finish();
                 break;
-            default:
-                break;
+
             case R.id.register_send_verification_btn:
                 sendVerifyCode();
                 break;
@@ -91,25 +100,43 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
                 submit();
                 break;
             case R.id.register_user_protocal:
-                Intent intent = new Intent(RegisterNowAC.this, UserPrctocalAC.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(RegisterNowAC.this, UserPrctocalAC.class);
+                intent1.putExtra("SETJUMPPOSITION", 222);
+                startActivity(intent1);
+                break;
+            case R.id.look_passs:
+                if(isLook){
+                    look_passs.setImageResource(R.drawable.yanjingss);
+                    //如果选中，显示密码
+                    register_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    isLook = false;
+                }else{
+                    look_passs.setImageResource(R.drawable.eye);
+                    //否则隐藏密码
+                    register_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    isLook = true;
+                }
                 break;
 
+            default:
+                break;
         }
     }
+
     // TODO*********************************用户验证码**********************************************
     private void sendVerifyCode() {
-        if (register_phonenumber.getText().toString().trim().length() != 11){
+        if (register_phonenumber.getText().toString().trim().length() != 11) {
             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入正确的手机号!", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
         new CountDownTimer(60 * 1000, 1000) {
             @Override
             public void onTick(long l) {
-                register_send_verification_btn.setText(l/1000+"s后重新发送");
+                register_send_verification_btn.setText(l / 1000 + "s后重新发送");
                 register_send_verification_btn.setTextColor(Color.parseColor("#16a6ae"));
                 register_send_verification_btn.setEnabled(false);
             }
+
             @Override
             public void onFinish() {
                 register_send_verification_btn.setText("重新获取验证码");
@@ -118,14 +145,14 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         }.start();
         JSONObject json = new JSONObject();
         try {
-            json.put("mobile",register_phonenumber.getText().toString().trim());
+            json.put("mobile", register_phonenumber.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         OkHttpUtils.postString()
                 .url(BaseInterface.UserVerifyCode)
-                .addHeader("X-Requested-With","XMLHttpRequest")
-                .addHeader("Content-Type","application/json;chartset=utf-8")
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
                 .content(json.toString())
                 .build()
                 .execute(new StringCallback() {
@@ -136,7 +163,7 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("验证码",""+response);
+                        Log.e("验证码", "" + response);
                     }
                 });
     }
@@ -164,60 +191,57 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         }
         final JSONObject JSON = new JSONObject();
         try {
-            JSON.put("mobile",phonenumber);
-            JSON.put("password",password);
-            JSON.put("code",code);
+            JSON.put("mobile", phonenumber);
+            JSON.put("password", password);
+            JSON.put("code", code);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         // Register
         OkHttpUtils.postString()
                 .url(BaseInterface.UserRegister)
-                .addHeader("X-Requested-With","XMLHttpRequest")
-                .addHeader("Content-Type","application/json;chartset=utf-8")
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
                 .content(JSON.toString())
                 .build()
                 .execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e("错误",""+e);
-                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求异常!", Color.WHITE, Color.parseColor("#16a6ae"));
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                Log.e("成功", "" + response);
-                try {
-                    JSONObject newjson = new JSONObject(response);
-                    int code = newjson.optInt("code");
-                    if (code == 1){
-                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "注册成功!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        SharedPreferencesUtils.setParam(getApplicationContext(),BaseInterface.USERNAME,phonenumber);
-//                        SharedPreferencesUtils.setParam(getApplicationContext(),BaseInterface.PASSWORD,password);
-                        ArrayList<String> data = new ArrayList<String>();
-                        data.add(phonenumber);
-                        data.add(password);
-                        Intent intent = getIntent();
-                        intent.putStringArrayListExtra("LOGINSUCESS",data);
-                        setResult(LOGON_SUCESS,intent);
-                        finish();
-                    }else if(code == 2003){
-                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "该手机号已经注册过哦!", Color.WHITE, Color.parseColor("#16a6ae"));
-                    }else {
-                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "注册失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e("错误", "" + e);
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求异常!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("成功", "" + response);
+                        try {
+                            JSONObject newjson = new JSONObject(response);
+                            int code = newjson.optInt("code");
+                            if (code == 1) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "注册成功!", Color.WHITE, Color.parseColor("#16a6ae"));
+                                ArrayList<String> data = new ArrayList<String>();
+                                data.add(phonenumber);
+                                data.add(password);
+                                Intent intent = getIntent();
+                                intent.putStringArrayListExtra("LOGINSUCESS", data);
+                                setResult(LOGON_SUCESS, intent);
+                                finish();
+                            } else if (code == 2003) {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "该手机号已经注册过哦!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            } else {
+                                SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "注册失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            }
 
-            }
-        });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(this);
     }

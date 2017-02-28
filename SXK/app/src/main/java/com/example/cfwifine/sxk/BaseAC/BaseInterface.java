@@ -8,6 +8,8 @@ public class BaseInterface {
 
     // 登录注册相关基本接口
     public static String root = "http://shexiangke.jcq.tbapps.cn";
+//    http://shexiangke.boobe.com.cn
+//    http://shexiangke.jcq.tbapps.cn
     // 注册
     public static String UserRegister= root + "/app/applogin/registerpost";
     // 登录
@@ -18,14 +20,20 @@ public class BaseInterface {
     public static String RentWater = root + "/app/processsetup/getpost";
     // 出租收益
     public static String RentInput = root+"/app/profitsetup/getpost";
+    // 租赁费用
+    public static String RentFee = root + "/app/costsetup/getpost";
     // 平台保障
     public static String PingtaiKeep = root+"/app/guaranteesetup/getpost";
     // 破损处理
     public static String BrokenDeal = root+"/app/damagesetup/getpost";
     // 平台服务费
     public static String PingTaiFuWuFei = root+"/app/chargesetup/getpost";
+    // APP指导
+    public static String APPIntro = root + "/app/guidesetup/getpost";
     // 长租
     public static String LongRent = root+"/app/longtermsetup/getpost";
+    // 平台保障
+    public static String PlatformSEC = root + "/app/guaranteesetup/getpost";
 
     // 获取用户信息
     public static String GetUserInfo = root + "/app/user/getpost";
@@ -75,6 +83,7 @@ public class BaseInterface {
     // 获取活动列表
     public static String HomeEightItemActivityList = root + "/app/activity/listpost";
     public static String HomeEightItemActivityDetail = root + "/app/activity/getpost";
+    public static String HomeActivityJoin = root + "/app/activityjoin/addpost";
     // 交换商品
     public static String HomeExchangeGoodsList = root + "/app/swapsetup/listpost";
     // boobe秀
@@ -175,6 +184,11 @@ public class BaseInterface {
     // 融云接口
     public static String RONGYUNDemo = root + "/app/rongyun/gettokenpost";
 
+    // 用户充值
+    public static String ReCharge = root + "/app/rechargeorder/addpost";
+    // 提现
+    public static String WithDraw = root + "/app/withdraw/addpost";
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";
@@ -183,4 +197,5 @@ public class BaseInterface {
     public static String PHPSESSION = "PHPSESSION";
     public static String USERID = "USERID";
     public static String PORITA = "PORITA";
+    public static String SUCCESS = "SUCCESS";
 }

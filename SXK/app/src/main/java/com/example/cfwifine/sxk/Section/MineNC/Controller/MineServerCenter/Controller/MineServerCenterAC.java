@@ -38,7 +38,7 @@ public class MineServerCenterAC extends AppCompatActivity implements View.OnClic
 
     private void initView() {
         String[] s = new String[]{
-                "我是啵主", "我是啵客"
+                "我是啵客", "我是啵主"
         };
         datas = new ArrayList<>();
         for (int i = 0; i < s.length; i++) {
