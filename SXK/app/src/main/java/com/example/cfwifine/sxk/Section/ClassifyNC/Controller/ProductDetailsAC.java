@@ -20,11 +20,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
-import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ProducetDetailCommentRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.RecyclerBanner;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.CustomDialog_ShareBorad;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.FollowSuccessModel;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductCommentListModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
@@ -35,7 +36,6 @@ import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.UmengTool;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -85,15 +85,17 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private TextView product_enclosure;//附件
     private int RentID;
     Dialog dialog;
-    private ProductDetailModel.RentBean rentDetail;
+    private ProductDetailModel.RentBean rentDetail = null;
     private CircleImageView headPic;
     private String crowds = "";
     private String RongToken;
     private String TAG;
-    private int mineUserId=0;
+    private int mineUserId = 0;
     private String PORITE = "";
-    private String NICKNAME="";
+    private String NICKNAME = "";
     private CustomDialog_ShareBorad customDialog_shareBorad;
+    private List<ProductCommentListModel.BrandListBean> CommentDataSource = null;
+    private TextView more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +103,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_product_details_ac);
         RentID = getIntent().getIntExtra("RENTID", 0);
         dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
-        PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA,"");
-        NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME,"");
+        PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA, "");
+        NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME, "");
         initView();
         // 产品详情页面分享链接 http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/136
 
@@ -141,6 +143,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                             SharedPreferencesUtils.setParam(ProductDetailsAC.this, "RENTDETAILMODEL", response.toString());
                             rentDetail = productDetailModel.getRent();
                             setValueForView();
+                            // 初始化评论列表
+                            initCommentDataSource();
                         } else if (productDetailModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (productDetailModel.getCode() == 911) {
@@ -175,8 +179,36 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         bo_one.setOnClickListener(this);
         follow.setOnClickListener(this);
         lease_btn.setOnClickListener(this);
+        more = (TextView) findViewById(R.id.more);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rentDetail != null){
+                    Intent intent = new Intent(ProductDetailsAC.this,CommentDetailAC.class);
+                    intent.putExtra("rentid",rentDetail.getRentid());
+                    startActivity(intent);
+                }
+            }
+        });
+
         chat.setOnClickListener(this);
-        more_comment.setOnClickListener(this);
+        more_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (CommentDataSource.size() == 0) {
+                    initSnackBar("暂时没有评价！");
+
+                } else {
+                    // 评论详情页面
+                    if (rentDetail != null){
+                        Intent intent = new Intent(ProductDetailsAC.this,CommentDetailAC.class);
+                        intent.putExtra("rentid",rentDetail.getRentid());
+                        startActivity(intent);
+                    }
+
+                }
+            }
+        });
         product_details_share.setOnClickListener(this);
         product_details_back.setOnClickListener(this);
         product_category = (TextView) findViewById(R.id.product_category);
@@ -185,11 +217,82 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_condition = (TextView) findViewById(R.id.product_condition);
         product_intended_for_person = (TextView) findViewById(R.id.product_intended_for_person);
         product_enclosure = (TextView) findViewById(R.id.product_enclosure);
-
         initDetailData();
-
         headPic = (CircleImageView) findViewById(R.id.headPic);
         headPic.setOnClickListener(this);
+
+    }
+
+    private void initCommentDataSource() {
+        JSONObject commentid = new JSONObject();
+        try {
+            commentid.put("commentid", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("pageNo", 0);
+            js.put("pageSize", 0);
+            js.put("order", commentid);
+            js.put("rentid", rentDetail.getRentid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.ProductDetailCommentList)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("商品评价列表", "" + response);
+                        Gson gson = new Gson();
+                        ProductCommentListModel productCommentListModel = gson.fromJson(response, ProductCommentListModel.class);
+                        if (productCommentListModel.getCode() == 1) {
+                            CommentDataSource = productCommentListModel.getBrandList();
+                            if (CommentDataSource.size() != 0) {
+                                int number = productCommentListModel.getTotal();
+                                comment_number.setText(String.valueOf(number));
+                                more.setText("更多评论");
+                                initCommentRecycyleView();
+                            } else {
+                                more.setVisibility(View.GONE);
+                                comment_number.setText("0");
+                                product_comment_list_rv.setVisibility(View.GONE);
+
+                            }
+
+                        } else if (productCommentListModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (productCommentListModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
+    }
+
+    private void initCommentRecycyleView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        ProducetDetailCommentRecycleViewAdapter producetDetailCommentRecycleViewAdapter = new ProducetDetailCommentRecycleViewAdapter(this, CommentDataSource,1);
+        product_comment_list_rv.setLayoutManager(linearLayoutManager);
+        product_comment_list_rv.setAdapter(producetDetailCommentRecycleViewAdapter);
     }
 
     private void setValueForView() {
@@ -303,10 +406,10 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 customDialog_shareBorad = new CustomDialog_ShareBorad(this, new CustomDialog_ShareBorad.ICustomDialogEventListener() {
                     @Override
                     public void customDialogEvent(int type) {
-                        LogUtil.e("输出的类型为"+type);
+                        LogUtil.e("输出的类型为" + type);
                         shareToThreePart(type);
                     }
-                },R.style.style_dialog);
+                }, R.style.style_dialog);
                 customDialog_shareBorad.show();
 
                 break;
@@ -333,7 +436,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
     private void shareToThreePart(int type) {
         SHARE_MEDIA SHARE_TYPE = null;
-        switch (type){
+        switch (type) {
             case 1:
                 SHARE_TYPE = SHARE_MEDIA.WEIXIN;
                 break;
@@ -347,13 +450,13 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 SHARE_TYPE = SHARE_MEDIA.QQ;
                 break;
         }
-        LogUtil.e("输出类型为"+type);
-        UMImage image = new UMImage(ProductDetailsAC.this, BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentDetail.getImgList().get(0));
-        UMImage thumb =  new UMImage(this, R.mipmap.ic_launcher);
+        LogUtil.e("输出类型为" + type);
+        UMImage image = new UMImage(ProductDetailsAC.this, BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentDetail.getImgList().get(0));
+        UMImage thumb = new UMImage(this, R.mipmap.ic_launcher);
         image.setThumb(thumb);
         image.compressFormat = Bitmap.CompressFormat.PNG;
 
-        UMWeb  web = new UMWeb("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/"+rentDetail.getRentid());
+        UMWeb web = new UMWeb("http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/" + rentDetail.getRentid());
         web.setTitle(rentDetail.getName().toString());//标题
         web.setThumb(image);  //缩略图
         web.setDescription(rentDetail.getKeyword().toString());//描述
@@ -384,8 +487,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         public void onError(SHARE_MEDIA platform, Throwable t) {
             customDialog_shareBorad.dismiss();
             initSnackBar("分享失败！");
-            if(t!=null){
-                Log.d("throw","throw:"+t.getMessage());
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
             }
         }
 
@@ -399,12 +502,12 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
     // 初始化聊天
     private void initRongData() {
-        mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID,0);
-        LogUtil.e("我的ID"+mineUserId);
+        mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID, 0);
+        LogUtil.e("我的ID" + mineUserId);
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("userid",mineUserId);
+            js.put("userid", mineUserId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -444,20 +547,20 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
             @Override
             public void onSuccess(String userId) {
-                LogUtil.e("返回的userID1"+userId);
-                LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
-                    LogUtil.e("返回的userID"+rentDetail.getUser().getUserid());
-                    if (RongIM.getInstance()!=null){
-                        UserInfo userInfo = new UserInfo(String.valueOf(mineUserId), NICKNAME, Uri.parse(PORITE));
-                        RongIM.getInstance().setCurrentUserInfo(userInfo);
-                        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-                            @Override
-                            public UserInfo getUserInfo(String userId) {
-                                return new UserInfo(String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname(), Uri.parse(rentDetail.getUser().getHeadimgurl()));
-                            }
-                        }, true);
-                        RongIM.getInstance().startConversation(ProductDetailsAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(rentDetail.getUser().getUserid()),rentDetail.getUser().getNickname());
-                    }
+                LogUtil.e("返回的userID1" + userId);
+                LogUtil.e("返回的userID" + rentDetail.getUser().getUserid());
+                LogUtil.e("返回的userID" + rentDetail.getUser().getUserid());
+                if (RongIM.getInstance() != null) {
+                    UserInfo userInfo = new UserInfo(String.valueOf(mineUserId), NICKNAME, Uri.parse(PORITE));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                        @Override
+                        public UserInfo getUserInfo(String userId) {
+                            return new UserInfo(String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname(), Uri.parse(rentDetail.getUser().getHeadimgurl()));
+                        }
+                    }, true);
+                    RongIM.getInstance().startConversation(ProductDetailsAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname());
+                }
             }
 
             @Override
@@ -481,7 +584,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         dialog.show();
         JSONObject JS = new JSONObject();
         try {
-            JS.put("rentid",rentDetail.getRentid());
+            JS.put("rentid", rentDetail.getRentid());
         } catch (JSONException e) {
             e.printStackTrace();
         }

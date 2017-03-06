@@ -55,29 +55,42 @@
                     android:gravity="end|center_vertical"
                     android:paddingRight="15dp"
                     android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="18dp"
-                        android:background="@drawable/zuixingc"/>
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/curing_collection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="啵一个"
-                        android:textSize="12sp"
-                        android:textColor="@color/black"/>
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="16dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/duihuac"/>
-                    <TextView
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/zuixingc"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="啵一个"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/curing_chat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/black"
-                        android:text="聊呗"
-                        android:textSize="12sp"/>
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="16dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/duihuac"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/black"
+                            android:text="聊呗"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

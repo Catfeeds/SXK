@@ -117,7 +117,11 @@ public class SlideViewRecycleViewAdapter extends RecyclerView.Adapter<SlideViewR
 
     public void removeData(int position){
         mDatas.getUserList().remove(position);
-        notifyItemRemoved(position);
+//        notifyItemRemoved(position);
+        notifyDataSetChanged();
+        if (menuIsOpen()){
+            closeMenu();
+        }
 
     }
 

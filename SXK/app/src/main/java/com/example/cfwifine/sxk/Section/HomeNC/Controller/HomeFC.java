@@ -710,14 +710,9 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private void JumpForPage(int position) {
         if (position == 0 || position == 1) {
 //            startActivity(ExchangeAndRentAC.class, position);
-            userinfo = mainAC.getUserInfo();
-            if (userinfo != null) {
-                Intent intent = new Intent(getActivity(), ExchangeAndRentAC.class);
-                intent.putExtra("JUMPEIGHTITEMDETAIL", position);
-                intent.putExtra("USERINFO", userinfo);
-                startActivity(intent);
-            }
-
+            Intent intent = new Intent(getActivity(), ExchangeAndRentAC.class);
+            intent.putExtra("JUMPEIGHTITEMDETAIL", position);
+            startActivity(intent);
         } else if (position == 2) {
             startActivity(EightItemDetailAC.class, position);
         } else if (position == 3) {

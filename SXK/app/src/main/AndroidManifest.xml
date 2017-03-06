@@ -398,7 +398,19 @@
         <activity
             android:name=".Section.MineNC.Controller.MineWallet.WithDrawAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineServerCenter.Controller.RegisterSecurityAC"
+        <activity
+            android:name=".Section.MineNC.Controller.MineServerCenter.Controller.RegisterSecurityAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.MineCoin.MineScoinAC"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Section.ClassifyNC.Controller.ClassifySearchAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.ClassifyNC.Controller.CommentDetailAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

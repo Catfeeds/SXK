@@ -210,7 +210,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                                 dataSource = userInfoModel.getUser();
 
 //                                Glide.with(UserInfoAC.this).load(dataSource.getHeadimgurl()).centerCrop().placeholder(R.drawable.user_header_image_placeholder).into(header);
-                                ImageLoader.getInstance().displayImage(dataSource.getHeadimgurl(),header);
+                                if (dataSource.getHeadimgurl()!=null){
+                                    ImageLoader.getInstance().displayImage(dataSource.getHeadimgurl(),header);
+                                }
                                 // 数据请求成功后才可以点击，否则不能点击
                                 if (dataSource.getNickname()!=null){
                                     SharedPreferencesUtils.setParam(getApplicationContext(), dataSource.getNickname().toString(), "");
@@ -293,14 +295,23 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                         Gson gson = new Gson();
                         userInfoModelss = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModelss.getCode() == 1) {
-                            infoArr.add(0,userInfoModelss.getUser().getNickname());
+                            if (userInfoModelss.getUser().getNickname()!= null){
+                                infoArr.add(0,userInfoModelss.getUser().getNickname());
+                            }else {
+                                infoArr.add(0,"去填写");
+                            }
                             if (userInfoModelss.getUser().getSex()==1){
                                 infoArr.add(1,"男");
                             }else {
                                 infoArr.add(1,"女");
                             }
-                            infoArr.add(2,TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l));
-                            infoArr.add(3,userInfoModelss.getUser().getProfile().toString());
+                            SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
+                            infoArr.add(2,TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l,DEFAULT_SDF));
+                            if (userInfoModelss.getUser().getProfile() != null){
+                                infoArr.add(3,userInfoModelss.getUser().getProfile().toString());
+                            }else {
+                                infoArr.add(3,"去填写");
+                            }
                             infoArr.add(4,userInfoModelss.getUser().getMobile());
                             initRecycleView();
                         } else if (userInfoModelss.getCode() == 0) {

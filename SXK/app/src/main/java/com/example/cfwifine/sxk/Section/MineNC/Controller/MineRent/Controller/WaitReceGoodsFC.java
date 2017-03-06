@@ -249,8 +249,6 @@ public class WaitReceGoodsFC extends Fragment {
 
                     }
                 });
-
-
     }
 
 }

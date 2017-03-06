@@ -171,7 +171,12 @@ public class BaseInterface {
     public static String CollectionADD = root + "/app/collection/addpost";
     // 删除收藏
     public static String CollectionDel = root + "/app/collection/delpost";
-
+    // 养护收藏列表
+    public static String CuringCollectionList = root + "/app/collectionmaintain/getpost";
+    // 养护收藏添加
+    public static String CuringCollectionAdd = root + "/app/collectionmaintain/addpost";
+    // 养护收藏删除
+    public static String CuringCollectionDel = root + "/app/collectionmaintain/delpost";
 
     // 支付
     public static String PayOrder = root + "/app/payment/chargepost";
@@ -189,6 +194,20 @@ public class BaseInterface {
     // 提现
     public static String WithDraw = root + "/app/withdraw/addpost";
 
+    // 我的积分
+    public static String MineScoin = root + "/app/record/listpost";
+
+    // 分类二级页面的热门
+    public static String ClassifySecondHot = root + "/app/categoryhot/listpost";
+
+    // 获取订单详情
+    public static String BuyerAndSellerOrderDetail = root + "/app/rentorder/getpost";
+
+    // 我的钱包列表
+    public static String MineWalletList = root+ "/app/wallet/listpost";
+    // 商品详情评论列表
+    public static String ProductDetailCommentList = root + "/app/rentcomment/listpost";
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";
@@ -198,4 +217,6 @@ public class BaseInterface {
     public static String USERID = "USERID";
     public static String PORITA = "PORITA";
     public static String SUCCESS = "SUCCESS";
+    public static String KEYWORD = "KEYWORD";
+
 }

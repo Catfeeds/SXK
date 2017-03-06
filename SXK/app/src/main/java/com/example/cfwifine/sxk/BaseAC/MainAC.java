@@ -106,9 +106,14 @@ public class MainAC extends BaseAC  {
                         if (userInfoModel.getCode() == 1) {
                             //
                             USERINFO = response;
-                            SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.NICKNAME,userInfoModel.getUser().getNickname());
+                            if (userInfoModel.getUser().getNickname()!=null){
+                                SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.NICKNAME,userInfoModel.getUser().getNickname());
+                            }
+                            if (userInfoModel.getUser().getHeadimgurl()!=null){
+                                SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.PORITA,userInfoModel.getUser().getHeadimgurl());
+                            }
                             SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.USERID,userInfoModel.getUser().getUserid());
-                            SharedPreferencesUtils.setParam(MainAC.this, BaseInterface.PORITA,userInfoModel.getUser().getHeadimgurl());
+
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");

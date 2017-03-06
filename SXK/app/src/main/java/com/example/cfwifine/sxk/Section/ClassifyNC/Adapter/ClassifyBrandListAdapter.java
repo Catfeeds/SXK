@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
@@ -38,6 +37,15 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
         return mDatas;
     }
 
+    public interface OnItemClickLitener {
+        void onItemClick(View view, int type, int position);
+    }
+
+    private ClassifyBrandListAdapter.OnItemClickLitener mOnItemClickLitener;
+
+    public void setOnItemClickLitener(ClassifyBrandListAdapter.OnItemClickLitener onItemClickLitener) {
+        this.mOnItemClickLitener = onItemClickLitener;
+    }
 
 
     public ClassifyBrandListAdapter setDatas(List<BrandBean> datas) {
@@ -68,8 +76,8 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
             mRaiseRecycleAdapter.setOnItemClickLitener(new HeaderRecycleAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view,final int position) {
-                    Toast.makeText(mContext,mHeaderDatas.get(position).getName().toString()+"", Toast.LENGTH_SHORT).show();
-
+//                    Toast.makeText(mContext,mHeaderDatas.get(position).getName().toString()+"", Toast.LENGTH_SHORT).show();
+                    mOnItemClickLitener.onItemClick(view,1,position);
                 }
             });
 
@@ -78,12 +86,12 @@ public class ClassifyBrandListAdapter extends RecyclerView.Adapter<ClassifyBrand
             holder.cell.setVisibility(View.VISIBLE);
             final BrandBean cityBean = mDatas.get(position);
             holder.tvCity.setText(cityBean.getCity());
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(mContext, "pos:" + position, Toast.LENGTH_SHORT).show();
-//                }
-//            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickLitener.onItemClick(view, 2, position);
+                }
+            });
         }
     }
 

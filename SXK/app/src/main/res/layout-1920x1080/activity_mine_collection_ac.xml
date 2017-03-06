@@ -14,6 +14,60 @@
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
         android:background="@color/gray_40"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/goods"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/goods_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="商品"
+                android:textSize="14sp"
+                android:textColor="@color/login_turquoise"/>
+            <View
+                android:id="@+id/goods_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@color/login_turquoise"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/curing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/curing_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="养护"
+                android:textSize="14sp"
+                android:textColor="@color/textGray"/>
+            <View
+                android:id="@+id/curing_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+    
     <android.support.v7.widget.RecyclerView
         android:id="@+id/collection_rv"
         android:layout_marginTop="10dp"

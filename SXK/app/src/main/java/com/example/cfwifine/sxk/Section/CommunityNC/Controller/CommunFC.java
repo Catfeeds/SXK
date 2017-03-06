@@ -349,16 +349,16 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        if (listData.size() >= 3 * limit) {
+//                        if (listData.size() >= 3 * limit) {
                             hao_recycleview.loadMoreEnd();
                             return;
-                        }
-
-                        for (int i = 0; i < limit; i++) {
-                            listData.add(i + "");
-                        }
-                        mAdapter.notifyDataSetChanged();
-                        hao_recycleview.loadMoreComplete();
+//                        }
+//
+//                        for (int i = 0; i < limit; i++) {
+//                            listData.add(i + "");
+//                        }
+//                        mAdapter.notifyDataSetChanged();
+//                        hao_recycleview.loadMoreComplete();
 
                     }
                 }, 1000);

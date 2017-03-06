@@ -75,6 +75,10 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
     private ClassifyAllListAdapter mClassiftAdapter;
     private int pageNums = 10;
     private int Total= 0;
+    private int brandid = -1;
+    private int cateid = -1;
+    private int hotid = -1;
+    private int types = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,20 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
         initView();
 //        mCatelistRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mloading = LoadingUtils.createLoadingDialog(CateListAC.this,"加载中...");
+        brandid = getIntent().getIntExtra("brandid",-1);
+        cateid = getIntent().getIntExtra("cateid",-1);
+        hotid = getIntent().getIntExtra("hotid",-1);
+        types = getIntent().getIntExtra("TYPE",-1);
+        if (types != -1){
+            String list = getIntent().getStringExtra("RENTLIST");
+            Gson gson = new Gson();
+            RentListModel rentListDatas = gson.fromJson(list, RentListModel.class);
+            rentList = rentListDatas.getRentList();
+            Total = rentListDatas.getTotal();
+            initRecycleView();
+            return;
+        }
+
         initCateRentlist(1,10);
 
     }
@@ -139,9 +157,16 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo", 0);
-            jsonObject.put("pageSize", 0);
+            jsonObject.put("pageNo", pageNo);
+            jsonObject.put("pageSize", pageSize);
             jsonObject.put("order", order);
+            if (brandid != -1){
+                jsonObject.put("brandid",brandid);
+            }else if (cateid != -1){
+                jsonObject.put("categoryid",cateid);
+            }else if (hotid != -1){
+                jsonObject.put("hotid",hotid);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

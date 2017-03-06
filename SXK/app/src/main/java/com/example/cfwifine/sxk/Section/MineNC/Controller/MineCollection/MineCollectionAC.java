@@ -9,16 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.SlideViewRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -41,6 +41,15 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     Dialog dialog;
     private MineCollectionModel.CollectionBean dataSource;
     private CollectionSlideViewRecycleViewAdapter mAdapter;
+    private LinearLayout goods;
+    private LinearLayout curing;
+    private Button goods_btn;
+    private View goods_line;
+    private Button curing_btn;
+    private View curing_line;
+    private String COMURL = "";
+    private MineCuringCollectionListModel.CollectionBean curingDataSource=null;
+    private String BASEURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +68,20 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         collection_rv = (RecyclerView) findViewById(R.id.collection_rv);
-
-        initCollectionData();
+        goods = (LinearLayout) findViewById(R.id.goods);
+        goods.setOnClickListener(this);
+        curing = (LinearLayout) findViewById(R.id.curing);
+        curing.setOnClickListener(this);
+        goods_btn = (Button) findViewById(R.id.goods_btn);
+        goods_line = (View) findViewById(R.id.goods_line);
+        curing_btn = (Button) findViewById(R.id.curing_btn);
+        curing_line = (View) findViewById(R.id.curing_line);
+        goods_btn.setClickable(false);
+        curing_btn.setClickable(false);
+        initCollectionData(1);
     }
 
-    private void initCollectionData() {
+    private void initCollectionData(final int types) {
         dialog.show();
         JSONObject js = new JSONObject();
         try {
@@ -71,8 +89,13 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        if (types == 1) {
+            COMURL = BaseInterface.CollectionList;
+        } else {
+            COMURL = BaseInterface.CuringCollectionList;
+        }
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
-        OkHttpUtils.postString().url(BaseInterface.CollectionList)
+        OkHttpUtils.postString().url(COMURL)
                 .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
@@ -88,16 +111,29 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
                     @Override
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
-                        Log.e("收藏列表", "" + response);
                         Gson gson = new Gson();
-                        MineCollectionModel mineCollectionModel = gson.fromJson(response, MineCollectionModel.class);
-                        if (mineCollectionModel.getCode() == 1) {
-                            dataSource = mineCollectionModel.getCollection();
-                            setAdapter();
-                        } else if (mineCollectionModel.getCode() == 0) {
-                            initSnackBar("请求失败！");
-                        } else if (mineCollectionModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                        if (types == 1) {
+                            Log.e("收藏列表", "" + response);
+                            MineCollectionModel mineCollectionModel = gson.fromJson(response, MineCollectionModel.class);
+                            if (mineCollectionModel.getCode() == 1) {
+                                dataSource = mineCollectionModel.getCollection();
+                                setAdapter(1);
+                            } else if (mineCollectionModel.getCode() == 0) {
+                                initSnackBar("请求失败！");
+                            } else if (mineCollectionModel.getCode() == 911) {
+                                initSnackBar("登录超时，请重新登录！");
+                            }
+                        }else {
+                            LogUtil.e("养护收藏列表"+response);
+                            MineCuringCollectionListModel mineCuringCollectionListModel = gson.fromJson(response,MineCuringCollectionListModel.class);
+                            if (mineCuringCollectionListModel.getCode() == 1) {
+                                curingDataSource = mineCuringCollectionListModel.getCollection();
+                                setAdapter(2);
+                            } else if (mineCuringCollectionListModel.getCode() == 0) {
+                                initSnackBar("请求失败！");
+                            } else if (mineCuringCollectionListModel.getCode() == 911) {
+                                initSnackBar("登录超时，请重新登录！");
+                            }
                         }
                     }
                 });
@@ -109,9 +145,13 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
-    private void setAdapter() {
+    private void setAdapter(int i) {
         collection_rv.setLayoutManager(new LinearLayoutManager(this));
-        collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, dataSource));
+        if (i == 1){
+            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, dataSource,null));
+        }else {
+            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, null,curingDataSource));
+        }
         collection_rv.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -121,21 +161,31 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     }
 
     @Override
-    public void onDeleteBtnCilck(View view, int rentid, int position) {
-        initCancelCollection(rentid, position);
+    public void onDeleteBtnCilck(View view, int rentid,int maintainid, int position) {
+        initCancelCollection(rentid,maintainid, position);
     }
 
-    private void initCancelCollection(int rentid, final int position) {
+    private void initCancelCollection(final int rentid, int maintainid, final int position) {
         dialog.show();
         JSONObject js = new JSONObject();
-        try {
-            js.put("rentid", rentid);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (rentid != -1){
+            try {
+                js.put("rentid", rentid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BASEURL = BaseInterface.CollectionDel;
+        }else {
+            try {
+                js.put("maintainid", maintainid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BASEURL = BaseInterface.CuringCollectionDel;
         }
 
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
-        OkHttpUtils.postString().url(BaseInterface.CollectionDel)
+        OkHttpUtils.postString().url(BASEURL)
                 .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
@@ -173,8 +223,33 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
             case R.id.navi_back:
                 finish();
                 break;
+            case R.id.goods:
+                clickGoodsCollection();
+                break;
+            case R.id.curing:
+                clickCuringCollection();
+                break;
             default:
                 break;
+
         }
+    }
+
+
+    private void clickCuringCollection() {
+        curing_btn.setTextColor(getResources().getColor(R.color.login_turquoise));
+        curing_line.setBackgroundColor(getResources().getColor(R.color.login_turquoise));
+        goods_btn.setTextColor(getResources().getColor(R.color.textGray));
+        goods_line.setBackgroundColor(getResources().getColor(R.color.white));
+
+        initCollectionData(2);
+    }
+
+    private void clickGoodsCollection() {
+        goods_btn.setTextColor(getResources().getColor(R.color.login_turquoise));
+        goods_line.setBackgroundColor(getResources().getColor(R.color.login_turquoise));
+        curing_btn.setTextColor(getResources().getColor(R.color.textGray));
+        curing_line.setBackgroundColor(getResources().getColor(R.color.white));
+        initCollectionData(1);
     }
 }

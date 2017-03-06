@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,11 +27,11 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
  */
 
 public class OrderSuccessPupWindow extends PopupWindow implements OnClickListener {
-    private final LinearLayout careBtn;
     private final ImageView picView;
     private final TextView names;
     private final TextView keyWord;
     private final TextView prices;
+    private final Button cancelbtn,paybtn;
     private ProductDetailModel productDetail=null;
     private View mMenueView;
 
@@ -40,9 +41,6 @@ public class OrderSuccessPupWindow extends PopupWindow implements OnClickListene
         this.productDetail = productDetailModel;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenueView = inflater.inflate(R.layout.order_success_layout, null);
-        careBtn = (LinearLayout) mMenueView.findViewById(R.id.care_lay);
-        careBtn.setOnClickListener(itemsOnclick);
-
         picView = (ImageView)mMenueView.findViewById(R.id.goods_pic);
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + productDetail.getRent().getImgList().get(0);
         Glide.with(context).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(picView);
@@ -51,7 +49,19 @@ public class OrderSuccessPupWindow extends PopupWindow implements OnClickListene
         keyWord =(TextView)mMenueView.findViewById(R.id.goods_keyword);
         keyWord.setText(productDetail.getRent().getKeyword());
         prices = (TextView)mMenueView.findViewById(R.id.goods_price);
-        prices.setText(String.valueOf(productDetail.getRent().getRentPrice())+"/天");
+        double price = productDetail.getRent().getRentPrice();
+        prices.setText(String.format("%.2f",price/100)+"/天");
+
+        cancelbtn = (Button)mMenueView.findViewById(R.id.cancel_btn);
+        cancelbtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        paybtn = (Button)mMenueView.findViewById(R.id.pay_btn);
+        paybtn.setOnClickListener(itemsOnclick);
+
         this.setContentView(mMenueView);
         //设置SelectPicPopupWindow弹出窗体的宽
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -59,7 +69,7 @@ public class OrderSuccessPupWindow extends PopupWindow implements OnClickListene
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
-        this.setOutsideTouchable(true);
+        this.setOutsideTouchable(false);
         this.setTouchable(true);
 //        this.setTouchInterceptor(new View.OnTouchListener() {
 //            @Override

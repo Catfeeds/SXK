@@ -6,9 +6,10 @@ package com.example.cfwifine.sxk.Section.MineNC.Model;
 
 public class UserInfoModel {
 
+
     /**
      * code : 1
-     * user : {"mobile":"15539910985","password":"$2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq","userid":10,"createtime":1480922278,"updatetime":1487925219,"nickname":"测试","sex":1,"birthday":825609600,"profile":"测试手册按时发生大幅度","role":2,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":0}
+     * user : {"mobile":"15539910985","password":"$2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq","userid":10,"createtime":1480922278,"updatetime":1488268453,"nickname":"黑帆","sex":1,"birthday":915120000,"profile":"退了噢耶","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":1,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.02}
      */
 
     private int code;
@@ -36,15 +37,17 @@ public class UserInfoModel {
          * password : $2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq
          * userid : 10
          * createtime : 1480922278
-         * updatetime : 1487925219
-         * nickname : 测试
+         * updatetime : 1488268453
+         * nickname : 黑帆
          * sex : 1
-         * birthday : 825609600
-         * profile : 测试手册按时发生大幅度
-         * role : 2
+         * birthday : 915120000
+         * profile : 退了噢耶
+         * role : 4
          * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749
          * buyer : {"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"}
-         * balance : 0
+         * balance : 1
+         * seller : {"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"}
+         * score : 0.02
          */
 
         private String mobile;
@@ -60,6 +63,8 @@ public class UserInfoModel {
         private String headimgurl;
         private BuyerBean buyer;
         private int balance;
+        private SellerBean seller;
+        private double score;
 
         public String getMobile() {
             return mobile;
@@ -165,12 +170,74 @@ public class UserInfoModel {
             this.balance = balance;
         }
 
+        public SellerBean getSeller() {
+            return seller;
+        }
+
+        public void setSeller(SellerBean seller) {
+            this.seller = seller;
+        }
+
+        public double getScore() {
+            return score;
+        }
+
+        public void setScore(double score) {
+            this.score = score;
+        }
+
         public static class BuyerBean {
             /**
              * name : ghjn
              * idNumber : 43138119870827275X
              * front : buyer_front_1486370551
              * back : buyer_back_1486370551
+             */
+
+            private String name;
+            private String idNumber;
+            private String front;
+            private String back;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getIdNumber() {
+                return idNumber;
+            }
+
+            public void setIdNumber(String idNumber) {
+                this.idNumber = idNumber;
+            }
+
+            public String getFront() {
+                return front;
+            }
+
+            public void setFront(String front) {
+                this.front = front;
+            }
+
+            public String getBack() {
+                return back;
+            }
+
+            public void setBack(String back) {
+                this.back = back;
+            }
+        }
+
+        public static class SellerBean {
+            /**
+             * name : 接口
+             * idNumber : 411381199301107614
+             * front : seller_front_1488251082
+             * back : seller_back_1488251082
              */
 
             private String name;

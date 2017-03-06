@@ -1,8 +1,11 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,13 +13,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.cfwifine.sxk.BaseAC.BaseInterface;
+import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
+import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
+
+import okhttp3.Call;
 
 public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,15 +45,58 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
     private RelativeLayout activity_exchange_ac;
     private Button exchange_talkbtn_float;
     private int position=-1;
-    private UserInfoModel userInfoModel;
+    private UserInfoModel userInfoModel=null;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_ac);
-        initView();
-    }
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
+        initUserData();
 
+    }
+    public void initUserData() {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(ExchangeAndRentAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.GetUserInfo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("初始化个人信息", "" + response);
+                        Gson gson = new Gson();
+                        userInfoModel = gson.fromJson(response,UserInfoModel.class);
+                        if (userInfoModel.getCode() == 1) {
+                            initView();
+                        } else if (userInfoModel.getCode() == 0) {
+                        } else if (userInfoModel.getCode() == 911) {
+                            initSnackBar("您还没有登录哦！");
+                        }
+                    }
+                });
+
+    }
+    private void initSnackBar(String value){
+        SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
     private void initView() {
         position = getIntent().getIntExtra("JUMPEIGHTITEMDETAIL",-1);
         navi_back_pic = (ImageView) findViewById(R.id.navi_back_pic);
@@ -83,9 +141,6 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
     }
 
     private void initMeiQia() {
-        String userinfo = getIntent().getStringExtra("USERINFO");
-        Gson gson = new Gson();
-        userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
         int  sexid = userInfoModel.getUser().getSex();
         String Sex = "";
         if (sexid == 1){

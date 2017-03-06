@@ -1,6 +1,8 @@
 package com.example.cfwifine.sxk.Section.MineNC.Controller.MineWallet;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
-import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoreModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.MineWallentModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -30,6 +38,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import okhttp3.Call;
 
@@ -50,11 +60,15 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
     private UserInfoModel userInfoModel = null;
     private TextView yue;
     private double dd;
+    private RecyclerView bozhi_rv;
+    private Dialog dialog;
+    private List<MineWallentModel.WalletListBean> ScoreDataSource = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_wallet_ac);
+        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
         userinfo = getIntent().getStringExtra("USERINFO");
         Gson gson = new Gson();
         userInfoModel = gson.fromJson(userinfo, UserInfoModel.class);
@@ -136,10 +150,75 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
         activity_collapsing_toolbar_layout.setOnClickListener(this);
         yue = (TextView) findViewById(R.id.yue);
         yue.setOnClickListener(this);
-        dd= (userInfoModel.getUser().getBalance());
-        LogUtil.e("余额为"+String.format("%.2f",dd/100));
-        yue.setText("¥" + String.format("%.2f",dd/100));
+        dd = (userInfoModel.getUser().getBalance());
+        LogUtil.e("余额为" + String.format("%.2f", dd / 100));
+        yue.setText("¥" + String.format("%.2f", dd / 100));
+        bozhi_rv = (RecyclerView) findViewById(R.id.bozhi_rv);
+        bozhi_rv.setOnClickListener(this);
+        initBoZhi();
     }
+    public void initBoZhi(){
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("walletid",-1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject JS = new JSONObject();
+        try {
+            JS.put("pageNo",0);
+            JS.put("pageSize",0);
+            JS.put("order",js);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(MineWalletAC.this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.MineWalletList)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(JS.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("余额列表", "" + response);
+                        Gson gson = new Gson();
+                        MineWallentModel mineWallentModel = gson.fromJson(response, MineWallentModel.class);
+                        if (mineWallentModel.getCode() == 1) {
+                            ScoreDataSource = mineWallentModel.getWalletList();
+                            initRecycleView();
+                        } else if (mineWallentModel.getCode() == 0) {
+                        } else if (mineWallentModel.getCode() == 911) {
+                            initSnackBar("您还没有登录哦！");
+                        }
+                    }
+                });
+    }
+
+    private void initRecycleView() {
+        bozhi_rv = (RecyclerView) findViewById(R.id.bozhi_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        bozhi_rv.setLayoutManager(linearLayoutManager);
+        MineWalletListAdapter mineWalletListAdapter = new MineWalletListAdapter(this,ScoreDataSource);
+        bozhi_rv.setAdapter(mineWalletListAdapter);
+        bozhi_rv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -153,8 +232,8 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
             case R.id.first1:
                 // 提现
                 LogUtil.e("withdrawcash" + 2);
-                Intent intent1 = new Intent(MineWalletAC.this,WithDrawAC.class);
-                intent1.putExtra("yue",dd);
+                Intent intent1 = new Intent(MineWalletAC.this, WithDrawAC.class);
+                intent1.putExtra("yue", dd);
                 startActivity(intent1);
                 break;
         }
@@ -169,7 +248,7 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
     public void initUserData() {
         JSONObject js = new JSONObject();
         try {
-            js.put("","");
+            js.put("", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -190,11 +269,11 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
                     public void onResponse(String response, int id) {
                         Log.e("初始化个人信息", "" + response);
                         Gson gson = new Gson();
-                        userInfoModel = gson.fromJson(response,UserInfoModel.class);
+                        userInfoModel = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModel.getCode() == 1) {
-                            double dd= (userInfoModel.getUser().getBalance());
-                            LogUtil.e("余额为"+String.format("%.2f",dd/100));
-                            yue.setText("¥" + String.format("%.2f",dd/100));
+                            double dd = (userInfoModel.getUser().getBalance());
+                            LogUtil.e("余额为" + String.format("%.2f", dd / 100));
+                            yue.setText("¥" + String.format("%.2f", dd / 100));
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");
@@ -203,6 +282,7 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
                 });
 
     }
+
     private void initSnackBar(String s) {
         SnackbarUtils.showShortSnackbar(MineWalletAC.this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }

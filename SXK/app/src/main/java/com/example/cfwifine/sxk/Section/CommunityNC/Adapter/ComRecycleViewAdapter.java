@@ -71,7 +71,6 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
         if (position == 0 && position < 1) {
             viewHolder.headerView.setVisibility(View.VISIBLE);
             LogUtil.e("图片地址" + headerPic);
-
             /**
              * 适配图片的宽高比例
              */

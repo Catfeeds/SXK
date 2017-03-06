@@ -29,6 +29,7 @@ import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineBuyPlus.Controller.MineBuyPlusAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.MineFollowAC;
@@ -98,8 +99,8 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private int LOGINTYPE = 1;
     private UserLoginModel requestStatueModel;
     private String BANDSUCCESS = "";
-    private UserInfoModel userInfoModels=null;
-    private String NEWUSERINFO="";
+    private UserInfoModel userInfoModels = null;
+    private String NEWUSERINFO = "";
 
 
     @Override
@@ -239,18 +240,25 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                         Gson gson = new Gson();
                         userInfoModel = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModel.getCode() == 1) {
-                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.NICKNAME, userInfoModel.getUser().getNickname());
+
+                            if (userInfoModel.getUser().getNickname() != null) {
+                                SharedPreferencesUtils.setParam(getActivity(), BaseInterface.NICKNAME, userInfoModel.getUser().getNickname());
+                            }
+                            if (userInfoModel.getUser().getHeadimgurl() != null) {
+                                SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PORITA, userInfoModel.getUser().getHeadimgurl());
+                            }
                             SharedPreferencesUtils.setParam(getActivity(), BaseInterface.USERID, userInfoModel.getUser().getUserid());
-                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PORITA, userInfoModel.getUser().getHeadimgurl());
                             String picUrl = userInfoModel.getUser().getHeadimgurl();
                             Glide.with(getActivity()).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(mHeadportrait);
                             username.setText(userInfoModel.getUser().getNickname());
                             int sex = userInfoModel.getUser().getSex();
-                            if (sex == 1){
+                            if (sex == 1) {
                                 mSex.setImageResource(R.drawable.man);
-                            }else {
+                            } else {
                                 mSex.setImageResource(R.drawable.girl);
                             }
+
+
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");
@@ -306,15 +314,15 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                                 Glide.with(getActivity()).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(mHeadportrait);
                                 username.setText(userInfoModels.getUser().getNickname());
                                 int sex = userInfoModels.getUser().getSex();
-                                if (sex == 1){
+                                if (sex == 1) {
                                     mSex.setImageResource(R.drawable.man);
-                                }else {
+                                } else {
                                     mSex.setImageResource(R.drawable.girl);
                                 }
                                 initSnackBar("登录成功！");
                             }
-                        } else if (userInfoModel.getCode() == 0) {
-                        } else if (userInfoModel.getCode() == 911) {
+                        } else if (userInfoModels.getCode() == 0) {
+                        } else if (userInfoModels.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");
                         }
                     }
@@ -324,10 +332,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     private void jump(int position) {
         // 根据position跳转
         if (position == 7) {
-            if (userInfoModel != null) {
+            if (userInfoModel.getUser() != null) {
                 initMeiQiaView();
             }
-
         } else if (position == 4) {
             if (userinfo != null) {
                 Intent intent = new Intent(getActivity(), MineServerCenterAC.class);
@@ -344,6 +351,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             startActivity(MineBuyPlusAC.class, 0);
         } else if (position == 0) {
             Intent intent = new Intent(getActivity(), MineWalletAC.class);
+            intent.putExtra("USERINFO", userinfo);
+            startActivity(intent);
+        } else if (position == 1) {
+            Intent intent = new Intent(getActivity(), MineScoinAC.class);
             intent.putExtra("USERINFO", userinfo);
             startActivity(intent);
         } else if (position == 9) {
@@ -389,10 +400,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 loginPupWindow.setOnDismissListener(this);
                 break;
             case R.id.headportrait:
-                startActivity(UserInfoAC.class,111);
+                startActivity(UserInfoAC.class, 111);
                 break;
             case R.id.mine_perssonal_data:
-                startActivity(UserInfoAC.class,111);
+                startActivity(UserInfoAC.class, 111);
                 break;
             case R.id.mine_follow:
                 Intent intent = new Intent(getActivity(), MineFollowAC.class);

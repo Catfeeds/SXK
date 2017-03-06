@@ -395,7 +395,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"></android.support.v7.widget.RecyclerView>
-
+                <TextView
+                    android:id="@+id/more"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textSize="12sp"
+                    android:text="MORE"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="27.5dp"
