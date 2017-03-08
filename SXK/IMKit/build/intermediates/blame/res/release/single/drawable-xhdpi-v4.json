@@ -520,12 +520,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_file_icon_cancel.png"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable-xhdpi-v4/u1f4de.png",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u1f4de.png"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable-xhdpi-v4/rc_voide_message_unread.png",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/rc_voide_message_unread.png"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable-xhdpi-v4/u1f4de.png",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable-xhdpi/u1f4de.png"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable-xhdpi-v4/u1f615.png",

@@ -145,6 +145,10 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
     private boolean bt3 = false;
 
 
+//    Error:Execution failed for task ':app:transformClassesWithJarMergingForRelease'.
+//            > com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: com/tencent/mm/opensdk/a/a/a$a.class
+
+
     // TODO********************************配置租赁列表数据********************************
     //获取包袋租赁列表
     private void initCateRentlist(int pageNo, int pageSize) {

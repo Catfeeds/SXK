@@ -180,12 +180,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/layout/rc_ext_voice_input.xml"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/layout/rc_cs_leave_message.xml",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/layout/rc_cs_leave_message.xml"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/layout/rc_fr_dialog_alter.xml",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/layout/rc_fr_dialog_alter.xml"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/layout/rc_cs_leave_message.xml",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/layout/rc_cs_leave_message.xml"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/debug/layout/rc_item_discussion_conversation.xml",

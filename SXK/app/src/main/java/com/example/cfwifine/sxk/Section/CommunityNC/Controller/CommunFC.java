@@ -73,6 +73,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private List<TopicListModel.TopicListBean> newTopicListModel = null;
     private int MODLEID = -1;
     private String newTopicString="";
+    private LinearLayout noNetView;
+    private TextView reloadView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,14 +118,15 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
                         mloading.dismiss();
+                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        swiperefresh.setVisibility(View.GONE);
+                        noNetView.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        mloading.dismiss();
                         Log.e("宣传图", "" + response);
                         Gson gson = new Gson();
                         CommunityHeaderImageModel communityHeaderImageModel = gson.fromJson(response, CommunityHeaderImageModel.class);
@@ -133,12 +136,12 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             initFriendMomentGetTopicListDataSource();
                         } else if (communityHeaderImageModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            mloading.dismiss();
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                         } else if (communityHeaderImageModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                            mloading.dismiss();
-//                            classify_online_view.setVisibility(View.GONE);
-//                            classify_nonet_view.setVisibility(View.VISIBLE);
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -174,8 +177,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        swiperefresh.setVisibility(View.GONE);
+                        noNetView.setVisibility(View.VISIBLE);
                         mloading.dismiss();
                     }
 
@@ -191,12 +194,14 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             initFriendMomentItemListDataSource();
                         } else if (communityTopicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                             mloading.dismiss();
                         } else if (communityTopicListModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                             mloading.dismiss();
-//                            classify_online_view.setVisibility(View.GONE);
-//                            classify_nonet_view.setVisibility(View.VISIBLE);
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -231,8 +236,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                        classify_online_view.setVisibility(View.GONE);
-//                        classify_nonet_view.setVisibility(View.VISIBLE);
+                        swiperefresh.setVisibility(View.GONE);
+                        noNetView.setVisibility(View.VISIBLE);
                         mloading.dismiss();
                     }
 
@@ -260,10 +265,12 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                             initFriendMomentView();
                         } else if (topicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                         } else if (topicListModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-//                            classify_online_view.setVisibility(View.GONE);
-//                            classify_nonet_view.setVisibility(View.VISIBLE);
+                            swiperefresh.setVisibility(View.GONE);
+                            noNetView.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -272,6 +279,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
 
     // TODO*********************************配置导航头**********************************************
     private void configurationNaviTitle() {
+        swiperefresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         ImageView back = (ImageView) view.findViewById(R.id.left_pic);
         back.setVisibility(View.INVISIBLE);
         TextView title = (TextView) view.findViewById(R.id.navi_title);
@@ -283,6 +291,9 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         rightLay = (LinearLayout) view.findViewById(R.id.navi_right_pic_click_lay);
         rightLay.setOnClickListener(this);
 
+        noNetView = (LinearLayout)view.findViewById(R.id.commucate_nonet_view);
+        reloadView = (TextView)view.findViewById(R.id.communcate_reonline_text);
+        reloadView.setOnClickListener(this);
 //       initHorscrollView();
     }
 
@@ -461,6 +472,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        swiperefresh.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -520,6 +532,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                 } else {
                     SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "数据走丢了!", Color.WHITE, Color.parseColor("#16a6ae"));
                 }
+                break;
+            case R.id.communcate_reonline_text:
+                noNetView.setVisibility(View.GONE);
+                initFriendMomentHeaderPicDataSource();
                 break;
         }
 

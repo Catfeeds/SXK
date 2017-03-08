@@ -116,7 +116,7 @@ public class MainAC extends BaseAC  {
 
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
-                            initSnackBar("您还没有登录哦！");
+                            SharedPreferencesUtils.setParam(MainAC.this,BaseInterface.PHPSESSION,"");
                         }
                     }
                 });

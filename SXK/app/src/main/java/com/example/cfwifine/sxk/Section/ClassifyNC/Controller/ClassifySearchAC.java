@@ -60,18 +60,20 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
     private ArrayList<String> mArrr;
     private TagAdapter<String> mHistoryTagAdapter;
     private TextView clear_history;
+    private int types = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classify_search_ac);
         dialog = LoadingUtils.createLoadingDialog(this, "搜索中...");
-        String hotBrandList = getIntent().getStringExtra("HOTBRANDLIST");
-        Gson gson = new Gson();
-        hotBrandListData = gson.fromJson(hotBrandList, ClassfiyHotBrandModel.class);
+        types = getIntent().getIntExtra("type",-1);
+        if (types != 1){
+            String hotBrandList = getIntent().getStringExtra("HOTBRANDLIST");
+            Gson gson = new Gson();
+            hotBrandListData = gson.fromJson(hotBrandList, ClassfiyHotBrandModel.class);
+        }
         initView();
-
-
     }
 
     private void initView() {
@@ -99,12 +101,35 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+
         hot_flow_tag = (FlowTagLayout) findViewById(R.id.hot_flow_tag);
         hot_flow_tag.setOnClickListener(this);
+        hot_view = (TextView) findViewById(R.id.hot_view);
+
+
+
         history_flow_tag = (FlowTagLayout) findViewById(R.id.history_flow_tag);
         history_flow_tag.setOnClickListener(this);
+        history_view = (LinearLayout) findViewById(R.id.history_view);
+        clear_history = (TextView) findViewById(R.id.clear_history);
+        clear_history.setOnClickListener(this);
 
-        //尺寸
+        if (types == 1){
+            hot_view.setVisibility(View.GONE);
+            hot_flow_tag.setVisibility(View.GONE);
+            initHistory();
+        }else {
+            initHot();
+            initHistory();
+        }
+
+    }
+
+    private  void  initHot(){
+        if (hotBrandListData.getHotList().size() == 0) {
+            hot_view.setVisibility(View.INVISIBLE);
+        }
+
         mSizeTagAdapter = new TagAdapter<>(this);
         hot_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
         hot_flow_tag.setAdapter(mSizeTagAdapter);
@@ -128,7 +153,9 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        //尺寸
+        initSizeData();
+    }
+    private void initHistory(){
         mHistoryTagAdapter = new TagAdapter<>(this);
         history_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
         history_flow_tag.setAdapter(mHistoryTagAdapter);
@@ -148,19 +175,9 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
             }
         });
 
-
-        hot_view = (TextView) findViewById(R.id.hot_view);
-        history_view = (LinearLayout) findViewById(R.id.history_view);
-        if (hotBrandListData.getHotList().size() == 0) {
-            hot_view.setVisibility(View.INVISIBLE);
-        }
-        initSizeData();
-
         initHistoryData();
-
-        clear_history = (TextView) findViewById(R.id.clear_history);
-        clear_history.setOnClickListener(this);
     }
+
 
     private void initHistoryData() {
         update();

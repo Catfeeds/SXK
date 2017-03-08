@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifySearchAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.HomeBannerModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.explosionfield.ExplosionField;
@@ -113,6 +114,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private boolean isBlooUP = false;
     private ImageView home_exchangebag;
     private ImageView home_boobeshow;
+    private LinearLayout search;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -184,7 +186,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (homeHotListModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (homeHotListModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });
@@ -231,7 +233,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (homeSelectedClassModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (homeSelectedClassModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });
@@ -274,7 +276,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (homeBannerModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (homeBannerModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });
@@ -318,6 +320,11 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 break;
             case R.id.message:
                 initRongMessageList();
+                break;
+            case R.id.search:
+                Intent intent = new Intent(getActivity(), ClassifySearchAC.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -440,6 +447,9 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         home_exchangebag.setOnClickListener(this);
         home_boobeshow = (ImageView) view.findViewById(R.id.home_boobeshow);
         home_boobeshow.setOnClickListener(this);
+        search = (LinearLayout) view.findViewById(R.id.search);
+        search.setOnClickListener(this);
+
     }
 
     // 设置动画
@@ -603,7 +613,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (threeBlockModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (threeBlockModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });
@@ -640,7 +650,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (threeBlockModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (threeBlockModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });
@@ -677,7 +687,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                         } else if (threeBlockModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (threeBlockModel.getCode() == 911) {
-                            initSnackBar("登录超时，请重新登录！");
+                            SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
                         }
                     }
                 });

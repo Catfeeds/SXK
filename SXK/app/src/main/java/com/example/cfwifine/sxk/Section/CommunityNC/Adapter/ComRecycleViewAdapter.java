@@ -16,11 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyBrandModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.CommunityTopicListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.Model.TopicListModel;
-import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CateifyAdapter;
-import com.example.cfwifine.sxk.Section.PublishNC.Model.BrandBean;
+import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.ScreenUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -102,8 +100,6 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             viewHolder.commentView.setVisibility(View.GONE);
             return;
         } else {
-
-
             /**
              * 朋友圈详情
              */
