@@ -1,7 +1,12 @@
 package com.example.cfwifine.sxk.BaseAC;
 
 import android.app.Application;
+import android.content.Intent;
+import android.net.Uri;
 
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ConversiationAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -17,6 +22,10 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.imlib.model.UserInfo;
 import okhttp3.OkHttpClient;
 
 /**
@@ -25,6 +34,8 @@ import okhttp3.OkHttpClient;
 
 public class MyApplication extends Application {
     public static Application instance;
+    private Uri uri;
+    private Message messag;
 
     public static Application getInstance() {
         return instance;
@@ -41,11 +52,9 @@ public class MyApplication extends Application {
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
                 .cookieJar(cookieJar)
-                .hostnameVerifier(new HostnameVerifier()
-                {
+                .hostnameVerifier(new HostnameVerifier() {
                     @Override
-                    public boolean verify(String hostname, SSLSession session)
-                    {
+                    public boolean verify(String hostname, SSLSession session) {
                         return true;
                     }
                 })
@@ -58,10 +67,19 @@ public class MyApplication extends Application {
         Config.DEBUG = true;
         PlatformConfig.setQQZone("1105783079", "o7ASHZOmcXPspKPx");
         PlatformConfig.setWeixin("wx4bfb2d22ce82d40d", "6c5dcb4c683017363d5c580309ed1eff");
-        PlatformConfig.setSinaWeibo("1084074774", "26533dc2809fc7f5d6a0f1c2e0f68920","http://sns.whalecloud.com/sina2/callback");
+        PlatformConfig.setSinaWeibo("1084074774", "26533dc2809fc7f5d6a0f1c2e0f68920", "http://sns.whalecloud.com/sina2/callback");
 
         // 初始化融云服务
         RongIM.init(this);
 
+
+
+//        RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+//            @Override
+//            public boolean onReceived(Message message, int i) {
+//                return false;
+//            }
+//
+//        });
     }
 }

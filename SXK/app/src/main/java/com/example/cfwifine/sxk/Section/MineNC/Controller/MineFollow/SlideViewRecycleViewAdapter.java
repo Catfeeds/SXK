@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ProducetDetailCommentRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.TimeUtils;
@@ -35,6 +36,15 @@ public class SlideViewRecycleViewAdapter extends RecyclerView.Adapter<SlideViewR
     private FollowListModel.FollowBean mDatas =null;
 
     private SlidingView mMenu = null;
+    private SlideViewRecycleViewAdapter.OnItemClickListener mOnItemClickListener;
+
+    public interface  OnItemClickListener{
+        void OnItemClick(View view, int userid, String nickName, String headImageUrl);
+    }
+    public void setOnItemClickListener(SlideViewRecycleViewAdapter.OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
 
     public SlideViewRecycleViewAdapter(Context context, FollowListModel.FollowBean dataSource) {
 
@@ -67,6 +77,7 @@ public class SlideViewRecycleViewAdapter extends RecyclerView.Adapter<SlideViewR
                 } else {
                     int n = holder.getLayoutPosition();
                     mIDeleteBtnClickListener.onItemClick(v, n);
+                    mOnItemClickListener.OnItemClick(v,mDatas.getUserList().get(position).getUserid(),mDatas.getUserList().get(position).getNickname(),mDatas.getUserList().get(position).getHeadimgurl());
                 }
 
             }

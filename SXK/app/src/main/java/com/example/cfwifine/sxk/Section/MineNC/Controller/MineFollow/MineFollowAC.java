@@ -2,6 +2,7 @@ package com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,12 +13,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -29,6 +35,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 import okhttp3.Call;
 
 public class MineFollowAC extends AppCompatActivity implements SlideViewRecycleViewAdapter.IonSlidingViewClickListener, View.OnClickListener {
@@ -43,6 +53,9 @@ public class MineFollowAC extends AppCompatActivity implements SlideViewRecycleV
     private SlideViewRecycleViewAdapter mAdapter;
     Dialog dialog;
     private FollowListModel.FollowBean dataSource = null;
+    private int mineUserId = -1;
+    private String RongToken;
+    private UserInfoModel.UserBean UserDataSource = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +76,15 @@ public class MineFollowAC extends AppCompatActivity implements SlideViewRecycleV
         follow_rv = (RecyclerView) findViewById(R.id.follow_rv);
         activity_mine_follow_ac = (LinearLayout) findViewById(R.id.activity_mine_follow_ac);
 
-        initMyFollow();
+        String userinfo = getIntent().getStringExtra("USERINFO");
+        Gson gson = new Gson();
+        UserInfoModel userInfoModel = gson.fromJson(userinfo,UserInfoModel.class);
+        if (userInfoModel.getCode() == 1){
+            UserDataSource = userInfoModel.getUser();
+            initMyFollow();
+        }
+
+
     }
 
     private void initMyFollow() {
@@ -111,10 +132,94 @@ public class MineFollowAC extends AppCompatActivity implements SlideViewRecycleV
         SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
+    // 初始化聊天
+    private void initRongData(final int userid, final String nickName, final String headImageUrl) {
+//        mineUserId = (int) SharedPreferencesUtils.getParam(MineFollowAC.this, BaseInterface.USERID, 0);
+//        LogUtil.e("我的ID" + mineUserId);
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("userid", UserDataSource.getUserid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.RONGYUNDemo)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("获取Token", "" + response);
+                        Gson gson = new Gson();
+                        RongTokenModel rongTokenModel = gson.fromJson(response, RongTokenModel.class);
+                        if (rongTokenModel.getCode() == 1) {
+                            RongToken = rongTokenModel.getToken();
+                            connectRongServer(RongToken,userid,nickName,headImageUrl);
+                        } else if (rongTokenModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (rongTokenModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+    }
+
+    private void connectRongServer(String rongToken, final int userid, final String nickName, final String headImageUrl) {
+        RongIM.connect(rongToken, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onSuccess(String userId) {
+                if (userid == UserDataSource.getUserid()){
+                    return;
+                }
+                if (RongIM.getInstance() != null) {
+                    UserInfo userInfo = new UserInfo(String.valueOf(UserDataSource.getUserid()), UserDataSource.getNickname(), Uri.parse(UserDataSource.getHeadimgurl()));
+                    RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    RongIM.getInstance().setMessageAttachedUserInfo(true);
+                    RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                        @Override
+                        public UserInfo getUserInfo(String userId) {
+                            return new UserInfo(String.valueOf(userid), nickName, Uri.parse(headImageUrl));
+                        }
+                    }, true);
+                    RongIM.getInstance().startConversation(MineFollowAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(userid), nickName);
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                initSnackBar("连接服务器失败！请稍后重试！");
+            }
+
+            @Override
+            public void onTokenIncorrect() {
+                LogUtil.e("TOKEN不正确！");
+            }
+        });
+
+    }
+
+
     private void setAdapter() {
         follow_rv.setLayoutManager(new LinearLayoutManager(this));
         follow_rv.setAdapter(mAdapter = new SlideViewRecycleViewAdapter(this,dataSource));
         follow_rv.setItemAnimator(new DefaultItemAnimator());
+        mAdapter.setOnItemClickListener(new SlideViewRecycleViewAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int userid, String nickName, String headImageUrl) {
+                initRongData(userid,nickName,headImageUrl);
+            }
+        });
     }
     @Override
     public void onItemClick(View view, int position) {

@@ -1,5 +1,7 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -35,6 +37,14 @@ public class ConversiationListAC extends FragmentActivity implements View.OnClic
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         system_message = (LinearLayout) findViewById(R.id.system_message);
         system_message.setOnClickListener(this);
+
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        Uri.Builder builder = Uri.parse("rong://" + this.getPackageName()).buildUpon();
+//        builder.appendPath("conversationlist");
+//        Uri uri = builder.build();
+//        intent.setData(uri);
+//        startActivity(intent);
     }
 
     @Override

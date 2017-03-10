@@ -421,7 +421,11 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 initCollection();
                 break;
             case R.id.follow:
-                initFollow();
+                if (mineUserId != rentDetail.getUser().getUserid()){
+                    initFollow();
+                }else {
+                    initSnackBar("自己不能关注自己哦！");
+                }
                 break;
             case R.id.chat:
                 initRongData();
@@ -553,12 +557,13 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 if (RongIM.getInstance() != null) {
                     UserInfo userInfo = new UserInfo(String.valueOf(mineUserId), NICKNAME, Uri.parse(PORITE));
                     RongIM.getInstance().setCurrentUserInfo(userInfo);
+                    RongIM.getInstance().setMessageAttachedUserInfo(true);
                     RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
                         @Override
                         public UserInfo getUserInfo(String userId) {
                             return new UserInfo(String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname(), Uri.parse(rentDetail.getUser().getHeadimgurl()));
                         }
-                    }, true);
+                    },true);
                     RongIM.getInstance().startConversation(ProductDetailsAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname());
                 }
             }

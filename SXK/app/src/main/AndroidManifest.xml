@@ -412,6 +412,19 @@
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.ClassifyNC.Controller.CommentDetailAC"
             android:theme="@style/AppThemeHasTitle"></activity>
+
+        <receiver
+            android:exported="true"
+            android:name=".BaseAC.RongIMPushNotificationReceiver">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

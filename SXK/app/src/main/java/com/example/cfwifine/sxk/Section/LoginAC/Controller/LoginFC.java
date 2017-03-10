@@ -407,6 +407,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_follow:
                 Intent intent = new Intent(getActivity(), MineFollowAC.class);
+                intent.putExtra("USERINFO",userinfo);
                 startActivity(intent);
                 break;
             case R.id.mine_id_auth:
