@@ -410,12 +410,13 @@
         <activity
             android:name=".Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.ClassifyNC.Controller.CommentDetailAC"
-            android:theme="@style/AppThemeHasTitle"></activity>
+        <activity
+            android:name=".Section.ClassifyNC.Controller.CommentDetailAC"
+            android:theme="@style/AppThemeHasTitle" />
 
         <receiver
-            android:exported="true"
-            android:name=".BaseAC.RongIMPushNotificationReceiver">
+            android:name=".BaseAC.RongIMPushNotificationReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
@@ -424,7 +425,16 @@
             </intent-filter>
         </receiver>
 
-
+        <activity
+            android:name=".Section.MineBuyPlus.Controller.PublishBuyPlusAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineBuyPlus.Controller.OrderPurchaseAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC"></activity>
     </application>
 
 </manifest>

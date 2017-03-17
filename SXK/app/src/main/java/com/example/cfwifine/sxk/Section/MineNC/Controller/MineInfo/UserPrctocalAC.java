@@ -141,6 +141,10 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
                     break;
             }
             initRentWater();
+        }else if (value == 432){
+            navi_title.setText("寄卖协议");
+            URLS = BaseInterface.PurchaseProtacl;
+            initRentWater();
         }
     }
 

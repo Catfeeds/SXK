@@ -35,14 +35,14 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
-                    android:cursorVisible="true"
-                    android:textCursorDrawable="@null"
                     android:inputType="textMultiLine"
                     android:background="@null"
                     android:minLines="4"
                     android:maxLines="5"
                     android:gravity="top"
                     android:enabled="true"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"
                     android:hint="描述下您的宝贝吧..."
                     android:textColorHint="#b6b6b6"
                     android:textSize="13sp"
@@ -64,21 +64,21 @@
                     </com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridlayout>
                     <ImageView
                         android:id="@+id/publish_publish_add_pic_imageview"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_publish_addpic" />
                     <ImageView
                         android:id="@+id/publish_publish_howto_pic_imageview"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_publish_howtophoto" />
 
                     <ImageView
                         android:id="@+id/publish_publish_max_nine_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_marginRight="12dp"
                         android:background="@drawable/publish_must_nine" />
 

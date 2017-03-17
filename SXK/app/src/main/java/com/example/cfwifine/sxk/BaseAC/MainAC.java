@@ -18,11 +18,11 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ClassifyFC;
 import com.example.cfwifine.sxk.Section.CommunityNC.Controller.CommunFC;
 import com.example.cfwifine.sxk.Section.HomeNC.Controller.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
+import com.example.cfwifine.sxk.Section.MineBuyPlus.Controller.PublishBuyPlusAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
-import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.FreeAppraisaAC;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -201,16 +201,14 @@ public class MainAC extends BaseAC  {
             publishPupWindow.dismiss();
             switch (v.getId()) {
                 case R.id.publish_lay:
-                    Log.e("点击了发布",""+v.getId());
                     startActivity(PublishPublishAC.class);
                     break;
                 case R.id.care_lay:
-                    Log.e("点击了养护",""+v.getId());
                     startActivity(CuringAC.class);
+//                    startActivity(FreeAppraisaAC.class);
                     break;
                 case R.id.rec_lay:
-                    Log.e("点击了鉴定",""+v.getId());
-                    startActivity(FreeAppraisaAC.class);
+                    startActivity(PublishBuyPlusAC.class);
                     break;
                 default:
                     break;

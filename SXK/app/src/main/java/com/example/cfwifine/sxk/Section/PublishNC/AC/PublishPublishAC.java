@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.PublishNC.AC;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -118,7 +119,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private String StringList="";
     private static final int TAKE_PHOTO = 733;
     private JSONArray jsonArray;
-    private Object FUJIANLIST= "";
+    private String FUJIANLIST= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -539,7 +540,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
         StringList = String.valueOf(SharedPreferencesUtils.getParam(this, "STRINGLIST", ""));
 
-        FUJIANLIST = (SharedPreferencesUtils.getParam(this,"FINALLYARR",""));
+        FUJIANLIST = (String) SharedPreferencesUtils.getParam(this,"FINALLYARR","");
         LogUtil.e("附件参数1"+FUJIANLIST);
     }
 
@@ -757,12 +758,11 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             jsonObject.put("crowd", p);
             if (FUJIANLIST == ""){
                 JSONArray arr = new JSONArray();
+                arr.put("");
                 jsonObject.put("attachList",arr);
             }else {
-                JSONArray arr = new JSONArray();
-                LogUtil.e("附件3"+FUJIANLIST);
-                arr.equals(FUJIANLIST);
-                jsonObject.put("attachList",FUJIANLIST);
+                JSONArray arr = new JSONArray(FUJIANLIST);
+                jsonObject.put("attachList",arr);
             }
         } catch (JSONException e) {
             e.printStackTrace();

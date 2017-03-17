@@ -43,6 +43,7 @@ import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeClassSelectedModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeHotListModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeSelectedClassModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ThreeBlockModel;
+import com.example.cfwifine.sxk.Section.MineBuyPlus.Controller.DrawViewAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
@@ -115,6 +116,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     private ImageView home_exchangebag;
     private ImageView home_boobeshow;
     private LinearLayout search;
+    private ImageButton scan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -326,6 +328,9 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 intent.putExtra("type",1);
                 startActivity(intent);
                 break;
+            case R.id.scan:
+                startActivity(DrawViewAC.class,88);
+                break;
             default:
                 break;
         }
@@ -449,7 +454,8 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         home_boobeshow.setOnClickListener(this);
         search = (LinearLayout) view.findViewById(R.id.search);
         search.setOnClickListener(this);
-
+        scan = (ImageButton)view.findViewById(R.id.scan);
+        scan.setOnClickListener(this);
     }
 
     // 设置动画

@@ -84,12 +84,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_ac_btn_file_download_open_button.xml"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable/rc_bg_sidebar.xml",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_bg_sidebar.xml"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable/rc_an_voice_receive.xml",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_an_voice_receive.xml"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable/rc_bg_sidebar.xml",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/src/main/res/drawable/rc_bg_sidebar.xml"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/release/drawable/rc_corner_voice_style.xml",

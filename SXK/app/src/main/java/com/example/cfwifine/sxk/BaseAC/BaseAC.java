@@ -48,7 +48,7 @@ public class BaseAC extends AppCompatActivity {
         MQConfig.init(this, "8a2358a00969823007f4ea328ad95bfa", new OnInitCallback() {
             @Override
             public void onSuccess(String clientId) {
-                Toast.makeText(BaseAC.this, "初始化客服成功！", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BaseAC.this, "初始化客服成功！", Toast.LENGTH_SHORT).show();
                 MQConfig.isShowClientAvatar = true;
                 MQConfig.ui.rightChatBubbleColorResId = R.color.login_turquoise;
                 MQConfig.ui.leftChatBubbleColorResId = R.color.grrray;

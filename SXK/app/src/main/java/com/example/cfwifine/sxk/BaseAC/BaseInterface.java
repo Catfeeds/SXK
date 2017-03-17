@@ -208,6 +208,21 @@ public class BaseInterface {
     // 商品详情评论列表
     public static String ProductDetailCommentList = root + "/app/rentcomment/listpost";
 
+    // 寄卖
+    // 预约寄卖列表
+    public static String PurchasePreList = root + "/app/purchase/listpost";
+    // 获取寄卖设置图片
+    public static String PurchaseSetUpGet = root + "/app/purchasesetup/getpost";
+    // 获取寄卖商品
+    public static String PurchaseGetDetail = root + "/app/purchase/getpost";
+    // 添加寄卖商品
+    public static String PurchaseAddGoods = root + "/app/purchase/addpost";
+    // 提交寄卖预约
+    public static String PurchasePrePost = root + "/app/purchase/setpost";
+    // 寄卖协议
+    public static String PurchaseProtacl = root + "/app/purchaseagreementsetup/getpost";
+
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";
