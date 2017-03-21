@@ -53,6 +53,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
     List<ActivityListModel.ActivityListBean> dataSource;
     private int pageSize=10;
     private int pageNum=1;
+    private int Total ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,9 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
      * 初始化数据
      */
     private void initListData(int pageNo,int pageSize) {
+        if (pageNum == 1){
+            dataSource = null;
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("sort", -1);
@@ -98,12 +102,18 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                     public void onResponse(String response, int id) {
                         Log.e("活动列表", "" + response);
                         LogUtil.e("活动列表"+response);
-                        dataSource = new ArrayList<ActivityListModel.ActivityListBean>();
                         Gson gson = new Gson();
                         ActivityListModel activityListModel = gson.fromJson(response,ActivityListModel.class);
                         if (activityListModel.getCode() == 1) {
-                            dataSource = activityListModel.getActivityList();
-                            initRecycleView();
+                            Total = activityListModel.getTotal();
+                            if (pageNum != 1){
+                                dataSource.addAll(activityListModel.getActivityList());
+                                eightItemActivityRecycleAdapter.notifyDataSetChanged();
+                            }else {
+                                dataSource = activityListModel.getActivityList();
+                                initRecycleView();
+                            }
+
                         } else if (activityListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (activityListModel.getCode() == 911) {
@@ -141,6 +151,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         initListData(1,10);
+                        pageNum = 1;
                         //注意此处
                         activity_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
@@ -165,7 +176,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         activity_recycleview.setLayoutManager(layoutManager);
-
+        activity_recycleview.setCanloadMore(true);
         //设置自定义加载中和到底了效果
         ProgressView progressView = new ProgressView(this);
         progressView.setIndicatorId(ProgressView.BallPulse);
@@ -183,14 +194,14 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        pageSize += 10;
-                        pageNum += 1;
-                        if (pageNum >= dataSource.size()) {
+                        if (dataSource.size() >= Total) {
                             activity_recycleview.loadMoreEnd();
+                            pageNum = 1;
                             return;
                         }
+                        pageNum += 1;
                         initListData(pageNum,pageSize);
-                        eightItemActivityRecycleAdapter.notifyDataSetChanged();
+//                        eightItemActivityRecycleAdapter.notifyDataSetChanged();
                         activity_recycleview.loadMoreComplete();
 
                     }

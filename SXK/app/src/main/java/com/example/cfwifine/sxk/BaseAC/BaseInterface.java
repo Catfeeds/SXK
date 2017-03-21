@@ -221,7 +221,8 @@ public class BaseInterface {
     public static String PurchasePrePost = root + "/app/purchase/setpost";
     // 寄卖协议
     public static String PurchaseProtacl = root + "/app/purchaseagreementsetup/getpost";
-
+    // 删除订单
+    public static String PurchaseDeleteOrder = root + "/app/purchase/delpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";

@@ -243,7 +243,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
     }
 
     private void initBannerData() {
-        dialog.show();
+//        dialog.show();
         JSONObject js = new JSONObject();
         try {
             js.put("setupid", 1);
@@ -261,12 +261,12 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         initSnackBar("请求出错！");
-                        dialog.dismiss();
+//                        dialog.dismiss();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        dialog.dismiss();
+//                        dialog.dismiss();
                         Log.e("轮播图", "" + response);
                         Gson gson = new Gson();
                         HomeBannerModel homeBannerModel = gson.fromJson(response, HomeBannerModel.class);
@@ -318,7 +318,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 startActivity(HomeThreeBlockDetailAC.class, 17);
                 break;
             case R.id.home_boobeshow:
-                startActivity(HomeThreeBlockDetailAC.class, 18);
+                startActivity(HomePurchaiseListAC.class, 18);
                 break;
             case R.id.message:
                 initRongMessageList();

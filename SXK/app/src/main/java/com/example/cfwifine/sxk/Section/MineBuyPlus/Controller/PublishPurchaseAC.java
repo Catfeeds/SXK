@@ -907,6 +907,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                         if (requestStatueModel.getCode() == 1) {
                             CustomDialog_publish_success customDialog_publish_success = new CustomDialog_publish_success(PublishPurchaseAC.this, R.style.style_dialog);
                             customDialog_publish_success.show();
+                            finish();
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {

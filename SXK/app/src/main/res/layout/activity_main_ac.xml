@@ -19,7 +19,7 @@
                 <android.support.v4.app.FragmentTabHost
                     android:id="@+id/tabhost"
                     android:layout_width="match_parent"
-                    android:layout_height="80px"
+                    android:layout_height="120px"
                     android:background="@color/black">
 
                         <FrameLayout

@@ -72,7 +72,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private ArrayList<String> dataSource;
     private List<TopicListModel.TopicListBean> newTopicListModel = null;
     private int MODLEID = -1;
-    private String newTopicString="";
+    private String newTopicString = "";
     private LinearLayout noNetView;
     private TextView reloadView;
 
@@ -291,8 +291,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         rightLay = (LinearLayout) view.findViewById(R.id.navi_right_pic_click_lay);
         rightLay.setOnClickListener(this);
 
-        noNetView = (LinearLayout)view.findViewById(R.id.commucate_nonet_view);
-        reloadView = (TextView)view.findViewById(R.id.communcate_reonline_text);
+        noNetView = (LinearLayout) view.findViewById(R.id.commucate_nonet_view);
+        reloadView = (TextView) view.findViewById(R.id.communcate_reonline_text);
         reloadView.setOnClickListener(this);
 //       initHorscrollView();
     }
@@ -361,8 +361,8 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     public void run() {
 
 //                        if (listData.size() >= 3 * limit) {
-                            hao_recycleview.loadMoreEnd();
-                            return;
+                        hao_recycleview.loadMoreEnd();
+                        return;
 //                        }
 //
 //                        for (int i = 0; i < limit; i++) {
@@ -503,7 +503,6 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                                 SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "你已经点过赞了!", Color.WHITE, Color.parseColor("#16a6ae"));
                             else if (type == -2)
                                 SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "评论失败!", Color.WHITE, Color.parseColor("#16a6ae"));
-
                         } else if (requestStatueModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }
@@ -535,11 +534,13 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                 break;
             case R.id.communcate_reonline_text:
                 noNetView.setVisibility(View.GONE);
+                swiperefresh.setVisibility(View.VISIBLE);
                 initFriendMomentHeaderPicDataSource();
                 break;
         }
 
     }
+
 
     @Override
     public void onResume() {

@@ -434,7 +434,9 @@
         <activity
             android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC"></activity>
+        <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC" />
+        <activity android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
+            android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 
 </manifest>

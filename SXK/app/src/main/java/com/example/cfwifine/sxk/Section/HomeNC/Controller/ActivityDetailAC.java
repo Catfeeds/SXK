@@ -230,7 +230,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
                         } else if (requestStatueModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else {
-                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "已经报名!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }
                     }
                 });

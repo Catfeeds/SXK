@@ -8,10 +8,9 @@ import java.util.List;
 
 public class ProductDetailModel {
 
-
     /**
      * code : 1
-     * rent : {"userid":4,"name":"111","imgList":["Fg6UuqnAGh8F6dLsyfRuBRocxMMx","Fq1x4GD_AKZgOpeZQ5YLi4-XqTxl","FsRtPdHOlefQ_9gYlPn87dbrJEEY","Fk9DJuO5nSm5iYUqDs926G2q1x-d","FjiyJUsqyTr-6bHrnfzsXR5_iJgO","Fg6UuqnAGh8F6dLsyfRuBRocxMMx","Fq1x4GD_AKZgOpeZQ5YLi4-XqTxl","Fk9DJuO5nSm5iYUqDs926G2q1x-d","FsRtPdHOlefQ_9gYlPn87dbrJEEY"],"keyword":"11","description":"Adds","counterPrice":1100,"categoryid":12,"brandid":2,"color":"Xxx","condition":3,"crowd":3,"attachList":[{"attributeName":"相关配件","attributeValueList":["说明书"]}],"commentList":[],"sale":0,"sort":0,"status":2,"rentid":108,"createtime":1484806426,"updatetime":1484806644,"marketPrice":100,"rentPrice":100,"risk":100,"three":100,"seven":100,"fiften":1100,"twentyFive":1100,"category":{"name":"石英表","img":"Shexiangke_jcq::category_1482212302556","description":"测试","parentid":3,"sort":1,"attachList":[],"status":1,"categoryid":12,"createtime":1482212307,"updatetime":1482212307},"brand":{"name":"CHANEL 香奈儿","img":"Shexiangke_jcq::brand_1481085386923","description":"香奈儿品牌,秉承创始人嘉柏丽尔\u2022香奈儿女士划时代的创新理念与前瞻创意,成为现代女性美学的风向标。无论时尚精品、香水与美容品、腕表与高级珠宝,都致力于为女性塑造自由、优雅、与众不同的风格。","status":1,"brandid":2,"createtime":1481080425,"updatetime":1481623775,"story":"Shexiangke_jcq::brand_story_1481624334377"},"user":{"mobile":"15659568279","password":"$2y$10$VZtILutAH4ZwzmRPzwgAjeMi5ntU35y43M5dWZ6ZV1K4hO2iyCAoG","userid":4,"createtime":1480911994,"updatetime":1484896430,"nickname":"mdzz","role":1,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/FvsTxttqkUOzjStlN_QRyUbRNqRP","sex":2,"birthday":959788800,"profile":"室内设计"}}
+     * rent : {"name":"离开","imgList":["sxk_userPic_201703161753060","sxk_userPic_201703161753071","sxk_userPic_201703161753072","sxk_userPic_201703161753083","sxk_userPic_201703161753084","sxk_userPic_201703161753085","sxk_userPic_201703161753096","sxk_userPic_201703161753107","sxk_userPic_201703161753108"],"keyword":"it","description":"还没","counterPrice":45700,"categoryid":3,"parentid":0,"brandid":3,"color":"勾协","condition":3,"crowd":1,"attachList":[{"attributeName":"测试二","attributeValueList":["鳄鱼皮"]},{"attributeName":"测试1","attributeValueList":["2"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"sale":0,"sort":0,"userid":10,"status":2,"rentid":146,"createtime":1489657989,"updatetime":1489731780,"marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]},"brand":{"name":"Louis Vuitton 路易威登","img":"Shexiangke_jcq::brand_1481111669409","description":"自1854年以来，代代相传至今的路易威登，以卓越品质、杰出创意和精湛工艺成为时尚旅行艺术的象征。产品系列包括:都市手袋，旅行用品，小型皮具，围巾配饰，鞋履，成衣，腕表，高级珠宝及个性化定制服务等。","status":1,"brandid":3,"createtime":1481111177,"updatetime":1481623761,"story":"Shexiangke_jcq::brand_story_1481624320336"},"user":{"mobile":"15539910985","userid":10,"createtime":1480922278,"updatetime":1489632334,"nickname":"肥仔","sex":1,"birthday":694195200,"profile":"哈哈","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":4,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.06}}
      */
 
     private int code;
@@ -35,49 +34,50 @@ public class ProductDetailModel {
 
     public static class RentBean {
         /**
-         * userid : 4
-         * name : 111
-         * imgList : ["Fg6UuqnAGh8F6dLsyfRuBRocxMMx","Fq1x4GD_AKZgOpeZQ5YLi4-XqTxl","FsRtPdHOlefQ_9gYlPn87dbrJEEY","Fk9DJuO5nSm5iYUqDs926G2q1x-d","FjiyJUsqyTr-6bHrnfzsXR5_iJgO","Fg6UuqnAGh8F6dLsyfRuBRocxMMx","Fq1x4GD_AKZgOpeZQ5YLi4-XqTxl","Fk9DJuO5nSm5iYUqDs926G2q1x-d","FsRtPdHOlefQ_9gYlPn87dbrJEEY"]
-         * keyword : 11
-         * description : Adds
-         * counterPrice : 1100
-         * categoryid : 12
-         * brandid : 2
-         * color : Xxx
+         * name : 离开
+         * imgList : ["sxk_userPic_201703161753060","sxk_userPic_201703161753071","sxk_userPic_201703161753072","sxk_userPic_201703161753083","sxk_userPic_201703161753084","sxk_userPic_201703161753085","sxk_userPic_201703161753096","sxk_userPic_201703161753107","sxk_userPic_201703161753108"]
+         * keyword : it
+         * description : 还没
+         * counterPrice : 45700
+         * categoryid : 3
+         * parentid : 0
+         * brandid : 3
+         * color : 勾协
          * condition : 3
-         * crowd : 3
-         * attachList : [{"attributeName":"相关配件","attributeValueList":["说明书"]}]
-         * commentList : []
+         * crowd : 1
+         * attachList : [{"attributeName":"测试二","attributeValueList":["鳄鱼皮"]},{"attributeName":"测试1","attributeValueList":["2"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * sale : 0
          * sort : 0
+         * userid : 10
          * status : 2
-         * rentid : 108
-         * createtime : 1484806426
-         * updatetime : 1484806644
-         * marketPrice : 100
-         * rentPrice : 100
-         * risk : 100
-         * three : 100
-         * seven : 100
-         * fiften : 1100
-         * twentyFive : 1100
-         * category : {"name":"石英表","img":"Shexiangke_jcq::category_1482212302556","description":"测试","parentid":3,"sort":1,"attachList":[],"status":1,"categoryid":12,"createtime":1482212307,"updatetime":1482212307}
-         * brand : {"name":"CHANEL 香奈儿","img":"Shexiangke_jcq::brand_1481085386923","description":"香奈儿品牌,秉承创始人嘉柏丽尔\u2022香奈儿女士划时代的创新理念与前瞻创意,成为现代女性美学的风向标。无论时尚精品、香水与美容品、腕表与高级珠宝,都致力于为女性塑造自由、优雅、与众不同的风格。","status":1,"brandid":2,"createtime":1481080425,"updatetime":1481623775,"story":"Shexiangke_jcq::brand_story_1481624334377"}
-         * user : {"mobile":"15659568279","password":"$2y$10$VZtILutAH4ZwzmRPzwgAjeMi5ntU35y43M5dWZ6ZV1K4hO2iyCAoG","userid":4,"createtime":1480911994,"updatetime":1484896430,"nickname":"mdzz","role":1,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/FvsTxttqkUOzjStlN_QRyUbRNqRP","sex":2,"birthday":959788800,"profile":"室内设计"}
+         * rentid : 146
+         * createtime : 1489657989
+         * updatetime : 1489731780
+         * marketPrice : 1
+         * rentPrice : 1
+         * risk : 1
+         * three : 1
+         * seven : 1
+         * fiften : 1
+         * twentyFive : 1
+         * category : {"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}
+         * brand : {"name":"Louis Vuitton 路易威登","img":"Shexiangke_jcq::brand_1481111669409","description":"自1854年以来，代代相传至今的路易威登，以卓越品质、杰出创意和精湛工艺成为时尚旅行艺术的象征。产品系列包括:都市手袋，旅行用品，小型皮具，围巾配饰，鞋履，成衣，腕表，高级珠宝及个性化定制服务等。","status":1,"brandid":3,"createtime":1481111177,"updatetime":1481623761,"story":"Shexiangke_jcq::brand_story_1481624320336"}
+         * user : {"mobile":"15539910985","userid":10,"createtime":1480922278,"updatetime":1489632334,"nickname":"肥仔","sex":1,"birthday":694195200,"profile":"哈哈","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":4,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.06}
          */
 
-        private int userid;
         private String name;
         private String keyword;
         private String description;
         private int counterPrice;
         private int categoryid;
+        private int parentid;
         private int brandid;
         private String color;
         private int condition;
         private int crowd;
         private int sale;
         private int sort;
+        private int userid;
         private int status;
         private int rentid;
         private int createtime;
@@ -93,16 +93,7 @@ public class ProductDetailModel {
         private BrandBean brand;
         private UserBean user;
         private List<String> imgList;
-        private List<AttachListBean> attachList;
-        private List<?> commentList;
-
-        public int getUserid() {
-            return userid;
-        }
-
-        public void setUserid(int userid) {
-            this.userid = userid;
-        }
+        private List<AttachListBeanX> attachList;
 
         public String getName() {
             return name;
@@ -142,6 +133,14 @@ public class ProductDetailModel {
 
         public void setCategoryid(int categoryid) {
             this.categoryid = categoryid;
+        }
+
+        public int getParentid() {
+            return parentid;
+        }
+
+        public void setParentid(int parentid) {
+            this.parentid = parentid;
         }
 
         public int getBrandid() {
@@ -190,6 +189,14 @@ public class ProductDetailModel {
 
         public void setSort(int sort) {
             this.sort = sort;
+        }
+
+        public int getUserid() {
+            return userid;
+        }
+
+        public void setUserid(int userid) {
+            this.userid = userid;
         }
 
         public int getStatus() {
@@ -312,46 +319,38 @@ public class ProductDetailModel {
             this.imgList = imgList;
         }
 
-        public List<AttachListBean> getAttachList() {
+        public List<AttachListBeanX> getAttachList() {
             return attachList;
         }
 
-        public void setAttachList(List<AttachListBean> attachList) {
+        public void setAttachList(List<AttachListBeanX> attachList) {
             this.attachList = attachList;
-        }
-
-        public List<?> getCommentList() {
-            return commentList;
-        }
-
-        public void setCommentList(List<?> commentList) {
-            this.commentList = commentList;
         }
 
         public static class CategoryBean {
             /**
-             * name : 石英表
-             * img : Shexiangke_jcq::category_1482212302556
-             * description : 测试
-             * parentid : 3
-             * sort : 1
-             * attachList : []
+             * name : 腕表
+             * img : Shexiangke_jcq::category_1481254654160
+             * description : 腕表
+             * parentid : 0
              * status : 1
-             * categoryid : 12
-             * createtime : 1482212307
-             * updatetime : 1482212307
+             * categoryid : 3
+             * createtime : 1481254119
+             * updatetime : 1484529517
+             * sort : 1
+             * attachList : [{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]
              */
 
             private String name;
             private String img;
             private String description;
             private int parentid;
-            private int sort;
             private int status;
             private int categoryid;
             private int createtime;
             private int updatetime;
-            private List<?> attachList;
+            private int sort;
+            private List<AttachListBean> attachList;
 
             public String getName() {
                 return name;
@@ -383,14 +382,6 @@ public class ProductDetailModel {
 
             public void setParentid(int parentid) {
                 this.parentid = parentid;
-            }
-
-            public int getSort() {
-                return sort;
-            }
-
-            public void setSort(int sort) {
-                this.sort = sort;
             }
 
             public int getStatus() {
@@ -425,25 +416,69 @@ public class ProductDetailModel {
                 this.updatetime = updatetime;
             }
 
-            public List<?> getAttachList() {
+            public int getSort() {
+                return sort;
+            }
+
+            public void setSort(int sort) {
+                this.sort = sort;
+            }
+
+            public List<AttachListBean> getAttachList() {
                 return attachList;
             }
 
-            public void setAttachList(List<?> attachList) {
+            public void setAttachList(List<AttachListBean> attachList) {
                 this.attachList = attachList;
+            }
+
+            public static class AttachListBean {
+                /**
+                 * attributeName : 测试二
+                 * attributeType : 1
+                 * attributeValueList : ["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]
+                 */
+
+                private String attributeName;
+                private int attributeType;
+                private List<String> attributeValueList;
+
+                public String getAttributeName() {
+                    return attributeName;
+                }
+
+                public void setAttributeName(String attributeName) {
+                    this.attributeName = attributeName;
+                }
+
+                public int getAttributeType() {
+                    return attributeType;
+                }
+
+                public void setAttributeType(int attributeType) {
+                    this.attributeType = attributeType;
+                }
+
+                public List<String> getAttributeValueList() {
+                    return attributeValueList;
+                }
+
+                public void setAttributeValueList(List<String> attributeValueList) {
+                    this.attributeValueList = attributeValueList;
+                }
             }
         }
 
         public static class BrandBean {
             /**
-             * name : CHANEL 香奈儿
-             * img : Shexiangke_jcq::brand_1481085386923
-             * description : 香奈儿品牌,秉承创始人嘉柏丽尔•香奈儿女士划时代的创新理念与前瞻创意,成为现代女性美学的风向标。无论时尚精品、香水与美容品、腕表与高级珠宝,都致力于为女性塑造自由、优雅、与众不同的风格。
+             * name : Louis Vuitton 路易威登
+             * img : Shexiangke_jcq::brand_1481111669409
+             * description : 自1854年以来，代代相传至今的路易威登，以卓越品质、杰出创意和精湛工艺成为时尚旅行艺术的象征。产品系列包括:都市手袋，旅行用品，小型皮具，围巾配饰，鞋履，成衣，腕表，高级珠宝及个性化定制服务等。
              * status : 1
-             * brandid : 2
-             * createtime : 1481080425
-             * updatetime : 1481623775
-             * story : Shexiangke_jcq::brand_story_1481624334377
+             * brandid : 3
+             * createtime : 1481111177
+             * updatetime : 1481623761
+             * story : Shexiangke_jcq::brand_story_1481624320336
              */
 
             private String name;
@@ -522,30 +557,36 @@ public class ProductDetailModel {
 
         public static class UserBean {
             /**
-             * mobile : 15659568279
-             * password : $2y$10$VZtILutAH4ZwzmRPzwgAjeMi5ntU35y43M5dWZ6ZV1K4hO2iyCAoG
-             * userid : 4
-             * createtime : 1480911994
-             * updatetime : 1484896430
-             * nickname : mdzz
-             * role : 1
-             * headimgurl : http://ohqqvdngk.bkt.clouddn.com/FvsTxttqkUOzjStlN_QRyUbRNqRP
-             * sex : 2
-             * birthday : 959788800
-             * profile : 室内设计
+             * mobile : 15539910985
+             * userid : 10
+             * createtime : 1480922278
+             * updatetime : 1489632334
+             * nickname : 肥仔
+             * sex : 1
+             * birthday : 694195200
+             * profile : 哈哈
+             * role : 4
+             * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545
+             * buyer : {"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"}
+             * balance : 4
+             * seller : {"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"}
+             * score : 0.06
              */
 
             private String mobile;
-            private String password;
             private int userid;
             private int createtime;
             private int updatetime;
             private String nickname;
-            private int role;
-            private String headimgurl;
             private int sex;
             private int birthday;
             private String profile;
+            private int role;
+            private String headimgurl;
+            private BuyerBean buyer;
+            private int balance;
+            private SellerBean seller;
+            private double score;
 
             public String getMobile() {
                 return mobile;
@@ -553,14 +594,6 @@ public class ProductDetailModel {
 
             public void setMobile(String mobile) {
                 this.mobile = mobile;
-            }
-
-            public String getPassword() {
-                return password;
-            }
-
-            public void setPassword(String password) {
-                this.password = password;
             }
 
             public int getUserid() {
@@ -595,22 +628,6 @@ public class ProductDetailModel {
                 this.nickname = nickname;
             }
 
-            public int getRole() {
-                return role;
-            }
-
-            public void setRole(int role) {
-                this.role = role;
-            }
-
-            public String getHeadimgurl() {
-                return headimgurl;
-            }
-
-            public void setHeadimgurl(String headimgurl) {
-                this.headimgurl = headimgurl;
-            }
-
             public int getSex() {
                 return sex;
             }
@@ -634,12 +651,152 @@ public class ProductDetailModel {
             public void setProfile(String profile) {
                 this.profile = profile;
             }
+
+            public int getRole() {
+                return role;
+            }
+
+            public void setRole(int role) {
+                this.role = role;
+            }
+
+            public String getHeadimgurl() {
+                return headimgurl;
+            }
+
+            public void setHeadimgurl(String headimgurl) {
+                this.headimgurl = headimgurl;
+            }
+
+            public BuyerBean getBuyer() {
+                return buyer;
+            }
+
+            public void setBuyer(BuyerBean buyer) {
+                this.buyer = buyer;
+            }
+
+            public int getBalance() {
+                return balance;
+            }
+
+            public void setBalance(int balance) {
+                this.balance = balance;
+            }
+
+            public SellerBean getSeller() {
+                return seller;
+            }
+
+            public void setSeller(SellerBean seller) {
+                this.seller = seller;
+            }
+
+            public double getScore() {
+                return score;
+            }
+
+            public void setScore(double score) {
+                this.score = score;
+            }
+
+            public static class BuyerBean {
+                /**
+                 * name : ghjn
+                 * idNumber : 43138119870827275X
+                 * front : buyer_front_1486370551
+                 * back : buyer_back_1486370551
+                 */
+
+                private String name;
+                private String idNumber;
+                private String front;
+                private String back;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getIdNumber() {
+                    return idNumber;
+                }
+
+                public void setIdNumber(String idNumber) {
+                    this.idNumber = idNumber;
+                }
+
+                public String getFront() {
+                    return front;
+                }
+
+                public void setFront(String front) {
+                    this.front = front;
+                }
+
+                public String getBack() {
+                    return back;
+                }
+
+                public void setBack(String back) {
+                    this.back = back;
+                }
+            }
+
+            public static class SellerBean {
+                /**
+                 * name : 接口
+                 * idNumber : 411381199301107614
+                 * front : seller_front_1488251082
+                 * back : seller_back_1488251082
+                 */
+
+                private String name;
+                private String idNumber;
+                private String front;
+                private String back;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getIdNumber() {
+                    return idNumber;
+                }
+
+                public void setIdNumber(String idNumber) {
+                    this.idNumber = idNumber;
+                }
+
+                public String getFront() {
+                    return front;
+                }
+
+                public void setFront(String front) {
+                    this.front = front;
+                }
+
+                public String getBack() {
+                    return back;
+                }
+
+                public void setBack(String back) {
+                    this.back = back;
+                }
+            }
         }
 
-        public static class AttachListBean {
+        public static class AttachListBeanX {
             /**
-             * attributeName : 相关配件
-             * attributeValueList : ["说明书"]
+             * attributeName : 测试二
+             * attributeValueList : ["鳄鱼皮"]
              */
 
             private String attributeName;

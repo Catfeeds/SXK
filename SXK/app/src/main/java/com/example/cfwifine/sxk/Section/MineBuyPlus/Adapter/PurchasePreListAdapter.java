@@ -31,6 +31,14 @@ public class PurchasePreListAdapter extends RecyclerView.Adapter<PurchasePreList
     public interface OnItemClickLitener {
         void onItemClick(View view, int purchaseid);
     }
+    public interface OnLongItemClickListener{
+        void onItemClick(View view, int position, int purchaseid);
+    }
+    private OnLongItemClickListener onLongItemClickListener;
+
+    public void setOnLongItemClickListener(OnLongItemClickListener onLongItemClickListener){
+        this.onLongItemClickListener = onLongItemClickListener;
+    }
 
     private OnItemClickLitener mOnItemClickLitener;
 
@@ -85,6 +93,13 @@ public class PurchasePreListAdapter extends RecyclerView.Adapter<PurchasePreList
             @Override
             public void onClick(View view) {
                 mOnItemClickLitener.onItemClick(view,mdatas.get(position).getPurchaseid());
+            }
+        });
+        holder.content.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                onLongItemClickListener.onItemClick(view,position,mdatas.get(position).getPurchaseid());
+                return false;
             }
         });
     }

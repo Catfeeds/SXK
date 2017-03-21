@@ -2,13 +2,13 @@ package com.example.cfwifine.sxk.Section.MineBuyPlus.Controller;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,12 +23,16 @@ import com.example.cfwifine.sxk.Section.MineBuyPlus.Adapter.PurchasePreListAdapt
 import com.example.cfwifine.sxk.Section.MineBuyPlus.Model.PurchasePreListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
-import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_publish_success;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
+import com.flyco.animation.BaseAnimatorSet;
+import com.flyco.animation.FadeExit.FadeExit;
+import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -62,7 +66,8 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
     private String ADDRESSS = "";
     private TextView address_text;
     private boolean isCheck = false;
-    private PurchasePreListModel purchasePreListModel=null;
+    private PurchasePreListModel purchasePreListModel = null;
+    private PurchasePreListAdapter purchasePreListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +92,15 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         purchase_add_address = (LinearLayout) findViewById(R.id.purchase_add_address);
         purchase_add_address.setOnClickListener(this);
         agreement_btn = (CheckBox) findViewById(R.id.agreement_btn);
-        if (!agreement_btn.isChecked()){
+        if (!agreement_btn.isChecked()) {
             isCheck = false;
         }
         agreement_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
                     isCheck = true;
-                }else {
+                } else {
                     isCheck = false;
                 }
             }
@@ -144,6 +149,7 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                         dialog.dismiss();
                         initSnackBar("请求出错！");
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
@@ -172,17 +178,109 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderlist_rv.setLayoutManager(new GridLayoutManager(this, 1));
-        PurchasePreListAdapter purchasePreListAdapter = new PurchasePreListAdapter(this, dataSource);
+        purchasePreListAdapter = new PurchasePreListAdapter(this, dataSource);
         orderlist_rv.setAdapter(purchasePreListAdapter);
         purchasePreListAdapter.setOnItemClickLitener(new PurchasePreListAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int purchaseid) {
-                LogUtil.e("预约ID"+purchaseid);
+                LogUtil.e("预约ID" + purchaseid);
                 Intent intent = new Intent(OrderPurchaseAC.this, PublishPurchaseAC.class);
-                intent.putExtra("purchaseid",purchaseid);
+                intent.putExtra("purchaseid", purchaseid);
                 startActivity(intent);
             }
         });
+        purchasePreListAdapter.setOnLongItemClickListener(new PurchasePreListAdapter.OnLongItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, int purchaseid) {
+
+                for (int i = 0; i < dataSource.size(); i++) {
+                    if (dataSource.get(i).getPurchaseid() == purchaseid) {
+                        initDialog("是否删除" + dataSource.get(i).getName() + "?", purchaseid);
+                    }
+                }
+            }
+        });
+    }
+
+    private void initDialog(String str, final int purchaseid) {
+        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
+        BaseAnimatorSet bas_out = new FadeExit();
+        final MaterialDialog dialogs = new MaterialDialog(this);
+        dialogs.title("预约寄卖商品")
+                .titleTextColor(Color.BLACK)
+                .titleTextSize(16)
+                .isTitleShow(false)
+                .content(str)//
+                .contentTextColor(Color.BLACK)
+                .contentTextSize(18)
+                .btnNum(2)
+                .btnText("我再想想", "删除订单")
+                .contentGravity(Gravity.CENTER_HORIZONTAL)
+                .btnTextColor(Color.GRAY, Color.parseColor("#16a6ae"))
+                .showAnim(bas_in)//
+                .dismissAnim(bas_out)//
+                .show();
+        dialogs.setCanceledOnTouchOutside(false);
+        dialogs.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                // 取消
+                dialogs.dismiss();
+            }
+        }, new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                // 删除订单
+                deletePurchaseGoods(purchaseid);
+                dialogs.dismiss();
+            }
+        });
+    }
+
+    private void deletePurchaseGoods(final int purchaseid) {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("purchaseid", purchaseid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.PurchaseDeleteOrder)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        initSnackBar("删除失败！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        LogUtil.e("预约商品提交" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            for (int i = 0; i < dataSource.size(); i++) {
+                                if (dataSource.get(i).getPurchaseid() == purchaseid) {
+                                    dataSource.remove(i);
+                                    purchasePreListAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
     }
 
     public void initSnackBar(String content) {
@@ -194,11 +292,12 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         super.onResume();
         RECEIVEDID = (int) SharedPreferencesUtils.getParam(OrderPurchaseAC.this, "RECRIVEDID", -1);
         ADDRESSS = String.valueOf(SharedPreferencesUtils.getParam(OrderPurchaseAC.this, "DEFAULTADDRESS", ""));
-        if (RECEIVEDID == -1){
+        if (RECEIVEDID == -1) {
             address_text.setText("添加地址");
-        }else {
+        } else {
             address_text.setText(ADDRESSS);
         }
+        initRecycleViewData();
     }
 
     @Override
@@ -220,7 +319,7 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.user_agreement:
                 Intent inet = new Intent(OrderPurchaseAC.this, UserPrctocalAC.class);
-                inet.putExtra("SETJUMPPOSITION",432);
+                inet.putExtra("SETJUMPPOSITION", 432);
                 startActivity(inet);
                 break;
 
@@ -234,17 +333,17 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
             initSnackBar("请先添加要寄卖的商品。");
             return;
         }
-        if (RECEIVEDID == -1){
+        if (RECEIVEDID == -1) {
             initSnackBar("请选择回寄地址！");
             return;
         }
-        if (!isCheck){
+        if (!isCheck) {
             initSnackBar("你还没有同意寄卖协议！");
             return;
         }
         ArrayList<Integer> purchaseidArr = new ArrayList<>();
-        for (int i = 0; i<dataSource.size(); i++){
-            purchaseidArr.add(i,dataSource.get(i).getPurchaseid());
+        for (int i = 0; i < dataSource.size(); i++) {
+            purchaseidArr.add(i, dataSource.get(i).getPurchaseid());
         }
         // 图片数组
         JSONArray purchaseidList = new JSONArray();
@@ -258,13 +357,13 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         }
         JSONObject js = new JSONObject();
         try {
-            js.put("purchaseidList",purchaseidList);
-            js.put("status",2);
-            js.put("receiverid",RECEIVEDID);
+            js.put("purchaseidList", purchaseidList);
+            js.put("status", 2);
+            js.put("receiverid", RECEIVEDID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.e("预约报名的"+js.toString());
+        LogUtil.e("预约报名的" + js.toString());
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
         OkHttpUtils.postString().url(BaseInterface.PurchasePrePost)
                 .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
@@ -285,8 +384,8 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-
-//                            finish();
+                            initRecycleViewData();
+                            initSnackBar("预约商品成功！请等待审核！");
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
@@ -294,6 +393,5 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 });
-
     }
 }

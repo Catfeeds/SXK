@@ -21,9 +21,11 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.ClassDetailListAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.HotDetailListAdapter;
+import com.example.cfwifine.sxk.Section.HomeNC.Adapter.RentListAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.ThreeBlockDetailListAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeClassSelectedModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.HomeHotDetalListModel;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.RentListModel;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ThreeBlockModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -64,6 +66,9 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     private HotDetailListAdapter hotAdapter;
     private int topicid = -1;
     private int Total;
+    private List<RentListModel.RentListBean> rentDataSource = null;
+    private RentListAdapter rentAdapter = null;
+    private int RentTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         } else if (types == 16) {
             url = BaseInterface.HomeHotDetail;
         } else if (types == 17) {
-            url = BaseInterface.HomeExchangeGoodsList;
+            url = BaseInterface.RentList;
         } else if (types == 18) {
             url = BaseInterface.HomeBoobeShow;
         }
@@ -105,18 +110,154 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         } else if (types == 16) {
             navi_title.setText("热门专题");
         } else if (types == 17) {
-            navi_title.setText("来换包");
+            navi_title.setText("寄租");
         } else if (types == 18) {
-            navi_title.setText("啵呗秀");
+            navi_title.setText("寄卖");
         }
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
-        if (types != 16) {
+        if (types != 16 && types != 17) {
             initData(1, 10);
-        } else {
+        } else if (types == 17) {
+            initRenList(1,10);
+        } else if(types == 16){
             topicid = getIntent().getIntExtra("TOPICID", -1);
             initHotData(topicid, 1, 10);
         }
+    }
+
+    private void initRenList(final int pageNum, int pageSize) {
+        JSONObject order = new JSONObject();
+        try {
+            order.put("rentid",-1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("pageNo",pageNum);
+            js.put("pageSize",pageSize);
+            js.put("order",order);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (pageNum == 1){
+            rentDataSource = null;
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(url)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("租赁数据列表", "" + response);
+                        Gson gson = new Gson();
+                        RentListModel rentListModel = gson.fromJson(response, RentListModel.class);
+                        if (rentListModel.getCode() == 1) {
+                            RentTotal = rentListModel.getTotal();
+                            if (pageNum != 1){
+                                rentDataSource.addAll(rentListModel.getRentList());
+                                rentAdapter.notifyDataSetChanged();
+                            }else {
+                                rentDataSource = rentListModel.getRentList();
+                                initRentRecycleView();
+                            }
+
+                        } else if (rentListModel.getCode() == 0) {
+                            initSnackBar("请求失败！");
+                        } else if (rentListModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+
+
+
+    }
+
+    private void initRentRecycleView() {
+        swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
+                R.color.textBlueDark);
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+//                        注意此处
+                        rentDataSource.clear();
+                        pageNum = 1;
+                        initRenList(1,10);
+                        hao_recycleview.refreshComplete();
+                        swiperefresh.setRefreshing(false);
+                        rentAdapter.notifyDataSetChanged();
+
+                    }
+                }, 1000);
+
+            }
+        });
+        hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
+            @Override
+            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
+                int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
+                super.onMeasure(recycler, state, widthSpec, expandSpec);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        hao_recycleview.setLayoutManager(layoutManager);
+        //设置自定义加载中和到底了效果
+        ProgressView progressView = new ProgressView(this);
+        progressView.setIndicatorId(ProgressView.BallPulse);
+        progressView.setIndicatorColor(0xff16a6ae);
+        hao_recycleview.setFootLoadingView(progressView);
+
+        TextView textView = new TextView(this);
+        textView.setText("已经到底啦~");
+        textView.setTextColor(getResources().getColor(R.color.black));
+        hao_recycleview.setFootEndView(textView);
+        hao_recycleview.setCanloadMore(true);
+        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        if (rentDataSource.size() >= RentTotal) {
+                            hao_recycleview.loadMoreEnd();
+                            pageNum = 1;
+                            return;
+                        }
+                        pageNum ++;
+                        initRenList(pageNum, pageSize);
+//                        hotAdapter.notifyDataSetChanged();
+                        hao_recycleview.loadMoreComplete();
+                    }
+                }, 1000);
+            }
+        });
+        rentAdapter = new RentListAdapter(this, rentDataSource);
+        hao_recycleview.setAdapter(rentAdapter);
+        rentAdapter.setOnItemClickListener(new RentListAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int maintainid) {
+                Intent intent = new Intent(HomeThreeBlockDetailAC.this, ProductDetailsAC.class);
+                intent.putExtra("RENTID", maintainid);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initHotData(int topicid, int pageNum, int pageSize) {
@@ -215,8 +356,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                         initHotData(topicid, 1, pageSize);
                         hotAdapter.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
-
-
                     }
                 }, 1000);
             }
@@ -238,7 +377,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
 
         JSONObject jsonObject = new JSONObject();
         if (types != 14) {
-
             try {
                 jsonObject.put("setupid", 1);
             } catch (JSONException e) {
@@ -252,7 +390,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                 e.printStackTrace();
             }
         }
-
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
         OkHttpUtils.postString().url(url)
                 .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
@@ -373,7 +510,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     }
 
     public void initRecycleView() {
-
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
                 R.color.textBlueDark);
@@ -389,7 +525,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                         initData(1, 10);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
-                        mAdapter.notifyDataSetChanged();
+//                        mAdapter.notifyDataSetChanged();
                     }
                 }, 1000);
 
@@ -421,7 +557,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-
                         pageSize += 10;
                         if (pageNum >= threeDataSource.size()) {
                             hao_recycleview.loadMoreEnd();
@@ -430,7 +565,6 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                         initData(1, pageSize);
                         mAdapter.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
-
                     }
                 }, 1000);
             }

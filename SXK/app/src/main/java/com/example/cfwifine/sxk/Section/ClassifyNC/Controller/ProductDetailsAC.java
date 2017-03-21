@@ -96,6 +96,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private CustomDialog_ShareBorad customDialog_shareBorad;
     private List<ProductCommentListModel.BrandListBean> CommentDataSource = null;
     private TextView more;
+    String appariseStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,9 +184,9 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (rentDetail != null){
-                    Intent intent = new Intent(ProductDetailsAC.this,CommentDetailAC.class);
-                    intent.putExtra("rentid",rentDetail.getRentid());
+                if (rentDetail != null) {
+                    Intent intent = new Intent(ProductDetailsAC.this, CommentDetailAC.class);
+                    intent.putExtra("rentid", rentDetail.getRentid());
                     startActivity(intent);
                 }
             }
@@ -200,9 +201,9 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
                 } else {
                     // 评论详情页面
-                    if (rentDetail != null){
-                        Intent intent = new Intent(ProductDetailsAC.this,CommentDetailAC.class);
-                        intent.putExtra("rentid",rentDetail.getRentid());
+                    if (rentDetail != null) {
+                        Intent intent = new Intent(ProductDetailsAC.this, CommentDetailAC.class);
+                        intent.putExtra("rentid", rentDetail.getRentid());
                         startActivity(intent);
                     }
 
@@ -290,7 +291,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
             }
         };
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        ProducetDetailCommentRecycleViewAdapter producetDetailCommentRecycleViewAdapter = new ProducetDetailCommentRecycleViewAdapter(this, CommentDataSource,1);
+        ProducetDetailCommentRecycleViewAdapter producetDetailCommentRecycleViewAdapter = new ProducetDetailCommentRecycleViewAdapter(this, CommentDataSource, 1);
         product_comment_list_rv.setLayoutManager(linearLayoutManager);
         product_comment_list_rv.setAdapter(producetDetailCommentRecycleViewAdapter);
     }
@@ -348,7 +349,18 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_condition.setText(conditions);//成色
         product_intended_for_person.setText(crowds);//适用人群
 
-        product_enclosure.setText("暂时空");//附件
+        for (int i = 0; i < rentDetail.getAttachList().size(); i++) {
+            if (rentDetail.getAttachList().get(i).getAttributeName().toString().trim().equals("相关配件")) {
+                for (int j = 0; j < rentDetail.getAttachList().get(i).getAttributeValueList().size(); j++) {
+                    appariseStr += rentDetail.getAttachList().get(i).getAttributeValueList().get(j)+" ";
+                }
+            }
+        }
+        if (appariseStr.trim() == ""){
+            product_enclosure.setText("无");
+        }else {
+            product_enclosure.setText(appariseStr);
+        }
         String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentDetail.getBrand().getStory();
         Glide.with(this).load(brandStory).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_details_brand_pic);
 
@@ -421,9 +433,9 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 initCollection();
                 break;
             case R.id.follow:
-                if (mineUserId != rentDetail.getUser().getUserid()){
+                if (mineUserId != rentDetail.getUser().getUserid()) {
                     initFollow();
-                }else {
+                } else {
                     initSnackBar("自己不能关注自己哦！");
                 }
                 break;
@@ -563,7 +575,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                         public UserInfo getUserInfo(String userId) {
                             return new UserInfo(String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname(), Uri.parse(rentDetail.getUser().getHeadimgurl()));
                         }
-                    },true);
+                    }, true);
                     RongIM.getInstance().startConversation(ProductDetailsAC.this, Conversation.ConversationType.PRIVATE, String.valueOf(rentDetail.getUser().getUserid()), rentDetail.getUser().getNickname());
                 }
             }
