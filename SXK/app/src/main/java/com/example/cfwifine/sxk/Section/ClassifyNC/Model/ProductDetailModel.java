@@ -8,9 +8,10 @@ import java.util.List;
 
 public class ProductDetailModel {
 
+
     /**
      * code : 1
-     * rent : {"name":"离开","imgList":["sxk_userPic_201703161753060","sxk_userPic_201703161753071","sxk_userPic_201703161753072","sxk_userPic_201703161753083","sxk_userPic_201703161753084","sxk_userPic_201703161753085","sxk_userPic_201703161753096","sxk_userPic_201703161753107","sxk_userPic_201703161753108"],"keyword":"it","description":"还没","counterPrice":45700,"categoryid":3,"parentid":0,"brandid":3,"color":"勾协","condition":3,"crowd":1,"attachList":[{"attributeName":"测试二","attributeValueList":["鳄鱼皮"]},{"attributeName":"测试1","attributeValueList":["2"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"sale":0,"sort":0,"userid":10,"status":2,"rentid":146,"createtime":1489657989,"updatetime":1489731780,"marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]},"brand":{"name":"Louis Vuitton 路易威登","img":"Shexiangke_jcq::brand_1481111669409","description":"自1854年以来，代代相传至今的路易威登，以卓越品质、杰出创意和精湛工艺成为时尚旅行艺术的象征。产品系列包括:都市手袋，旅行用品，小型皮具，围巾配饰，鞋履，成衣，腕表，高级珠宝及个性化定制服务等。","status":1,"brandid":3,"createtime":1481111177,"updatetime":1481623761,"story":"Shexiangke_jcq::brand_story_1481624320336"},"user":{"mobile":"15539910985","userid":10,"createtime":1480922278,"updatetime":1489632334,"nickname":"肥仔","sex":1,"birthday":694195200,"profile":"哈哈","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":4,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.06}}
+     * rent : {"name":"寄租","imgList":["sxk_userPic_201703271608220","sxk_userPic_201703271608221","sxk_userPic_201703271608232","sxk_userPic_201703271608233","sxk_userPic_201703271608244","sxk_userPic_201703271608245","sxk_userPic_201703271608246","sxk_userPic_201703271608257","sxk_userPic_201703271608258"],"keyword":"测试","description":"礼物🎁","counterPrice":2800,"categoryid":3,"parentid":0,"brandid":3,"color":"红","condition":1,"crowd":1,"attachList":[{"attributeName":"测试二","attributeValueList":["珍珠鱼皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"sale":0,"sort":0,"userid":10,"nickname":"肥仔","headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","status":2,"rentid":157,"createtime":1490602104,"updatetime":1490602129,"marketPrice":1,"rentPrice":1,"risk":1,"three":1,"seven":1,"fiften":1,"twentyFive":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]},"brand":{"name":"Louis Vuitton 路易威登","img":"Shexiangke_jcq::brand_1481111669409","description":"自1854年以来，代代相传至今的路易威登，以卓越品质、杰出创意和精湛工艺成为时尚旅行艺术的象征。产品系列包括:都市手袋，旅行用品，小型皮具，围巾配饰，鞋履，成衣，腕表，高级珠宝及个性化定制服务等。","status":1,"brandid":3,"createtime":1481111177,"updatetime":1481623761,"story":"Shexiangke_jcq::brand_story_1481624320336"},"user":{"mobile":"15539910985","userid":10,"createtime":1480922278,"updatetime":1489632334,"nickname":"肥仔","sex":1,"birthday":694195200,"profile":"哈哈","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":4,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.06}}
      */
 
     private int code;
@@ -34,25 +35,27 @@ public class ProductDetailModel {
 
     public static class RentBean {
         /**
-         * name : 离开
-         * imgList : ["sxk_userPic_201703161753060","sxk_userPic_201703161753071","sxk_userPic_201703161753072","sxk_userPic_201703161753083","sxk_userPic_201703161753084","sxk_userPic_201703161753085","sxk_userPic_201703161753096","sxk_userPic_201703161753107","sxk_userPic_201703161753108"]
-         * keyword : it
-         * description : 还没
-         * counterPrice : 45700
+         * name : 寄租
+         * imgList : ["sxk_userPic_201703271608220","sxk_userPic_201703271608221","sxk_userPic_201703271608232","sxk_userPic_201703271608233","sxk_userPic_201703271608244","sxk_userPic_201703271608245","sxk_userPic_201703271608246","sxk_userPic_201703271608257","sxk_userPic_201703271608258"]
+         * keyword : 测试
+         * description : 礼物🎁
+         * counterPrice : 2800
          * categoryid : 3
          * parentid : 0
          * brandid : 3
-         * color : 勾协
-         * condition : 3
+         * color : 红
+         * condition : 1
          * crowd : 1
-         * attachList : [{"attributeName":"测试二","attributeValueList":["鳄鱼皮"]},{"attributeName":"测试1","attributeValueList":["2"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
+         * attachList : [{"attributeName":"测试二","attributeValueList":["珍珠鱼皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
          * sale : 0
          * sort : 0
          * userid : 10
+         * nickname : 肥仔
+         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545
          * status : 2
-         * rentid : 146
-         * createtime : 1489657989
-         * updatetime : 1489731780
+         * rentid : 157
+         * createtime : 1490602104
+         * updatetime : 1490602129
          * marketPrice : 1
          * rentPrice : 1
          * risk : 1
@@ -78,6 +81,8 @@ public class ProductDetailModel {
         private int sale;
         private int sort;
         private int userid;
+        private String nickname;
+        private String headimgurl;
         private int status;
         private int rentid;
         private int createtime;
@@ -197,6 +202,22 @@ public class ProductDetailModel {
 
         public void setUserid(int userid) {
             this.userid = userid;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getHeadimgurl() {
+            return headimgurl;
+        }
+
+        public void setHeadimgurl(String headimgurl) {
+            this.headimgurl = headimgurl;
         }
 
         public int getStatus() {
@@ -796,7 +817,7 @@ public class ProductDetailModel {
         public static class AttachListBeanX {
             /**
              * attributeName : 测试二
-             * attributeValueList : ["鳄鱼皮"]
+             * attributeValueList : ["珍珠鱼皮"]
              */
 
             private String attributeName;

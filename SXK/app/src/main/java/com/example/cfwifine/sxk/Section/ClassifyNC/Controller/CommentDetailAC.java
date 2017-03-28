@@ -17,6 +17,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.ProducetDetailCommentRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductCommentListModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
@@ -45,6 +46,9 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
     private List<ProductCommentListModel.BrandListBean> CommentDataSource = null;
     private int rentid = -1;
     private ProducetDetailCommentRecycleViewAdapter mAdapter;
+    int pageNum = 1;
+    int pageSize = 10;
+    private int Total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +69,13 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
         swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         activity_comment_detail_ac = (LinearLayout) findViewById(R.id.activity_comment_detail_ac);
         rentid = getIntent().getIntExtra("rentid", -1);
-        initCommentDataSource();
+        initCommentDataSource(1,10);
     }
 
-    private void initCommentDataSource() {
+    private void initCommentDataSource(final int pageNum, int pageSize) {
+        if (pageNum == 1){
+            CommentDataSource = null;
+        }
         JSONObject commentid = new JSONObject();
         try {
             commentid.put("commentid", -1);
@@ -77,8 +84,8 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
         }
         JSONObject js = new JSONObject();
         try {
-            js.put("pageNo", 0);
-            js.put("pageSize", 0);
+            js.put("pageNo", pageNum);
+            js.put("pageSize", pageSize);
             js.put("order", commentid);
             js.put("rentid", rentid);
         } catch (JSONException e) {
@@ -103,11 +110,16 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
                         Gson gson = new Gson();
                         ProductCommentListModel productCommentListModel = gson.fromJson(response, ProductCommentListModel.class);
                         if (productCommentListModel.getCode() == 1) {
-                            CommentDataSource = productCommentListModel.getBrandList();
-                            if (CommentDataSource.size() != 0) {
-                                initCommentRecycyleView();
+                            Total = productCommentListModel.getTotal();
+                            if (Total != 0){
+                                if (pageNum != 1){
+                                    CommentDataSource.addAll(productCommentListModel.getBrandList());
+                                    mAdapter.notifyDataSetChanged();
+                                }else {
+                                    CommentDataSource = productCommentListModel.getBrandList();
+                                    initCommentRecycyleView();
+                                }
                             }
-
                         } else if (productCommentListModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (productCommentListModel.getCode() == 911) {
@@ -128,7 +140,9 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        initCommentDataSource();
+                        CommentDataSource.clear();
+                        pageNum = 1;
+                        initCommentDataSource(1, 10);
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mAdapter.notifyDataSetChanged();
@@ -146,7 +160,7 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
         progressView.setIndicatorId(ProgressView.BallPulse);
         progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
-
+        hao_recycleview.setCanloadMore(true);
         TextView textView = new TextView(this);
         textView.setText("已经到底啦~");
         textView.setTextColor(getResources().getColor(R.color.black));
@@ -158,12 +172,15 @@ public class CommentDetailAC extends AppCompatActivity implements View.OnClickLi
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        //注意此处
-                        hao_recycleview.loadMoreEnd();
-                        return;
-//                        initCateRentlist(1,pageNums);
-//                        mClassiftAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
+                        if (CommentDataSource.size() >= Total) {
+                            hao_recycleview.loadMoreEnd();
+                            pageNum = 1;
+                            return;
+                        }
+                        pageNum += 1;
+                        LogUtil.e("打印的数量"+pageNum);
+                        initCommentDataSource(pageNum, pageSize);
+                        hao_recycleview.loadMoreComplete();
 
                     }
                 }, 1000);

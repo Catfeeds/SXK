@@ -27,7 +27,7 @@
             android:layout_height="44dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="包袋"
+            android:text="商品列表"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/navi_title_color"
@@ -40,10 +40,81 @@
         android:background="@color/gray_40"/>
     <!--导航-->
     <LinearLayout
+        android:id="@+id/classify_item"
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:background="@color/white"
         android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/buyBt"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/top0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/buy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="2.5dp"
+                        android:text="寄卖"
+                        android:textColor="@color/login_turquoise"
+                        android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/up0"
+                            android:visibility="gone"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
+                            android:src="@drawable/lanshangshang"/>
+                        <ImageView
+                            android:id="@+id/up00"
+                            android:src="@drawable/huishang"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"/>
+                        <ImageView
+                            android:id="@+id/dn00"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
+                            android:src="@drawable/lanxia"
+                            android:layout_marginTop="1dp"
+                            android:visibility="gone"/>
+                        <ImageView
+                            android:id="@+id/d0"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="1dp"
+                            android:src="@drawable/lanxiaxia"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/down0"
+                    android:layout_width="40dp"
+                    android:layout_height="1dp"
+
+                    android:layout_below="@+id/top0"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/login_turquoise"/>
+            </RelativeLayout>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/timeBt"
             android:layout_width="wrap_content"
@@ -61,6 +132,7 @@
                 <TextView
                     android:gravity="center"
                     android:id="@+id/down1"
+                    android:visibility="invisible"
                     android:layout_width="40dp"
                     android:layout_height="1dp"
                     android:layout_below="@+id/top1"
@@ -80,8 +152,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="时间"
-                        android:textColor="@color/login_turquoise"
-                        android:textSize="13sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -93,25 +165,25 @@
                         <ImageView
                             android:id="@+id/up1"
                             android:visibility="gone"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up11"
                             android:src="@drawable/huishang"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"/>
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"/>
                         <ImageView
                             android:id="@+id/dn11"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:src="@drawable/lanxia"
                             android:layout_marginTop="1dp"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d1"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -144,7 +216,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="2.5dp"
                         android:text="价格"
-                        android:textColor="@color/login_phone_numbercolor" android:textSize="13sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -155,25 +228,25 @@
                         <ImageView
                             android:id="@+id/up2"
                             android:visibility="gone"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up22"
                             android:src="@drawable/huishang"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"/>
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"/>
                         <ImageView
                             android:id="@+id/dn22"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:src="@drawable/lanxia"
                             android:layout_marginTop="1dp"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d2"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -214,8 +287,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="2.5dp"
                         android:text="人气"
-                        android:textColor="@color/login_phone_numbercolor"
-                        android:textSize="13sp"/>
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -227,25 +300,25 @@
                         <ImageView
                             android:id="@+id/up3"
                             android:visibility="gone"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:src="@drawable/lanshangshang"/>
                         <ImageView
                             android:id="@+id/up33"
                             android:src="@drawable/huishang"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"/>
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"/>
                         <ImageView
                             android:id="@+id/dn33"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxia"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/d3"
-                            android:layout_width="10dp"
-                            android:layout_height="6dp"
+                            android:layout_width="8dp"
+                            android:layout_height="5dp"
                             android:layout_marginTop="1dp"
                             android:src="@drawable/lanxiaxia"/>
                     </LinearLayout>
@@ -261,25 +334,42 @@
                     android:background="@color/login_turquoise"/>
             </RelativeLayout>
         </LinearLayout>
+
     </LinearLayout>
-
-    <!--列表-->
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/catelistRecyclerview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:overScrollMode="never">-->
-
-    <!--</android.support.v7.widget.RecyclerView>-->
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <me.fangx.haorefresh.HaoRecyclerView
-            android:id="@+id/hao_recycleview"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+            <me.fangx.haorefresh.HaoRecyclerView
+                android:id="@+id/hao_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/select_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/select_item_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+            </android.support.v7.widget.RecyclerView>
+            <View
+                android:id="@+id/dismiss_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#80000000"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
 
 </LinearLayout>

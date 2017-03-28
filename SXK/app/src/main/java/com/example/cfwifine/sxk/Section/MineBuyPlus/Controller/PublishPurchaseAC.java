@@ -873,7 +873,6 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
             jsonObject.put("crowd", p);
             if (FUJIANLIST == ""){
                 JSONArray arr = new JSONArray();
-                arr.put("");
                 jsonObject.put("attachList",arr);
             }else {
                 JSONArray arr = new JSONArray(FUJIANLIST);

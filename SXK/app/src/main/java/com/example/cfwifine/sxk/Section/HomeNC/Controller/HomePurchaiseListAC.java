@@ -1,6 +1,7 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.CateListAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.PurchaseDetailListAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.PurchaseListModel;
@@ -94,7 +97,7 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
         try {
             js.put("pageNo", pageNum);
             js.put("pageSize", pageSize);
-            js.put("own", 1);
+//            js.put("own", 1);
             js.put("status", 3);
             js.put("order", order);
         } catch (JSONException e) {
@@ -207,14 +210,15 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
         });
         hotAdapter = new PurchaseDetailListAdapter(this, dataSource);
         hao_recycleview.setAdapter(hotAdapter);
-//        hotAdapter.setOnItemClickListener(new HotDetailListAdapter.OnItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                Intent intent = new Intent(HomePurchaiseListAC.this, ProductDetailsAC.class);
-//                intent.putExtra("RENTID", maintainid);
-//                startActivity(intent);
-//            }
-//        });
+
+        hotAdapter.setOnItemClickListener(new PurchaseDetailListAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int purchaseid) {
+                Intent intent = new Intent(HomePurchaiseListAC.this, ProductDetailsAC.class);
+                intent.putExtra("PURCHASEID", purchaseid);
+                startActivity(intent);
+            }
+        });
     }
 
 

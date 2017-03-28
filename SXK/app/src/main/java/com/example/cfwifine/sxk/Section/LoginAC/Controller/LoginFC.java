@@ -28,7 +28,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineBuyPlus.Controller.MineBuyPlusAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
@@ -43,13 +43,11 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalA
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineWallet.MineWalletAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
-import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
 import com.google.gson.Gson;
 import com.meiqia.meiqiasdk.util.MQIntentBuilder;
-import com.sina.weibo.sdk.api.share.Base;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -348,7 +346,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             inte.putExtra("SETJUMPPOSITION", 555);
             startActivity(inte);
         } else if (position == 5) {
-            startActivity(MineBuyPlusAC.class, 0);
+            startActivity(ClassifySearchDetailAC.class, 0);
         } else if (position == 0) {
             Intent intent = new Intent(getActivity(), MineWalletAC.class);
             intent.putExtra("USERINFO", userinfo);

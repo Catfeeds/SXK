@@ -203,7 +203,12 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 try {
-                    xxx.put(dataSource.size(),x);
+                    if (FUJIANPOSITION == -1){
+                        xxx.put(0,x);
+                    }else {
+                        xxx.put(dataSource.size(),x);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -284,6 +289,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         super.onResume();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

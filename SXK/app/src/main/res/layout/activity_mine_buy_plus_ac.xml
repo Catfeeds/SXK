@@ -25,12 +25,12 @@
 
         <com.nshmura.recyclertablayout.RecyclerTabLayout
             android:id="@+id/recycler_tab_layout"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="48dp"
             android:background="@color/white"
             android:theme="@style/RecyclerTabLayoutTheme.Basic"
             app:rtl_tabMaxWidth="300dp"
-            app:rtl_tabMinWidth="120dp"
+            app:rtl_tabMinWidth="150dp"
             app:rtl_tabSelectedTextColor="@color/login_turquoise"
             app:rtl_tabIndicatorColor="@color/login_turquoise"
             app:rtl_tabIndicatorHeight="1.5dp" />

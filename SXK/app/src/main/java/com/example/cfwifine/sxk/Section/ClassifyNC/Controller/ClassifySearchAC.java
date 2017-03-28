@@ -22,8 +22,10 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.TagAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.TagsView.FlowTagLayout;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.TagsView.OnTagSelectListener;
+import com.example.cfwifine.sxk.Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RentListModel;
+import com.example.cfwifine.sxk.Section.HomeNC.Model.PurchaseListModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -61,6 +63,10 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
     private TagAdapter<String> mHistoryTagAdapter;
     private TextView clear_history;
     private int types = -1;
+    private int rentTotal = 0;
+    private List<PurchaseListModel.PurchaseListBean> purchaseList = null;
+    private int purchaseTotal = 0;
+    private String RENTRESPONESE = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,9 +174,6 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
                         sb.append(parent.getAdapter().getItem(i));
                     }
                     initSearchData(sb.toString().trim());
-                } else {
-                    Snackbar.make(parent, "没有选择标签", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
                 }
             }
         });
@@ -245,7 +248,7 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
         SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 
-    private void initSearchData(String trim) {
+    private void initSearchData(final String trim) {
         dialog.show();
         JSONObject order = new JSONObject();
         try {
@@ -278,20 +281,15 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("搜索", "" + response);
+                        Log.e("搜索1", "" + response);
                         dialog.dismiss();
                         Gson gson = new Gson();
                         RentListModel rentListData = gson.fromJson(response, RentListModel.class);
                         if (rentListData.getCode() == 1) {
                             rentList = rentListData.getRentList();
-                            if (rentList.size() == 0) {
-                                initSnackBar("暂时没有搜索到该商品！");
-                            } else {
-                                Intent intent = new Intent(ClassifySearchAC.this, CateListAC.class);
-                                intent.putExtra("TYPE", 3);
-                                intent.putExtra("RENTLIST", response);
-                                startActivity(intent);
-                            }
+                            rentTotal = rentListData.getTotal();
+                            RENTRESPONESE = response;
+                            initSearchPurchaseData(trim);
                         } else if (rentListData.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (rentListData.getCode() == 911) {
@@ -302,7 +300,64 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
 
 
     }
+    private void initSearchPurchaseData(String trim) {
+        dialog.show();
+        JSONObject order = new JSONObject();
+        try {
+            order.put("purchaseid", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("pageNo", 0);
+            js.put("pageSize", 0);
+            js.put("order", order);
+            js.put("name", trim);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.PurchasePreList)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("搜索2", "" + response);
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        PurchaseListModel purchaseListModel = gson.fromJson(response, PurchaseListModel.class);
+                        if (purchaseListModel.getCode() == 1) {
+                            purchaseList = purchaseListModel.getPurchaseList();
+                            purchaseTotal = purchaseListModel.getTotal();
+                            if (rentTotal == 0 && purchaseTotal == 0) {
+                                initSnackBar("暂时没有搜索到该商品！");
+                            } else {
+                                Intent intent = new Intent(ClassifySearchAC.this, ClassifySearchDetailAC.class);
+                                intent.putExtra("TYPE", 3);
+                                intent.putExtra("PURCHASE",response);
+                                intent.putExtra("RENTLIST",RENTRESPONESE);
+                                startActivity(intent);
+                            }
+                        } else if (purchaseListModel.getCode() == 0) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (purchaseListModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
 
+
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

@@ -223,6 +223,16 @@ public class BaseInterface {
     public static String PurchaseProtacl = root + "/app/purchaseagreementsetup/getpost";
     // 删除订单
     public static String PurchaseDeleteOrder = root + "/app/purchase/delpost";
+    // 寄卖添加收藏
+    public static String PurchaseAddCollection = root + "/app/collectionpurchase/addpost";
+    // 寄卖收藏列表
+    public static String PurchaseCollectionList = root + "/app/collectionpurchase/getpost";
+    // 寄卖删除收藏
+    public static String PurchaseDelCollection = root + "/app/collectionpurchase/delpost";
+    // 生成寄卖订单
+    public static String PurchasePayOrderID = root + "/app/purchaseorder/addpost";
+    // 获取寄卖订单详情
+    public static String PurchaseOrderDetail = root + "/app/purchaseorder/getpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
@@ -234,5 +244,6 @@ public class BaseInterface {
     public static String PORITA = "PORITA";
     public static String SUCCESS = "SUCCESS";
     public static String KEYWORD = "KEYWORD";
-
+    public static String NICKNAMES = "KEYWORDs";
+    public static String PORITAS = "PORITAS";
 }

@@ -39,23 +39,27 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
 
     private MineCollectionModel.CollectionBean mDatas =null;
 
+    MinePurchaseListModel.CollectionBean purchaseDataSource = null;
+
     private SlidingView mMenu = null;
 
-    public CollectionSlideViewRecycleViewAdapter(Context context, MineCollectionModel.CollectionBean dataSource, MineCuringCollectionListModel.CollectionBean curingDataSource) {
+    public CollectionSlideViewRecycleViewAdapter(Context context, MineCollectionModel.CollectionBean dataSource, MineCuringCollectionListModel.CollectionBean curingDataSource, MinePurchaseListModel.CollectionBean purchaseDataSource) {
         mContext = context;
         mIDeleteBtnClickListener = (IonSlidingViewClickListener) context;
         mDatas = dataSource;
         this.curingDataSource = curingDataSource;
+        this.purchaseDataSource = purchaseDataSource;
     }
 
     @Override
     public int getItemCount() {
         if (mDatas != null){
             return mDatas.getRentList().size();
-        }else {
+        }else if (curingDataSource != null){
             return curingDataSource.getMaintainList().size();
+        }else{
+            return purchaseDataSource.getPurchaseList().size();
         }
-
     }
 
     @Override
@@ -89,7 +93,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
                 @Override
                 public void onClick(View v) {
                     int n = holder.getLayoutPosition();
-                    mIDeleteBtnClickListener.onDeleteBtnCilck(v, mDatas.getRentList().get(position).getRentid(),-1,n);
+                    mIDeleteBtnClickListener.onDeleteBtnCilck(v, mDatas.getRentList().get(position).getRentid(),-1,-1,n);
                 }
             });
             holder.layout_content.setOnClickListener(new OnClickListener() {
@@ -100,7 +104,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
                     mContext.startActivity(intent);
                 }
             });
-        }else {
+        }else if (curingDataSource != null){
             String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + curingDataSource.getMaintainList().get(position).getImg();
             Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(holder.collection_pic);
             holder.layout_content.getLayoutParams().width = Helpers.getScreenWidth(mContext);
@@ -127,7 +131,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
                 @Override
                 public void onClick(View v) {
                     int n = holder.getLayoutPosition();
-                    mIDeleteBtnClickListener.onDeleteBtnCilck(v, -1,curingDataSource.getMaintainList().get(position).getMaintainid(),n);
+                    mIDeleteBtnClickListener.onDeleteBtnCilck(v, -1,curingDataSource.getMaintainList().get(position).getMaintainid(),-1,n);
                 }
             });
             holder.layout_content.setOnClickListener(new OnClickListener() {
@@ -135,6 +139,54 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,CuringDetailAC.class);
                     intent.putExtra("maintainid",curingDataSource.getMaintainList().get(position).getMaintainid());
+                    mContext.startActivity(intent);
+                }
+            });
+        }else if (purchaseDataSource != null){
+            String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + purchaseDataSource.getPurchaseList().get(position).getImgList().get(0);
+            Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(holder.collection_pic);
+            holder.layout_content.getLayoutParams().width = Helpers.getScreenWidth(mContext);
+            holder.name.setText(purchaseDataSource.getPurchaseList().get(position).getName());
+            String description = purchaseDataSource.getPurchaseList().get(position).getDescription();
+            if (description.trim().length() >= 28){
+                String newString = description.substring(0,28)+"...";
+                holder.keyword.setText(newString);
+            }else {
+                holder.keyword.setText(description);
+            }
+
+            double marketPri = purchaseDataSource.getPurchaseList().get(position).getMarketPrice();
+            holder.txt.setText("市场价：");
+            holder.marketPrice.setText(" ¥ "+ String.format("%.2f",marketPri/100));
+            double solePrice = purchaseDataSource.getPurchaseList().get(position).getSellingPrice();
+            holder.rentPrice.setText("售价： ¥ "+ String.format("%.2f",solePrice/100));
+            holder.selde.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (menuIsOpen()) {
+                        closeMenu();
+                    } else {
+                        int n = holder.getLayoutPosition();
+                        mIDeleteBtnClickListener.onItemClick(v, n);
+                        Intent intent = new Intent(mContext,ProductDetailsAC.class);
+                        intent.putExtra("PURCHASEID",purchaseDataSource.getPurchaseList().get(position).getPurchaseid());
+                        mContext.startActivity(intent);
+                    }
+
+                }
+            });
+            holder.btn_Delete.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int n = holder.getLayoutPosition();
+                    mIDeleteBtnClickListener.onDeleteBtnCilck(v, -1,-1,purchaseDataSource.getPurchaseList().get(position).getPurchaseid(),n);
+                }
+            });
+            holder.layout_content.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext,ProductDetailsAC.class);
+                    intent.putExtra("PURCHASEID",purchaseDataSource.getPurchaseList().get(position).getPurchaseid());
                     mContext.startActivity(intent);
                 }
             });
@@ -158,7 +210,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
         public ViewGroup layout_content;
         LinearLayout selde;
         ImageView collection_pic;
-        TextView name,keyword,rentPrice,marketPrice;
+        TextView name,keyword,rentPrice,marketPrice,txt;
         public MyViewHolder(View itemView) {
             super(itemView);
             btn_Delete = (TextView) itemView.findViewById(R.id.tv_delete);
@@ -170,6 +222,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
             rentPrice = (TextView)itemView.findViewById(R.id.collection_rentprice);
             marketPrice = (TextView)itemView.findViewById(R.id.collection_price);
             ((SlidingView) itemView).setSlidingButtonListener(CollectionSlideViewRecycleViewAdapter.this);
+            txt = (TextView)itemView.findViewById(R.id.txt);
         }
     }
 
@@ -187,8 +240,15 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
                 closeMenu();
             }
         }
-        else {
+        else if (curingDataSource != null){
             curingDataSource.getMaintainList().remove(position);
+//        notifyItemRemoved(position);
+            notifyDataSetChanged();
+            if (menuIsOpen()) {
+                closeMenu();
+            }
+        }else if (purchaseDataSource != null){
+            purchaseDataSource.getPurchaseList().remove(position);
 //        notifyItemRemoved(position);
             notifyDataSetChanged();
             if (menuIsOpen()) {
@@ -233,7 +293,7 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
 
     public interface IonSlidingViewClickListener {
         void onItemClick(View view, int position);
-        void onDeleteBtnCilck(View view, int rentid,int maitainid, int position);
+        void onDeleteBtnCilck(View view, int rentid,int maitainid,int purchaseid, int position);
     }
 }
 

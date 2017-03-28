@@ -78,7 +78,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private TextView commit_order;
     private LikeIOSSheetDialog shitView;
     private String datas;
-    private Object rentDetail;
+    private String rentDetail = "";
     private ProductDetailModel productDetailModel;
     Dialog dialog;
     private TextView product_lowest_price;
@@ -107,6 +107,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private double dJ;
     private int AgreeIsChecked = 2;
     private OrderSuccessPupWindow orderSuccessPupWindow;
+    private String purchaseDetail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +121,14 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     }
 
     private void initData() {
-        rentDetail = String.valueOf(SharedPreferencesUtils.getParam(this, "RENTDETAILMODEL", ""));
+        rentDetail = getIntent().getStringExtra("RENTRESPONSE");
+        purchaseDetail = getIntent().getStringExtra("PURCHASERESPONSE");
         Gson gson = new Gson();
-        productDetailModel = gson.fromJson(rentDetail.toString(), ProductDetailModel.class);
-        LogUtil.e("打印" + productDetailModel.getRent().getName());
+        if (rentDetail != ""){
+            productDetailModel = gson.fromJson(rentDetail.toString(), ProductDetailModel.class);
+        }else if (purchaseDetail != ""){
+            LogUtil.e("购买详情");
+        }
         dialog.dismiss();
         initView();
     }
@@ -140,7 +145,6 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         product_money = (TextView) findViewById(R.id.product_money);
         order_rent = (TextView) findViewById(R.id.order_rent);
         order_deposit = (TextView) findViewById(R.id.order_deposit);
-
         freight_insurance = (TextView) findViewById(R.id.freight_insurance);
         leaving_message = (EditText) findViewById(R.id.leaving_message);
         rule = (TextView) findViewById(R.id.rule);
@@ -553,6 +557,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
             orderSuccessPupWindow.showAtLocation(this.findViewById(R.id.activity_place_order), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }else if (str.equals("success")){
             Intent intent = new Intent(PayOrderAC.this,BuyerAndSellerOrderDetailAC.class);
+            intent.putExtra("type",1);
             intent.putExtra("orderid",ordeID);
             startActivity(intent);
         }
@@ -606,6 +611,10 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private void useAliPays() {
         LogUtil.e("receivedid" + RECEIVEDID);
         message = leaving_message.getText().toString().trim();
+        if (message.trim().length() >= 250){
+            initSnackBar("留言过长！");
+            return;
+        }
         if (TextUtils.isEmpty(message)) {
             initSnackBar("您还没有留言！");
             return;

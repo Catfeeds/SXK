@@ -48,8 +48,12 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     private Button curing_btn;
     private View curing_line;
     private String COMURL = "";
-    private MineCuringCollectionListModel.CollectionBean curingDataSource=null;
+    private MineCuringCollectionListModel.CollectionBean curingDataSource = null;
     private String BASEURL;
+    private Button sale_btn;
+    private View sale_line;
+    private LinearLayout sale;
+    private MinePurchaseListModel.CollectionBean purchaseDataSource = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,14 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         curing_line = (View) findViewById(R.id.curing_line);
         goods_btn.setClickable(false);
         curing_btn.setClickable(false);
-        initCollectionData(1);
+        sale = (LinearLayout) findViewById(R.id.sale);
+        sale.setOnClickListener(this);
+        sale_btn = (Button) findViewById(R.id.sale_btn);
+        sale_btn.setClickable(false);
+        sale_line = (View) findViewById(R.id.sale_line);
+
+        initCollectionData(3);
+
     }
 
     private void initCollectionData(final int types) {
@@ -91,8 +102,10 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         }
         if (types == 1) {
             COMURL = BaseInterface.CollectionList;
-        } else {
+        } else if (types == 2){
             COMURL = BaseInterface.CuringCollectionList;
+        }else if (types == 3){
+            COMURL = BaseInterface.PurchaseCollectionList;
         }
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
         OkHttpUtils.postString().url(COMURL)
@@ -123,9 +136,9 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
                             } else if (mineCollectionModel.getCode() == 911) {
                                 initSnackBar("登录超时，请重新登录！");
                             }
-                        }else {
-                            LogUtil.e("养护收藏列表"+response);
-                            MineCuringCollectionListModel mineCuringCollectionListModel = gson.fromJson(response,MineCuringCollectionListModel.class);
+                        } else if (types == 2){
+                            LogUtil.e("养护收藏列表" + response);
+                            MineCuringCollectionListModel mineCuringCollectionListModel = gson.fromJson(response, MineCuringCollectionListModel.class);
                             if (mineCuringCollectionListModel.getCode() == 1) {
                                 curingDataSource = mineCuringCollectionListModel.getCollection();
                                 setAdapter(2);
@@ -134,6 +147,18 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
                             } else if (mineCuringCollectionListModel.getCode() == 911) {
                                 initSnackBar("登录超时，请重新登录！");
                             }
+                        }else if (types == 3){
+                            LogUtil.e("寄卖收藏列表"+response);
+                            MinePurchaseListModel minePurchaseListModel = gson.fromJson(response, MinePurchaseListModel.class);
+                            if (minePurchaseListModel.getCode() == 1) {
+                                purchaseDataSource = minePurchaseListModel.getCollection();
+                                setAdapter(3);
+                            } else if (minePurchaseListModel.getCode() == 0) {
+                                initSnackBar("请求失败！");
+                            } else if (minePurchaseListModel.getCode() == 911) {
+                                initSnackBar("登录超时，请重新登录！");
+                            }
+
                         }
                     }
                 });
@@ -147,10 +172,12 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
 
     private void setAdapter(int i) {
         collection_rv.setLayoutManager(new LinearLayoutManager(this));
-        if (i == 1){
-            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, dataSource,null));
-        }else {
-            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, null,curingDataSource));
+        if (i == 1) {
+            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, dataSource, null, null));
+        } else if (i == 2){
+            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, null, curingDataSource, null));
+        } else if (i == 3){
+            collection_rv.setAdapter(mAdapter = new CollectionSlideViewRecycleViewAdapter(this, null, null, purchaseDataSource));
         }
         collection_rv.setItemAnimator(new DefaultItemAnimator());
     }
@@ -161,27 +188,34 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
     }
 
     @Override
-    public void onDeleteBtnCilck(View view, int rentid,int maintainid, int position) {
-        initCancelCollection(rentid,maintainid, position);
+    public void onDeleteBtnCilck(View view, int rentid, int maintainid, int purchaseid, int position) {
+        initCancelCollection(rentid, maintainid,purchaseid, position);
     }
 
-    private void initCancelCollection(final int rentid, int maintainid, final int position) {
+    private void initCancelCollection( final int rentid, int maintainid,int purchaseid, final int position) {
         dialog.show();
         JSONObject js = new JSONObject();
-        if (rentid != -1){
+        if (rentid != -1) {
             try {
                 js.put("rentid", rentid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             BASEURL = BaseInterface.CollectionDel;
-        }else {
+        } else if (maintainid != -1){
             try {
                 js.put("maintainid", maintainid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             BASEURL = BaseInterface.CuringCollectionDel;
+        } else if (purchaseid != -1){
+            try {
+                js.put("purchaseid", purchaseid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BASEURL = BaseInterface.PurchaseDelCollection;
         }
 
         String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
@@ -229,10 +263,22 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
             case R.id.curing:
                 clickCuringCollection();
                 break;
+            case R.id.sale:
+                clickPurchaseCollection();
+                break;
             default:
                 break;
-
         }
+    }
+    private void clickPurchaseCollection() {
+        sale_btn.setTextColor(getResources().getColor(R.color.login_turquoise));
+        sale_line.setBackgroundColor(getResources().getColor(R.color.login_turquoise));
+        curing_btn.setTextColor(getResources().getColor(R.color.textGray));
+        curing_line.setBackgroundColor(getResources().getColor(R.color.white));
+        goods_btn.setTextColor(getResources().getColor(R.color.textGray));
+        goods_line.setBackgroundColor(getResources().getColor(R.color.white));
+
+        initCollectionData(3);
     }
 
 
@@ -241,7 +287,8 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         curing_line.setBackgroundColor(getResources().getColor(R.color.login_turquoise));
         goods_btn.setTextColor(getResources().getColor(R.color.textGray));
         goods_line.setBackgroundColor(getResources().getColor(R.color.white));
-
+        sale_btn.setTextColor(getResources().getColor(R.color.textGray));
+        sale_line.setBackgroundColor(getResources().getColor(R.color.white));
         initCollectionData(2);
     }
 
@@ -250,6 +297,8 @@ public class MineCollectionAC extends AppCompatActivity implements CollectionSli
         goods_line.setBackgroundColor(getResources().getColor(R.color.login_turquoise));
         curing_btn.setTextColor(getResources().getColor(R.color.textGray));
         curing_line.setBackgroundColor(getResources().getColor(R.color.white));
+        sale_btn.setTextColor(getResources().getColor(R.color.textGray));
+        sale_line.setBackgroundColor(getResources().getColor(R.color.white));
         initCollectionData(1);
     }
 }

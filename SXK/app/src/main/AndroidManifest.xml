@@ -339,7 +339,7 @@
             android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.MineBuyPlus.Controller.MineBuyPlusAC"
+            android:name=".Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.ConversiationAC"
@@ -435,7 +435,10 @@
             android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC" />
-        <activity android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
+        <activity
+            android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.ClassifyNC.Controller.PurchasePayOrderAC"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

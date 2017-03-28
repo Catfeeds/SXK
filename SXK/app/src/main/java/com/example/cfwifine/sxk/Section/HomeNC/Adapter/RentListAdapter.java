@@ -50,8 +50,17 @@ public class RentListAdapter extends RecyclerView.Adapter<RentListAdapter.ViewHo
     public void onBindViewHolder(final RentListAdapter.ViewHolder holder, final int position) {
         LogUtil.e("分类数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
-        holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getRentPrice())/100.0))+"/天");
+
+        String description = classifyDataSource.get(position).getDescription();
+        if (description.trim().length()>25){
+            holder.description.setText(description.substring(0,25)+"...");
+        }else {
+            holder.description.setText(description);
+        }
+        double dd = classifyDataSource.get(position).getMarketPrice();
+        holder.price.setText("市场价： ¥ "+ String.format("%.2f",dd/100));
+        double solePrice = classifyDataSource.get(position).getRentPrice();
+        holder.solePrice.setText("租价： ¥ "+ String.format("%.2f",solePrice/100));
 
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
@@ -73,7 +82,7 @@ public class RentListAdapter extends RecyclerView.Adapter<RentListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout frameLayout;
-        TextView name,description,price;
+        TextView name,description,price,solePrice;
         ImageView pic;
 
         public ViewHolder(View itemView) {
@@ -84,7 +93,7 @@ public class RentListAdapter extends RecyclerView.Adapter<RentListAdapter.ViewHo
             description = (TextView)itemView.findViewById(R.id.threeblock_descript);
             price = (TextView)itemView.findViewById(R.id.threeblock_price);
             pic = (ImageView)itemView.findViewById(R.id.threeblock_pic);
-
+            solePrice = (TextView)itemView.findViewById(R.id.sole_price);
         }
     }
 }

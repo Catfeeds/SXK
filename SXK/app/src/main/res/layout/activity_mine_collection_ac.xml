@@ -19,6 +19,30 @@
         android:layout_height="52dp"
         android:orientation="horizontal">
         <LinearLayout
+            android:id="@+id/sale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_bg"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/sale_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="寄卖"
+                android:textSize="14sp"
+                android:textColor="@color/login_turquoise"/>
+            <View
+                android:id="@+id/sale_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@color/login_turquoise"/>
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/goods"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,16 +55,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:text="商品"
+                android:text="寄租"
                 android:textSize="14sp"
-                android:textColor="@color/login_turquoise"/>
+                android:textColor="@color/textGray"/>
             <View
                 android:id="@+id/goods_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:background="@color/login_turquoise"/>
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@color/white"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/curing"
@@ -62,8 +86,8 @@
                 android:id="@+id/curing_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:background="@color/white"/>
         </LinearLayout>
     </LinearLayout>

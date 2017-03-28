@@ -758,7 +758,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             jsonObject.put("crowd", p);
             if (FUJIANLIST == ""){
                 JSONArray arr = new JSONArray();
-                arr.put("");
                 jsonObject.put("attachList",arr);
             }else {
                 JSONArray arr = new JSONArray(FUJIANLIST);

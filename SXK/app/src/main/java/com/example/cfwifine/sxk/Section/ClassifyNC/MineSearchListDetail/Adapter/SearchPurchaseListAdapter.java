@@ -1,4 +1,4 @@
-package com.example.cfwifine.sxk.Section.MineNC.Controller.MineBuyPlus.Adapter;
+package com.example.cfwifine.sxk.Section.ClassifyNC.MineSearchListDetail.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -20,22 +20,22 @@ import com.example.cfwifine.sxk.Utils.LogUtil;
 import java.util.List;
 
 
-public class MineItemBuyWaitReceGoodsListAdapter extends RecyclerView.Adapter<MineItemBuyWaitReceGoodsListAdapter.ViewHolder> {
+public class SearchPurchaseListAdapter extends RecyclerView.Adapter<SearchPurchaseListAdapter.ViewHolder> {
     private final List<MineItemCuringModel.OrderListBean> classifyDataSource;
     private Context mContext;
     private LayoutInflater mInflater;
 
 
-    private MineItemBuyWaitReceGoodsListAdapter.OnItemClickListener mOnItemClickListener;
+    private SearchPurchaseListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
         void OnItemClick(View view, int maintainid);
     }
-    public void setOnItemClickListener(MineItemBuyWaitReceGoodsListAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(SearchPurchaseListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public MineItemBuyWaitReceGoodsListAdapter(Context mContext, List<MineItemCuringModel.OrderListBean> classifyDataSource) {
+    public SearchPurchaseListAdapter(Context mContext, List<MineItemCuringModel.OrderListBean> classifyDataSource) {
 //        mInflater = LayoutInflater.from(mContext);
         this.mContext = mContext;
         this.classifyDataSource = classifyDataSource;
@@ -43,15 +43,15 @@ public class MineItemBuyWaitReceGoodsListAdapter extends RecyclerView.Adapter<Mi
 
 
     @Override
-    public MineItemBuyWaitReceGoodsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchPurchaseListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mine_publish_curings_list, parent, false);
-        MineItemBuyWaitReceGoodsListAdapter.ViewHolder vh = new MineItemBuyWaitReceGoodsListAdapter.ViewHolder(view);
+        SearchPurchaseListAdapter.ViewHolder vh = new SearchPurchaseListAdapter.ViewHolder(view);
         return vh;
 //        return new ViewHolder(mInflater.inflate(R.layout.item_mine_nopass_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final MineItemBuyWaitReceGoodsListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final SearchPurchaseListAdapter.ViewHolder holder, final int position) {
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getMaintain().getName());

@@ -104,7 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="21dp"
-                            android:text="N1 PRADA/普拉达 手提包"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="95新 经典款 办公休闲均可"
+                            android:text=""
                             android:textColor="@color/textGray"
                             android:textSize="13sp" />
 
@@ -126,6 +126,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/lowest_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="最低租价: "
@@ -264,6 +265,7 @@
                         android:layout_marginLeft="23dp"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/heart"
                             android:layout_width="20.5dp"
                             android:layout_height="20.5dp"
                             android:src="@drawable/guanzhu" />
@@ -302,107 +304,113 @@
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
                     android:background="@color/home_bg" />
-
                 <LinearLayout
+                    android:id="@+id/comment_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="17dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="21dp"
-                        android:text="商品评价"
-                        android:textColor="@color/navi_title_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="21dp"
-                        android:text=" | Comment"
-                        android:textColor="@color/login_phone_numbercolor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="21dp"
-                        android:text="("
-                        android:textColor="@color/navi_title_color"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/comment_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="17dp"
-                        android:layout_marginTop="21dp"
-                        android:text="556"
-                        android:textColor="@color/navi_title_color"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="17dp"
-                        android:layout_marginTop="21dp"
-                        android:text=")"
-                        android:textColor="@color/navi_title_color"
-                        android:textSize="13sp" />
-
-                    <RelativeLayout
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="21dp">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:id="@+id/more_comment"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="20dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_marginBottom="17dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="21dp"
+                            android:text="商品评价"
+                            android:textColor="@color/navi_title_color"
+                            android:textSize="14sp" />
 
-                            <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="21dp"
+                            android:text=" | Comment"
+                            android:textColor="@color/login_phone_numbercolor" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="21dp"
+                            android:text="("
+                            android:textColor="@color/navi_title_color"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/comment_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="17dp"
+                            android:layout_marginTop="21dp"
+                            android:text="556"
+                            android:textColor="@color/navi_title_color"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="17dp"
+                            android:layout_marginTop="21dp"
+                            android:text=")"
+                            android:textColor="@color/navi_title_color"
+                            android:textSize="13sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="21dp">
+
+                            <LinearLayout
+                                android:id="@+id/more_comment"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="更多"
-                                android:textColor="@color/navi_title_color"
-                                android:textSize="13sp" />
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="20dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="8dp"
-                                android:layout_height="13dp"
-                                android:layout_marginLeft="2dp"
-                                android:src="@drawable/publish_publish_go" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="更多"
+                                    android:textColor="@color/navi_title_color"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:layout_width="8dp"
+                                    android:layout_height="13dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:src="@drawable/publish_publish_go" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@color/home_bg" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/product_comment_list_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"></android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:id="@+id/more"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:textSize="12sp"
+                        android:text="MORE"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"/>
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@color/home_bg" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/product_comment_list_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"></android.support.v7.widget.RecyclerView>
-                <TextView
-                    android:id="@+id/more"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:textSize="12sp"
-                    android:text="MORE"
-                    android:textColor="@color/black"
-                    android:textAlignment="center"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="27.5dp"

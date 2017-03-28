@@ -53,9 +53,16 @@ public class PurchaseDetailListAdapter extends RecyclerView.Adapter<PurchaseDeta
     public void onBindViewHolder(final PurchaseDetailListAdapter.ViewHolder holder, final int position) {
         LogUtil.e("分类数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
-//        holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getAdvancePrice())/100.0))+"/天");
-
+        String description = classifyDataSource.get(position).getDescription();
+        if (description.trim().length()>25){
+            holder.description.setText(description.substring(0,25)+"...");
+        }else {
+            holder.description.setText(description);
+        }
+        double dd = classifyDataSource.get(position).getMarketPrice();
+        holder.marketPrice.setText("市场价： ¥ "+ String.format("%.2f",dd/100));
+        double solePrice = classifyDataSource.get(position).getSellingPrice();
+        holder.solePrice.setText("售价： ¥ "+ String.format("%.2f",solePrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
@@ -63,7 +70,7 @@ public class PurchaseDetailListAdapter extends RecyclerView.Adapter<PurchaseDeta
             holder.frameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).());
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getPurchaseid());
                 }
             });
         }
@@ -76,7 +83,7 @@ public class PurchaseDetailListAdapter extends RecyclerView.Adapter<PurchaseDeta
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout frameLayout;
-        TextView name,description,price;
+        TextView name,description,marketPrice,solePrice;
         ImageView pic;
 
         public ViewHolder(View itemView) {
@@ -85,7 +92,8 @@ public class PurchaseDetailListAdapter extends RecyclerView.Adapter<PurchaseDeta
             frameLayout = (LinearLayout) itemView.findViewById(R.id.threeblock_cell);
             name = (TextView)itemView.findViewById(R.id.threeblock_name);
             description = (TextView)itemView.findViewById(R.id.threeblock_descript);
-            price = (TextView)itemView.findViewById(R.id.threeblock_price);
+            marketPrice = (TextView)itemView.findViewById(R.id.market_price);
+            solePrice = (TextView)itemView.findViewById(R.id.sole_price);
             pic = (ImageView)itemView.findViewById(R.id.threeblock_pic);
 
         }

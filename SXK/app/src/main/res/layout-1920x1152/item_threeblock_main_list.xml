@@ -46,8 +46,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textSize="13sp"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/sole_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="13sp"
                 android:textColor="@color/login_turquoise"/>
-
         </LinearLayout>
     </LinearLayout>
     <View

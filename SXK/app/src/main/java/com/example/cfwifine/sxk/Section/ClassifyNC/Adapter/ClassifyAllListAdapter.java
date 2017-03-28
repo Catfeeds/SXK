@@ -54,8 +54,16 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
     public void onBindViewHolder(final VH holder, final int position) {
 
         holder.mTitle.setText(rentList.get(position).getName()+"");
-        holder.mComment.setText(rentList.get(position).getKeyword()+"");
-        holder.mMoney.setText(String.valueOf((double) (Math.round(rentList.get(position).getCounterPrice()) / 100.0))+"");
+        String description = rentList.get(position).getDescription();
+        if (description.trim().length()>25){
+            holder.mComment.setText(description.substring(0,25)+"...");
+        }else {
+            holder.mComment.setText(description);
+        }
+        double marketPrice = rentList.get(position).getMarketPrice();
+        holder.marketPrice.setText("市场价：¥ "+ String.format("%.2f",marketPrice/100));
+        double rentPrice = rentList.get(position).getRentPrice();
+        holder.mMoney.setText(String.format("%.2f",rentPrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentList.get(position).getImgList().get(position).toString();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.mImg);
 //        holder.mImg.setImageResource(R.drawable.home_placeholder);
@@ -84,7 +92,7 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
         private final ImageView mImg;
         private final TextView mTitle;
         private final TextView mComment;
-        private final TextView mMoney;
+        private final TextView mMoney,marketPrice;
 
         public VH(View itemView) {
             super(itemView);
@@ -92,6 +100,7 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
             mTitle = (TextView) itemView.findViewById(R.id.title);
             mComment = (TextView) itemView.findViewById(R.id.comment);
             mMoney = (TextView) itemView.findViewById(R.id.money);
+            marketPrice = (TextView) itemView.findViewById(R.id.market_price);
         }
     }
 }
