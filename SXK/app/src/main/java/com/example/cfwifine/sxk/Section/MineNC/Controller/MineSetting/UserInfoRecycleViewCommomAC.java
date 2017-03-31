@@ -67,7 +67,7 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commom_ac);
         initView();
-        getPositionView();
+        initSettingView();
     }
 
     // TODO***************************************初始化界面****************************************
@@ -88,37 +88,6 @@ public class UserInfoRecycleViewCommomAC extends AppCompatActivity implements Vi
         activity_setting_ac.setOnClickListener(this);
         setting_view_lay = (RelativeLayout) findViewById(R.id.setting_view_lay);
         setting_view_lay.setOnClickListener(this);
-    }
-
-    /**
-     * 根据不同的position来传值
-     */
-    private void getPositionView() {
-        Integer position = getIntent().getIntExtra("JUMPPOSITION", 0);
-        switch (position) {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                // 设置页面
-                initSettingView();
-                break;
-            default:
-                break;
-        }
     }
 
     // TODO***************************************初始化设置界面****************************************

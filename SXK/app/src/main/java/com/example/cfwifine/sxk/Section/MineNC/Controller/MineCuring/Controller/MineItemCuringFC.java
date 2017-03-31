@@ -16,8 +16,6 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Adapter.MineItemCuringListAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Model.MineItemCuringModel;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Adapter.MineNoSailListAdapter;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Model.MineItemNoSailModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;

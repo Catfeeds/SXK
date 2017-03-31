@@ -15,7 +15,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
+                android:layout_marginTop="15dp"
                 android:text="输入单号"
                 android:textSize="14sp"
                 android:layout_centerHorizontal="true"
@@ -27,8 +27,8 @@
                 android:layout_height="12dp"
                 android:layout_marginRight="15dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="19dp"
-                android:background="@drawable/dialog_closer" />
+                android:layout_marginTop="15dp"
+                android:background="@null" />
         </RelativeLayout>
 
         <View
@@ -48,8 +48,6 @@
                 android:layout_marginTop="26dp"
                 android:background="@drawable/table_shape_edittext_style"
                 android:textSize="14sp"
-                android:maxLength="12"
-
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:textColor="@color/black"
                 android:hint="请输入单号"
@@ -62,7 +60,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="30dp"
                 android:orientation="horizontal">
                 <Button
                     android:layout_weight="1"

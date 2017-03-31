@@ -5,14 +5,33 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <me.fangx.haorefresh.HaoRecyclerView
-            android:id="@+id/hao_recycleview"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+            <me.fangx.haorefresh.HaoRecyclerView
+                android:id="@+id/hao_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+        <LinearLayout
+            android:id="@+id/no_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center_horizontal|center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="暂时没有订单！"
+                android:textColor="@color/login_turquoise"
+                android:textSize="14sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </LinearLayout>

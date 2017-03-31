@@ -64,7 +64,7 @@ public class ClassifyAllListAdapter extends RecyclerView.Adapter<ClassifyAllList
         holder.marketPrice.setText("市场价：¥ "+ String.format("%.2f",marketPrice/100));
         double rentPrice = rentList.get(position).getRentPrice();
         holder.mMoney.setText(String.format("%.2f",rentPrice/100));
-        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentList.get(position).getImgList().get(position).toString();
+        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentList.get(position).getImgList().get(0).toString();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.mImg);
 //        holder.mImg.setImageResource(R.drawable.home_placeholder);
 

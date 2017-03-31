@@ -199,34 +199,6 @@
                 android:layout_height="80dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:id="@+id/mine_publishs"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/ripple_bg"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/mine_pub"
-                        android:layout_width="21dp"
-                        android:layout_height="21dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/mine_publish"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/mine_pub"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="7dp"
-                        android:text="我的发布"
-                        android:textColor="@color/black"
-                        android:textSize="11sp"/>
-
-                </RelativeLayout>
-
                 <RelativeLayout
                     android:id="@+id/mine_rents"
                     android:layout_width="0dp"
@@ -253,6 +225,34 @@
                         android:textSize="11sp"/>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/mine_publishs"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/ripple_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mine_pub"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/mine_business"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mine_pub"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="我的买卖"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
+
+
 
                 <RelativeLayout
                     android:id="@+id/mine_care"

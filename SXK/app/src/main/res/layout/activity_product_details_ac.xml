@@ -668,7 +668,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="21dp"
-                        android:text=" | Berand story"
+                        android:text=" | Brand story"
                         android:textColor="@color/login_phone_numbercolor" />
                 </LinearLayout>
 

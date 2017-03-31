@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ripple_bg"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_bg"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/minenosail_cell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/ripple_bg"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/minenosail_cell"
+
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:background="@drawable/ripple_bg"
+            android:gravity="center_vertical|bottom"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
@@ -53,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:text="租价 "
+                        android:text="专柜价："
                         android:textColor="@color/black"/>
                     <TextView
                         android:id="@+id/minenosail_price"
@@ -62,13 +63,6 @@
                         android:textSize="13sp"
                         android:textColor="@color/login_turquoise"/>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/minenosail_rentprice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:text=""
-                    android:textColor="@color/black"/>
 
             </LinearLayout>
 

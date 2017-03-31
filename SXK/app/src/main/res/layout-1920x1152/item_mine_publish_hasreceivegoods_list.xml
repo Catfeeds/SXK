@@ -7,14 +7,16 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/wait_cell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/ripple_bg"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/wait_cell"
+
             android:layout_width="match_parent"
             android:gravity="center_vertical"
-            android:background="@drawable/ripple_bg"
+
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
@@ -53,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:text="租价 "
+                        android:text="租价："
                         android:textColor="@color/black"/>
                     <TextView
                         android:id="@+id/wait_price"
@@ -104,16 +106,6 @@
                 android:layout_alignParentEnd="true"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/wait_want_btn"
-                    android:layout_width="92dp"
-                    android:layout_height="26dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="购买"
-                    android:textColor="@color/login_turquoise"
-                    android:background="@drawable/table_shape_cate_green"
-                    />
                 <Button
                     android:id="@+id/wait_reback_btn"
                     android:layout_width="92dp"

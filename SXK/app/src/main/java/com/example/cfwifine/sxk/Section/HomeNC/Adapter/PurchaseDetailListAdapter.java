@@ -62,7 +62,7 @@ public class PurchaseDetailListAdapter extends RecyclerView.Adapter<PurchaseDeta
         double dd = classifyDataSource.get(position).getMarketPrice();
         holder.marketPrice.setText("市场价： ¥ "+ String.format("%.2f",dd/100));
         double solePrice = classifyDataSource.get(position).getSellingPrice();
-        holder.solePrice.setText("售价： ¥ "+ String.format("%.2f",solePrice/100));
+        holder.solePrice.setText(" ¥ "+ String.format("%.2f",solePrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImgList().get(0);
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 

@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Adapter.MineItemCuringViewpageAdapter;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Adapter.MineItemRentViewpageAdapter;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;

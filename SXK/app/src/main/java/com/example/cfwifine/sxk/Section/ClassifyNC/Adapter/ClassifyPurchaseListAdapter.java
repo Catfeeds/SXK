@@ -67,13 +67,9 @@ public class ClassifyPurchaseListAdapter extends RecyclerView.Adapter<ClassifyPu
         holder.mMoney.setText("市场价：¥ "+String.format("%.2f",dd/100));
         holder.mMoney.setTextColor(Color.BLACK);
         double solePrice = rentList.get(position).getSellingPrice();
-        holder.solePrice.setText("售价：¥ "+ String.format("%.2f",solePrice/100));
+        holder.solePrice.setText(" ¥ "+String.format("%.2f",solePrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl+rentList.get(position).getImgList().get(position).toString();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.mImg);
-
-
-
-
 
         if (mOnItemClickLintener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

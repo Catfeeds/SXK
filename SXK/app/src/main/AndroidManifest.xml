@@ -152,7 +152,7 @@
             android:name=".Section.PublishNC.CuringAC.WarningAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.MinePublish.Controller.MineItemAC"
+            android:name=".Section.MineNC.Controller.RentAndSale.MinePublish.Controller.MineItemAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.CateListAC"
@@ -300,10 +300,10 @@
         <service android:name="com.meiqia.core.MeiQiaService" />
 
         <activity
-            android:name=".Section.MineNC.Controller.MineRent.Controller.MineItemRentAC"
+            android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.MineItemRentAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
-            android:name=".Section.MineNC.Controller.MineRent.Controller.ReBackGoodsAC"
+            android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.ReBackGoodsAC"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"
@@ -438,7 +438,16 @@
         <activity
             android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.ClassifyNC.Controller.PurchasePayOrderAC"
+        <activity
+            android:name=".Section.ClassifyNC.Controller.PurchasePayOrderAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.RentAndSale.Controller.MineRentPartAC"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity
+            android:name=".Section.MineNC.Controller.RentAndSale.MineSale.Controller.MineSaleItem"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"
             android:theme="@style/AppThemeHasTitle"></activity>
     </application>
 

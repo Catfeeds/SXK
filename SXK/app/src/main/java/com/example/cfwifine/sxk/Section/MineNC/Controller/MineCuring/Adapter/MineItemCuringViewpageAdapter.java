@@ -4,13 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringFC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemDoneFC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.CompletedOrderFC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.HasReceGoodsFC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.RebackGoodsFC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.WaitReceGoodsFC;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -55,8 +55,14 @@ public class SearchPurchaseListAdapter extends RecyclerView.Adapter<SearchPurcha
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getMaintain().getName());
-        holder.description.setText(classifyDataSource.get(position).getMaintain().getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getMaintain().getPrice())/100.0)));
+        String description = classifyDataSource.get(position).getMaintain().getKeyword();
+        if (description.trim().length()>25){
+            holder.description.setText(classifyDataSource.get(position).getMaintain().getKeyword().trim().substring(0,25)+"...");
+        }else {
+            holder.description.setText(classifyDataSource.get(position).getMaintain().getKeyword().trim());
+        }
+        double marketPrice = classifyDataSource.get(position).getMaintain().getPrice();
+        holder.price.setText("¥ "+ String.format("%.2f",marketPrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getMaintain().getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
         if (mOnItemClickListener != null){

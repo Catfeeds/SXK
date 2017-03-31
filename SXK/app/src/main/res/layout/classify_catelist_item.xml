@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/ripple_bg"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|bottom"
         android:padding="15dp">
 
 
@@ -44,6 +44,7 @@
                 android:text=""
                 android:textColor="#a1a1a1"
                 android:textSize="11sp" />
+
             <TextView
                 android:id="@+id/market_price"
                 android:layout_width="wrap_content"
@@ -51,7 +52,8 @@
                 android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,8 +63,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="租价"
-                    android:textSize="12dp" />
+                    android:text="租价："
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,12 +79,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:textSize="13sp"
                     android:textColor="@color/login_turquoise" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="/天"
+                    android:textSize="13sp"
                     android:textColor="@color/login_turquoise" />
             </LinearLayout>
         </LinearLayout>

@@ -80,7 +80,7 @@ public class BuyerAndSellerOrderDetailAC extends AppCompatActivity implements Vi
         setContentView(R.layout.activity_buyer_and_seller_order_detail_ac);
         dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         orderID = getIntent().getIntExtra("orderid", -1);
-        // 1 寄租 2 寄卖
+        // 1 寄租 2 寄卖 3 租赁中详情
         TYPES = getIntent().getIntExtra("type", -1);
         NICKNAME = (String) SharedPreferencesUtils.getParam(BuyerAndSellerOrderDetailAC.this, BaseInterface.NICKNAME, "");
         PORITE = (String) SharedPreferencesUtils.getParam(BuyerAndSellerOrderDetailAC.this, BaseInterface.PORITA, "");

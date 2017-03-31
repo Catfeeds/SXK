@@ -28,14 +28,12 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
-import com.example.cfwifine.sxk.Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.MineFollowAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MinePublish.Controller.MineItemAC;
-import com.example.cfwifine.sxk.Section.MineNC.Controller.MineRent.Controller.MineItemRentAC;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.Controller.MineRentPartAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserInfoAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.UserInfoRecycleViewCommomAC;
@@ -43,6 +41,7 @@ import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalA
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineWallet.MineWalletAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
+import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.example.cfwifine.sxk.View.CircleImageView;
@@ -72,10 +71,9 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     RecyclerView mRecycles;
     ArrayList<String> applicationName = new ArrayList<>();
     ArrayList<Integer> imageView = new ArrayList<>();
-    String[] applicationNames = {"我的钱包", "我的啵值", "分享奖励", "我的信用", "服务中心",
-            "我的买卖", "我的收藏", "联系客服", "设置", "退出登录"};
+    String[] applicationNames = {"我的钱包", "我的啵值", "分享奖励", "我的信用", "服务中心", "我的收藏", "联系客服", "设置", "退出登录"};
     int[] imageViews = {R.drawable.mine_vallet, R.drawable.mine_integral, R.drawable.mine_share,
-            R.drawable.mine_credit, R.drawable.mine_service_center, R.drawable.mine_business,
+            R.drawable.mine_credit, R.drawable.mine_service_center,
             R.drawable.mine_collection, R.drawable.mine_customer_service, R.drawable.mine_setting, R.drawable.mine_loginout};
     private ImageView mHeadportrait;
     private ImageView mSex;
@@ -180,7 +178,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         mCare.setOnClickListener(this);
         mRecognize.setOnClickListener(this);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             applicationName.add(applicationNames[i]);
             imageView.add(imageViews[i]);
         }
@@ -204,6 +202,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         adapter.setOnItemClickListener(new MineRecycleViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
+                LogUtil.e("点击的位置"+position);
                 jump(position);
             }
         });
@@ -329,7 +328,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     private void jump(int position) {
         // 根据position跳转
-        if (position == 7) {
+        if (position == 6) {
             if (userInfoModel.getUser() != null) {
                 initMeiQiaView();
             }
@@ -339,15 +338,13 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 intent.putExtra("USERINFO", userinfo);
                 startActivity(intent);
             }
-        } else if (position == 6) {
+        } else if (position == 5) {
             startActivity(MineCollectionAC.class, position);
         } else if (position == 2) {
             Intent inte = new Intent(getActivity(), UserPrctocalAC.class);
             inte.putExtra("SETJUMPPOSITION", 555);
             startActivity(inte);
-        } else if (position == 5) {
-            startActivity(ClassifySearchDetailAC.class, 0);
-        } else if (position == 0) {
+        }  else if (position == 0) {
             Intent intent = new Intent(getActivity(), MineWalletAC.class);
             intent.putExtra("USERINFO", userinfo);
             startActivity(intent);
@@ -355,11 +352,12 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             Intent intent = new Intent(getActivity(), MineScoinAC.class);
             intent.putExtra("USERINFO", userinfo);
             startActivity(intent);
-        } else if (position == 9) {
+        }else if (position == 7){
+            Intent intent = new Intent(getActivity(), UserInfoRecycleViewCommomAC.class);
+            startActivity(intent);
+        } else if (position == 8) {
             SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
             initView();
-        } else {
-            startActivity(UserInfoRecycleViewCommomAC.class, position);
         }
     }
 
@@ -412,12 +410,12 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 startActivity(IDIdentifyAC.class, 111);
                 break;
             case R.id.mine_publishs:
-                // 我的发布
-                startActivity(MineItemAC.class, 1);
+                // 我的买卖
+                startActivity(MineRentPartAC.class, 2);
                 break;
             case R.id.mine_rents:
                 // 我的租赁
-                startActivity(MineItemRentAC.class, 1);
+                startActivity(MineRentPartAC.class, 1);
                 break;
             case R.id.mine_care:
                 // 我的养护

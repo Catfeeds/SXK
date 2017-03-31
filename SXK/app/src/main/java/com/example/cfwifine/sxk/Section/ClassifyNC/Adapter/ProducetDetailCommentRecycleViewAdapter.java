@@ -97,7 +97,7 @@ public class ProducetDetailCommentRecycleViewAdapter extends RecyclerView.Adapte
     //获取数据的数量
     @Override
     public int getItemCount() {
-        if (type == 1){
+        if (type == 1&&mDatas.size()>=3){
             return 3;
         }else {
             return mDatas.size();

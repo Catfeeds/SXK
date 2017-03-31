@@ -159,6 +159,8 @@ public class BaseInterface {
     public static String ChangeRentOrder = root + "/app/rentorder/setpost";
     // 租赁评论
     public static String RentComment = root + "/app/rentcomment/addpost";
+    // 珊瑚商品
+    public static String RentDeleDone = root + "app/rentorder/delpost";
     // 关注列表
     public static String FollowList = root + "/app/follow/getpost";
     // 添加关注
@@ -233,6 +235,12 @@ public class BaseInterface {
     public static String PurchasePayOrderID = root + "/app/purchaseorder/addpost";
     // 获取寄卖订单详情
     public static String PurchaseOrderDetail = root + "/app/purchaseorder/getpost";
+    // 获取我的买入订单
+    public static String PurchaseBuyInOrder = root + "/app/purchaseorder/listpost";
+    // 寄卖去人收货
+    public static String PurchaseConfirmReceiveGoods = root + "/app/purchaseorder/setpost";
+    // 删除已完成订单
+    public static String PurchaseDeleteDoneOrder = root + "app/purchaseorder/delpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
