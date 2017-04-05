@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
-import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCuringCollectionListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringDetailModel;
@@ -63,6 +63,8 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
     private LinearLayout curing_chat;
     private int maintainid;
     private UserInfoModel userInfoModel = null;
+    private ImageView kiss;
+    private boolean isCollection = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +97,56 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
         curing_collection.setOnClickListener(this);
         curing_chat = (LinearLayout) findViewById(R.id.curing_chat);
         curing_chat.setOnClickListener(this);
+        kiss = (ImageView) findViewById(R.id.kiss);
         maintainid = getIntent().getIntExtra("maintainid", -1);
         LogUtil.e("maintainid" + maintainid);
         initData(maintainid);
+
+    }
+
+    private void initCollectionData() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.CuringCollectionList)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Gson gson = new Gson();
+                        LogUtil.e("养护收藏列表" + response);
+                        MineCuringCollectionListModel mineCuringCollectionListModel = gson.fromJson(response, MineCuringCollectionListModel.class);
+                        if (mineCuringCollectionListModel.getCode() == 1) {
+                            if (mineCuringCollectionListModel.getCollection().getList().size() != 0) {
+                                for (int i = 0; i < mineCuringCollectionListModel.getCollection().getList().size(); i++) {
+                                    if (mineCuringCollectionListModel.getCollection().getList().get(i) == curingDetailModel.getMaintain().getMaintainid()) {
+                                        kiss.setImageResource(R.drawable.zuixingc);
+                                        isCollection = true;
+                                    }
+                                }
+                            } else if (mineCuringCollectionListModel.getCode() == 0) {
+                                initSnackBar("请求失败！");
+                            } else if (mineCuringCollectionListModel.getCode() == 911) {
+                                initSnackBar("登录超时，请重新登录！");
+                            }
+                        }
+                    }
+                });
+
+
     }
 
     private void initData(int maintainid) {
@@ -127,10 +176,12 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("养护详情", "" + response);
+
                         dialog.dismiss();
                         Gson gson = new Gson();
                         curingDetailModel = gson.fromJson(response, CuringDetailModel.class);
                         if (curingDetailModel.getCode() == 1) {
+                            initCollectionData();
                             setValueForDetail();
                             CURDETAIL = response;
                         } else if (curingDetailModel.getCode() == 0) {
@@ -212,10 +263,14 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.curing_collection:
-                initCuringCollection();
+                if (isCollection){
+                    initCancelCollection();
+                }else {
+                    initCuringCollection();
+                }
                 break;
             case R.id.curing_chat:
-                if (userInfoModel != null){
+                if (userInfoModel != null) {
                     initMeiQiaView();
                 }
                 break;
@@ -223,6 +278,45 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
+    private void initCancelCollection() {
+        JSONObject js = new JSONObject();
+            try {
+                js.put("maintainid", maintainid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.CuringCollectionDel)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            kiss.setImageResource(R.drawable.mouse_uncollection);
+                            isCollection = false;
+                            initSnackBar("取消收藏成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("取消收藏失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+    }
+
 
     /**
      * 初始化美恰服务
@@ -246,11 +340,12 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
         Intent intent = new MQIntentBuilder(this).setClientInfo(clientInfo).setCustomizedId(String.valueOf(userid)).build();
         startActivity(intent);
     }
+
     public void initUserData() {
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("","");
+            js.put("", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -273,7 +368,7 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                         dialog.dismiss();
                         Log.e("初始化个人信息", "" + response);
                         Gson gson = new Gson();
-                        userInfoModel = gson.fromJson(response,UserInfoModel.class);
+                        userInfoModel = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModel.getCode() == 1) {
 
                         } else if (userInfoModel.getCode() == 0) {
@@ -286,7 +381,6 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initCuringCollection() {
-        dialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("maintainid", maintainid);
@@ -303,29 +397,30 @@ public class CuringDetailAC extends AppCompatActivity implements View.OnClickLis
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        dialog.dismiss();
                         SnackbarUtils.showShortSnackbar(CuringDetailAC.this.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e("", "" + response);
-                        dialog.dismiss();
                         Gson gson = new Gson();
-                        RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                           initSnackBar("收藏成功！");
+                            kiss.setImageResource(R.drawable.zuixingc);
+                            isCollection = true;
+                            initSnackBar("收藏成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(CuringDetailAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (requestStatueModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(CuringDetailAC.this.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                        }else if (requestStatueModel.getCode() == 2003){
+                        } else if (requestStatueModel.getCode() == 2003) {
                             initSnackBar("已经收藏过该商品！");
                         }
                     }
                 });
     }
-    public void initSnackBar(String s){
+
+    public void initSnackBar(String s) {
         SnackbarUtils.showShortSnackbar(CuringDetailAC.this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
     }
 }

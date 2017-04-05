@@ -56,7 +56,12 @@ public class MineRentThreFCAdapter extends RecyclerView.Adapter<MineRentThreFCAd
         }else {
             holder.description.setText(classifyDataSource.get(position).getDescription());
         }
-//        holder.adverturePrice.setText(classifyDataSource.get(position).get);
+        if (classifyDataSource.get(position).getOddNumber()!= null){
+            holder.adverturePrice.setText(classifyDataSource.get(position).getOddNumber().trim());
+        }else {
+            holder.adverturePrice.setText("暂无");
+        }
+
         double marketPrice = classifyDataSource.get(position).getMarketPrice();
         holder.marketPrice.setText("市场价：¥"+String.format("%.2f",marketPrice/100));
         double salePrice = classifyDataSource.get(position).getSellingPrice();

@@ -489,7 +489,8 @@ public class FreeAppraisaAC extends AppCompatActivity implements View.OnClickLis
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            finish();
+                            initEmpty();
+                            initSnackBar("发布成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
@@ -497,6 +498,14 @@ public class FreeAppraisaAC extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
+    }
+
+    private void initEmpty() {
+        publish_input_edittext.setText("");
+        mResults.clear();
+        nineGridlayout.setVisibility(View.GONE);
+        addPic.setVisibility(View.VISIBLE);
+        howtoAdd.setVisibility(View.VISIBLE);
     }
 
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";

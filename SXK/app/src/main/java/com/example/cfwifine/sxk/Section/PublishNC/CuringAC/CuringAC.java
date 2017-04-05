@@ -112,18 +112,14 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
                         if (curingListModel.getCode() == 1) {
                             classifyDataSource = curingListModel.getClassifyList();
                             mainListDataSource = curingListModel.getMaintainList();
-                            LogUtil.e("数据源",mainListDataSource.toString());
-
-                            DATASOURCE = new ArrayList<CuringListModel.MaintainListBean>();
-                            for (int i = 0; i<mainListDataSource.size();i++){
-                                if (mainListDataSource.get(i).getClassifyid() == classifyDataSource.get(i).getClassifyid()){
-                                    // 第一个tab的数据
-                                    DATASOURCE.add(i,mainListDataSource.get(i));
-                                }
-
-                            }
-
-
+//                            DATASOURCE = new ArrayList<CuringListModel.MaintainListBean>();
+//                            for (int i = 0; i<mainListDataSource.size();i++){
+//                                if (mainListDataSource.get(i).getClassifyid() == classifyDataSource.get(i).getClassifyid()){
+//                                    // 第一个tab的数据
+//                                    DATASOURCE.add(mainListDataSource.get(i));
+//                                }
+//
+//                            }
                             initTabView();
                         } else if (curingListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(CuringAC.this.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -144,7 +140,7 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
         // 初始化界面
         for (int i = 0; i < classifyDataSource.size(); i++) {
             LogUtil.e("我是ID"+classifyDataSource.get(i).getClassifyid());
-            mFagments.add(CuringComListFC.getInstance(DATASOURCE,classifyDataSource,classifyDataSource.get(i).getClassifyid()));
+            mFagments.add(CuringComListFC.getInstance(mainListDataSource,classifyDataSource,classifyDataSource.get(i).getClassifyid()));
         }
         //getChildFragmentManager() 如果是嵌套在fragment中就要用这个
         adapter = new MyPagerAdapter(getSupportFragmentManager());

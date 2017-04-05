@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
@@ -75,6 +76,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     private String newTopicString = "";
     private LinearLayout noNetView;
     private TextView reloadView;
+    private int pageNume = 1;
+    private int pageSize = 10;
+    private int Total;
+    private int topicListSize = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,7 +137,6 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         CommunityHeaderImageModel communityHeaderImageModel = gson.fromJson(response, CommunityHeaderImageModel.class);
                         if (communityHeaderImageModel.getCode() == 1) {
                             picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + communityHeaderImageModel.getSetup().getImg().toString();
-//                            initFriendMomentView();
                             initFriendMomentGetTopicListDataSource();
                         } else if (communityHeaderImageModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -191,7 +195,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         if (communityTopicListModel.getCode() == 1) {
                             newTopicString = response;
                             topic = communityTopicListModel.getModuleList();
-                            initFriendMomentItemListDataSource();
+                            initFriendMomentItemListDataSource(1, 10);
                         } else if (communityTopicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                             swiperefresh.setVisibility(View.GONE);
@@ -210,7 +214,10 @@ public class CommunFC extends Fragment implements View.OnClickListener {
     /**
      * 获取话题列表
      */
-    private void initFriendMomentItemListDataSource() {
+    private void initFriendMomentItemListDataSource(final int pageNum, int pageSize) {
+        if (pageNum == 1) {
+            topicList = new ArrayList<TopicListModel.TopicListBean>();
+        }
         JSONObject picJson = new JSONObject();
         try {
             picJson.put("topicid", -1);
@@ -219,9 +226,16 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pageNo", 0);
-            jsonObject.put("pageSize", 0);
+            jsonObject.put("pageNo", pageNum);
+            jsonObject.put("pageSize", pageSize);
             jsonObject.put("order", picJson);
+            if (MODLEID == -1){
+                jsonObject.put("moduleid",topic.get(0).getModuleid());
+                LogUtil.e("模块ID"+topic.get(0).getModuleid());
+            }else {
+                jsonObject.put("moduleid",MODLEID);
+                LogUtil.e("模块ID"+MODLEID);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -245,24 +259,18 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                     public void onResponse(String response, int id) {
                         Log.e("话题列————————", "" + response);
                         mloading.dismiss();
-                        topicList = new ArrayList<TopicListModel.TopicListBean>();
+
                         Gson gson = new Gson();
                         TopicListModel topicListModel = gson.fromJson(response, TopicListModel.class);
-//                        List<TopicListModel> topicListModels =
-
                         if (topicListModel.getCode() == 1) {
-                            newTopicListModel = topicListModel.getTopicList();
-                            if (MODLEID == -1) {
-                                MODLEID = topic.get(0).getModuleid();
+                            Total = topicListModel.getTotal();
+                            if (pageNum != 1) {
+                                topicList.addAll(topicListModel.getTopicList());
+                                mAdapter.notifyDataSetChanged();
+                            } else {
+                                topicList = topicListModel.getTopicList();
+                                initFriendMomentView();
                             }
-                            for (int i = 0; i < topicListModel.getTotal(); i++) {
-                                if (topicListModel.getTopicList().get(i).getModuleid() == MODLEID) {
-                                    topicList.add(topicListModel.getTopicList().get(i));
-                                }
-                            }
-//                            topicList = topicListModel.getTopicList();
-
-                            initFriendMomentView();
                         } else if (topicListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                             swiperefresh.setVisibility(View.GONE);
@@ -306,13 +314,13 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 //                        initFriendMomentData();
                         //注意此处
-                        topic.clear();
+//                        topic.clear();
                         topicList.clear();
+                        pageNume = 1;
                         initFriendMomentHeaderPicDataSource();
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
@@ -337,7 +345,7 @@ public class CommunFC extends Fragment implements View.OnClickListener {
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hao_recycleview.setLayoutManager(layoutManager);
-
+        hao_recycleview.setCanloadMore(true);
         // 设置头
 //        RecyclerViewHeader recyclerViewHeader = (RecyclerViewHeader)view.findViewById(R.id.headerssss);
 //        recyclerViewHeader.attachTo(hao_recycleview,true);
@@ -359,17 +367,15 @@ public class CommunFC extends Fragment implements View.OnClickListener {
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-
-//                        if (listData.size() >= 3 * limit) {
-                        hao_recycleview.loadMoreEnd();
-                        return;
-//                        }
-//
-//                        for (int i = 0; i < limit; i++) {
-//                            listData.add(i + "");
-//                        }
-//                        mAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
+                        if (topicList.size() >= Total) {
+                            hao_recycleview.loadMoreEnd();
+                            pageNume = 1;
+//                            hao_recycleview.loadMoreComplete();
+                            return;
+                        }
+                        pageNume += 1;
+                        initFriendMomentItemListDataSource(pageNume,pageSize);
+                        hao_recycleview.loadMoreComplete();
 
                     }
                 }, 1000);
@@ -399,24 +405,15 @@ public class CommunFC extends Fragment implements View.OnClickListener {
                         }
                     });
                     edittextPupWindow.showAtLocation(getActivity().findViewById(R.id.activity_main_ac), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-
                 } else if (cateid == -3) {
                     // 查看图片
                     LogUtil.e("图片点击了" + topicid + "个" + picPosition);
-
                     initPreviewPic(picPosition, topicid, position);
-
                 } else if (cateid == -7) {
                     LogUtil.e("选中的modle" + modleid);
                     MODLEID = modleid;
                     topicList.clear();
-                    for (int i = 0; i < newTopicListModel.size(); i++) {
-                        if (newTopicListModel.get(i).getModuleid() == modleid) {
-                            topicList.add(newTopicListModel.get(i));
-                        }
-                    }
-                    mAdapter.setDatas(topicList);
-//                    mAdapter.notifyDataSetChanged();
+                    initFriendMomentItemListDataSource(1,10);
                 }
 
             }

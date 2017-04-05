@@ -51,9 +51,14 @@ public class CuringListAdapter extends RecyclerView.Adapter<CuringListAdapter.Vi
     public void onBindViewHolder(final CuringListAdapter.ViewHolder holder, final int position) {
         LogUtil.e("分类数据源"+classifyDataSource.get(position).getName());
         holder.name.setText(classifyDataSource.get(position).getName());
-        holder.description.setText(classifyDataSource.get(position).getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getPrice())/100.0))+"/天");
-
+        String description = classifyDataSource.get(position).getKeyword();
+        if (description.trim().length()>25){
+            holder.description.setText(description.substring(0,25)+"...");
+        }else {
+            holder.description.setText(description);
+        }
+        double rentPrice = classifyDataSource.get(position).getPrice();
+        holder.price.setText(" ¥ "+ String.format("%.2f",rentPrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 

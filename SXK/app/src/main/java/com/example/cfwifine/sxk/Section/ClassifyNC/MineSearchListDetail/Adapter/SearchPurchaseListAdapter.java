@@ -81,7 +81,6 @@ public class SearchPurchaseListAdapter extends RecyclerView.Adapter<SearchPurcha
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView rentPrice;
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
@@ -94,7 +93,6 @@ public class SearchPurchaseListAdapter extends RecyclerView.Adapter<SearchPurcha
             description = (TextView)itemView.findViewById(R.id.curings_descript);
             price = (TextView)itemView.findViewById(R.id.curings_price);
             pic = (ImageView)itemView.findViewById(R.id.curings_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.curings_rentprice);
             delete = (Button)itemView.findViewById(R.id.curings_confirm_btn);
         }
     }

@@ -111,13 +111,13 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
             navi_title.setText("热门专题");
         } else if (types == 17) {
             navi_title.setText("寄租");
-        } else if (types == 18) {
-            navi_title.setText("寄卖");
         }
         navi_right = (TextView) findViewById(R.id.navi_right);
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
+
+
         if (types != 16 && types != 17) {
-            initData(1, 10);
+            initData();
         } else if (types == 17) {
             initRenList(1,10);
         } else if(types == 16){
@@ -373,7 +373,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
     }
 
 
-    public void initData(int pageNum, int pageSize) {
+    public void initData() {
 
         JSONObject jsonObject = new JSONObject();
         if (types != 14) {
@@ -448,7 +448,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void run() {
 //                        注意此处
                         classDataSource.clear();
-                        initData(1, 10);
+                        initData();
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mAdapters.notifyDataSetChanged();
@@ -467,36 +467,36 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         };
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hao_recycleview.setLayoutManager(layoutManager);
-        //设置自定义加载中和到底了效果
-        ProgressView progressView = new ProgressView(this);
-        progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff16a6ae);
-        hao_recycleview.setFootLoadingView(progressView);
+//        //设置自定义加载中和到底了效果
+//        ProgressView progressView = new ProgressView(this);
+//        progressView.setIndicatorId(ProgressView.BallPulse);
+//        progressView.setIndicatorColor(0xff16a6ae);
+//        hao_recycleview.setFootLoadingView(progressView);
 
-        TextView textView = new TextView(this);
-        textView.setText("已经到底啦~");
-        textView.setTextColor(getResources().getColor(R.color.black));
-        hao_recycleview.setFootEndView(textView);
-
-        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-
-                        pageSize += 10;
-                        if (pageSize >= classDataSource.size()) {
-                            hao_recycleview.loadMoreEnd();
-                            return;
-                        }
-                        initData(1, pageSize);
-                        mAdapters.notifyDataSetChanged();
-                        hao_recycleview.loadMoreComplete();
-
-                    }
-                }, 1000);
-            }
-        });
+//        TextView textView = new TextView(this);
+//        textView.setText("已经到底啦~");
+//        textView.setTextColor(getResources().getColor(R.color.black));
+//        hao_recycleview.setFootEndView(textView);
+//
+//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//
+//                        pageSize += 10;
+//                        if (pageSize >= classDataSource.size()) {
+//                            hao_recycleview.loadMoreEnd();
+//                            return;
+//                        }
+//                        initData();
+//                        mAdapters.notifyDataSetChanged();
+//                        hao_recycleview.loadMoreComplete();
+//
+//                    }
+//                }, 1000);
+//            }
+//        });
         mAdapters = new ClassDetailListAdapter(this, classDataSource);
         hao_recycleview.setAdapter(mAdapters);
         mAdapters.setOnItemClickListener(new ClassDetailListAdapter.OnItemClickListener() {
@@ -522,7 +522,7 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
                     public void run() {
 //                        注意此处
                         threeDataSource.clear();
-                        initData(1, 10);
+                        initData();
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
 //                        mAdapter.notifyDataSetChanged();
@@ -552,23 +552,23 @@ public class HomeThreeBlockDetailAC extends AppCompatActivity implements View.On
         textView.setTextColor(getResources().getColor(R.color.black));
         hao_recycleview.setFootEndView(textView);
 
-        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        pageSize += 10;
-                        if (pageNum >= threeDataSource.size()) {
-                            hao_recycleview.loadMoreEnd();
-                            return;
-                        }
-                        initData(1, pageSize);
-                        mAdapter.notifyDataSetChanged();
-                        hao_recycleview.loadMoreComplete();
-                    }
-                }, 1000);
-            }
-        });
+//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        pageSize += 10;
+//                        if (pageNum >= threeDataSource.size()) {
+//                            hao_recycleview.loadMoreEnd();
+//                            return;
+//                        }
+//                        initData(1, pageSize);
+//                        mAdapter.notifyDataSetChanged();
+//                        hao_recycleview.loadMoreComplete();
+//                    }
+//                }, 1000);
+//            }
+//        });
         mAdapter = new ThreeBlockDetailListAdapter(this, threeDataSource);
         hao_recycleview.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new ThreeBlockDetailListAdapter.OnItemClickListener() {

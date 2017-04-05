@@ -1,5 +1,6 @@
 package com.example.cfwifine.sxk.Section.HomeNC.Controller;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
 import com.example.cfwifine.sxk.Section.HomeNC.Adapter.EightItemActivityRecycleAdapter;
 import com.example.cfwifine.sxk.Section.HomeNC.Model.ActivityListModel;
+import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
@@ -54,12 +56,15 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
     private int pageSize=10;
     private int pageNum=1;
     private int Total ;
+    Dialog dialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eight_item_detail_ac);
+        dialog = LoadingUtils.createLoadingDialog(EightItemDetailAC.this,"加载中...");
         initView();
+
         initListData(1,10);
     }
 
@@ -67,6 +72,9 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
      * 初始化数据
      */
     private void initListData(int pageNo,int pageSize) {
+        if (!isFinishing()){
+            dialog.show();
+        }
         if (pageNum == 1){
             dataSource = null;
         }
@@ -94,6 +102,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
                         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
 //                        classify_online_view.setVisibility(View.GONE);
 //                        classify_nonet_view.setVisibility(View.VISIBLE);
@@ -102,6 +111,7 @@ public class EightItemDetailAC extends AppCompatActivity implements View.OnClick
                     public void onResponse(String response, int id) {
                         Log.e("活动列表", "" + response);
                         LogUtil.e("活动列表"+response);
+                        dialog.dismiss();
                         Gson gson = new Gson();
                         ActivityListModel activityListModel = gson.fromJson(response,ActivityListModel.class);
                         if (activityListModel.getCode() == 1) {

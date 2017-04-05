@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,10 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductCommentListModel
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.PurchasesDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MinePurchaseListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
@@ -111,6 +115,12 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private String RENTRESPONSE = "";
     private String PURCHASERESPONSE = "";
     private String CollectionUrls;
+    private RelativeLayout btn;
+    private boolean isFollow = false;
+    private String COMURL;
+    private ImageView kiss;
+    private boolean isCollection = false;
+    private String BASEURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +131,77 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA, "");
         NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME, "");
+        mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID, 0);
         initView();
         // 产品详情页面分享链接 http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/136
+
+    }
+
+    private void initCollectionData() {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (Types == 1) {
+            COMURL = BaseInterface.CollectionList;
+        } else if (Types == 2) {
+            COMURL = BaseInterface.PurchaseCollectionList;
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(COMURL)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Gson gson = new Gson();
+                        if (Types == 1) {
+                            Log.e("收藏列表", "" + response);
+                            MineCollectionModel mineCollectionModel = gson.fromJson(response, MineCollectionModel.class);
+                            if (mineCollectionModel.getCode() == 1) {
+                                if (mineCollectionModel.getCollection().getList().size() != 0) {
+                                    for (int i = 0; i < mineCollectionModel.getCollection().getList().size(); i++) {
+                                        if (mineCollectionModel.getCollection().getList().get(i) == rentDetail.getRentid()) {
+                                            kiss.setImageResource(R.drawable.zuixingc);
+                                            isCollection = true;
+                                        }
+                                    }
+                                }
+                            } else if (mineCollectionModel.getCode() == 0) {
+                            } else if (mineCollectionModel.getCode() == 911) {
+                            }
+                        } else if (Types == 2) {
+                            LogUtil.e("寄卖收藏列表" + response);
+                            MinePurchaseListModel minePurchaseListModel = gson.fromJson(response, MinePurchaseListModel.class);
+                            if (minePurchaseListModel.getCode() == 1) {
+                                if (minePurchaseListModel.getCollection().getList().size() != 0) {
+                                    for (int i = 0; i < minePurchaseListModel.getCollection().getList().size(); i++) {
+                                        if (minePurchaseListModel.getCollection().getList().get(i) == purchaseDataSource.getPurchaseid()) {
+                                            kiss.setImageResource(R.drawable.zuixingc);
+                                            isCollection = true;
+                                        }
+                                    }
+                                }
+                            } else if (minePurchaseListModel.getCode() == 0) {
+                            } else if (minePurchaseListModel.getCode() == 911) {
+                            }
+                        }
+                    }
+                });
+
 
     }
 
@@ -158,13 +237,15 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                             followDataSource = followListModel.getFollow();
                             if (followDataSource.getList().size() != 0) {
                                 for (int i = 0; i < followDataSource.getList().size(); i++) {
-                                    if (Types == 1){
+                                    if (Types == 1) {
                                         if (followDataSource.getList().get(i) == rentDetail.getUser().getUserid()) {
                                             heart.setImageResource(R.drawable.chanpingxiangqingxin);
+                                            isFollow = true;
                                         }
-                                    }else {
+                                    } else {
                                         if (followDataSource.getList().get(i) == purchaseDataSource.getUser().getUserid()) {
                                             heart.setImageResource(R.drawable.chanpingxiangqingxin);
+                                            isFollow = true;
                                         }
                                     }
                                 }
@@ -214,6 +295,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
                         initMyFollow();
+                        initCollectionData();
                         Gson gson = new Gson();
                         if (Types == 1) {
                             Log.e("获取租赁", "" + response);
@@ -320,6 +402,8 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         headPic.setOnClickListener(this);
         lowest_price = (TextView) findViewById(R.id.lowest_price);
         heart = (ImageView) findViewById(R.id.heart);
+        btn = (RelativeLayout) findViewById(R.id.btn);
+        kiss = (ImageView) findViewById(R.id.kiss);
         // Types = 1 租赁  Types = 2 寄卖
         if (RentID != -1) {
             Types = 1;
@@ -405,6 +489,13 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void setValueForView() {
+        if (mineUserId == rentDetail.getUser().getUserid()) {
+            bo_one.setVisibility(View.GONE);
+            follow.setVisibility(View.GONE);
+            btn.setVisibility(View.GONE);
+            chat.setVisibility(View.GONE);
+        }
+
         initBannerData();
         product_name.setText(rentDetail.getName().toString());
         int condition = rentDetail.getCondition();
@@ -460,7 +551,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_intended_for_person.setText(crowds);//适用人群
 
         for (int i = 0; i < rentDetail.getAttachList().size(); i++) {
-            if (rentDetail.getAttachList().get(i).getAttributeName() != null){
+            if (rentDetail.getAttachList().get(i).getAttributeName() != null) {
                 if (rentDetail.getAttachList().get(i).getAttributeName().toString().trim().equals("相关配件")) {
                     for (int j = 0; j < rentDetail.getAttachList().get(i).getAttributeValueList().size(); j++) {
                         appariseStr += rentDetail.getAttachList().get(i).getAttributeValueList().get(j) + " ";
@@ -480,6 +571,12 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     }
 
     private void setValueForPurchaseView() {
+        if (mineUserId == purchaseDataSource.getUser().getUserid()) {
+            bo_one.setVisibility(View.GONE);
+            follow.setVisibility(View.GONE);
+            btn.setVisibility(View.GONE);
+            chat.setVisibility(View.GONE);
+        }
         lease_btn.setText("立即购买");
         initBannerData();
         product_name.setText(purchaseDataSource.getName().toString());
@@ -620,39 +717,34 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.lease_btn:
-                if (Types == 1 && RENTRESPONSE != ""){
-                    SharedPreferencesUtils.setParam(this,BaseInterface.NICKNAMES,rentDetail.getUser().getNickname());
-                    SharedPreferencesUtils.setParam(this,BaseInterface.PORITAS,rentDetail.getUser().getHeadimgurl());
+                if (Types == 1 && RENTRESPONSE != "") {
+                    SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, rentDetail.getUser().getNickname());
+                    SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, rentDetail.getUser().getHeadimgurl());
                     Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
-                    intent.putExtra("RENTRESPONSE",RENTRESPONSE);
+                    intent.putExtra("RENTRESPONSE", RENTRESPONSE);
                     startActivity(intent);
-                }else if (Types == 2 && PURCHASERESPONSE != ""){
-                    SharedPreferencesUtils.setParam(this,BaseInterface.NICKNAMES,purchaseDataSource.getUser().getNickname());
-                    SharedPreferencesUtils.setParam(this,BaseInterface.PORITAS,purchaseDataSource.getUser().getHeadimgurl());
+                } else if (Types == 2 && PURCHASERESPONSE != "") {
+                    SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, purchaseDataSource.getUser().getNickname());
+                    SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, purchaseDataSource.getUser().getHeadimgurl());
                     Intent intent = new Intent(ProductDetailsAC.this, PurchasePayOrderAC.class);
-                    intent.putExtra("PURCHASERESPONSE",PURCHASERESPONSE);
+                    intent.putExtra("PURCHASERESPONSE", PURCHASERESPONSE);
                     startActivity(intent);
                 }
 
                 break;
             case R.id.bo_one:
-                initCollection();
+                if (isCollection){
+                    initCancelCollection();
+                }else {
+                    initCollection();
+                }
                 break;
             case R.id.follow:
-                if (Types == 1) {
-                    if (mineUserId != rentDetail.getUser().getUserid()) {
-                        initFollow();
-                    } else {
-                        initSnackBar("自己不能关注自己哦！");
-                    }
+                if (isFollow) {
+                    initCancelFollow();
                 } else {
-                    if (mineUserId != purchaseDataSource.getUser().getUserid()) {
-                        initFollow();
-                    } else {
-                        initSnackBar("自己不能关注自己哦！");
-                    }
+                    initFollow();
                 }
-
                 break;
             case R.id.chat:
                 initRongData();
@@ -664,6 +756,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
         }
     }
+
 
     private void shareToThreePart(int type) {
         SHARE_MEDIA SHARE_TYPE = null;
@@ -746,7 +839,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
     // 初始化聊天
     private void initRongData() {
-        mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID, 0);
+
         LogUtil.e("我的ID" + mineUserId);
         dialog.show();
         JSONObject js = new JSONObject();
@@ -832,16 +925,65 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         });
 
     }
+    private void initCancelCollection() {
+        JSONObject js = new JSONObject();
+        if (Types == 1) {
+            try {
+                js.put("rentid", rentDetail.getRentid());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BASEURL = BaseInterface.CollectionDel;
+        } else if (Types == 2){
+            try {
+                js.put("purchaseid", purchaseDataSource.getPurchaseid());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            BASEURL = BaseInterface.PurchaseDelCollection;
+        }
+
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BASEURL)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        Log.e("", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            kiss.setImageResource(R.drawable.mouse_uncollection);
+                            isCollection = false;
+                            initSnackBar("取消收藏成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("取消收藏失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
+
+    }
 
     // 收藏商品
     private void initCollection() {
-        dialog.show();
         JSONObject JS = new JSONObject();
         try {
-            if (Types == 1){
+            if (Types == 1) {
                 JS.put("rentid", rentDetail.getRentid());
                 CollectionUrls = BaseInterface.CollectionADD;
-            }else {
+            } else {
                 JS.put("purchaseid", purchaseDataSource.getPurchaseid());
                 CollectionUrls = BaseInterface.PurchaseAddCollection;
             }
@@ -859,17 +1001,17 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        dialog.dismiss();
                         initSnackBar("请求出错！");
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        dialog.dismiss();
                         Log.e("收藏商品", "" + response);
                         Gson gson = new Gson();
                         FollowSuccessModel requestStatueModel = gson.fromJson(response, FollowSuccessModel.class);
                         if (requestStatueModel.getCode() == 1) {
+                            kiss.setImageResource(R.drawable.zuixingc);
+                            isCollection = true;
                             initSnackBar("收藏成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
@@ -881,6 +1023,50 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                     }
                 });
 
+    }
+
+    private void initCancelFollow() {
+        JSONObject js = new JSONObject();
+        try {
+            if (Types == 1) {
+                js.put("userid", rentDetail.getUser().getUserid());
+            } else {
+                js.put("userid", purchaseDataSource.getUser().getUserid());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.FollowDel)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        initSnackBar("请求出错！");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("", "" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (requestStatueModel.getCode() == 1) {
+                            heart.setImageResource(R.drawable.guanzhu);
+                            isFollow = false;
+                            initSnackBar("取消关注成功！");
+                        } else if (requestStatueModel.getCode() == 0) {
+                            initSnackBar("取消关注失败！");
+                        } else if (requestStatueModel.getCode() == 911) {
+                            initSnackBar("登录超时，请重新登录！");
+                        }
+                    }
+                });
     }
 
     private void initFollow() {
@@ -915,6 +1101,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                         FollowSuccessModel requestStatueModel = gson.fromJson(response, FollowSuccessModel.class);
                         if (requestStatueModel.getCode() == 1) {
                             heart.setImageResource(R.drawable.chanpingxiangqingxin);
+                            isFollow = true;
                             initSnackBar("关注成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");

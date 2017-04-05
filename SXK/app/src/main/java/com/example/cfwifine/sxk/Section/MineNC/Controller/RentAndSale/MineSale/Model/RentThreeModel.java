@@ -8,10 +8,11 @@ import java.util.List;
 
 public class RentThreeModel {
 
+
     /**
      * code : 1
      * total : 2
-     * purchaseList : [{"description":"恶名你外婆共鸣您敏敏POS明明名额1额吉去啦娃娃惹急我订婚哦容易Win7名字why和你哥微信搜狗你仔细磨破很自信定义一种why","imgList":["sxk_userPic_201703231653570","sxk_userPic_201703231653581","sxk_userPic_201703231653582","sxk_userPic_201703231653583","sxk_userPic_201703231653584","sxk_userPic_201703231653595","sxk_userPic_201703231653596","sxk_userPic_201703231653597","sxk_userPic_201703231653598"],"name":"测试寄卖五","advancePrice":55000,"categoryid":3,"parentid":0,"brandid":4,"color":"红","condition":1,"crowd":1,"attachList":[{"attributeName":"测试二","attributeValueList":["珍珠鱼皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}],"userid":10,"orderid":28,"status":5,"sort":0,"purchaseid":56,"createtime":1490259240,"updatetime":1490865963,"receiver":{"userid":10,"name":"per倪","mobile":"15536610985","state":"安徽省","city":"安庆市","district":"太湖县","address":"iOS哦PK","receiverid":147,"createtime":1489973186,"updatetime":1490259250,"isdefault":1},"risk":1,"marketPrice":1,"sellingPrice":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}},{"description":"测试寄卖一","imgList":["sxk_userPic_201703231508130","sxk_userPic_201703231508141","sxk_userPic_201703231508152","sxk_userPic_201703231508153","sxk_userPic_201703231508154","sxk_userPic_201703231508155","sxk_userPic_201703231508166","sxk_userPic_201703231508167","sxk_userPic_201703231508168"],"name":"测试寄卖一","advancePrice":25000,"categoryid":3,"parentid":0,"brandid":1,"color":"白色","condition":1,"crowd":3,"attachList":[],"userid":10,"orderid":29,"status":5,"sort":0,"purchaseid":50,"createtime":1490252897,"updatetime":1490865944,"receiver":{"userid":10,"name":"i模式KKK","mobile":"13339910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"艰难","receiverid":148,"createtime":1489973223,"updatetime":1490252996,"isdefault":1},"risk":1,"marketPrice":1,"sellingPrice":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}}]
+     * purchaseList : [{"description":"测试寄卖二","imgList":["sxk_userPic_201703311107220","sxk_userPic_201703311107231","sxk_userPic_201703311107232","sxk_userPic_201703311107233","sxk_userPic_201703311107244","sxk_userPic_201703311107245","sxk_userPic_201703311107246","sxk_userPic_201703311107247","sxk_userPic_201703311107258"],"name":"测试寄卖的","advancePrice":36800,"categoryid":3,"parentid":0,"brandid":3,"color":"白色","condition":1,"crowd":1,"attachList":[{"attributeName":"测试二","attributeValueList":["牛皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]}],"userid":10,"orderid":31,"status":5,"sort":0,"purchaseid":63,"createtime":1490929644,"updatetime":1490929789,"receiver":{"userid":10,"name":"per倪","mobile":"15536610985","state":"安徽省","city":"安庆市","district":"太湖县","address":"iOS哦PK","receiverid":147,"createtime":1489973186,"updatetime":1490929648,"isdefault":1},"risk":1,"marketPrice":1,"sellingPrice":1,"oddNumber":"123124234123412","category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}},{"description":"测试寄卖一","imgList":["sxk_userPic_201703231508130","sxk_userPic_201703231508141","sxk_userPic_201703231508152","sxk_userPic_201703231508153","sxk_userPic_201703231508154","sxk_userPic_201703231508155","sxk_userPic_201703231508166","sxk_userPic_201703231508167","sxk_userPic_201703231508168"],"name":"测试寄卖一","advancePrice":25000,"categoryid":3,"parentid":0,"brandid":1,"color":"白色","condition":1,"crowd":3,"attachList":[],"userid":10,"orderid":29,"status":5,"sort":0,"purchaseid":50,"createtime":1490252897,"updatetime":1490865944,"receiver":{"userid":10,"name":"i模式KKK","mobile":"13339910985","state":"安徽省","city":"安庆市","district":"枞阳县","address":"艰难","receiverid":148,"createtime":1489973223,"updatetime":1490252996,"isdefault":1},"risk":1,"marketPrice":1,"sellingPrice":1,"category":{"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}}]
      */
 
     private int code;
@@ -44,28 +45,29 @@ public class RentThreeModel {
 
     public static class PurchaseListBean {
         /**
-         * description : 恶名你外婆共鸣您敏敏POS明明名额1额吉去啦娃娃惹急我订婚哦容易Win7名字why和你哥微信搜狗你仔细磨破很自信定义一种why
-         * imgList : ["sxk_userPic_201703231653570","sxk_userPic_201703231653581","sxk_userPic_201703231653582","sxk_userPic_201703231653583","sxk_userPic_201703231653584","sxk_userPic_201703231653595","sxk_userPic_201703231653596","sxk_userPic_201703231653597","sxk_userPic_201703231653598"]
-         * name : 测试寄卖五
-         * advancePrice : 55000
+         * description : 测试寄卖二
+         * imgList : ["sxk_userPic_201703311107220","sxk_userPic_201703311107231","sxk_userPic_201703311107232","sxk_userPic_201703311107233","sxk_userPic_201703311107244","sxk_userPic_201703311107245","sxk_userPic_201703311107246","sxk_userPic_201703311107247","sxk_userPic_201703311107258"]
+         * name : 测试寄卖的
+         * advancePrice : 36800
          * categoryid : 3
          * parentid : 0
-         * brandid : 4
-         * color : 红
+         * brandid : 3
+         * color : 白色
          * condition : 1
          * crowd : 1
-         * attachList : [{"attributeName":"测试二","attributeValueList":["珍珠鱼皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]},{"attributeName":"相关配件","attributeValueList":["保修卡","防尘袋"]}]
+         * attachList : [{"attributeName":"测试二","attributeValueList":["牛皮"]},{"attributeName":"测试1","attributeValueList":["撒的发大水"]}]
          * userid : 10
-         * orderid : 28
+         * orderid : 31
          * status : 5
          * sort : 0
-         * purchaseid : 56
-         * createtime : 1490259240
-         * updatetime : 1490865963
-         * receiver : {"userid":10,"name":"per倪","mobile":"15536610985","state":"安徽省","city":"安庆市","district":"太湖县","address":"iOS哦PK","receiverid":147,"createtime":1489973186,"updatetime":1490259250,"isdefault":1}
+         * purchaseid : 63
+         * createtime : 1490929644
+         * updatetime : 1490929789
+         * receiver : {"userid":10,"name":"per倪","mobile":"15536610985","state":"安徽省","city":"安庆市","district":"太湖县","address":"iOS哦PK","receiverid":147,"createtime":1489973186,"updatetime":1490929648,"isdefault":1}
          * risk : 1
          * marketPrice : 1
          * sellingPrice : 1
+         * oddNumber : 123124234123412
          * category : {"name":"腕表","img":"Shexiangke_jcq::category_1481254654160","description":"腕表","parentid":0,"status":1,"categoryid":3,"createtime":1481254119,"updatetime":1484529517,"sort":1,"attachList":[{"attributeName":"测试二","attributeType":1,"attributeValueList":["牛皮","鳄鱼皮","羊皮","珍珠鱼皮","帆布","测试"]},{"attributeName":"相关配件","attributeType":2,"attributeValueList":["盒子","保修卡","说明书","发票","防尘袋","阿萨德公司东方"]},{"attributeName":"测试1","attributeType":2,"attributeValueList":["1","2","3","4","撒的发大水"]}]}
          */
 
@@ -89,6 +91,7 @@ public class RentThreeModel {
         private int risk;
         private int marketPrice;
         private int sellingPrice;
+        private String oddNumber;
         private CategoryBean category;
         private List<String> imgList;
         private List<AttachListBeanX> attachList;
@@ -253,6 +256,14 @@ public class RentThreeModel {
             this.sellingPrice = sellingPrice;
         }
 
+        public String getOddNumber() {
+            return oddNumber;
+        }
+
+        public void setOddNumber(String oddNumber) {
+            this.oddNumber = oddNumber;
+        }
+
         public CategoryBean getCategory() {
             return category;
         }
@@ -288,7 +299,7 @@ public class RentThreeModel {
              * address : iOS哦PK
              * receiverid : 147
              * createtime : 1489973186
-             * updatetime : 1490259250
+             * updatetime : 1490929648
              * isdefault : 1
              */
 
@@ -538,7 +549,7 @@ public class RentThreeModel {
         public static class AttachListBeanX {
             /**
              * attributeName : 测试二
-             * attributeValueList : ["珍珠鱼皮"]
+             * attributeValueList : ["牛皮"]
              */
 
             private String attributeName;

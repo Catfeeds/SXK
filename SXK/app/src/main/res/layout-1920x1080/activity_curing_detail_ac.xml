@@ -61,9 +61,10 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/kiss"
                             android:layout_width="20dp"
                             android:layout_height="18dp"
-                            android:background="@drawable/zuixingc"/>
+                            android:background="@null"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -97,7 +98,7 @@
             <LinearLayout
                 android:id="@+id/curing_cell"
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|bottom"
                 android:background="@drawable/ripple_bg"
                 android:orientation="horizontal"
                 android:layout_marginTop="15dp"
@@ -128,13 +129,26 @@
                         android:layout_marginTop="6dp"
                         android:textColor="@color/gray_40"
                         android:textSize="11sp"/>
-                    <TextView
-                        android:id="@+id/curing_price"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/login_turquoise"/>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="13sp"
+                            android:text="养护价："
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/curing_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="13sp"
+                            android:textColor="@color/login_turquoise"/>
+                    </LinearLayout>
+
 
                 </LinearLayout>
             </LinearLayout>
@@ -173,6 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="13dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="match_parent"
@@ -193,6 +208,7 @@
 
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/curing_comment_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

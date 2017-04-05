@@ -28,6 +28,7 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
+import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.AppraisasCheckRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringDetailModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.TestModel;
@@ -147,7 +148,7 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
                 } else if (positionl == 1) {
                     PAYTYPE = "alipay";
                 } else if (positionl == 2) {
-                    PAYTYPE = "upacp";
+                    PAYTYPE = "1";
                 }
             }
         });
@@ -229,7 +230,46 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
         LogUtil.e("支付方式"+PAYTYPE);
         initOrderData();
 
+    }
+    // 余额支付
+    private void initYUePay() {
+        dialog.show();
+        JSONObject js = new JSONObject();
+        try {
+            js.put("orderid",orderID);
+            js.put("type",2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHPSESSION, ""));
+        OkHttpUtils.postString().url(BaseInterface.YUEPay)
+                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Content-Type", "application/json;chartset=utf-8")
+                .content(js.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        dialog.dismiss();
+                        SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                    }
 
+                    @Override
+                    public void onResponse(String response, int id) {
+                        dialog.dismiss();
+                        L.e("余额支付结果" + response);
+                        Gson gson = new Gson();
+                        RequestStatueModel createOrderModel = gson.fromJson(response, RequestStatueModel.class);
+                        if (createOrderModel.getCode() == 1) {
+                            MaterialDialog("支付成功！");
+                        } else if (createOrderModel.getCode() == 911) {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else {
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        }
+                    }
+                });
 
     }
 
@@ -269,7 +309,11 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
                         CreateOrderModel createOrderModel = gson.fromJson(response, CreateOrderModel.class);
                         if (createOrderModel.getCode() == 1) {
                             orderID = createOrderModel.getOrderid();
-                            useAliPay(PAYTYPE);
+                            if (PAYTYPE == "1"){
+                                initYUePay();
+                            }else {
+                                useAliPay(PAYTYPE);
+                            }
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else {
@@ -381,7 +425,7 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
         MaterialDialog(RESULT);
     }
 
-    private void MaterialDialog(String str) {
+    private void MaterialDialog(final String str) {
         BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
         BaseAnimatorSet bas_out = new FadeExit();
         final MaterialDialog dialogs = new MaterialDialog(this);
@@ -402,7 +446,12 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
         dialogs.setOnBtnClickL(new OnBtnClickL() {
             @Override
             public void onBtnClick() {
-                dialogs.dismiss();
+                if (str.trim() == "支付成功！"){
+                    dialogs.dismiss();
+                    finish();
+                }else {
+                    dialogs.dismiss();
+                }
             }
         });
     }

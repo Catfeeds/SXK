@@ -29,7 +29,7 @@ public class MineItemCuringListAdapter extends RecyclerView.Adapter<MineItemCuri
     private MineItemCuringListAdapter.OnItemClickListener mOnItemClickListener;
 
     public interface  OnItemClickListener{
-        void OnItemClick(View view, int maintainid);
+        void OnItemClick(View view,int type, int maintainid);
     }
     public void setOnItemClickListener(MineItemCuringListAdapter.OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
@@ -55,15 +55,29 @@ public class MineItemCuringListAdapter extends RecyclerView.Adapter<MineItemCuri
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getMaintain().getName());
-        holder.description.setText(classifyDataSource.get(position).getMaintain().getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getMaintain().getPrice())/100.0)));
+        String description = classifyDataSource.get(position).getMaintain().getKeyword();
+        if (description.trim().length()>25){
+            holder.description.setText(description.substring(0,25)+"...");
+        }else {
+            holder.description.setText(description);
+        }
+        double rentPrice = classifyDataSource.get(position).getMaintain().getPrice();
+        holder.price.setText(" ¥ "+ String.format("%.2f",rentPrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getMaintain().getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
         if (mOnItemClickListener != null){
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid());
+                    mOnItemClickListener.OnItemClick(view,1,classifyDataSource.get(position).getOrderid());
+                }
+            });
+        }
+        if (mOnItemClickListener != null){
+            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view,2,classifyDataSource.get(position).getOrderid());
                 }
             });
         }
@@ -75,20 +89,17 @@ public class MineItemCuringListAdapter extends RecyclerView.Adapter<MineItemCuri
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView rentPrice;
         LinearLayout frameLayout;
         TextView name,description,price;
         ImageView pic;
         Button delete;
         public ViewHolder(View itemView) {
             super(itemView);
-
             frameLayout = (LinearLayout) itemView.findViewById(R.id.curings_cell);
             name = (TextView)itemView.findViewById(R.id.curings_name);
             description = (TextView)itemView.findViewById(R.id.curings_descript);
             price = (TextView)itemView.findViewById(R.id.curings_price);
             pic = (ImageView)itemView.findViewById(R.id.curings_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.curings_rentprice);
             delete = (Button)itemView.findViewById(R.id.curings_confirm_btn);
         }
     }

@@ -544,7 +544,6 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-
                         if (type == 1){
                             if (purchaseList.size() >= purchaseTotal) {
                                 hao_recycleview.loadMoreEnd();
@@ -558,7 +557,6 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
                                 return;
                             }
                         }
-
                         pageNums += 1;
                         initCateRentlist(type,pageNums, 10);
                         hao_recycleview.loadMoreComplete();

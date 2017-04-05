@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingBottom="15dp"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|bottom"
                     android:paddingLeft="15dp"
                     android:paddingTop="20dp">
 
@@ -72,9 +72,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|bottom"
                         android:layout_toRightOf="@+id/curpayorder_img"
                         android:orientation="vertical"
+                        android:layout_alignParentBottom="true"
                         android:paddingLeft="15dp">
 
                         <TextView
@@ -218,12 +219,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/curpayorder_rv"
-                        android:layout_marginBottom="50dp"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    </android.support.v7.widget.RecyclerView>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/curpayorder_rv"
+                            android:layout_marginBottom="50dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        </android.support.v7.widget.RecyclerView>
+                    </RelativeLayout>
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
@@ -240,7 +246,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="22dp"
             android:orientation="vertical">
 
             <LinearLayout

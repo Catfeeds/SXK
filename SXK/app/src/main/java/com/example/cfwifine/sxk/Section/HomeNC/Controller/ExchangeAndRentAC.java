@@ -44,23 +44,26 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
     private Button exchange_btn_float;
     private RelativeLayout activity_exchange_ac;
     private Button exchange_talkbtn_float;
-    private int position=-1;
-    private UserInfoModel userInfoModel=null;
+    private int position = -1;
+    private UserInfoModel userInfoModel = null;
     Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_ac);
-        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
+        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
+        initView();
         initUserData();
 
     }
+
+
     public void initUserData() {
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("","");
+            js.put("", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -83,9 +86,9 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
                         dialog.dismiss();
                         Log.e("初始化个人信息", "" + response);
                         Gson gson = new Gson();
-                        userInfoModel = gson.fromJson(response,UserInfoModel.class);
+                        userInfoModel = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModel.getCode() == 1) {
-                            initView();
+                            initListener();
                         } else if (userInfoModel.getCode() == 0) {
                         } else if (userInfoModel.getCode() == 911) {
                             initSnackBar("您还没有登录哦！");
@@ -94,18 +97,25 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
                 });
 
     }
-    private void initSnackBar(String value){
+
+    private void initListener() {
+        exchange_btn_float.setOnClickListener(this);
+        exchange_talkbtn_float.setOnClickListener(this);
+    }
+
+    private void initSnackBar(String value) {
         SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), value, Color.WHITE, Color.parseColor("#16a6ae"));
     }
+
     private void initView() {
-        position = getIntent().getIntExtra("JUMPEIGHTITEMDETAIL",-1);
+        position = getIntent().getIntExtra("JUMPEIGHTITEMDETAIL", -1);
         navi_back_pic = (ImageView) findViewById(R.id.navi_back_pic);
         navi_back = (LinearLayout) findViewById(R.id.navi_back);
         navi_back.setOnClickListener(this);
         navi_title = (TextView) findViewById(R.id.navi_title);
-        if (position == 0){
+        if (position == 0) {
             navi_title.setText("交换");
-        }else if (position == 1){
+        } else if (position == 1) {
             navi_title.setText("租赁");
         }
         navi_right = (TextView) findViewById(R.id.navi_right);
@@ -113,10 +123,10 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
         exchange_img = (ImageView) findViewById(R.id.exchange_img);
         exchange_btn_float = (Button) findViewById(R.id.exchange_btn_float);
         activity_exchange_ac = (RelativeLayout) findViewById(R.id.activity_exchange_ac);
-        exchange_btn_float.setOnClickListener(this);
+
         exchange_talkbtn_float = (Button) findViewById(R.id.exchange_talkbtn_float);
-        exchange_talkbtn_float.setOnClickListener(this);
-        if (position == 0){
+
+        if (position == 0) {
             exchange_btn_float.setVisibility(View.GONE);
         }
 
@@ -141,18 +151,18 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
     }
 
     private void initMeiQia() {
-        int  sexid = userInfoModel.getUser().getSex();
+        int sexid = userInfoModel.getUser().getSex();
         String Sex = "";
-        if (sexid == 1){
+        if (sexid == 1) {
             Sex = "男";
-        }else {
+        } else {
             Sex = "女";
         }
         int userid = userInfoModel.getUser().getUserid();
         HashMap<String, String> clientInfo = new HashMap<>();
         clientInfo.put("name", userInfoModel.getUser().getNickname());
         clientInfo.put("avatar", userInfoModel.getUser().getHeadimgurl());
-        clientInfo.put("gender",Sex);
+        clientInfo.put("gender", Sex);
         clientInfo.put("tel", userInfoModel.getUser().getMobile());
         clientInfo.put("技能1", "啵呗用户");
         Intent intent = new MQIntentBuilder(this).setClientInfo(clientInfo).setCustomizedId(String.valueOf(userid)).build();

@@ -19,6 +19,9 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.ProgressView;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCuringCollectionListModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MinePurchaseListModel;
 import com.example.cfwifine.sxk.Section.PublishNC.Adapter.CuringListAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.CuringListModel;
 import com.example.cfwifine.sxk.Utils.LogUtil;
@@ -59,6 +62,7 @@ public class CuringComListFC extends Fragment {
     private int classid;
     private int pageNum = 1;
     private int pageSize = 10;
+    private int Total;
 
     public CuringComListFC() {
         // Required empty public constructor
@@ -68,10 +72,8 @@ public class CuringComListFC extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_curing_com_list_fc, container, false);
         curingAC = (CuringAC) getActivity();
-//        maintainListBeen.clear();
         initData(classid, pageNum, pageSize);
         return view;
     }
@@ -82,7 +84,10 @@ public class CuringComListFC extends Fragment {
      * @param pageNum
      * @param pageSize
      */
-    public void initData(int classifyid, int pageNum, int pageSize) {
+    public void initData(int classifyid, final int pageNum, int pageSize) {
+        if (pageNum == 1){
+            maintainListBeen = null;
+        }
         curingAC.dialog.show();
         JSONObject js = new JSONObject();
         try {
@@ -120,8 +125,15 @@ public class CuringComListFC extends Fragment {
                         Gson gson = new Gson();
                         curingListModel = gson.fromJson(response, CuringListModel.class);
                         if (curingListModel.getCode() == 1) {
-                            maintainListBeen = curingListModel.getMaintainList();
-                            initView();
+                            Total = curingListModel.getTotal();
+                            if (pageNum != 1){
+                                maintainListBeen.addAll(curingListModel.getMaintainList());
+                                mAdapter.notifyDataSetChanged();
+                            }else {
+                                maintainListBeen = curingListModel.getMaintainList();
+                                initView();
+                            }
+
                         } else if (curingListModel.getCode() == 0) {
                             SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (curingListModel.getCode() == 911) {
@@ -149,6 +161,7 @@ public class CuringComListFC extends Fragment {
                         //注意此处
                         maintainListBeen.clear();
                         initData(classid, 1, 10);
+                        pageNum = 1;
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
                         mAdapter.notifyDataSetChanged();
@@ -172,7 +185,7 @@ public class CuringComListFC extends Fragment {
         progressView.setIndicatorId(ProgressView.BallPulse);
         progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
-
+        hao_recycleview.setCanloadMore(true);
         TextView textView = new TextView(getActivity());
         textView.setText("已经到底啦~");
         textView.setTextColor(getResources().getColor(R.color.black));
@@ -184,14 +197,14 @@ public class CuringComListFC extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        pageNum += 10;
-                        pageNum += 1;
-                        if (pageNum >= maintainListBeen.size()) {
+
+                        if (maintainListBeen.size()>=Total) {
                             hao_recycleview.loadMoreEnd();
+                            pageNum = 1;
                             return;
                         }
+                        pageNum+=1;
                         initData(classid, pageNum, pageSize);
-                        mAdapter.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
 
                     }

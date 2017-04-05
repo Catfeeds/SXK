@@ -305,7 +305,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                             }else {
                                 infoArr.add(1,"女");
                             }
-                            SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
+                            SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy年MM月", Locale.getDefault());
                             infoArr.add(2,TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l,DEFAULT_SDF));
                             if (userInfoModelss.getUser().getProfile() != null){
                                 infoArr.add(3,userInfoModelss.getUser().getProfile().toString());

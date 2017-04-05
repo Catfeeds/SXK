@@ -16,6 +16,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Adapter.MineItemCuringListAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCuring.Model.MineItemCuringModel;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MinePublish.Dialog.CustomDialog_OrderWarning;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -127,11 +128,27 @@ public class MineItemCuringFC extends Fragment {
         hao_recycleview.setAdapter(mSheHeAdapter);
         mSheHeAdapter.setOnItemClickListener(new MineItemCuringListAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, int maintainid) {
-                initConfirmDone(maintainid);
+            public void OnItemClick(View view,int type, int maintainid) {
+
+                if (type == 1){
+                    initDialog(maintainid);
+                }else {
+
+                }
+
             }
         });
 
+    }
+
+    private void initDialog(final int maintainid) {
+        CustomDialog_OrderWarning customDialog_orderWarning = new CustomDialog_OrderWarning(getActivity(), new CustomDialog_OrderWarning.ICustomDialogEventListener() {
+            @Override
+            public void customDialogEvent(int id) {
+                initConfirmDone(maintainid);
+            }
+        },"确认提示","是否确认完成？",R.style.style_dialog);
+        customDialog_orderWarning.show();
     }
 
     private void initConfirmDone(int maintainid) {
@@ -166,7 +183,7 @@ public class MineItemCuringFC extends Fragment {
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                           initMineData(2,0,0);
+//                            initMineData(2,0,0);
                             mineItemCuringAC.initSnackBar("确认成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemCuringAC.initSnackBar("请求失败！");

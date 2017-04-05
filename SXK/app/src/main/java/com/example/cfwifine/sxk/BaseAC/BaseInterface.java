@@ -160,7 +160,7 @@ public class BaseInterface {
     // 租赁评论
     public static String RentComment = root + "/app/rentcomment/addpost";
     // 珊瑚商品
-    public static String RentDeleDone = root + "app/rentorder/delpost";
+    public static String RentDeleDone = root + "/app/rentorder/delpost";
     // 关注列表
     public static String FollowList = root + "/app/follow/getpost";
     // 添加关注
@@ -240,7 +240,9 @@ public class BaseInterface {
     // 寄卖去人收货
     public static String PurchaseConfirmReceiveGoods = root + "/app/purchaseorder/setpost";
     // 删除已完成订单
-    public static String PurchaseDeleteDoneOrder = root + "app/purchaseorder/delpost";
+    public static String PurchaseDeleteDoneOrder = root + "/app/purchaseorder/delpost";
+    // 余额支付
+    public static String YUEPay = root +"/app/wallet/delpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";

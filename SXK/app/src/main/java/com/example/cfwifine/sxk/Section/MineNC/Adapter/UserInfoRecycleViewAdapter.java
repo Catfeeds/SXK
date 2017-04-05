@@ -47,7 +47,13 @@ public class UserInfoRecycleViewAdapter extends RecyclerView.Adapter<UserInfoRec
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (position !=5){
-            holder.rTextView.setText(userInfo.get(position));
+            String content = userInfo.get(position).toString();
+            if (content.trim().length()>12){
+                holder.rTextView.setText(content.substring(0,12)+"...");
+            }else {
+                holder.rTextView.setText(content);
+            }
+
         }
         holder.mTextView.setText(applicationName.get(position));
 //        holder.rTextView.setText(userInfo.get(position));

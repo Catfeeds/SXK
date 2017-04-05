@@ -258,7 +258,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
         dialogs.setOnBtnClickL(new OnBtnClickL() {
             @Override
             public void onBtnClick() {
-                dialogs.dismiss();
+
                 finish();
             }
         });

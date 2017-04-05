@@ -54,8 +54,14 @@ public class MineItemDoneListAdapter extends RecyclerView.Adapter<MineItemDoneLi
 
         LogUtil.e("审核中数据源"+classifyDataSource.get(position));
         holder.name.setText(classifyDataSource.get(position).getMaintain().getName());
-        holder.description.setText(classifyDataSource.get(position).getMaintain().getKeyword());
-        holder.price.setText("¥ "+ String.valueOf((double)(Math.round(classifyDataSource.get(position).getMaintain().getPrice())/100.0)));
+        String description = classifyDataSource.get(position).getMaintain().getKeyword();
+        if (description.trim().length()>25){
+            holder.description.setText(description.substring(0,25)+"...");
+        }else {
+            holder.description.setText(description);
+        }
+        double rentPrice = classifyDataSource.get(position).getMaintain().getPrice();
+        holder.price.setText(" ¥ "+ String.format("%.2f",rentPrice/100));
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getMaintain().getImg();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);
 
@@ -67,7 +73,6 @@ public class MineItemDoneListAdapter extends RecyclerView.Adapter<MineItemDoneLi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView rentPrice;
         LinearLayout frameLayout;
         TextView name,description,price,ordernumber;
         ImageView pic;
@@ -79,7 +84,6 @@ public class MineItemDoneListAdapter extends RecyclerView.Adapter<MineItemDoneLi
             description = (TextView)itemView.findViewById(R.id.dones_descript);
             price = (TextView)itemView.findViewById(R.id.dones_price);
             pic = (ImageView)itemView.findViewById(R.id.dones_pic);
-            rentPrice = (TextView)itemView.findViewById(R.id.dones_rentprice);
         }
     }
 }

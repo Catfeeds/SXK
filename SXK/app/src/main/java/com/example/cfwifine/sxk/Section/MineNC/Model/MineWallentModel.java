@@ -11,7 +11,7 @@ public class MineWallentModel {
     /**
      * code : 1
      * total : 1
-     * walletList : [{"balance":4,"amount":1,"type":1,"orderid":47,"walletid":1,"createtime":1488534868,"updatetime":1488534868}]
+     * walletList : [{"userid":10,"orderid":34,"amount":0,"balance":0,"type":4,"walletid":17,"createtime":1491035746,"updatetime":1491035746}]
      */
 
     private int code;
@@ -44,29 +44,39 @@ public class MineWallentModel {
 
     public static class WalletListBean {
         /**
-         * balance : 4
-         * amount : 1
-         * type : 1
-         * orderid : 47
-         * walletid : 1
-         * createtime : 1488534868
-         * updatetime : 1488534868
+         * userid : 10
+         * orderid : 34
+         * amount : 0
+         * balance : 0
+         * type : 4
+         * walletid : 17
+         * createtime : 1491035746
+         * updatetime : 1491035746
          */
 
-        private int balance;
-        private int amount;
-        private int type;
+        private int userid;
         private int orderid;
+        private int amount;
+        private int balance;
+        private int type;
         private int walletid;
         private int createtime;
         private int updatetime;
 
-        public int getBalance() {
-            return balance;
+        public int getUserid() {
+            return userid;
         }
 
-        public void setBalance(int balance) {
-            this.balance = balance;
+        public void setUserid(int userid) {
+            this.userid = userid;
+        }
+
+        public int getOrderid() {
+            return orderid;
+        }
+
+        public void setOrderid(int orderid) {
+            this.orderid = orderid;
         }
 
         public int getAmount() {
@@ -77,20 +87,20 @@ public class MineWallentModel {
             this.amount = amount;
         }
 
+        public int getBalance() {
+            return balance;
+        }
+
+        public void setBalance(int balance) {
+            this.balance = balance;
+        }
+
         public int getType() {
             return type;
         }
 
         public void setType(int type) {
             this.type = type;
-        }
-
-        public int getOrderid() {
-            return orderid;
-        }
-
-        public void setOrderid(int orderid) {
-            this.orderid = orderid;
         }
 
         public int getWalletid() {

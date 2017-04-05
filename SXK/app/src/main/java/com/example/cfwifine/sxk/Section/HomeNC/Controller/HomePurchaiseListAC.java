@@ -51,7 +51,7 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
     private SwipeRefreshLayout swiperefresh;
     private HaoRecyclerView hao_recycleview;
 
-    Dialog dialog;
+    Dialog dialogs;
     private PurchaseListModel purchasePreListModel;
     private List<PurchaseListModel.PurchaseListBean> dataSource = null;
     private PurchaseDetailListAdapter hotAdapter;
@@ -63,7 +63,7 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_purchaise_list_ac);
-        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
+        dialogs = LoadingUtils.createLoadingDialog(HomePurchaiseListAC.this, "加载中...");
         initView();
     }
 
@@ -86,7 +86,11 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
     }
 
     private void initHotData(final int pageNum, int pageSize) {
-        dialog.show();
+        // 判断一下是否activity是否销毁
+        if (!isFinishing()){
+            dialogs.show();
+        }
+//        dialogs.show();
         JSONObject order = new JSONObject();
         try {
             order.put("purchaseid", -1);
@@ -121,7 +125,7 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
                              }
                              @Override
                              public void onResponse(String response, int id) {
-                                 dialog.dismiss();
+                                 dialogs.dismiss();
                                  LogUtil.e("寄卖商品列表" + response);
                                  Gson gson = new Gson();
                                  purchasePreListModel = gson.fromJson(response, PurchaseListModel.class);
@@ -220,223 +224,14 @@ public class HomePurchaiseListAC extends AppCompatActivity implements View.OnCli
             }
         });
     }
-
-
-//    public void initData(int pageNum, int pageSize) {
-//
-//        JSONObject jsonObject = new JSONObject();
-//        if (types != 14) {
-//
-//            try {
-//                jsonObject.put("setupid", 1);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            int classid = getIntent().getIntExtra("CLASSID", -1);
-//            try {
-//                jsonObject.put("classid", classid);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
-//        OkHttpUtils.postString().url(url)
-//                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
-//                .addHeader("X-Requested-With", "XMLHttpRequest")
-//                .addHeader("Content-Type", "application/json;chartset=utf-8")
-//                .content(jsonObject.toString())
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        initSnackBar("请求出错！");
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        Log.e("数据列表", "" + response);
-//                        Gson gson = new Gson();
-//                        if (types != 14) {
-//                            threeBlockModel = gson.fromJson(response, ThreeBlockModel.class);
-//                            if (threeBlockModel.getCode() == 1) {
-//                                LogUtil.e("请求成功" + 1);
-//                                threeDataSource = threeBlockModel.getSetup().getRentList();
-//                                initRecycleView();
-//                            } else if (threeBlockModel.getCode() == 0) {
-//                                initSnackBar("请求失败！");
-//                            } else if (threeBlockModel.getCode() == 911) {
-//                                initSnackBar("登录超时，请重新登录！");
-//                            }
-//                        } else {
-//                            classData = gson.fromJson(response, HomeClassSelectedModel.class);
-//                            if (classData.getCode() == 1) {
-//                                LogUtil.e("请求成功" + 1);
-//                                classDataSource = classData.getClassX().getRentList();
-//                                initClassRecycleView();
-//                            } else if (classData.getCode() == 0) {
-//                                initSnackBar("请求失败！");
-//                            } else if (classData.getCode() == 911) {
-//                                initSnackBar("登录超时，请重新登录！");
-//                            }
-//                        }
-//
-//                    }
-//                });
-//    }
-//
-//    private void initClassRecycleView() {
-//        swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-//        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-//                R.color.textBlueDark);
-//
-//        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-////                        注意此处
-//                        classDataSource.clear();
-//                        initData(1, 10);
-//                        hao_recycleview.refreshComplete();
-//                        swiperefresh.setRefreshing(false);
-//                        mAdapters.notifyDataSetChanged();
-//                    }
-//                }, 1000);
-//
-//            }
-//        });
-//        hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
-//            @Override
-//            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-//                int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
-//                super.onMeasure(recycler, state, widthSpec, expandSpec);
-//            }
-//        };
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        hao_recycleview.setLayoutManager(layoutManager);
-//        //设置自定义加载中和到底了效果
-//        ProgressView progressView = new ProgressView(this);
-//        progressView.setIndicatorId(ProgressView.BallPulse);
-//        progressView.setIndicatorColor(0xff16a6ae);
-//        hao_recycleview.setFootLoadingView(progressView);
-//
-//        TextView textView = new TextView(this);
-//        textView.setText("已经到底啦~");
-//        textView.setTextColor(getResources().getColor(R.color.black));
-//        hao_recycleview.setFootEndView(textView);
-//
-//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-//            @Override
-//            public void onLoadMore() {
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//
-//                        pageSize += 10;
-//                        if (pageSize >= classDataSource.size()) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        initData(1, pageSize);
-//                        mAdapters.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
-//
-//                    }
-//                }, 1000);
-//            }
-//        });
-//        mAdapters = new ClassDetailListAdapter(this, classDataSource);
-//        hao_recycleview.setAdapter(mAdapters);
-//        mAdapters.setOnItemClickListener(new ClassDetailListAdapter.OnItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                Intent intent = new Intent(HomePurchaiseListAC.this, ProductDetailsAC.class);
-//                intent.putExtra("RENTID", maintainid);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-//
-//    public void initRecycleView() {
-//
-//        swiperefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-//        swiperefresh.setColorSchemeResources(R.color.textBlueDark, R.color.textBlueDark, R.color.textBlueDark,
-//                R.color.textBlueDark);
-//
-//        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-////                        注意此处
-//                        threeDataSource.clear();
-//                        initData(1, 10);
-//                        hao_recycleview.refreshComplete();
-//                        swiperefresh.setRefreshing(false);
-//                        mAdapter.notifyDataSetChanged();
-//                    }
-//                }, 1000);
-//
-//            }
-//        });
-//        hao_recycleview = (HaoRecyclerView) findViewById(R.id.hao_recycleview);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
-//            @Override
-//            public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-//                int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
-//                super.onMeasure(recycler, state, widthSpec, expandSpec);
-//            }
-//        };
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        hao_recycleview.setLayoutManager(layoutManager);
-//        //设置自定义加载中和到底了效果
-//        ProgressView progressView = new ProgressView(this);
-//        progressView.setIndicatorId(ProgressView.BallPulse);
-//        progressView.setIndicatorColor(0xff16a6ae);
-//        hao_recycleview.setFootLoadingView(progressView);
-//
-//        TextView textView = new TextView(this);
-//        textView.setText("已经到底啦~");
-//        textView.setTextColor(getResources().getColor(R.color.black));
-//        hao_recycleview.setFootEndView(textView);
-//
-//        hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
-//            @Override
-//            public void onLoadMore() {
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//
-//                        pageSize += 10;
-//                        if (pageNum >= threeDataSource.size()) {
-//                            hao_recycleview.loadMoreEnd();
-//                            return;
-//                        }
-//                        initData(1, pageSize);
-//                        mAdapter.notifyDataSetChanged();
-//                        hao_recycleview.loadMoreComplete();
-//
-//                    }
-//                }, 1000);
-//            }
-//        });
-//        mAdapter = new ThreeBlockDetailListAdapter(this, threeDataSource);
-//        hao_recycleview.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(new ThreeBlockDetailListAdapter.OnItemClickListener() {
-//            @Override
-//            public void OnItemClick(View view, int maintainid) {
-//                Intent intent = new Intent(HomeThreeBlockDetailAC.this, ProductDetailsAC.class);
-//                intent.putExtra("RENTID", maintainid);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-
     private void initSnackBar(String s) {
         SnackbarUtils.showShortSnackbar(this.getWindow().getDecorView(), s, Color.WHITE, Color.parseColor("#16a6ae"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
     @Override
