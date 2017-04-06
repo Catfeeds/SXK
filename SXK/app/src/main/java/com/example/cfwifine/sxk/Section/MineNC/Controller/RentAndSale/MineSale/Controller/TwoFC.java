@@ -102,7 +102,9 @@ public class TwoFC extends Fragment {
     }
 
     public void initMineData(int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("purchaseid", -1);

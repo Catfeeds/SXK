@@ -88,7 +88,9 @@ public class CuringComListFC extends Fragment {
         if (pageNum == 1){
             maintainListBeen = null;
         }
-        curingAC.dialog.show();
+        if (!curingAC.isFinishing()){
+            curingAC.dialog.show();
+        }
         JSONObject js = new JSONObject();
         try {
             js.put("sort", 1);
@@ -104,9 +106,9 @@ public class CuringComListFC extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(getActivity(), BaseInterface.PHPSESSION, ""));
+
         OkHttpUtils.postString().url(BaseInterface.CuringList)
-                .addHeader("Cookie", "PHPSESSID=" + PHPSESSION)
+                .addHeader("Cookie", "PHPSESSID=" + curingAC.PHPSESSION)
                 .addHeader("X-Requested-With", "XMLHttpRequest")
                 .addHeader("Content-Type", "application/json;chartset=utf-8")
                 .content(jsonObject.toString())
@@ -114,7 +116,7 @@ public class CuringComListFC extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        SnackbarUtils.showShortSnackbar(curingAC.getWindow().getDecorView(), "请求出错!", Color.WHITE, Color.parseColor("#16a6ae"));
                         curingAC.dialog.dismiss();
                     }
 
@@ -135,9 +137,9 @@ public class CuringComListFC extends Fragment {
                             }
 
                         } else if (curingListModel.getCode() == 0) {
-                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            SnackbarUtils.showShortSnackbar(curingAC.getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         } else if (curingListModel.getCode() == 911) {
-                            SnackbarUtils.showShortSnackbar(getActivity().getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                            SnackbarUtils.showShortSnackbar(curingAC.getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }
                     }
                 });
@@ -171,7 +173,7 @@ public class CuringComListFC extends Fragment {
             }
         });
         hao_recycleview = (HaoRecyclerView) view.findViewById(R.id.hao_recycleview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(curingAC) {
             @Override
             public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
                 int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
@@ -181,15 +183,19 @@ public class CuringComListFC extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hao_recycleview.setLayoutManager(layoutManager);
         //设置自定义加载中和到底了效果
-        ProgressView progressView = new ProgressView(getActivity());
-        progressView.setIndicatorId(ProgressView.BallPulse);
-        progressView.setIndicatorColor(0xff16a6ae);
-        hao_recycleview.setFootLoadingView(progressView);
+
         hao_recycleview.setCanloadMore(true);
-        TextView textView = new TextView(getActivity());
-        textView.setText("已经到底啦~");
-        textView.setTextColor(getResources().getColor(R.color.black));
-        hao_recycleview.setFootEndView(textView);
+        if (!curingAC.isFinishing()){
+            ProgressView progressView = new ProgressView(curingAC);
+            progressView.setIndicatorId(ProgressView.BallPulse);
+            progressView.setIndicatorColor(0xff16a6ae);
+            hao_recycleview.setFootLoadingView(progressView);
+            TextView textView = new TextView(curingAC);
+            textView.setText("已经到底啦~");
+            textView.setTextColor(getResources().getColor(R.color.black));
+            hao_recycleview.setFootEndView(textView);
+        }
+
 
         hao_recycleview.setLoadMoreListener(new LoadMoreListener() {
             @Override
@@ -211,13 +217,13 @@ public class CuringComListFC extends Fragment {
                 }, 1000);
             }
         });
-        mAdapter = new CuringListAdapter(getActivity(), maintainListBeen);
+        mAdapter = new CuringListAdapter(curingAC, maintainListBeen);
         hao_recycleview.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new CuringListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int maintainid) {
                 LogUtil.e("maintainid" + maintainid);
-                Intent intent = new Intent(getActivity(), CuringDetailAC.class);
+                Intent intent = new Intent(curingAC, CuringDetailAC.class);
                 intent.putExtra("maintainid", maintainid);
                 startActivity(intent);
             }

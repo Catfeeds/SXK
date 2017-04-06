@@ -10,26 +10,25 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
-import com.example.cfwifine.sxk.Section.LoginAC.Controller.BandPhoneNumberAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.CustomDialog_ShareBorad;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.ForgetPawAC;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.UserInfoRecycleViewAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.CustomDialog_Sex;
@@ -56,8 +55,16 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
 import com.qiniu.api.rs.PutPolicy;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -65,12 +72,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -99,22 +100,25 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     // 更新用户信息的相关信息
     String nickName = "";
     int Sex = 0;
-    long Birthday=0;
-    String personalIntro="";
-    String mobile="";
-    private UserInfoModel.UserBean dataSource=null;
+    long Birthday = 0;
+    String personalIntro = "";
+    String mobile = "";
+    private UserInfoModel.UserBean dataSource = null;
     Dialog mloading;
-    String HEADERPIC="";
+    String HEADERPIC = "";
     private UserInfoModel userInfoModel = null;
     private UserInfoModel userInfoModels = null;
     private UserInfoModel userInfoModelss;
+    private TextView code_invate;
+    private CustomDialog_ShareBorad customDialog_shareBorad;
+    private UMWeb web;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info_ac);
-        mloading = LoadingUtils.createLoadingDialog(this,"努力上传图片中...");
+        mloading = LoadingUtils.createLoadingDialog(this, "加载中...");
         /**
          * 0 更新 1请求
          */
@@ -129,8 +133,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
      */
     JSONObject jsonObject;
     String Url = "";
+
     /**
-     *  0,0更新nickname 0，1 更新性别 02更新生日  04更新手机号码
+     * 0,0更新nickname 0，1 更新性别 02更新生日  04更新手机号码
      */
     private void initUserInfo(final int value, final int ss) {
         jsonObject = new JSONObject();
@@ -138,20 +143,20 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             try {
                 switch (ss) {
                     case 0:
-                        if (dataSource.getNickname()!= null){
+                        if (dataSource.getNickname() != null) {
                             if (!dataSource.getNickname().equals(nickName)) {
                                 jsonObject.put("nickname", nickName);
                             } else {
                                 initSnackBar("你还没有修改哦！");
                                 return;
                             }
-                        }else {
-                                jsonObject.put("nickname", nickName);
+                        } else {
+                            jsonObject.put("nickname", nickName);
                         }
 
                         break;
                     case 1:
-                        if (dataSource.getSex() !=Sex) {
+                        if (dataSource.getSex() != Sex) {
                             jsonObject.put("sex", Sex);
                         } else {
                             initSnackBar("你还没有修改哦！");
@@ -159,15 +164,15 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                         }
                         break;
                     case 2:
-                        if (dataSource.getBirthday() != Birthday){
-                            jsonObject.put("birthday",Birthday);
-                        }else {
+                        if (dataSource.getBirthday() != Birthday) {
+                            jsonObject.put("birthday", Birthday);
+                        } else {
                             initSnackBar("你还没有修改哟！");
                             return;
                         }
                         break;
                     case 3:
-                        jsonObject.put("headimgurl",HEADERPIC);
+                        jsonObject.put("headimgurl", HEADERPIC);
                         break;
                     default:
                         break;
@@ -210,11 +215,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                                 dataSource = userInfoModel.getUser();
 
 //                                Glide.with(UserInfoAC.this).load(dataSource.getHeadimgurl()).centerCrop().placeholder(R.drawable.user_header_image_placeholder).into(header);
-                                if (dataSource.getHeadimgurl()!=null){
-                                    ImageLoader.getInstance().displayImage(dataSource.getHeadimgurl(),header);
+                                if (dataSource.getHeadimgurl() != null) {
+                                    ImageLoader.getInstance().displayImage(dataSource.getHeadimgurl(), header);
                                 }
                                 // 数据请求成功后才可以点击，否则不能点击
-                                if (dataSource.getNickname()!=null){
+                                if (dataSource.getNickname() != null) {
                                     SharedPreferencesUtils.setParam(getApplicationContext(), dataSource.getNickname().toString(), "");
                                 }
                             } else if (userInfoModel.getCode() == 0) {
@@ -227,8 +232,8 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                             Gson gson = new Gson();
                             RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                             if (requestStatueModel.getCode() == 1) {
-                                if (nickName != null){
-                                    SharedPreferencesUtils.setParam(UserInfoAC.this, BaseInterface.NICKNAME,nickName);
+                                if (nickName != null) {
+                                    SharedPreferencesUtils.setParam(UserInfoAC.this, BaseInterface.NICKNAME, nickName);
                                 }
                                 initNewUserData();
 //                                if (nickName != ""||Sex != 0||Birthday != 0){
@@ -253,6 +258,8 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         header = (CircleImageView) findViewById(R.id.userInfoHeaderView);
         header.setOnClickListener(this);
+        code_invate = (TextView) findViewById(R.id.code_invate);
+        code_invate.setOnClickListener(this);
     }
 
     // TODO*********************************配置导航头**********************************************
@@ -295,24 +302,24 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                         Gson gson = new Gson();
                         userInfoModelss = gson.fromJson(response, UserInfoModel.class);
                         if (userInfoModelss.getCode() == 1) {
-                            if (userInfoModelss.getUser().getNickname()!= null){
-                                infoArr.add(0,userInfoModelss.getUser().getNickname());
-                            }else {
-                                infoArr.add(0,"去填写");
+                            if (userInfoModelss.getUser().getNickname() != null) {
+                                infoArr.add(0, userInfoModelss.getUser().getNickname());
+                            } else {
+                                infoArr.add(0, "去填写");
                             }
-                            if (userInfoModelss.getUser().getSex()==1){
-                                infoArr.add(1,"男");
-                            }else {
-                                infoArr.add(1,"女");
+                            if (userInfoModelss.getUser().getSex() == 1) {
+                                infoArr.add(1, "男");
+                            } else {
+                                infoArr.add(1, "女");
                             }
                             SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy年MM月", Locale.getDefault());
-                            infoArr.add(2,TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l,DEFAULT_SDF));
-                            if (userInfoModelss.getUser().getProfile() != null){
-                                infoArr.add(3,userInfoModelss.getUser().getProfile().toString());
-                            }else {
-                                infoArr.add(3,"去填写");
+                            infoArr.add(2, TimeUtils.milliseconds2String(userInfoModelss.getUser().getBirthday() * 1000l, DEFAULT_SDF));
+                            if (userInfoModelss.getUser().getProfile() != null) {
+                                infoArr.add(3, userInfoModelss.getUser().getProfile().toString());
+                            } else {
+                                infoArr.add(3, "去填写");
                             }
-                            infoArr.add(4,userInfoModelss.getUser().getMobile());
+                            infoArr.add(4, userInfoModelss.getUser().getMobile());
                             initRecycleView();
                         } else if (userInfoModelss.getCode() == 0) {
                         } else if (userInfoModelss.getCode() == 911) {
@@ -327,7 +334,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             itemSource.add(itemString[i]);
         }
 
-       initNewUserData();
+        initNewUserData();
 
 
     }
@@ -341,7 +348,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 return false;
             }
         });
-        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource, callBackString,infoArr);
+        userInfoRecycleViewAdapter = new UserInfoRecycleViewAdapter(itemSource, callBackString, infoArr);
         userRV.setAdapter(userInfoRecycleViewAdapter);
         userInfoRecycleViewAdapter.setOnItemClickListener(new UserInfoRecycleViewAdapter.OnItemClickListener() {
             @Override
@@ -377,7 +384,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     // TODO**************************************自定义弹出框******************************************
 
     /**
-     *  0,0更新nickname 0，1 更新性别 02更新生日  04更新手机号码
+     * 0,0更新nickname 0，1 更新性别 02更新生日  04更新手机号码
      */
     private void initSexDialog() {
         CustomDialog_Sex customDialog_sex = new CustomDialog_Sex(this, new CustomDialog_Sex.ICustomDialogEventListener() {
@@ -389,9 +396,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 } else if (id.equals("女")) {
                     Sex = 2;
                 }
-                if (dataSource != null){
+                if (dataSource != null) {
                     initUserInfo(0, 1);
-                }else {
+                } else {
                     initSnackBar("修改失败！");
                 }
             }
@@ -410,12 +417,12 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 if (!id.isEmpty()) {
                     SharedPreferencesUtils.setParam(getApplicationContext(), BaseInterface.USERNAME, id);
                     nickName = id;
-                    if (dataSource != null){
+                    if (dataSource != null) {
                         initUserInfo(0, 0);
-                    }else {
+                    } else {
                         initSnackBar("修改失败！");
                     }
-                }else {
+                } else {
                     initSnackBar("你还没有选择哦！");
                 }
 
@@ -429,19 +436,19 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             @Override
             public void customDialogEvent(List<Integer> birthdayList) {
                 LogUtil.e("生日" + birthdayList);
-                if (birthdayList.get(0)!=0){
+                if (birthdayList.get(0) != 0) {
                     SimpleDateFormat DEFAULT_SDFS = new SimpleDateFormat("yyyy年MM月", Locale.getDefault());
-                    String time = String.valueOf(birthdayList.get(0)+"年"+birthdayList.get(1)+"月");
-                    long mills = TimeUtils.string2Milliseconds(time,DEFAULT_SDFS)/1000;
-                    LogUtil.e("时间戳"+mills);
+                    String time = String.valueOf(birthdayList.get(0) + "年" + birthdayList.get(1) + "月");
+                    long mills = TimeUtils.string2Milliseconds(time, DEFAULT_SDFS) / 1000;
+                    LogUtil.e("时间戳" + mills);
                     Birthday = mills;
-                    if (dataSource !=null){
-                        initUserInfo(0,2);
-                    }else {
+                    if (dataSource != null) {
+                        initUserInfo(0, 2);
+                    } else {
                         initSnackBar("修改失败！");
                     }
 
-                }else {
+                } else {
                     initSnackBar("你还没有选择哦！");
                 }
             }
@@ -508,6 +515,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 }).create();
         shitView.show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
@@ -538,8 +546,8 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private static final int REQUESTCODE_TAKE = 1;
     private static final int REQUESTCODE_CUTTING = 2;
     private static final String IMAGE_FILE_NAME = "avatarImage.jpg";
-    private void takePhoto() {
 
+    private void takePhoto() {
 
 
         Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -549,7 +557,9 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
         startActivityForResult(takeIntent, TAKE_PHOTO);
 
     }
+
     String data1;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -560,11 +570,11 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     // show results in textview
                     StringBuilder sb = new StringBuilder();
                     sb.append(String.format("Totally %d images selected:", mResults.size())).append("\n");
-                    for(String result : mResults) {
+                    for (String result : mResults) {
                         sb.append(result).append("\n");
                     }
                 }
-                if (mResults.size()!=0){
+                if (mResults.size() != 0) {
 
 
                     header.setImageBitmap(BitmapFactory.decodeFile(new File(mResults.get(0)).getPath()));
@@ -573,7 +583,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                     mloading.show();
                     String token = creatTokenLocal();
                     byte[] bytes = ImageFactory.bitmapToByteAAA(bitmap);
-                    uploadImageToQiniuByChar(bytes,token);
+                    uploadImageToQiniuByChar(bytes, token);
                 }
 
                 break;
@@ -591,6 +601,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     // 上传byte
     private void uploadImageToQiniuByChar(byte[] filePath, String token) {
         UploadManager uploadManager = new UploadManager();
@@ -605,8 +616,8 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 if (key.toString().equals(arg0)) {
                     String headPic = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
                     HEADERPIC = headPic;
-                    initUserInfo(0,3);
-                }else {
+                    initUserInfo(0, 3);
+                } else {
                     initSnackBar("上传失败，请检查网络！");
                 }
             }
@@ -615,6 +626,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 
     private String urlpath;
     Drawable drawable;
+
     private void setPicToView(Intent picdata) {
         Bundle extras = picdata.getExtras();
         if (extras != null) {
@@ -624,12 +636,13 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             urlpath = DFileUtils.saveFile(UserInfoAC.this, "temphead.jpg", photo);
             header.setImageDrawable(drawable);
             // 新线程后台上传服务器
-            mloading = LoadingUtils.createLoadingDialog(this,"努力上传图片中...");
+            mloading = LoadingUtils.createLoadingDialog(this, "努力上传图片中...");
             mloading.show();
             String token = creatTokenLocal();
-            uploadImageToQiniu(urlpath,token);
+            uploadImageToQiniu(urlpath, token);
         }
     }
+
     private void uploadImageToQiniu(String filePath, String token) {
         UploadManager uploadManager = new UploadManager();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -639,33 +652,34 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
             @Override
             public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
                 // TODO Auto-generated method stub
-                Log.e("上传返回值",""+arg0);
-                if (key == arg0){
-                    LogUtil.e("上传的头像地址"+arg0);
+                Log.e("上传返回值", "" + arg0);
+                if (key == arg0) {
+                    LogUtil.e("上传的头像地址" + arg0);
                     String headPics = BaseInterface.ClassfiyGetAllHotBrandImgUrl + arg0;
                     HEADERPIC = headPics;
-                    initUserInfo(0,3);
+                    initUserInfo(0, 3);
 
-                }else {
+                } else {
                     initSnackBar("头像上传失败！请检查网络");
                     mloading.dismiss();
                 }
 
             }
-        },null);
+        }, null);
     }
 
 
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";
     public static String SK = "RxiQnoa8NqIe7lzSip-RRnBdX9_pwOQmBBPqGWvv";
     public static String SCOPE = "shexiangke-jcq";
-    private String creatTokenLocal (){
-        Mac mac = new Mac(AK,SK);
+
+    private String creatTokenLocal() {
+        Mac mac = new Mac(AK, SK);
         PutPolicy putPolicy = new PutPolicy(SCOPE);
         putPolicy.returnBody = "{\"name\": $(fname),\"size\": \"$(fsize)\",\"w\": \"$(imageInfo.width)\",\"h\": \"$(imageInfo.height)\",\"key\":$(etag)}";
         try {
             String uptoken = putPolicy.token(mac);
-            System.out.println("debug:uptoken = "+ uptoken);
+            System.out.println("debug:uptoken = " + uptoken);
             return uptoken;
         } catch (AuthException e) {
             // TODO Auto-generated catch block
@@ -702,7 +716,73 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
     private void initSnackBar(String name) {
         SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), name, Color.WHITE, Color.parseColor("#16a6ae"));
     }
+    SHARE_MEDIA SHARE_TYPE = null;
+    private void shareToThreePart(int type) {
 
+        switch (type) {
+            case 1:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN;
+                break;
+            case 2:
+                SHARE_TYPE = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 3:
+                SHARE_TYPE = SHARE_MEDIA.SINA;
+                break;
+            case 4:
+                SHARE_TYPE = SHARE_MEDIA.QQ;
+                break;
+        }
+
+        UMImage image = new UMImage(UserInfoAC.this, dataSource.getHeadimgurl());
+        UMImage thumb = new UMImage(this, R.mipmap.ic_launcher);
+        image.setThumb(thumb);
+        image.compressFormat = Bitmap.CompressFormat.PNG;
+        web = new UMWeb("http://zhushou.360.cn/detail/index/soft_id/3753468");
+        if (SHARE_TYPE == SHARE_MEDIA.WEIXIN_CIRCLE){
+            web.setTitle("下载啵呗APP，注册并输入邀请码就可以获得奖励哦！邀请码为"+dataSource.getInvitationCode());//标题
+        }else {
+            web.setTitle("快来下载啵呗吧！");//标题
+        }
+        web.setThumb(image);  //缩略图
+        web.setDescription("下载啵呗APP，注册并输入邀请码就可以获得奖励哦！邀请码为"+dataSource.getInvitationCode()+"。");//描述
+        new ShareAction(UserInfoAC.this)
+                .setPlatform(SHARE_TYPE)
+                .withMedia(web)
+                .setCallback(umShareListener)
+                .share();
+//        UmengTool.getSignature(ProductDetailsAC.this);
+//        UmengTool.getREDICRECT_URL(ProductDetailsAC.this);
+
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享成功啦！");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享失败！");
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            customDialog_shareBorad.dismiss();
+            initSnackBar("分享已取消！");
+        }
+    };
 
     @Override
     public void onClick(View view) {
@@ -712,6 +792,17 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.userInfoHeaderView:
                 initIOSSheetDialog();
+                break;
+            case R.id.code_invate:
+                // 分享到第三方
+                customDialog_shareBorad = new CustomDialog_ShareBorad(this, new CustomDialog_ShareBorad.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(int type) {
+                        LogUtil.e("输出的类型为" + type);
+                        shareToThreePart(type);
+                    }
+                }, R.style.style_dialog);
+                customDialog_shareBorad.show();
                 break;
             default:
                 break;

@@ -17,6 +17,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MinePublish.Adapter.MineRentingListAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MinePublish.Dialog.CustomDialog_OrderWarning;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MinePublish.Dialog.CustomDialog_inputOrderNumber;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MinePublish.Model.MineItemRentingModel;
 import com.example.cfwifine.sxk.Section.MineNC.Model.RequestStatueModel;
@@ -154,10 +155,8 @@ public class RentingFC extends Fragment {
                     }, R.style.style_dialog);
                     customDialog_inputOrderNumber.show();
                 } else if (type == 2) {
-                    initConfirmReback(maintainid);
+                    initDialog(maintainid);
                 } else if (type == 3) {
-                    LogUtil.e("订单号为" + maintainid);
-                    LogUtil.e("订单号为" + rentListDataSouce.get(pos).getOrderid());
                     Intent intent = new Intent(getActivity(), BuyerAndSellerOrderDetailAC.class);
                     intent.putExtra("type",1);
                     intent.putExtra("orderid",rentListDataSouce.get(pos).getRentid());
@@ -172,9 +171,21 @@ public class RentingFC extends Fragment {
 
 
     }
+    private void initDialog(final int maintainid) {
+        CustomDialog_OrderWarning customDialog_orderWarning = new CustomDialog_OrderWarning(mineItemAC, new CustomDialog_OrderWarning.ICustomDialogEventListener() {
+            @Override
+            public void customDialogEvent(int id) {
+                // rentID
+                initConfirmReback(maintainid);
+            }
+        },"回收提示","是否回收该订单？",R.style.style_dialog);
+        customDialog_orderWarning.show();
+    }
 
     private void initInputOrderNumber(int maintainid, String id) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", maintainid);
@@ -219,8 +230,10 @@ public class RentingFC extends Fragment {
                 );
     }
 
-    private void initConfirmReback(int maintainid) {
-        mineItemAC.dialog.show();
+    private void initConfirmReback(final int maintainid) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject js = new JSONObject();
         try {
             js.put("rentid", maintainid);
@@ -247,7 +260,12 @@ public class RentingFC extends Fragment {
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            initMineData(3, 0, 0);
+                            for (int i =0 ; i < rentListDataSouce.size(); i++){
+                                if (rentListDataSouce.get(i).getRentid() == maintainid){
+                                    rentListDataSouce.remove(i);
+                                }
+                            }
+                            mSheHeAdapter.notifyDataSetChanged();
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemAC.initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
@@ -262,7 +280,9 @@ public class RentingFC extends Fragment {
     }
 
     public void initMineData(final int status, int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("rentid", -1);

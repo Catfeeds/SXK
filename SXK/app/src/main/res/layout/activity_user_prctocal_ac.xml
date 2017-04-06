@@ -24,6 +24,7 @@
         android:layout_marginRight="15dp">
         <WebView
             android:id="@+id/text"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -447,8 +447,11 @@
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MineSale.Controller.MineSaleItem"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"
-            android:theme="@style/AppThemeHasTitle"></activity>
+        <activity
+            android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"
+            android:theme="@style/AppThemeHasTitle" />
+        <activity android:name=".Section.MineNC.Controller.MineAppraisa.MineAppraisaAC"
+            android:theme="@style/AppThemeHasTitle" ></activity>
     </application>
 
 </manifest>

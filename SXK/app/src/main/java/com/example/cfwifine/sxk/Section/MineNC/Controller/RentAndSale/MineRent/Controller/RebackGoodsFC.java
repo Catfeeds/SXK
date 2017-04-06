@@ -62,7 +62,9 @@ public class RebackGoodsFC extends Fragment {
         no_order = (LinearLayout) view.findViewById(R.id.no_order);
     }
     private void initData(final int status, int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);

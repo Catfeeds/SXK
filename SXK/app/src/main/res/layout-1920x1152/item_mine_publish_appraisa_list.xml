@@ -7,14 +7,14 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/appraisa_cell"
+        android:background="@drawable/ripple_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/appraisa_cell"
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:background="@drawable/ripple_bg"
+            android:gravity="center_vertical|bottom"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
@@ -54,6 +54,7 @@
                         android:layout_height="26dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
                         android:text="确认完成"
                         android:textColor="@color/login_turquoise"
                         android:background="@drawable/table_shape_cate_green"

@@ -225,22 +225,17 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
     private void initSizeData() {
         List<String> dataSource = new ArrayList<>();
         if (hotBrandListData != null && hotBrandListData.getCode() == 1) {
-            for (int i = 0; i < hotBrandListData.getHotList().size(); i++) {
-                dataSource.add(i, hotBrandListData.getHotList().get(i).getName());
+            if (hotBrandListData.getHotList().size()>=30){
+                for (int i = 0; i < 30; i++) {
+                    dataSource.add(i, hotBrandListData.getHotList().get(i).getName());
+                }
+            }else {
+                for (int i = 0; i < hotBrandListData.getHotList().size(); i++) {
+                    dataSource.add(i, hotBrandListData.getHotList().get(i).getName());
+                }
             }
+
         }
-//        dataSource.add("28 (2.1尺)adsfasdfasdfasdfas");
-//        dataSource.add("29 (2.2尺)");
-//        dataSource.add("30 (2.3尺)");
-//        dataSource.add("31 (2.4尺)");
-//        dataSource.add("32 (2.5尺)........");
-//        dataSource.add("33 (2.6尺)");
-//        dataSource.add("34 (2.7尺)");
-//        dataSource.add("35 (2.8尺)");
-//        dataSource.add("36 (2.9尺)");
-//        dataSource.add("37 (3.0尺)");
-//        dataSource.add("38 (3.1尺)");
-//        dataSource.add("39 (3.2尺)........");
         mSizeTagAdapter.onlyAddAll(dataSource);
     }
 

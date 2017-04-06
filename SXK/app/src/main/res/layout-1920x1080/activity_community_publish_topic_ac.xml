@@ -95,6 +95,8 @@
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/hot_cate_publish"
+            android:scrollbars="none"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"

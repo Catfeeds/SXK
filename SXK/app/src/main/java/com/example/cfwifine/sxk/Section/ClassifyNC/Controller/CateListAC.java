@@ -72,7 +72,6 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
     private TextView mPrice;
     private TextView mHot;
     Dialog mloading;
-
     List<RentListModel.RentListBean> rentList;
     private ClassifyAllListAdapter mAllListAdapter;
     private SwipeRefreshLayout swiperefresh;
@@ -203,7 +202,9 @@ public class CateListAC extends AppCompatActivity implements View.OnClickListene
             rentList = null;
             purchaseList = null;
         }
-        mloading.show();
+        if (!isFinishing()){
+            mloading.show();
+        }
         JSONObject order = new JSONObject();
         try {
             if (type == 1 ){

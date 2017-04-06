@@ -168,7 +168,7 @@ public class MineWalletAC extends AppCompatActivity implements View.OnClickListe
         JSONObject JS = new JSONObject();
         try {
             JS.put("pageNo",1);
-            JS.put("pageSize",40);
+            JS.put("pageSize",30);
             JS.put("order",js);
             JS.put("own",1);
         } catch (JSONException e) {

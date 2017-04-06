@@ -151,8 +151,10 @@ public class RejectFC extends Fragment {
      * 删除订单
      * @param maintainid
      */
-    private void initDelOrder(int maintainid) {
-        mineItemAC.dialog.show();
+    private void initDelOrder(final int maintainid) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", maintainid);
@@ -179,7 +181,12 @@ public class RejectFC extends Fragment {
                                  Gson gson = new Gson();
                                  RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                                  if (requestStatueModel.getCode() == 1) {
-                                     initMineData(5, 0, 0);
+                                     for (int i =0 ; i < rentListDataSouce.size(); i++){
+                                         if (rentListDataSouce.get(i).getRentid() == maintainid){
+                                             rentListDataSouce.remove(i);
+                                         }
+                                     }
+                                     mSheHeAdapter.notifyDataSetChanged();
                                      mineItemAC.initSnackBar("删除成功！");
                                  } else if (requestStatueModel.getCode() == 0) {
                                      mineItemAC.initSnackBar("删除失败！");
@@ -195,7 +202,9 @@ public class RejectFC extends Fragment {
     }
 
     public void initMineData(final int status, int pageNum, int pageSize){
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("rentid",-1);

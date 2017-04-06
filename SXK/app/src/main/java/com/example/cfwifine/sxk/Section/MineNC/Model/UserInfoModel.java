@@ -9,7 +9,7 @@ public class UserInfoModel {
 
     /**
      * code : 1
-     * user : {"mobile":"15539910985","password":"$2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq","userid":10,"createtime":1480922278,"updatetime":1488268453,"nickname":"黑帆","sex":1,"birthday":915120000,"profile":"退了噢耶","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":1,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.02}
+     * user : {"mobile":"15539910985","password":"$2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq","userid":10,"createtime":1480922278,"updatetime":1491037716,"nickname":"肥仔","sex":1,"birthday":694195200,"profile":"哈哈","role":4,"headimgurl":"http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545","buyer":{"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"},"balance":0,"seller":{"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"},"score":0.06,"invitationCode":"1805301"}
      */
 
     private int code;
@@ -37,17 +37,18 @@ public class UserInfoModel {
          * password : $2y$10$A5hqDBocEo/MaPoFgMM9He9qv42fnht0UwqdKVXcSdE6igOmPcMrq
          * userid : 10
          * createtime : 1480922278
-         * updatetime : 1488268453
-         * nickname : 黑帆
+         * updatetime : 1491037716
+         * nickname : 肥仔
          * sex : 1
-         * birthday : 915120000
-         * profile : 退了噢耶
+         * birthday : 694195200
+         * profile : 哈哈
          * role : 4
-         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170217091749
+         * headimgurl : http://ohqqvdngk.bkt.clouddn.com/sxk_userPic_20170307171545
          * buyer : {"name":"ghjn","idNumber":"43138119870827275X","front":"buyer_front_1486370551","back":"buyer_back_1486370551"}
-         * balance : 1
+         * balance : 0
          * seller : {"name":"接口","idNumber":"411381199301107614","front":"seller_front_1488251082","back":"seller_back_1488251082"}
-         * score : 0.02
+         * score : 0.06
+         * invitationCode : 1805301
          */
 
         private String mobile;
@@ -65,6 +66,7 @@ public class UserInfoModel {
         private int balance;
         private SellerBean seller;
         private double score;
+        private String invitationCode;
 
         public String getMobile() {
             return mobile;
@@ -184,6 +186,14 @@ public class UserInfoModel {
 
         public void setScore(double score) {
             this.score = score;
+        }
+
+        public String getInvitationCode() {
+            return invitationCode;
+        }
+
+        public void setInvitationCode(String invitationCode) {
+            this.invitationCode = invitationCode;
         }
 
         public static class BuyerBean {

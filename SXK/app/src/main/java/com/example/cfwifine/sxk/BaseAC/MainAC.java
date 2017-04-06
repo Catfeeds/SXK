@@ -20,7 +20,6 @@ import com.example.cfwifine.sxk.Section.HomeNC.Controller.HomeFC;
 import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginFC;
 import com.example.cfwifine.sxk.Section.MineBuyPlus.Controller.PublishBuyPlusAC;
 import com.example.cfwifine.sxk.Section.MineNC.Model.UserInfoModel;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishFC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPupWindow;
 import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
@@ -45,7 +44,7 @@ public class MainAC extends BaseAC  {
     private Class fragments[] = {
             HomeFC.class,
             ClassifyFC.class,
-            PublishFC.class,
+            null,
             CommunFC.class,
             LoginFC.class
             };

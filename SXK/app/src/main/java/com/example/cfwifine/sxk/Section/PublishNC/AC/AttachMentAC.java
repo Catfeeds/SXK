@@ -3,7 +3,9 @@ package com.example.cfwifine.sxk.Section.PublishNC.AC;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -178,7 +180,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
+    int s = 0;
     private void initCollectionRecycleView() {
         baobeifujian_rv = (RecyclerView) findViewById(R.id.baobeifujian_rv);
         LinearLayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -186,6 +188,7 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
         AttachmentBottomAdapter attachmentBottomAdapter = new AttachmentBottomAdapter(this, listData);
         baobeifujian_rv.setAdapter(attachmentBottomAdapter);
         attachmentBottomAdapter.setOnItemClickListener(new AttachmentBottomAdapter.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void OnItemClick(View view, ArrayList<TestModel> check) {
                 StringList = new ArrayList<String>();
@@ -194,24 +197,30 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                         StringList.add(check.get(i).getText());
                     }
                 }
+                for (int j = 0; j<check.size(); j++){
+                    if (check.get(j).getState()){
+                        s++;
+                    }
+                }
+                LogUtil.e("s输出的值"+s);
                 JSONArray yy = new JSONArray(StringList);
                 JSONObject x = new JSONObject();
                 try {
                     x.put("attributeName","相关配件");
                     x.put("attributeValueList",yy);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (FUJIANPOSITION == -1){
-                        xxx.put(0,x);
-                    }else {
+                    if (s != 0){
                         xxx.put(dataSource.size(),x);
-                    }
+                        s = 0;
+                    }else {
+                        xxx.remove(dataSource.size());
 
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
+
                 Log.e("选中的有", "" + xxx);
             }
         });
@@ -297,12 +306,21 @@ public class AttachMentAC extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.navi_right:
-
-                if (xxx == null) {
+                JSONArray yyy = new JSONArray();
+                for (int i = 0; i<xxx.length(); i++){
+                    try {
+                        if (xxx.get(i)!= null){
+                            yyy.put(xxx.get(i));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (yyy == null) {
                     SnackbarUtils.showShortSnackbar(AttachMentAC.this.getWindow().getDecorView(), "你还没有选择！", Color.WHITE, Color.parseColor("#16a6ae"));
                     return;
                 } else {
-                    SharedPreferencesUtils.setParam(this, "FINALLYARR", xxx.toString());
+                    SharedPreferencesUtils.setParam(this, "FINALLYARR", yyy.toString());
                     finish();
                 }
                 break;

@@ -17,6 +17,8 @@
         android:background="@color/gray_40"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/attachment_rv"
+        android:scrollbars="none"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
@@ -36,6 +38,8 @@
         <android.support.v7.widget.RecyclerView
             android:layout_weight="1"
             android:id="@+id/baobeifujian_rv"
+            android:scrollbars="none"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </android.support.v7.widget.RecyclerView>

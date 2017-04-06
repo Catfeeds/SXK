@@ -67,7 +67,9 @@ public class WaitReceGoodsFC extends Fragment {
         no_order = (LinearLayout) view.findViewById(R.id.no_order);
     }
     private void initData(final int status, int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);
@@ -221,8 +223,10 @@ public class WaitReceGoodsFC extends Fragment {
      * @param maintainid
      * @param oddNumber
      */
-    private void initConfirmReceiveGoods(int maintainid, String oddNumber) {
-        mineItemAC.dialog.show();
+    private void initConfirmReceiveGoods(final int maintainid, String oddNumber) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         // 确认订单3
         JSONObject js = new JSONObject();
         try {
@@ -255,7 +259,12 @@ public class WaitReceGoodsFC extends Fragment {
                         // 审核中
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            initData(2,0,0);
+                            for (int i =0 ; i < DataSouce.size(); i++){
+                                if (DataSouce.get(i).getRentid() == maintainid){
+                                    DataSouce.remove(i);
+                                }
+                            }
+                            mSheHeAdapter.notifyDataSetChanged();
                             mineItemAC.initSnackBar("收货成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemAC.initSnackBar("确认失败！");

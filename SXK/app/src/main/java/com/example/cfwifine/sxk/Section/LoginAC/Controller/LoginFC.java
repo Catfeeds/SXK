@@ -27,6 +27,7 @@ import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.LoginAC.Model.UserLoginModel;
 import com.example.cfwifine.sxk.Section.MineNC.Adapter.MineRecycleViewAdapter;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineAppraisaAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCoin.MineScoinAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionAC;
@@ -423,7 +424,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
                 break;
             case R.id.mine_recognize:
                 // 我的鉴定
-                startActivity(MineItemAppraisaAC.class, 1);
+                startActivity(MineAppraisaAC.class, 1);
                 break;
             default:
                 break;

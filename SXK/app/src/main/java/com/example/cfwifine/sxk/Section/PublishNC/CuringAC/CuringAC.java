@@ -52,6 +52,7 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
     private List<MinePublishShenHeModel.RentListBean> rentListDataSouce;
     public String[] size=null;
     private ArrayList<CuringListModel.MaintainListBean> DATASOURCE;
+    public String PHPSESSION;
 
 
     @Override
@@ -60,7 +61,7 @@ public class CuringAC extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_curing_ac);
         dialog = LoadingUtils.createLoadingDialog(this, "正在加载中...");
 
-
+        PHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(CuringAC.this, BaseInterface.PHPSESSION, ""));
         initView();
 
         initData(1, 10);

@@ -8,10 +8,11 @@ import java.util.List;
 
 public class MineItemAppraisaModel {
 
+
     /**
      * code : 1
-     * total : 2
-     * orderList : [{"orderNo":"2017011314304237173","setup":{"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"},"brand":{"brandid":2,"name":"CHANEL 香奈儿"},"genre":{"name":"腕表","price":1},"total":1,"userid":10,"receiver":{"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1},"status":2,"orderid":8,"createtime":1484289042,"updatetime":1484289048,"notifyid":19},{"orderNo":"2017011314301774789","setup":{"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"},"brand":{"brandid":3,"name":"Louis Vuitton 路易威登"},"genre":{"name":"包袋","price":1},"total":1,"userid":10,"receiver":{"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1},"status":2,"orderid":7,"createtime":1484289017,"updatetime":1484289025,"notifyid":18}]
+     * total : 3
+     * orderList : [{"orderNo":"2017011316005017817","setup":{"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"},"brand":{"brandid":3,"name":"Louis Vuitton 路易威登"},"genre":{"name":"腕表","price":1},"total":1,"userid":10,"receiver":{"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1},"status":3,"orderid":9,"createtime":1484294450,"updatetime":1491377351,"notifyid":20},{"orderNo":"2017011314304237173","setup":{"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"},"brand":{"brandid":2,"name":"CHANEL 香奈儿"},"genre":{"name":"腕表","price":1},"total":1,"userid":10,"receiver":{"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1},"status":3,"orderid":8,"createtime":1484289042,"updatetime":1491377384,"notifyid":19},{"orderNo":"2017011314301774789","setup":{"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"},"brand":{"brandid":3,"name":"Louis Vuitton 路易威登"},"genre":{"name":"包袋","price":1},"total":1,"userid":10,"receiver":{"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1},"status":2,"orderid":7,"createtime":1484289017,"updatetime":1484289025,"notifyid":18}]
      */
 
     private int code;
@@ -44,18 +45,18 @@ public class MineItemAppraisaModel {
 
     public static class OrderListBean {
         /**
-         * orderNo : 2017011314304237173
+         * orderNo : 2017011316005017817
          * setup : {"campaign":"Shexiangke_jcq::identifySetup_campaign1481803686965"}
-         * brand : {"brandid":2,"name":"CHANEL 香奈儿"}
+         * brand : {"brandid":3,"name":"Louis Vuitton 路易威登"}
          * genre : {"name":"腕表","price":1}
          * total : 1
          * userid : 10
          * receiver : {"userid":10,"name":"测试","mobile":"15539910985","state":"河南省","city":"南阳市","district":"邓州市","address":"箱子里","receiverid":125,"createtime":1484125464,"updatetime":1484278760,"isdefault":1}
-         * status : 2
-         * orderid : 8
-         * createtime : 1484289042
-         * updatetime : 1484289048
-         * notifyid : 19
+         * status : 3
+         * orderid : 9
+         * createtime : 1484294450
+         * updatetime : 1491377351
+         * notifyid : 20
          */
 
         private String orderNo;
@@ -185,8 +186,8 @@ public class MineItemAppraisaModel {
 
         public static class BrandBean {
             /**
-             * brandid : 2
-             * name : CHANEL 香奈儿
+             * brandid : 3
+             * name : Louis Vuitton 路易威登
              */
 
             private int brandid;

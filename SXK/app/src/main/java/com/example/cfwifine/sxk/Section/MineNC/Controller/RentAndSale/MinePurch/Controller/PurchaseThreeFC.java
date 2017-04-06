@@ -120,8 +120,10 @@ public class PurchaseThreeFC extends Fragment {
      * 确认收货
      * @param maintainid
      */
-    private void initConfirmReceiveGoods(int maintainid) {
-        mineItemAC.dialog.show();
+    private void initConfirmReceiveGoods(final int maintainid) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         // 确认订单3
         JSONObject js = new JSONObject();
         try {
@@ -153,7 +155,12 @@ public class PurchaseThreeFC extends Fragment {
                         // 审核中
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            initMineData(0,0);
+                            for (int i =0 ; i < DataSouce.size(); i++){
+                                if (DataSouce.get(i).getOrderid() == maintainid){
+                                    DataSouce.remove(i);
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
                             mineItemAC.initSnackBar("删除成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemAC.initSnackBar("删除失败！");
@@ -165,7 +172,9 @@ public class PurchaseThreeFC extends Fragment {
     }
 
     public void initMineData(int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);

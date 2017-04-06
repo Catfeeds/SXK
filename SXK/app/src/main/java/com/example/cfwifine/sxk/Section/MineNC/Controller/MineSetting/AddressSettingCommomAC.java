@@ -46,7 +46,6 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
     private HaoRecyclerView hao_recycleview;
     private AddressSettingRecycleViewAdapter mAdapter;
     private ArrayList<String> listData = new ArrayList<>();
-    private int pageSize = 10;
     private int pageNo = 1;
     private int receiverid = -1;
     private List<List<Image>> imagesList;
@@ -59,7 +58,6 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
     List<AddressListModel.ReceiverListBean> data = null;
     List<AddressListModel.ReceiverListBean> newDataSource;
     int Total = 0;
-    int pageNum = 10;
     private ImageView img_float;
     ArrayList<Integer> receiveList = new ArrayList<Integer>();
     Dialog dialog;
@@ -70,7 +68,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
         dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
         initView();
         configurationNaviTitle();
-        getListData(pageNo, pageSize);
+        getListData(1, 10);
     }
 
     // TODO*********************************配置View**********************************************
@@ -97,9 +95,9 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         data.clear();
-                        pageNum = 10;
+                        pageNo = 1;
 //                        pageSize+=10;
-                        getListData(pageNo, 10);
+                        getListData(1, 10);
                         //注意此处
                         hao_recycleview.refreshComplete();
                         swiperefresh.setRefreshing(false);
@@ -129,7 +127,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
         progressView.setIndicatorId(ProgressView.BallPulse);
         progressView.setIndicatorColor(0xff16a6ae);
         hao_recycleview.setFootLoadingView(progressView);
-
+        hao_recycleview.setCanloadMore(true);
         TextView textView = new TextView(this);
         textView.setText("已经到底啦~");
         textView.setTextColor(getResources().getColor(R.color.black));
@@ -141,13 +139,13 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        pageNum += 10;
-                        L.e("pageNum" + pageNum);
-                        if (pageNum >= Total) {
+                        if (data.size() >= Total) {
                             hao_recycleview.loadMoreEnd();
+                            pageNo = 1;
                             return;
                         }
-                        getListData(pageNo, pageNum);
+                        pageNo++;
+                        getListData(pageNo, 10);
                         mAdapter.notifyDataSetChanged();
                         hao_recycleview.loadMoreComplete();
                     }
@@ -174,11 +172,11 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
             }
 
             @Override
-            public void delete(View view, int position) {
+            public void delete(View view, int position, int i) {
                 /**
                  * 删除接口
                  */
-                deleteGoodsByReceiveID(position);
+                deleteGoodsByReceiveID(position,i);
             }
 
             @Override
@@ -276,7 +274,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
         startActivity(AddressDetailAC.class,position);
     }
     // TODO****************************************删除********************************************
-    private void deleteGoodsByReceiveID(Integer receiverid) {
+    private void deleteGoodsByReceiveID(Integer receiverid, final int i) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("receiverid",receiverid);
@@ -300,7 +298,8 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                         try {
                             JSONObject jsonObject1 = new JSONObject(response);
                             if (jsonObject1.optInt("code")==1){
-                                getListData(pageNo,pageNum);
+                                data.remove(i);
+                                mAdapter.notifyDataSetChanged();
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "删除成功!", Color.WHITE, Color.parseColor("#16a6ae"));
                             }else if (jsonObject1.optInt("code")==911){
                                 SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
@@ -314,8 +313,11 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                 });
     }
 
-    private void getListData(int pageNo, int pageSize) {
+    private void getListData(final int pageNo, int pageSize) {
 
+        if (pageNo == 1){
+            data = null;
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("receiverid", receiverid);
@@ -354,11 +356,12 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
                         Gson gson = new Gson();
                         addressListModel = gson.fromJson(response, AddressListModel.class);
                         if (addressListModel.getCode() == 1) {
-                            data = addressListModel.getReceiverList();
                             Total = addressListModel.getTotal();
-                            L.e("获取的数据" + data);
-                            L.e("获取的数据" + data.size());
-                            if (Total != 0) {
+                            if (pageNo != 1){
+                                data.addAll(addressListModel.getReceiverList());
+                                mAdapter.notifyDataSetChanged();
+                            }else {
+                                data = addressListModel.getReceiverList();
                                 initAddressListView();
                             }
                         } else if (addressListModel.getCode() == 911) {
@@ -417,7 +420,7 @@ public class AddressSettingCommomAC extends AppCompatActivity implements View.On
 
     @Override
     protected void onResume() {
-        getListData(pageNo,pageNum);
+        getListData(pageNo,10);
         super.onResume();
     }
 

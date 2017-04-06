@@ -65,7 +65,9 @@ public class HasReceGoodsFC extends Fragment {
     }
 
     private void initData(final int status, int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);

@@ -244,6 +244,11 @@ public class BaseInterface {
     // 余额支付
     public static String YUEPay = root +"/app/wallet/delpost";
 
+    // 确认订单
+    public static String AppraisaConfirm = root + "/app/identifyorder/setpost";
+    // 鉴定删除
+    public static String AppraiasDelete = root + "/app/identifyorder/delpost";
+
     // 储存用户的
     public static String NICKNAME = "NICKNAME";
     public static String USERNAME = "USERNAME";

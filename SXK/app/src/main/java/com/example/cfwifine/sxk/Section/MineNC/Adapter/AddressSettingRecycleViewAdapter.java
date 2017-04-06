@@ -76,7 +76,7 @@ public class AddressSettingRecycleViewAdapter extends RecyclerView.Adapter<Addre
                 L.e("点击了删除按钮"+position);
 //                mOnItemClickListener.OnItemClick(view,position);
 //                holder.delete.setTag(position);
-                mClickListener.delete(view,data.get(position).getReceiverid());
+                mClickListener.delete(view,data.get(position).getReceiverid(),position);
             }
         });
         // 点击修改地址

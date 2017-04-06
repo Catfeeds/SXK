@@ -128,7 +128,10 @@ public class MineItemDoneFC extends Fragment {
 
     }
     public void initMineData(final int status, int pageNum, int pageSize){
-        mineItemCuringAC.dialog.show();
+        if (!mineItemCuringAC.isFinishing()){
+            mineItemCuringAC.dialog.show();
+        }
+
         JSONObject order = new JSONObject();
         try {
             order.put("orderid",-1);
@@ -176,9 +179,6 @@ public class MineItemDoneFC extends Fragment {
                         } else if (mineItemDoneMoel.getCode() == 911) {
                             mineItemCuringAC.initSnackBar("登录超时，请重新登录");
                         }
-
-
-
                     }
                 });
 

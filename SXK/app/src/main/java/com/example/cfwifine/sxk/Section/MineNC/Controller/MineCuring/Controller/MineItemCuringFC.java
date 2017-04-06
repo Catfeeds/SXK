@@ -151,8 +151,11 @@ public class MineItemCuringFC extends Fragment {
         customDialog_orderWarning.show();
     }
 
-    private void initConfirmDone(int maintainid) {
-        mineItemCuringAC.dialog.show();
+    private void initConfirmDone(final int maintainid) {
+        if (!mineItemCuringAC.isFinishing()){
+            mineItemCuringAC.dialog.show();
+        }
+
         JSONObject js = new JSONObject();
         try {
             js.put("orderid",maintainid);
@@ -183,7 +186,12 @@ public class MineItemCuringFC extends Fragment {
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-//                            initMineData(2,0,0);
+                            for (int i =0 ; i < rentListDataSouce.size(); i++){
+                                if (rentListDataSouce.get(i).getOrderid() == maintainid){
+                                    rentListDataSouce.remove(i);
+                                }
+                            }
+                            mSheHeAdapter.notifyDataSetChanged();
                             mineItemCuringAC.initSnackBar("确认成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemCuringAC.initSnackBar("请求失败！");
@@ -199,7 +207,10 @@ public class MineItemCuringFC extends Fragment {
     }
 
     public void initMineData(final int status, int pageNum, int pageSize){
-        mineItemCuringAC.dialog.show();
+        if (!mineItemCuringAC.isFinishing()){
+            mineItemCuringAC.dialog.show();
+        }
+
         JSONObject order = new JSONObject();
         try {
             order.put("orderid",-1);

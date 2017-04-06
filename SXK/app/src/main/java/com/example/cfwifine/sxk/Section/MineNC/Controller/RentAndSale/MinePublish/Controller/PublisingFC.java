@@ -162,8 +162,10 @@ public class PublisingFC extends Fragment {
      *
      * @param maintainid
      */
-    private void initDontSail(int maintainid) {
-        mineItemAC.dialog.show();
+    private void initDontSail(final int maintainid) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("rentid", maintainid);
@@ -191,7 +193,12 @@ public class PublisingFC extends Fragment {
                                  Gson gson = new Gson();
                                  RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                                  if (requestStatueModel.getCode() == 1) {
-                                     initMineData(2, 0, 0);
+                                     for (int i =0 ; i < rentListDataSouce.size(); i++){
+                                         if (rentListDataSouce.get(i).getRentid() == maintainid){
+                                             rentListDataSouce.remove(i);
+                                         }
+                                     }
+                                     mSheHeAdapter.notifyDataSetChanged();
                                      mineItemAC.initSnackBar("下架成功！");
                                  } else if (requestStatueModel.getCode() == 0) {
                                      mineItemAC.initSnackBar("下架失败！");
@@ -206,7 +213,9 @@ public class PublisingFC extends Fragment {
     }
 
     public void initMineData(final int status, int pageNum, int pageSize){
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("rentid",-1);

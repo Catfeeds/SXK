@@ -68,7 +68,9 @@ public class CompletedOrderFC extends Fragment {
         no_order = (LinearLayout) view.findViewById(R.id.no_order);
     }
     private void initData(final int status, int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);
@@ -215,8 +217,10 @@ public class CompletedOrderFC extends Fragment {
         },"删除订单","是否删除订单？",R.style.style_dialog);
         customDialog_orderWarning.show();
     }
-    private void deleteGoods(int maintainid) {
-        mineItemAC.dialog.show();
+    private void deleteGoods(final int maintainid) {
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("orderid", maintainid);
@@ -242,7 +246,12 @@ public class CompletedOrderFC extends Fragment {
                                  Gson gson = new Gson();
                                  RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                                  if (requestStatueModel.getCode() == 1) {
-                                     initData(5, 0, 0);
+                                     for (int i =0 ; i < DataSouce.size(); i++){
+                                         if (DataSouce.get(i).getRentid() == maintainid){
+                                             DataSouce.remove(i);
+                                         }
+                                     }
+                                     mSheHeAdapter.notifyDataSetChanged();
                                      mineItemAC.initSnackBar("删除成功！");
                                  } else if (requestStatueModel.getCode() == 0) {
                                      mineItemAC.initSnackBar("删除失败！");

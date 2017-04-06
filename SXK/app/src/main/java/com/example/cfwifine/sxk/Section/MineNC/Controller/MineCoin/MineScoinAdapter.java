@@ -43,10 +43,41 @@ public class MineScoinAdapter extends RecyclerView.Adapter<MineScoinAdapter.MyVi
         double dd = mDatas.get(position).getAmount();
         holder.price.setText(String.format("%.2f",dd/100));
         double point = mDatas.get(position).getPoint();
-        holder.coin.setText("+ "+String.format("%.2f",point));
+        if (mDatas.get(position).getType() == 7){
+            holder.coin.setText("- "+String.format("%.2f",point));
+        }else {
+            holder.coin.setText("+ "+String.format("%.2f",point));
+        }
         SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd  HH:mm", Locale.getDefault());
         String timea = TimeUtils.milliseconds2String(mDatas.get(position).getCreatetime() * 1000l,DEFAULT_SDF);
         holder.time.setText(timea);
+        String names = "";
+        switch (mDatas.get(position).getType()){
+            case 1:
+                names = "租赁完成！";
+                break;
+            case 2:
+                names = "租赁分享奖励";
+                break;
+            case 3:
+                names = "寄卖成功！";
+                break;
+            case 4:
+                names = "寄卖完成奖励";
+                break;
+            case 5:
+                names = "租赁完成奖励";
+                break;
+            case 6:
+                names = "寄卖分享奖励";
+                break;
+            case 7:
+                names = "余额支付";
+                break;
+            default:
+                break;
+        }
+        holder.name.setText(names);
 
     }
 
@@ -60,13 +91,14 @@ public class MineScoinAdapter extends RecyclerView.Adapter<MineScoinAdapter.MyVi
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView price,coin,time;
+        TextView price,coin,time,name;
         public MyViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.cardView);
             price = (TextView)itemView.findViewById(R.id.price);
             coin = (TextView)itemView.findViewById(R.id.coin);
             time = (TextView)itemView.findViewById(R.id.time);
+            name = (TextView)itemView.findViewById(R.id.name);
         }
     }
 }

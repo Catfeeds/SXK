@@ -149,8 +149,8 @@ public class MineScoinAC extends AppCompatActivity implements View.OnClickListen
         }
         JSONObject JS = new JSONObject();
         try {
-            JS.put("pageNo",0);
-            JS.put("pageSize",0);
+            JS.put("pageNo",1);
+            JS.put("pageSize",30);
             JS.put("order",js);
         } catch (JSONException e) {
             e.printStackTrace();

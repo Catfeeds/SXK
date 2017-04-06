@@ -197,7 +197,7 @@
                                 android:id="@+id/kiss"
                                 android:layout_width="21dp"
                                 android:layout_height="18.5dp"
-                                android:src="@drawable/zuixingc" />
+                                android:src="@drawable/mouse_uncollection" />
 
                             <TextView
                                 android:layout_width="wrap_content"

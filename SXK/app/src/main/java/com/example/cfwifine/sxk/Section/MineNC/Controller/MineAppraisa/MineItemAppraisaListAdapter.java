@@ -58,8 +58,10 @@ public class MineItemAppraisaListAdapter extends RecyclerView.Adapter<MineItemAp
 
         if (classifyDataSource.get(position).getStatus() == 2){
             holder.description.setText("目前状态:检测中");
+            holder.delete.setText("确认完成");
         }else {
             holder.description.setText("目前状态:已完成");
+            holder.delete.setText("删除");
         }
         String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + classifyDataSource.get(position).getSetup().getCampaign().toString();
         Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.pic);

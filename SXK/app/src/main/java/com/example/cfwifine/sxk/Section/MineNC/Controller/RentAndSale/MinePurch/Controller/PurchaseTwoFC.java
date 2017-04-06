@@ -125,7 +125,9 @@ public class PurchaseTwoFC extends Fragment {
      * @param maintainid
      */
     private void initConfirmReceiveGoods(int maintainid) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         // 确认订单3
         JSONObject js = new JSONObject();
         try {
@@ -172,7 +174,9 @@ public class PurchaseTwoFC extends Fragment {
     }
 
     public void initMineData(int pageNum, int pageSize) {
-        mineItemAC.dialog.show();
+        if (!mineItemAC.isFinishing()){
+            mineItemAC.dialog.show();
+        }
         JSONObject order = new JSONObject();
         try {
             order.put("orderid", -1);

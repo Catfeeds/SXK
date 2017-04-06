@@ -18,6 +18,7 @@
         android:background="@color/home_bg"/>
     <LinearLayout
         android:id="@+id/system_message"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
