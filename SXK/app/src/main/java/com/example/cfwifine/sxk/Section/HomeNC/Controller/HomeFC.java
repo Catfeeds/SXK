@@ -51,6 +51,9 @@ import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.umeng.message.common.UmLog;
+import com.umeng.message.inapp.IUmengInAppMsgCloseCallback;
+import com.umeng.message.inapp.InAppMessageManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -66,7 +69,6 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import okhttp3.Call;
-
 
 @SuppressLint("NewApi")
 public class HomeFC extends Fragment implements View.OnClickListener {
@@ -325,11 +327,11 @@ public class HomeFC extends Fragment implements View.OnClickListener {
                 break;
             case R.id.search:
                 Intent intent = new Intent(getActivity(), ClassifySearchAC.class);
-                intent.putExtra("type",1);
+                intent.putExtra("type", 1);
                 startActivity(intent);
                 break;
             case R.id.scan:
-                startActivity(DrawViewAC.class,88);
+                startActivity(DrawViewAC.class, 88);
                 break;
             default:
                 break;
@@ -454,7 +456,7 @@ public class HomeFC extends Fragment implements View.OnClickListener {
         home_boobeshow.setOnClickListener(this);
         search = (LinearLayout) view.findViewById(R.id.search);
         search.setOnClickListener(this);
-        scan = (ImageButton)view.findViewById(R.id.scan);
+        scan = (ImageButton) view.findViewById(R.id.scan);
         scan.setOnClickListener(this);
     }
 

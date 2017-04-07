@@ -26,10 +26,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/login_phone_pic"/>
             <EditText
                 android:id="@+id/register_phonenumber"
@@ -38,9 +39,9 @@
                 android:inputType="number"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:hint="    请输入手机号码"
+                android:hint="请输入手机号码"
                 android:background="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/login_phone_numbercolor"/>
@@ -61,18 +62,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:weightSum="1"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/login_password_pic"/>
             <EditText
                 android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=" 请输入密码（至少6位数）"
-                android:padding="5dp"
+                android:hint="请输入密码（至少6位数）"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:inputType="numberPassword"
                 android:cursorVisible="true"
@@ -107,6 +109,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:gravity="center_vertical"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:orientation="vertical">
@@ -117,18 +120,18 @@
             android:orientation="horizontal"
             android:weightSum="1">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/register_code"/>
             <EditText
                 android:id="@+id/register_verification_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="    请输入手机验证码"
+                android:hint="请输入手机验证码"
                 android:inputType="number"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:background="@null"
                 android:textColor="@color/black"
@@ -178,6 +181,7 @@
         android:id="@+id/invite_code"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:gravity="center_vertical"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:visibility="gone"
@@ -186,18 +190,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
             android:weightSum="1"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/login_password_pic"/>
             <EditText
                 android:id="@+id/register_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="    请输入邀请码"
-                android:padding="5dp"
+                android:hint="请输入邀请码"
+                android:inputType="number"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:background="@null"
                 android:layout_weight="0.98"

@@ -61,6 +61,7 @@ public class BandPhoneNumberAC extends AppCompatActivity implements View.OnClick
     private LinearLayout show_invite_code_view;
     Dialog dialog;
     private int LOGINTYPE;
+    private boolean isShow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,13 @@ public class BandPhoneNumberAC extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.show_invite_code_view:
-                invite_code.setVisibility(View.VISIBLE);
+                if (isShow){
+                    invite_code.setVisibility(View.GONE);
+                    isShow = false;
+                }else {
+                    invite_code.setVisibility(View.VISIBLE);
+                    isShow = true;
+                }
                 break;
             case R.id.register_user_protocal:
                 Intent intent1 = new Intent(BandPhoneNumberAC.this, UserPrctocalAC.class);
@@ -261,11 +268,15 @@ public class BandPhoneNumberAC extends AppCompatActivity implements View.OnClick
     }
 
     private void initPhoneNumber() {
+        String inviteCode = register_code.getText().toString().trim();
         JSONObject js = new JSONObject();
         try {
             js.put("mobile", register_phonenumber.getText().toString().trim());
             js.put("code", register_verification_code.getText().toString().trim());
             js.put("password",register_password.getText().toString().trim());
+            if (!TextUtils.isEmpty(inviteCode)){
+                js.put("invitationCode",inviteCode);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

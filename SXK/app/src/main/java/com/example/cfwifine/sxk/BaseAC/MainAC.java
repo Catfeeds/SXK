@@ -26,6 +26,9 @@ import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.google.gson.Gson;
+import com.umeng.message.PushAgent;
+import com.umeng.message.inapp.IUmengInAppMsgCloseCallback;
+import com.umeng.message.inapp.InAppMessageManager;
 import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -71,6 +74,17 @@ public class MainAC extends BaseAC  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_ac);
+        // 初始化推送
+        PushAgent.getInstance(this).onAppStart();
+        InAppMessageManager.getInstance(this).showCardMessage(this, "main",
+                new IUmengInAppMsgCloseCallback() {
+                    //插屏消息关闭时，会回调该方法
+                    @Override
+                    public void onColse() {
+
+                    }
+                });
+
         initView();
         // 初始化个人信息，如果登录超时 LoginFC展示为登录界面   否则则展示个人中心界面
 //        initUserData();

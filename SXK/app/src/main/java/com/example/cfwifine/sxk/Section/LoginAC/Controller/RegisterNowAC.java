@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -43,6 +42,10 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
     private static final int LOGON_SUCESS = 110;
     private ImageView look_passs;
     private boolean isLook = false;
+    private LinearLayout show_invite_code_view;
+    private EditText register_code;
+    private LinearLayout invite_code;
+    private boolean isShow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,6 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
 
     // TODO*********************************配置注册界面**********************************************
     private void initView() {
-
         register_phonenumber = (EditText) findViewById(R.id.register_phonenumber);
         register_phonenumber.setOnClickListener(this);
         register_password = (EditText) findViewById(R.id.register_password);
@@ -83,6 +85,11 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         look_passs = (ImageView) findViewById(R.id.look_passs);
         look_passs.setOnClickListener(this);
         look_passs.setImageResource(R.drawable.eye);
+
+        show_invite_code_view = (LinearLayout) findViewById(R.id.show_invite_code_view);
+        show_invite_code_view.setOnClickListener(this);
+        register_code = (EditText) findViewById(R.id.register_code);
+        invite_code = (LinearLayout) findViewById(R.id.invite_code);
     }
 
 
@@ -105,19 +112,27 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
                 startActivity(intent1);
                 break;
             case R.id.look_passs:
-                if(isLook){
+                if (isLook) {
                     look_passs.setImageResource(R.drawable.yanjingss);
                     //如果选中，显示密码
                     register_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     isLook = false;
-                }else{
+                } else {
                     look_passs.setImageResource(R.drawable.eye);
                     //否则隐藏密码
                     register_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     isLook = true;
                 }
                 break;
-
+            case R.id.show_invite_code_view:
+                if (isShow){
+                    invite_code.setVisibility(View.GONE);
+                    isShow = false;
+                }else {
+                    invite_code.setVisibility(View.VISIBLE);
+                    isShow = true;
+                }
+                break;
             default:
                 break;
         }
@@ -189,11 +204,15 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请输入手机验证码！", Color.WHITE, Color.parseColor("#16a6ae"));
             return;
         }
+        String inviteCode = register_code.getText().toString().trim();
         final JSONObject JSON = new JSONObject();
         try {
             JSON.put("mobile", phonenumber);
             JSON.put("password", password);
             JSON.put("code", code);
+            if (!TextUtils.isEmpty(inviteCode)){
+                JSON.put("invitationCode",inviteCode);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -245,4 +264,5 @@ public class RegisterNowAC extends AppCompatActivity implements View.OnClickList
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(this);
     }
+
 }

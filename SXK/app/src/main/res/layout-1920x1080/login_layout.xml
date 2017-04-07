@@ -119,7 +119,7 @@
                     android:gravity="center_vertical">
                     <ImageView
 
-                        android:layout_width="22dp"
+                        android:layout_width="20dp"
                         android:layout_height="22dp"
                         android:layout_marginLeft="23dp"
                         android:background="@drawable/login_qq_pic"/>

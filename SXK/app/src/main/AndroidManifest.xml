@@ -434,7 +434,8 @@
         <activity
             android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC" />
+        <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC"
+            android:theme="@style/AppThemeHasTitle"/>
         <activity
             android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
             android:theme="@style/AppThemeHasTitle" />
@@ -450,8 +451,21 @@
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.MineNC.Controller.MineAppraisa.MineAppraisaAC"
-            android:theme="@style/AppThemeHasTitle" ></activity>
+        <activity
+            android:name=".Section.MineNC.Controller.MineAppraisa.MineAppraisaAC"
+            android:theme="@style/AppThemeHasTitle" />
+
+        <activity
+            android:name=".BaseAC.PushAdvertisementAC"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme_Umeng_Push_Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

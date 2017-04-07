@@ -7,6 +7,8 @@ import android.net.Uri;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ConversiationAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.ProductDetailsAC;
 import com.example.cfwifine.sxk.Utils.LogUtil;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -71,15 +73,19 @@ public class MyApplication extends Application {
 
         // 初始化融云服务
         RongIM.init(this);
+        // 初始化推送
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+            }
+            @Override
+            public void onFailure(String s, String s1) {
 
+            }
+        });
 
-
-//        RongIM.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-//            @Override
-//            public boolean onReceived(Message message, int i) {
-//                return false;
-//            }
-//
-//        });
     }
 }

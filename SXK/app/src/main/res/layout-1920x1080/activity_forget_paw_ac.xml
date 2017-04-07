@@ -26,10 +26,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/login_phone_pic"/>
             <EditText
                 android:id="@+id/forgetpaw_phonenumber_edittext"
@@ -38,9 +39,9 @@
                 android:inputType="number"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:hint="    请输入手机号"
+                android:hint="请输入手机号"
                 android:background="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:textColorHint="@color/login_phone_numbercolor"/>
         </LinearLayout>
@@ -60,21 +61,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="1">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/register_code"/>
             <EditText
                 android:id="@+id/forgetpaw_verify_code_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="    请输入验证码"
+                android:hint="请输入验证码"
                 android:inputType="number"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:background="@null"
                 android:textColorHint="@color/login_phone_numbercolor"
@@ -108,22 +110,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="1">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/login_password_pic"/>
             <EditText
                 android:id="@+id/forgetpaw_newpassword_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="  请输入新密码"
+                android:hint="请输入新密码"
                 android:inputType="numberPassword"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:background="@null"
                 android:layout_weight="0.98"
@@ -149,22 +152,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="1">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="23dp"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
                 android:background="@drawable/forget_psw_confirm"/>
             <EditText
                 android:id="@+id/forgetpaw_confirmpaw_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="  请输入确认密码"
+                android:hint="请输入确认密码"
                 android:inputType="numberPassword"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:padding="5dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="14sp"
                 android:background="@null"
                 android:layout_weight="0.98"

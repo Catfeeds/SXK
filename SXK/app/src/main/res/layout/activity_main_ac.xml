@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/main_image_center"
-        android:layout_width="130px"
-        android:layout_height="150px"
+        android:layout_width="120px"
+        android:layout_height="135px"
         android:layout_alignParentBottom="true"
         android:background="@drawable/main_centers"
         android:layout_centerInParent="true"

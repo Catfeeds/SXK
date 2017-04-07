@@ -148,6 +148,7 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+
     private void initSharePresent() {
         dialog.show();
         JSONObject js = new JSONObject();

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 
+
+
 public class BannerDetailAC extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView navi_back_pic;
@@ -27,6 +29,7 @@ public class BannerDetailAC extends AppCompatActivity implements View.OnClickLis
     private WebView text;
     private LinearLayout activity_user_prctocal_ac;
     Dialog dialog;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,13 @@ public class BannerDetailAC extends AppCompatActivity implements View.OnClickLis
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         text = (WebView) findViewById(R.id.text);
         activity_user_prctocal_ac = (LinearLayout) findViewById(R.id.activity_user_prctocal_ac);
-        String url = getIntent().getStringExtra("URLINK");
+        int value = getIntent().getIntExtra("SETJUMPPOSITION",0);
+        if (value == 888){
+            navi_title.setText("扫描结果");
+            url = getIntent().getStringExtra("SCANURL");
+        }else {
+            url = getIntent().getStringExtra("URLINK");
+        }
         dialog.show();
         initContent(url);
     }

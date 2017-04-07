@@ -232,12 +232,12 @@
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/layout/rc_item_public_service_conversation.xml"
     },
     {
-        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ac_file_manager.xml",
-        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/layout/rc_ac_file_manager.xml"
-    },
-    {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_plugin_pager.xml",
         "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/layout/rc_ext_plugin_pager.xml"
+    },
+    {
+        "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ac_file_manager.xml",
+        "source": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/bundles/debug/res/layout/rc_ac_file_manager.xml"
     },
     {
         "merged": "/Users/cfwifine/Desktop/SHEXIANGKE/SXK/IMKit/build/intermediates/res/merged/androidTest/debug/layout/rc_ext_input_edit_text.xml",
