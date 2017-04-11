@@ -1,13 +1,19 @@
 package com.example.cfwifine.sxk.Section.MineBuyPlus.Controller;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.HomeNC.Controller.BannerDetailAC;
@@ -51,8 +57,30 @@ public class DrawViewAC extends AppCompatActivity implements ZXingScannerView.Re
     @Override
     protected void onResume() {
         super.onResume();
-        zxingView.setResultHandler(this); // 设置处理结果回调
-        zxingView.startCamera(); // 打开摄像头
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //如果没有授权，则请求授权
+            ActivityCompat.requestPermissions(DrawViewAC.this, new String[]{Manifest.permission.CAMERA}, 733);
+        } else {
+            //有授权，直接开启摄像头
+//                    takePhoto();
+            zxingView.setResultHandler(this); // 设置处理结果回调
+            zxingView.startCamera(); // 打开摄像头
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 733) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //权限被授予
+                zxingView.setResultHandler(this); // 设置处理结果回调
+                zxingView.startCamera(); // 打开摄像头
+            } else {
+                // Permission Denied
+                Toast.makeText(DrawViewAC.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

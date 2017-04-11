@@ -112,13 +112,13 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         activity_order_purchase_ac = (LinearLayout) findViewById(R.id.activity_order_purchase_ac);
         orderlist_rv = (RecyclerView) findViewById(R.id.orderlist_rv);
         address_text = (TextView) findViewById(R.id.address_text);
-        initRecycleViewData();
+        initRecycleViewData(1);
 
     }
 
 
     // 初始化recycleview的数据
-    private void initRecycleViewData() {
+    private void initRecycleViewData(final int i) {
         dialog.show();
         JSONObject order = new JSONObject();
         try {
@@ -157,12 +157,23 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                         Gson gson = new Gson();
                         purchasePreListModel = gson.fromJson(response, PurchasePreListModel.class);
                         if (purchasePreListModel.getCode() == 1) {
-                            if (purchasePreListModel.getPurchaseList().size() == 0) {
-                                orderlist_rv.setVisibility(View.GONE);
-                            } else {
-                                dataSource = purchasePreListModel.getPurchaseList();
-                                initRecycleView();
+                            if (i == 1){
+                                if (purchasePreListModel.getPurchaseList().size() == 0) {
+                                    orderlist_rv.setVisibility(View.GONE);
+                                } else {
+                                    dataSource = purchasePreListModel.getPurchaseList();
+                                    initRecycleView();
+                                }
+                            }else if (i==2){
+                                if (purchasePreListModel.getPurchaseList().size() == 0) {
+                                    orderlist_rv.setVisibility(View.GONE);
+                                } else {
+                                    orderlist_rv.setVisibility(View.VISIBLE);
+                                    dataSource = purchasePreListModel.getPurchaseList();
+                                    initRecycleView();
+                                }
                             }
+
                         } else if (purchasePreListModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (purchasePreListModel.getCode() == 911) {
@@ -297,7 +308,7 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
         } else {
             address_text.setText(ADDRESSS);
         }
-        initRecycleViewData();
+        initRecycleViewData(2);
     }
 
     @Override
@@ -384,7 +395,7 @@ public class OrderPurchaseAC extends AppCompatActivity implements View.OnClickLi
                         Gson gson = new Gson();
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            initRecycleViewData();
+                            initRecycleViewData(1);
                             initSnackBar("预约商品成功！请等待审核！");
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");

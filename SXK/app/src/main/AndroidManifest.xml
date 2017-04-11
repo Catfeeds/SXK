@@ -50,6 +50,11 @@
     <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
     <!-- <uses-permission android:name="android.permission.USE_CREDENTIALS" /> -->
     <!-- <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" /> -->
+    <uses-permission android:name="android.permission.VIBRATE" />  <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />        <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />   <!-- 自动聚焦权限 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <supports-screens
         android:anyDensity="true"
@@ -71,97 +76,129 @@
             android:name="com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideConfiguration"
             android:value="GlideModule" />
 
-        <activity android:name=".Section.WelcomeNC.WelcomeActivity">
+        <activity android:name=".Section.WelcomeNC.WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Section.WelcomeNC.WelcomeAC" />
-        <activity android:name=".BaseAC.BaseAC" />
-        <activity android:name=".BaseAC.MainAC" />
+        <activity android:name=".Section.WelcomeNC.WelcomeAC"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BaseAC.BaseAC"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BaseAC.MainAC"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Section.LoginAC.Controller.LoginUseBoobeAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.LoginAC.Controller.RegisterNowAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.LoginAC.Controller.ForgetPawAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.PublishPublishAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.PublishCateoryAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.PublishBrandAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.PublishMaterialAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.CheckRecycleViewAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
-        <activity android:name=".Section.PublishNC.View.PreviewPicView.ImageBrowseActivity" />
+        <activity android:name=".Section.PublishNC.View.PreviewPicView.ImageBrowseActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Section.MineNC.Controller.MineInfo.UserInfoAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineInfo.PersonalIntroAndChangePswAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineInfo.UserPrctocalAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineSetting.UserInfoRecycleViewCommomAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineSetting.AddressSettingCommomAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineSetting.AddressDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.EightItemDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.ActivityDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.CommunityNC.Controller.CommunityPublishTopicAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.HowToReleasePicAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AC.AttachMentAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.CuringAC.CuringAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.CuringAC.CuringDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AppraisalAC.AppraisasAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.CuringAC.WarningAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MinePublish.Controller.MineItemAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.CateListAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.ProductDetailsAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.PayOrderAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
 
         <!-- // 第三方登录相关 -->
@@ -301,48 +338,63 @@
 
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.MineItemRentAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.ReBackGoodsAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.CuringAC.CuringPayOrderAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.ExchangeAndRentAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.AppraisaAllAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.HomeNC.Controller.HomeThreeBlockDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineFollow.MineFollowAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.ConversiationAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -385,33 +437,43 @@
         </activity>
         <activity
             android:name=".Section.HomeNC.Controller.BannerDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineWallet.MineWalletAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Section.MineNC.Controller.MineWallet.ReChargeAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.LoginAC.Controller.BandPhoneNumberAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineWallet.WithDrawAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineServerCenter.Controller.RegisterSecurityAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineCoin.MineScoinAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Section.ClassifyNC.Controller.ClassifySearchAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.CommentDetailAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
 
         <receiver
@@ -427,45 +489,518 @@
 
         <activity
             android:name=".Section.MineBuyPlus.Controller.PublishBuyPlusAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineBuyPlus.Controller.OrderPurchaseAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle"/>
         <activity
             android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.ClassifyNC.Controller.PurchasePayOrderAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.Controller.MineRentPartAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MineSale.Controller.MineSaleItem"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
         <activity
             android:name=".Section.MineNC.Controller.MineAppraisa.MineAppraisaAC"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHasTitle" />
 
         <activity
             android:name=".BaseAC.PushAdvertisementAC"
             android:screenOrientation="portrait"
             android:theme="@style/Theme_Umeng_Push_Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>
 
 </manifest>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<manifest xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--package="com.example.cfwifine.sxk">-->
+
+    <!--<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <!--&lt;!&ndash; the following two permissions are required if you want to take photo in selector &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />-->
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />-->
+
+    <!--&lt;!&ndash; &lt;!&ndash; 通用权限 &ndash;&gt; &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.INTERNET" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.READ_PHONE_STATE" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; &lt;!&ndash; 银联需要的权限 &ndash;&gt; &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.NFC" />-->
+    <!--// 第三方登录所需的相关权限-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.READ_LOGS" />-->
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.GET_TASKS" />-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.SET_DEBUG_APP" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.GET_ACCOUNTS" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.USE_CREDENTIALS" /> &ndash;&gt;-->
+    <!--&lt;!&ndash; <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" /> &ndash;&gt;-->
+
+    <!--<supports-screens-->
+        <!--android:anyDensity="true"-->
+        <!--android:largeScreens="true"-->
+        <!--android:normalScreens="true"-->
+        <!--android:resizeable="true"-->
+        <!--android:smallScreens="true" />-->
+
+    <!--<application-->
+        <!--android:name=".BaseAC.MyApplication"-->
+        <!--android:allowBackup="true"-->
+        <!--android:icon="@mipmap/ic_launcher"-->
+        <!--android:label="@string/app_name"-->
+        <!--android:sharedUserId="android.uid.system"-->
+        <!--android:supportsRtl="true"-->
+        <!--android:theme="@style/AppThemeNoTitle"-->
+        <!--tools:replace="android:icon">-->
+        <!--<meta-data-->
+            <!--android:name="com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.glide.GlideConfiguration"-->
+            <!--android:value="GlideModule" />-->
+
+        <!--<activity android:name=".Section.WelcomeNC.WelcomeActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity android:name=".Section.WelcomeNC.WelcomeAC" />-->
+        <!--<activity android:name=".BaseAC.BaseAC" />-->
+        <!--<activity android:name=".BaseAC.MainAC" />-->
+        <!--<activity-->
+            <!--android:name=".Section.LoginAC.Controller.LoginUseBoobeAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.LoginAC.Controller.RegisterNowAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.LoginAC.Controller.ForgetPawAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.PublishPublishAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.PublishCateoryAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.PublishBrandAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.PublishMaterialAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.CheckRecycleViewAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity android:name=".Section.PublishNC.View.PreviewPicView.ImageBrowseActivity" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineInfo.UserInfoAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineInfo.PersonalIntroAndChangePswAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineInfo.UserPrctocalAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineSetting.UserInfoRecycleViewCommomAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineSetting.AddressSettingCommomAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineSetting.AddressDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.EightItemDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.ActivityDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.CommunityNC.Controller.CommunityPublishTopicAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.HowToReleasePicAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AC.AttachMentAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.CuringAC.CuringAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.CuringAC.CuringDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AppraisalAC.AppraisasAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.CuringAC.WarningAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.MinePublish.Controller.MineItemAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.CateListAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.ProductDetailsAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.PayOrderAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+
+        <!--&lt;!&ndash; // 第三方登录相关 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".WBShareActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:screenOrientation="portrait">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--&lt;!&ndash; <service &ndash;&gt;-->
+        <!--&lt;!&ndash; android:name="com.sina.weibo.sdk.net.DownloadService" &ndash;&gt;-->
+        <!--&lt;!&ndash; android:exported="false"></service> &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:exported="false"-->
+            <!--android:windowSoftInputMode="adjustResize" />-->
+        <!--<activity-->
+            <!--android:name=".wxapi.WXEntryActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+            <!--android:exported="true"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+        <!--<activity-->
+            <!--android:name="com.tencent.tauth.AuthActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:noHistory="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+                <!--<data android:scheme="tencent1105783079" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name="com.tencent.connect.common.AssistActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+
+        <!--<meta-data-->
+            <!--android:name="UMENG_APPKEY"-->
+            <!--android:value="587ece6b07fe6574fc000487" />-->
+        <!--// 支付页面-->
+        <!--<activity-->
+            <!--android:name="com.pingplusplus.android.PaymentActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|navigation|screenSize"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+
+        <!--&lt;!&ndash; 微信支付 &ndash;&gt;-->
+        <!--<activity-alias-->
+            <!--android:name=".wxapi.WXPayEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:targetActivity="com.pingplusplus.android.PaymentActivity" />-->
+
+        <!--&lt;!&ndash; 支付宝 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.alipay.sdk.app.H5PayActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|navigation"-->
+            <!--android:exported="false"-->
+            <!--android:screenOrientation="behind" />-->
+        <!--<activity-->
+            <!--android:name="com.alipay.sdk.auth.AuthActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|navigation"-->
+            <!--android:exported="false"-->
+            <!--android:screenOrientation="behind" />-->
+
+        <!--&lt;!&ndash; 银联支付 &ndash;&gt;-->
+        <!--<activity android:name="com.unionpay.uppay.PayActivity" />-->
+        <!--// 集成美恰相关界面-->
+        <!--&lt;!&ndash; 聊天界面 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQConversationActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize" />-->
+
+        <!--&lt;!&ndash; 图片查看界面 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQPhotoPreviewActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden" />-->
+
+        <!--&lt;!&ndash; 图片选择界面 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden" />-->
+        <!--&lt;!&ndash; 图片选择预览界面 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQPhotoPickerPreviewActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden" />-->
+        <!--&lt;!&ndash; WebView 界面 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQWebViewActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize" />-->
+        <!--&lt;!&ndash; 询前表单 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQInquiryFormActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize" />-->
+        <!--<activity-->
+            <!--android:name="com.meiqia.meiqiasdk.activity.MQCollectInfoActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:launchMode="singleTop"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MQTheme"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize" />-->
+
+        <!--<service android:name="com.meiqia.core.MeiQiaService" />-->
+
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.MineItemRentAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.MineRent.Controller.ReBackGoodsAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineCuring.Controller.MineItemCuringAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.CuringAC.CuringPayOrderAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineAppraisa.MineItemAppraisaAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.ExchangeAndRentAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.AppraisaAllAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.HomeThreeBlockDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineServerCenter.Controller.MineServerCenterAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineFollow.MineFollowAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineCollection.MineCollectionAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineIDIdentify.IDIdentifyAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.PublishNC.AppraisalAC.FreeAppraisaAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.ConversiationAC"-->
+            <!--android:theme="@style/AppThemeHasTitle">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+
+                <!--<data-->
+                    <!--android:host="com.example.cfwifine.sxk"-->
+                    <!--android:pathPrefix="/conversation/"-->
+                    <!--android:scheme="rong" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.example.cfwifine.sxk.FileProvider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--android:resource="@xml/rc_file_path" />-->
+        <!--</provider>-->
+
+        <!--&lt;!&ndash; 会话列表 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.ConversiationListAC"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/AppThemeHasTitle"-->
+            <!--android:windowSoftInputMode="stateHidden|adjustResize">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+
+                <!--<data-->
+                    <!--android:host="com.example.cfwifine.sxk"-->
+                    <!--android:pathPrefix="/conversationlist"-->
+                    <!--android:scheme="rong" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.BannerDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineWallet.MineWalletAC"-->
+            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineWallet.ReChargeAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.LoginAC.Controller.BandPhoneNumberAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineWallet.WithDrawAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineServerCenter.Controller.RegisterSecurityAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineCoin.MineScoinAC"-->
+            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.ClassifySearchAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.CommentDetailAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+
+        <!--<receiver-->
+            <!--android:name=".BaseAC.RongIMPushNotificationReceiver"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />-->
+                <!--<action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />-->
+                <!--<action android:name="io.rong.push.intent.MESSAGE_CLICKED" />-->
+                <!--<action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--<activity-->
+            <!--android:name=".Section.MineBuyPlus.Controller.PublishBuyPlusAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineBuyPlus.Controller.OrderPurchaseAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineBuyPlus.Controller.PublishPurchaseAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity android:name=".Section.MineBuyPlus.Controller.DrawViewAC"-->
+            <!--android:theme="@style/AppThemeHasTitle"/>-->
+        <!--<activity-->
+            <!--android:name=".Section.HomeNC.Controller.HomePurchaiseListAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.ClassifyNC.Controller.PurchasePayOrderAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.Controller.MineRentPartAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.MineSale.Controller.MineSaleItem"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.RentAndSale.MinePurch.Controller.MinePurchaseItems"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".Section.MineNC.Controller.MineAppraisa.MineAppraisaAC"-->
+            <!--android:theme="@style/AppThemeHasTitle" />-->
+        <!--<activity-->
+            <!--android:name=".BaseAC.PushAdvertisementAC"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/Theme_Umeng_Push_Splash">-->
+        <!--</activity>-->
+
+    <!--</application>-->
+
+<!--</manifest>-->
+
+

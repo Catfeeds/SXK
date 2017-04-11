@@ -19,4 +19,11 @@ public class RequestStatueModel {
     public void setCode(int code) {
         this.code = code;
     }
+    private String message;
+    public String getMsg(){
+        return message;
+    }
+    public void setMsg(String msg) {
+        this.message = msg;
+    }
 }

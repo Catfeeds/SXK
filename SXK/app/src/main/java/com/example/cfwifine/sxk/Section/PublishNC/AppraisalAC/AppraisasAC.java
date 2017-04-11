@@ -415,7 +415,7 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
         JSONObject js = new JSONObject();
         try {
             js.put("orderid",orderID);
-            js.put("type",2);
+            js.put("type",3);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -443,7 +443,9 @@ public class AppraisasAC extends AppCompatActivity implements View.OnClickListen
                             MaterialDialog("支付成功！");
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
-                        } else {
+                        } else if (createOrderModel.getCode() == 2003){
+                            SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), createOrderModel.getMsg().toString(), Color.WHITE, Color.parseColor("#16a6ae"));
+                        }else {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }
                     }

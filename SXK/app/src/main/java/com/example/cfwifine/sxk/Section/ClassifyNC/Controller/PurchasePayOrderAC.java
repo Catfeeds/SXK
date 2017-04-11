@@ -26,6 +26,7 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.PurchaseOrderSuccessPu
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.PurchasesDetailModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
@@ -76,6 +77,7 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
     private String datas = "";
     private PurchaseOrderSuccessPupWindow orderSuccessPupWindow;
     private RelativeLayout activity_purchase_pay_order_ac;
+    private ImageView transi_money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
         freight_insurance = (TextView) findViewById(R.id.freight_insurance);
         leaving_message = (EditText) findViewById(R.id.leaving_message);
         rule = (TextView) findViewById(R.id.rule);
+        rule.setOnClickListener(this);
         agreement_btn = (CheckBox) findViewById(R.id.agreement_btn);
         if (agreement_btn.isChecked()) {
             isAgree = 1;
@@ -126,6 +129,7 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
             }
         });
         user_agreement = (TextView) findViewById(R.id.user_agreement);
+        user_agreement.setOnClickListener(this);
         order_deposit2 = (TextView) findViewById(R.id.order_deposit2);
         activity_purchase_pay_order_ac = (RelativeLayout) findViewById(R.id.activity_purchase_pay_order_ac);
         commit_order = (TextView) findViewById(R.id.commit_order);
@@ -148,9 +152,11 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
                 }
             }
         });
-
+        transi_money = (ImageView) findViewById(R.id.transi_money);
+        transi_money.setOnClickListener(this);
         initDefaultAddress();
         setValueForDetail();
+
 
     }
 
@@ -321,7 +327,7 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
             orderSuccessPupWindow.showAtLocation(this.findViewById(R.id.activity_purchase_pay_order_ac), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else if (str.equals("success")) {
             Intent intent = new Intent(PurchasePayOrderAC.this, BuyerAndSellerOrderDetailAC.class);
-            intent.putExtra("type",2);
+            intent.putExtra("type", 2);
             intent.putExtra("orderid", ordeID);
             startActivity(intent);
         }
@@ -515,6 +521,21 @@ public class PurchasePayOrderAC extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.commit_order:
                 initCommentOrder();
+                break;
+            case R.id.rule:
+                Intent intent5 = new Intent(PurchasePayOrderAC.this,UserPrctocalAC.class);
+                intent5.putExtra("SETJUMPPOSITION",999);
+                startActivity(intent5);
+                break;
+            case R.id.user_agreement:
+                Intent intent1 = new Intent(PurchasePayOrderAC.this,UserPrctocalAC.class);
+                intent1.putExtra("SETJUMPPOSITION",222);
+                startActivity(intent1);
+                break;
+            case R.id.transi_money:
+                Intent intent2 = new Intent(PurchasePayOrderAC.this,UserPrctocalAC.class);
+                intent2.putExtra("SETJUMPPOSITION",991);
+                startActivity(intent2);
                 break;
             default:
                 break;

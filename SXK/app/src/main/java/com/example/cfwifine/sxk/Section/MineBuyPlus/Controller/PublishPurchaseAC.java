@@ -7,13 +7,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -118,24 +118,25 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
     private AttachmentModel.CategoryListBean.AttachListBean SECONDDATA;
     private String FUJIAN;
     private List<AttachmentModel.CategoryListBean.AttachListBean> dataSourcess;
-    private String BAOBEIFUJIAN="";
+    private String BAOBEIFUJIAN = "";
     private ArrayList<String> FUJIANARR;
     Dialog dialog;
-    private String StringList="";
+    private String StringList = "";
     private static final int TAKE_PHOTO = 733;
     private JSONArray jsonArray;
-    private String FUJIANLIST= "";
+    private String FUJIANLIST = "";
     private int purchaseid = -1;
     private String conditions = "";
     private String crows = "";
+    private LinearLayout gogogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_purchase_ac);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        purchaseid = getIntent().getIntExtra("purchaseid",-1);
-        LogUtil.e("预约商品ID"+purchaseid);
+        purchaseid = getIntent().getIntExtra("purchaseid", -1);
+        LogUtil.e("预约商品ID" + purchaseid);
         dialog = LoadingUtils.createLoadingDialog(this, "发布中...");
         SharedPreferencesUtils.setParam(this, "RESULT", "");
         SharedPreferencesUtils.setParam(this, "CATEGORYID", 0);
@@ -144,10 +145,11 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         SharedPreferencesUtils.setParam(this, "SECONDDATA", "");
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
         SharedPreferencesUtils.setParam(this, "STRINGLIST", "");
-        SharedPreferencesUtils.setParam(this,"FINALLYARR","");
+        SharedPreferencesUtils.setParam(this, "FINALLYARR", "");
         configurationNaviTitle();
         initView();
     }
+
     public void initView() {
         addPic = (ImageView) findViewById(R.id.publish_publish_add_pic_imageview);
         howtoAdd = (ImageView) findViewById(R.id.publish_publish_howto_pic_imageview);
@@ -185,21 +187,23 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         publish_user_protocal_text.setOnClickListener(this);
         publish_release_btn = (Button) findViewById(R.id.publish_release_btn);
         publish_release_btn.setOnClickListener(this);
-
-        if (purchaseid != -1){
-            publish_release_btn.setText("确认提交修改");
+        gogogo = (LinearLayout) findViewById(R.id.gogogo);
+        if (purchaseid != -1) {
+            gogogo.setVisibility(View.GONE);
+            publish_release_btn.setVisibility(View.GONE);
             initPurchaseData();
         }
+
 
     }
 
     // 获取订单信息
     private void initPurchaseData() {
-        dialog = LoadingUtils.createLoadingDialog(this,"加载中...");
+        dialog = LoadingUtils.createLoadingDialog(this, "加载中...");
         dialog.show();
         JSONObject js = new JSONObject();
         try {
-            js.put("purchaseid",purchaseid);
+            js.put("purchaseid", purchaseid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -216,6 +220,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                         dialog.dismiss();
                         initSnackBar("请求出错！");
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         dialog.dismiss();
@@ -235,12 +240,18 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
 
     private void setValueForDetail(PurchaseDetailModel.PurchaseBean purchase) {
         publish_input_edittext.setText(purchase.getDescription().toString());
+        publish_input_edittext.setOnClickListener(null);
         publish_name_edittext.setText(purchase.getName().toString());
+        publish_name_edittext.setOnClickListener(null);
         double advancePrice = purchase.getAdvancePrice();
-        publish_price_edittext.setText(String.format("%.2f",advancePrice/100));
+        publish_price_edittext.setText(String.format("%.2f", advancePrice / 100));
+        publish_price_edittext.setOnClickListener(null);
         cateoryTxt.setText(purchase.getCategory().getName().toString());
+        cateoryTxt.setOnClickListener(null);
         publish_brand_text.setText(purchase.getBrand().getName().toString());
+        publish_brand_text.setOnClickListener(null);
         publish_color_edittext.setText(purchase.getColor().toString());
+        publish_color_edittext.setOnClickListener(null);
         int cheng = purchase.getCondition();
         switch (cheng) {
             case 1:
@@ -265,6 +276,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                 break;
         }
         publish_news_text.setText(conditions);
+        publish_news_text.setOnClickListener(null);
         int crow = purchase.getCrowd();
         switch (crow) {
             case 1:
@@ -278,7 +290,9 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                 break;
         }
         publish_people_text.setText(crows);
+        publish_people_text.setOnClickListener(null);
         initFourGridViews(purchase);
+
     }
 
     private void initFourGridViews(final PurchaseDetailModel.PurchaseBean purchase) {
@@ -287,8 +301,8 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         howtoAdd.setVisibility(View.GONE);
 
         final ArrayList<String> imgList = new ArrayList<>();
-        for (int i = 0; i < purchase.getImgList().size(); i++){
-            imgList.add(i,purchase.getImgList().get(i));
+        for (int i = 0; i < purchase.getImgList().size(); i++) {
+            imgList.add(i, purchase.getImgList().get(i));
         }
         imgList.add(purchase.getImgList().size(), "TAG");
         imgList.add(purchase.getImgList().size() + 1, "MORE");
@@ -382,10 +396,10 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         LinearLayout back = (LinearLayout) findViewById(R.id.navi_back);
         back.setOnClickListener(this);
         TextView title = (TextView) findViewById(R.id.navi_title);
-        if (purchaseid == -1){
+        if (purchaseid == -1) {
             title.setText("添加寄卖商品");
-        }else {
-            title.setText("修改寄卖商品");
+        } else {
+            title.setText("查看寄卖商品");
         }
 
         LinearLayout rights = (LinearLayout) findViewById(R.id.navi_right_pic_click_lay);
@@ -578,7 +592,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                 startActivity(PublishBrandAC.class, 666);
                 break;
             case R.id.publish_material:
-                startActivity(PublishMaterialAC.class,667);
+                startActivity(PublishMaterialAC.class, 667);
                 break;
             case R.id.publish_suitpersonal:
                 Intent intents = new Intent(PublishPurchaseAC.this, CheckRecycleViewAC.class);
@@ -683,8 +697,8 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         LogUtil.e("附件参数附件参数" + BAOBEIFUJIAN);
         StringList = String.valueOf(SharedPreferencesUtils.getParam(this, "STRINGLIST", ""));
 
-        FUJIANLIST = String.valueOf((SharedPreferencesUtils.getParam(this,"FINALLYARR","")));
-        LogUtil.e("附件参数1"+FUJIANLIST);
+        FUJIANLIST = String.valueOf((SharedPreferencesUtils.getParam(this, "FINALLYARR", "")));
+        LogUtil.e("附件参数1" + FUJIANLIST);
     }
 
     private void check() {
@@ -871,12 +885,12 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                     break;
             }
             jsonObject.put("crowd", p);
-            if (FUJIANLIST == ""){
+            if (FUJIANLIST == "") {
                 JSONArray arr = new JSONArray();
-                jsonObject.put("attachList",arr);
-            }else {
+                jsonObject.put("attachList", arr);
+            } else {
                 JSONArray arr = new JSONArray(FUJIANLIST);
-                jsonObject.put("attachList",arr);
+                jsonObject.put("attachList", arr);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -892,7 +906,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        LogUtil.e("错误"+e.getMessage().toString());
+                        LogUtil.e("错误" + e.getMessage().toString());
                         initSnackBar("请求出错！");
                         dialog.dismiss();
                     }
@@ -920,7 +934,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
 
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";
     public static String SK = "RxiQnoa8NqIe7lzSip-RRnBdX9_pwOQmBBPqGWvv";
-    public static String SCOPE = "shexiangke-jcq";
+    public static String SCOPE = "production";
 
     private String creatTokenLocal() {
         Mac mac = new Mac(AK, SK);

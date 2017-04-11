@@ -671,7 +671,7 @@ public class UserInfoAC extends AppCompatActivity implements View.OnClickListene
 
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";
     public static String SK = "RxiQnoa8NqIe7lzSip-RRnBdX9_pwOQmBBPqGWvv";
-    public static String SCOPE = "shexiangke-jcq";
+    public static String SCOPE = "production";
 
     private String creatTokenLocal() {
         Mac mac = new Mac(AK, SK);

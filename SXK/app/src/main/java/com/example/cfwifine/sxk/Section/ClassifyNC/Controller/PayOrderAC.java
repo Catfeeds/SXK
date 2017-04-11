@@ -1,7 +1,6 @@
 package com.example.cfwifine.sxk.Section.ClassifyNC.Controller;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,21 +28,14 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.OrderSuccessPupWindow;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.CreateOrderModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.CommunityNC.View.L;
+import com.example.cfwifine.sxk.Section.MineNC.Controller.MineInfo.UserPrctocalAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineSetting.AddressSettingCommomAC;
 import com.example.cfwifine.sxk.Section.MineNC.CustomDialog.LikeIOSSheetDialog;
 import com.example.cfwifine.sxk.Section.MineNC.Model.AddressDetailModel;
-import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
-import com.example.cfwifine.sxk.Section.PublishNC.AppraisalAC.FreeAppraisaAC;
-import com.example.cfwifine.sxk.Section.PublishNC.CuringAC.CuringAC;
 import com.example.cfwifine.sxk.Utils.LoadingUtils;
 import com.example.cfwifine.sxk.Utils.LogUtil;
 import com.example.cfwifine.sxk.Utils.SharedPreferencesUtils;
 import com.example.cfwifine.sxk.Utils.SnackbarUtils;
-import com.flyco.animation.BaseAnimatorSet;
-import com.flyco.animation.FadeExit.FadeExit;
-import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
-import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.pingplusplus.android.PaymentActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -108,6 +100,9 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private int AgreeIsChecked = 2;
     private OrderSuccessPupWindow orderSuccessPupWindow;
     private String purchaseDetail = "";
+    private ImageView rent_money;
+    private ImageView rent_yajin;
+    private ImageView transi_money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +119,9 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         rentDetail = getIntent().getStringExtra("RENTRESPONSE");
         purchaseDetail = getIntent().getStringExtra("PURCHASERESPONSE");
         Gson gson = new Gson();
-        if (rentDetail != ""){
+        if (rentDetail != "") {
             productDetailModel = gson.fromJson(rentDetail.toString(), ProductDetailModel.class);
-        }else if (purchaseDetail != ""){
+        } else if (purchaseDetail != "") {
             LogUtil.e("购买详情");
         }
         dialog.dismiss();
@@ -148,6 +143,13 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         freight_insurance = (TextView) findViewById(R.id.freight_insurance);
         leaving_message = (EditText) findViewById(R.id.leaving_message);
         rule = (TextView) findViewById(R.id.rule);
+        rule.setOnClickListener(this);
+        rent_money = (ImageView) findViewById(R.id.rent_money);
+        rent_money.setOnClickListener(this);
+        rent_yajin = (ImageView) findViewById(R.id.rent_yajin);
+        rent_yajin.setOnClickListener(this);
+        transi_money = (ImageView) findViewById(R.id.transi_money);
+        transi_money.setOnClickListener(this);
         agreement_btn = (CheckBox) findViewById(R.id.agreement_btn);
         if (agreement_btn.isChecked()) {
             AgreeIsChecked = 1;
@@ -166,6 +168,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
 
 
         user_agreement = (TextView) findViewById(R.id.user_agreement);
+        user_agreement.setOnClickListener(this);
         order_rent_and_other = (TextView) findViewById(R.id.order_rent_and_other);
         order_deposit2 = (TextView) findViewById(R.id.order_deposit2);
         commit_order = (TextView) findViewById(R.id.commit_order);
@@ -329,6 +332,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
         product_address.setText("请选择收货地址");
         setValueForView();
         initDefaultAddress();
+
     }
 
     // 获取收货地址
@@ -405,7 +409,33 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
             case R.id.place_back:
                 finish();
                 break;
-
+            case R.id.rule:
+                Intent intent1 = new Intent(PayOrderAC.this, UserPrctocalAC.class);
+                intent1.putExtra("SETJUMPPOSITION", 999);
+                startActivity(intent1);
+                break;
+            case R.id.rent_money:
+                Intent intent2 = new Intent(PayOrderAC.this, UserPrctocalAC.class);
+                intent2.putExtra("SETJUMPPOSITION", 991);
+                startActivity(intent2);
+                break;
+            case R.id.rent_yajin:
+                Intent intent3 = new Intent(PayOrderAC.this, UserPrctocalAC.class);
+                intent3.putExtra("SETJUMPPOSITION", 991);
+                startActivity(intent3);
+                break;
+            case R.id.transi_money:
+                Intent intent4 = new Intent(PayOrderAC.this, UserPrctocalAC.class);
+                intent4.putExtra("SETJUMPPOSITION", 991);
+                startActivity(intent4);
+                break;
+            case R.id.user_agreement:
+                Intent intent5 = new Intent(PayOrderAC.this,UserPrctocalAC.class);
+                intent5.putExtra("SETJUMPPOSITION",222);
+                startActivity(intent5);
+                break;
+            default:
+                break;
         }
     }
 
@@ -552,13 +582,13 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     }
 
     private void MaterialDialog(String str) {
-        if (str.equals("cancel")){
+        if (str.equals("cancel")) {
             orderSuccessPupWindow = new OrderSuccessPupWindow(this, productDetailModel, itemsOnClick);
             orderSuccessPupWindow.showAtLocation(this.findViewById(R.id.activity_place_order), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-        }else if (str.equals("success")){
-            Intent intent = new Intent(PayOrderAC.this,BuyerAndSellerOrderDetailAC.class);
-            intent.putExtra("type",1);
-            intent.putExtra("orderid",ordeID);
+        } else if (str.equals("success")) {
+            Intent intent = new Intent(PayOrderAC.this, BuyerAndSellerOrderDetailAC.class);
+            intent.putExtra("type", 1);
+            intent.putExtra("orderid", ordeID);
             startActivity(intent);
         }
 //        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
@@ -611,7 +641,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
     private void useAliPays() {
         LogUtil.e("receivedid" + RECEIVEDID);
         message = leaving_message.getText().toString().trim();
-        if (message.trim().length() >= 250){
+        if (message.trim().length() >= 250) {
             initSnackBar("留言过长！");
             return;
         }

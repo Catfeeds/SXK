@@ -32,7 +32,7 @@
                 <LinearLayout
                     android:id="@+id/collection_cell"
                     android:layout_width="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|bottom"
                     android:background="@drawable/ripple_bg"
                     android:orientation="horizontal"
                     android:layout_marginTop="15dp"

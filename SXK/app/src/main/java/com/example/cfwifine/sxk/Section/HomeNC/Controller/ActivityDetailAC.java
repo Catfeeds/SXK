@@ -168,7 +168,7 @@ public class ActivityDetailAC extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.logon_login_btn:
-                String nickName = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.USERNAME, ""));
+                String nickName = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.NICKNAME, ""));
                 String phoneNumber = String.valueOf(SharedPreferencesUtils.getParam(getApplicationContext(), BaseInterface.PHONENUMBER, ""));
                 if (nickName.isEmpty()) {
                     nickName = phoneNumber;

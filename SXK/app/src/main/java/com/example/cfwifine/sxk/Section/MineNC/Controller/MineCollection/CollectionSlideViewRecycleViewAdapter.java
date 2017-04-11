@@ -70,9 +70,16 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
             Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(holder.collection_pic);
             holder.layout_content.getLayoutParams().width = Helpers.getScreenWidth(mContext);
             holder.name.setText(mDatas.getRentList().get(position).getName());
-            holder.keyword.setText(mDatas.getRentList().get(position).getKeyword());
-            holder.marketPrice.setText("¥ "+ String.valueOf((double)(Math.round(mDatas.getRentList().get(position).getRentPrice())/100.0))+"/天");
-            holder.rentPrice.setText("市场价 ¥ ："+String.valueOf((double)(Math.round(mDatas.getRentList().get(position).getMarketPrice())/100.0)));
+            String description = mDatas.getRentList().get(position).getKeyword();
+            if (description.length()>25){
+                holder.keyword.setText(description.substring(0,25)+"...");
+            }else {
+                holder.keyword.setText(description);
+            }
+            double marketPrice = mDatas.getRentList().get(position).getRentPrice();
+            holder.marketPrice.setText("¥ "+ String.format("%.2f",marketPrice/100)+"/天");
+            double rentPrice = mDatas.getRentList().get(position).getMarketPrice();
+            holder.rentPrice.setText("市场价 ¥ ："+String.format("%.2f",rentPrice/100));
             holder.selde.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,8 +116,14 @@ public class CollectionSlideViewRecycleViewAdapter extends RecyclerView.Adapter<
             Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.user_header_image_placeholder).animate(R.anim.glide_animal).into(holder.collection_pic);
             holder.layout_content.getLayoutParams().width = Helpers.getScreenWidth(mContext);
             holder.name.setText(curingDataSource.getMaintainList().get(position).getName());
-            holder.keyword.setText(curingDataSource.getMaintainList().get(position).getKeyword());
-            holder.marketPrice.setText("¥ "+ String.valueOf((double)(Math.round(curingDataSource.getMaintainList().get(position).getPrice())/100.0))+"/天");
+            String description = curingDataSource.getMaintainList().get(position).getKeyword();
+            if (description.length()>25){
+                holder.keyword.setText(description.substring(0,25)+"...");
+            }else {
+                holder.keyword.setText(description);
+            }
+            double marPri = curingDataSource.getMaintainList().get(position).getPrice();
+            holder.marketPrice.setText("¥ "+ String.format("%.2f",marPri/100));
             holder.rentPrice.setText("");
             holder.selde.setOnClickListener(new OnClickListener() {
                 @Override

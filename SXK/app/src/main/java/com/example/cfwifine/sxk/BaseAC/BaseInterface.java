@@ -7,9 +7,15 @@ package com.example.cfwifine.sxk.BaseAC;
 public class BaseInterface {
 
     // 登录注册相关基本接口
-    public static String root = "http://shexiangke.jcq.tbapps.cn";
+    public static String root = "https://shexiangke.boobe.com.cn";
 //    http://shexiangke.boobe.com.cn
 //    http://shexiangke.jcq.tbapps.cn
+
+    // 图片存储位置
+    public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqhwkx4.bkt.clouddn.com/";
+//    http://ohqqhwkx4.bkt.clouddn.com/
+//    http://ohqqvdngk.bkt.clouddn.com/
+
     // 注册
     public static String UserRegister= root + "/app/applogin/registerpost";
     // 登录
@@ -118,8 +124,7 @@ public class BaseInterface {
     // 获取问答
     public static String GetAnwer = root + "/app/question/getpost";
 
-    // 图片存储位置
-    public static String ClassfiyGetAllHotBrandImgUrl = "http://ohqqvdngk.bkt.clouddn.com/";
+
 
     // 商品管理
     public static String ReleaseGoods = root + "/app/rent/addpost";
@@ -248,6 +253,10 @@ public class BaseInterface {
     public static String AppraisaConfirm = root + "/app/identifyorder/setpost";
     // 鉴定删除
     public static String AppraiasDelete = root + "/app/identifyorder/delpost";
+    // 租赁违约金
+    public static String ReOrderMoney = root + "/app/penaltysetup/getpost";
+    // 租金押金运险费
+    public static String AllIsMoney = root + "/app/explainsetup/getpost";
 
     // 储存用户的
     public static String NICKNAME = "NICKNAME";

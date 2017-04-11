@@ -263,6 +263,7 @@
                                 android:textSize="14sp" />
 
                             <ImageView
+                                android:id="@+id/rent_money"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_marginLeft="5dp"
@@ -313,6 +314,7 @@
                                 android:textSize="14sp" />
 
                             <ImageView
+                                android:id="@+id/rent_yajin"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_marginLeft="5dp"
@@ -372,6 +374,7 @@
                                 android:textSize="14sp" />
 
                             <ImageView
+                                android:id="@+id/transi_money"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_marginLeft="5dp"

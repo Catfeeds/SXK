@@ -145,6 +145,14 @@ public class UserPrctocalAC extends AppCompatActivity implements View.OnClickLis
             navi_title.setText("寄卖协议");
             URLS = BaseInterface.PurchaseProtacl;
             initRentWater();
+        }else if (value == 999){
+            navi_title.setText("违约金规则");
+            URLS = BaseInterface.ReOrderMoney;
+            initRentWater();
+        }else if (value == 991){
+            navi_title.setText("三金说明");
+            URLS = BaseInterface.AllIsMoney;
+            initRentWater();
         }
     }
 

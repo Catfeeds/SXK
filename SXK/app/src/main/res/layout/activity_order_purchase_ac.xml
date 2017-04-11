@@ -78,7 +78,7 @@
                 android:background="@color/login_turquoise"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical"
-                android:paddingBottom="8dp"
+                android:paddingBottom="4dp"
                 android:paddingTop="8dp">
 
                 <ImageView
@@ -93,6 +93,18 @@
                     android:text="添加商品"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:textSize="10sp"
+                    android:text="（Tips:长按删除订单哦！）"
+                    android:textColor="@color/login_turquoise"/>
             </LinearLayout>
 
             <LinearLayout
