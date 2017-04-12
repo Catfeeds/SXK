@@ -115,6 +115,9 @@ public class BuyerAndSellerOrderDetailAC extends AppCompatActivity implements Vi
         rent_time = (LinearLayout) findViewById(R.id.rent_time);
         rent_view = (RelativeLayout) findViewById(R.id.rent_view);
         rent_views = (RelativeLayout) findViewById(R.id.rent_views);
+        if (TYPES == 1){
+            lease_btn.setText("联系对方");
+        }
         initOrderDetail();
 
 

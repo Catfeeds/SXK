@@ -75,7 +75,7 @@ public class MineItemCompletedGoodsModel {
         private int userid;
         private ReceiverBean receiver;
         private String message;
-        private int point;
+        private double point;
         private int commission;
         private int share;
         private String oddNumber;
@@ -158,11 +158,11 @@ public class MineItemCompletedGoodsModel {
             this.message = message;
         }
 
-        public int getPoint() {
+        public double getPoint() {
             return point;
         }
 
-        public void setPoint(int point) {
+        public void setPoint(double point) {
             this.point = point;
         }
 

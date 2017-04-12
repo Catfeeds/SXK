@@ -39,6 +39,7 @@ import com.example.cfwifine.sxk.Section.PublishNC.AC.HowToReleasePicAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishBrandAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishCateoryAC;
 import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishMaterialAC;
+import com.example.cfwifine.sxk.Section.PublishNC.AC.PublishPublishAC;
 import com.example.cfwifine.sxk.Section.PublishNC.Model.AttachmentModel;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridAdapter;
 import com.example.cfwifine.sxk.Section.PublishNC.View.PreviewPicView.FourGridViewAdapter;
@@ -129,6 +130,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
     private String conditions = "";
     private String crows = "";
     private LinearLayout gogogo;
+    private int CATEID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
         SharedPreferencesUtils.setParam(this, "STRINGLIST", "");
         SharedPreferencesUtils.setParam(this, "FINALLYARR", "");
+        SharedPreferencesUtils.setParam(this,"cateid",0);
         configurationNaviTitle();
         initView();
     }
@@ -689,6 +692,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
         }
         CATEGORYID = (int) SharedPreferencesUtils.getParam(this, "CATEGORYID", 0);
         LogUtil.e("回调的取值" + CATEGORYID);
+        CATEID = (int) SharedPreferencesUtils.getParam(this,"cateid",0);
         BRANDID = (int) SharedPreferencesUtils.getParam(this, "BRANDID", 0);
         LogUtil.e("成色" + chengse);
         FUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
@@ -843,7 +847,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
             jsonObject.put("imgList", jsonArray1);
             jsonObject.put("advancePrice", Integer.valueOf((int) (Float.valueOf(goodsprice) * 100)));
             jsonObject.put("description", descript);
-            jsonObject.put("categoryid", CATEGORYID);
+            jsonObject.put("categoryid", CATEID);
             jsonObject.put("brandid", BRANDID);
             jsonObject.put("color", goodsColor);
             // 成色

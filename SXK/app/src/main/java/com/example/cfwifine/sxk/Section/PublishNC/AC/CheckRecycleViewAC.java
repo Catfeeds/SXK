@@ -266,6 +266,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
                 LogUtil.e("点击了" + tits);
                 tit = tits;
                 CATEID = position;
+
             }
         });
         recyclerView.setOnClickListener(new View.OnClickListener() {
@@ -333,7 +334,7 @@ public class CheckRecycleViewAC extends AppCompatActivity implements View.OnClic
     private void sendValue() {
         if (tit != null) {
             SharedPreferencesUtils.setParam(this, "RESULT", tit);
-
+            SharedPreferencesUtils.setParam(CheckRecycleViewAC.this,"cateid",CATEID);
             Log.e("传递的parentidS", "" + CATEID);
             finish();
         } else {

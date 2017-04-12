@@ -159,7 +159,7 @@ public class RentingFC extends Fragment {
                 } else if (type == 3) {
                     Intent intent = new Intent(getActivity(), BuyerAndSellerOrderDetailAC.class);
                     intent.putExtra("type",1);
-                    intent.putExtra("orderid",rentListDataSouce.get(pos).getRentid());
+                    intent.putExtra("orderid",rentListDataSouce.get(pos).getOrderid());
                     startActivity(intent);
                 }
 

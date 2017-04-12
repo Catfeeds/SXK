@@ -203,7 +203,14 @@ public class WaitReceGoodsFC extends Fragment {
         mSheHeAdapter.setOnItemClickListener(new MineWaitReceGoodsListAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int maintainid,String oddNumber) {
-                LogUtil.e("订单id");
+                LogUtil.e("订单id"+maintainid);
+//                LogUtil.e("订单id"+DataSouce.get(0).getOrderid());
+//                for (int i =0 ; i < DataSouce.size(); i++){
+//                    if (DataSouce.get(i).getOrderid() == maintainid){
+//                        LogUtil.e("订单id"+DataSouce.get(i).getOrderid());
+//                    }
+//                }
+
                 initDialog(maintainid, oddNumber);
             }
         });
@@ -260,7 +267,7 @@ public class WaitReceGoodsFC extends Fragment {
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
                             for (int i =0 ; i < DataSouce.size(); i++){
-                                if (DataSouce.get(i).getRentid() == maintainid){
+                                if (DataSouce.get(i).getOrderid() == maintainid){
                                     DataSouce.remove(i);
                                 }
                             }
@@ -270,6 +277,8 @@ public class WaitReceGoodsFC extends Fragment {
                             mineItemAC.initSnackBar("确认失败！");
                         } else if (requestStatueModel.getCode() == 911) {
                             mineItemAC.initSnackBar("登录超时，请重新登录");
+                        } else if (requestStatueModel.getCode() == 2003) {
+                            mineItemAC.initSnackBar(requestStatueModel.getMsg());
                         }
 
 

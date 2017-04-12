@@ -120,6 +120,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
     private static final int TAKE_PHOTO = 733;
     private JSONArray jsonArray;
     private String FUJIANLIST= "";
+    private int CATEID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +136,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         SharedPreferencesUtils.setParam(this, "FUJIAN", "");
         SharedPreferencesUtils.setParam(this, "STRINGLIST", "");
         SharedPreferencesUtils.setParam(this,"FINALLYARR","");
+        SharedPreferencesUtils.setParam(this,"cateid",0);
         configurationNaviTitle();
         initView();
 
@@ -147,7 +149,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         howtoAdd = (ImageView) findViewById(R.id.publish_publish_howto_pic_imageview);
         addPic.setOnClickListener(this);
         howtoAdd.setOnClickListener(this);
-
         category = (RelativeLayout) findViewById(R.id.publish_category);
         brand = (RelativeLayout) findViewById(R.id.publish_brand);
         material = (RelativeLayout) findViewById(R.id.publish_material);
@@ -159,8 +160,6 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
         suitpersonal.setOnClickListener(this);
         file.setOnClickListener(this);
         cateoryTxt = (TextView) findViewById(R.id.cateory_txt);
-
-
         nineGridlayout = (FourGridlayout) findViewById(R.id.results);
         publish_input_edittext = (EditText) findViewById(R.id.publish_input_edittext);
         publish_input_edittext.setOnClickListener(this);
@@ -531,8 +530,11 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             cateoryTxt.setText(catetext);
         }
         CATEGORYID = (int) SharedPreferencesUtils.getParam(this, "CATEGORYID", 0);
-        LogUtil.e("回调的取值" + CATEGORYID);
+        LogUtil.e("回调的取值1" + CATEGORYID);
+        CATEID = (int) SharedPreferencesUtils.getParam(PublishPublishAC.this,"cateid",0);
+        LogUtil.e("回调的取值2" + CATEID);
         BRANDID = (int) SharedPreferencesUtils.getParam(this, "BRANDID", 0);
+        LogUtil.e("回调的取值3" + BRANDID);
         LogUtil.e("成色" + chengse);
         FUJIAN = String.valueOf(SharedPreferencesUtils.getParam(this, "FUJIAN", ""));
         LogUtil.e("附件参数" + FUJIAN);
@@ -714,7 +716,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
             jsonObject.put("imgList", jsonArray1);
             jsonObject.put("counterPrice", Integer.valueOf((int) (Float.valueOf(goodsprice) * 100)));
             jsonObject.put("description", descript);
-            jsonObject.put("categoryid", CATEGORYID);
+            jsonObject.put("categoryid", CATEID);
             jsonObject.put("brandid", BRANDID);
             jsonObject.put("color", goodsColor);
             // 成色
@@ -790,6 +792,7 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                         if (requestStatueModel.getCode() == 1) {
                             CustomDialog_publish_success customDialog_publish_success = new CustomDialog_publish_success(PublishPublishAC.this, R.style.style_dialog);
                             customDialog_publish_success.show();
+                            setValueForNull();
                         } else if (requestStatueModel.getCode() == 0) {
                             initSnackBar("请求失败！");
                         } else if (requestStatueModel.getCode() == 911) {
@@ -799,6 +802,22 @@ public class PublishPublishAC extends AppCompatActivity implements View.OnClickL
                 });
 
 
+    }
+
+    private void setValueForNull() {
+        publish_input_edittext.setText("");
+        publish_name_edittext.setText("");
+        publish_keyword_edittext.setText("");
+        publish_price_edittext.setText("");
+        publish_people_text.setText("（必选）");
+        publish_news_text.setText("（必选）");
+        publish_brand_text.setText("（必选）");
+        publish_color_edittext.setText("");
+        cateoryTxt.setText("（必选）");
+        mResults.clear();
+        nineGridlayout.setVisibility(View.GONE);
+        addPic.setVisibility(View.VISIBLE);
+        howtoAdd.setVisibility(View.VISIBLE);
     }
 
     public static String AK = "e6m0BrZSOPhaz6K2TboadoayOp-QwLge2JOQZbXa";

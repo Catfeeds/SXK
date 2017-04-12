@@ -112,6 +112,7 @@
 
             <Button
                 android:id="@+id/bozhuwait_confirm_btn"
+                android:visibility="gone"
                 android:layout_width="92dp"
                 android:layout_height="26dp"
                 android:layout_alignParentEnd="true"

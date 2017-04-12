@@ -495,7 +495,6 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
             btn.setVisibility(View.GONE);
             chat.setVisibility(View.GONE);
         }
-
         initBannerData();
         product_name.setText(rentDetail.getName().toString());
         int condition = rentDetail.getCondition();
@@ -540,7 +539,12 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         product_money_everyday.setTextSize(14);
         double dd = rentDetail.getMarketPrice();
         product_money.setText("市场价：¥ " + String.format("%.2f", dd / 100));
-        username.setText(rentDetail.getUser().getNickname());
+        String userNames = rentDetail.getUser().getNickname();
+        if (userNames.toString().trim().length()>=5){
+            username.setText(userNames.substring(0,5)+"...");
+        }else {
+            username.setText(userNames);
+        }
         String picUrl = rentDetail.getUser().getHeadimgurl();
         Glide.with(this).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(headPic);
         product_content.setText(rentDetail.getDescription());

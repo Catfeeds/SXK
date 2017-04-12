@@ -590,6 +590,7 @@ public class PayOrderAC extends AppCompatActivity implements View.OnClickListene
             intent.putExtra("type", 1);
             intent.putExtra("orderid", ordeID);
             startActivity(intent);
+            finish();
         }
 //        BaseAnimatorSet bas_in = new FlipVerticalSwingEnter();
 //        BaseAnimatorSet bas_out = new FadeExit();

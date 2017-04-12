@@ -262,9 +262,11 @@ public class CuringPayOrderAC extends AppCompatActivity implements View.OnClickL
                         Gson gson = new Gson();
                         RequestStatueModel createOrderModel = gson.fromJson(response, RequestStatueModel.class);
                         if (createOrderModel.getCode() == 1) {
-                            MaterialDialog("支付成功！");
+                            MaterialDialog("支付成功，请到我的养护查看订单！");
                         } else if (createOrderModel.getCode() == 911) {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "登录超时，请重新登录!", Color.WHITE, Color.parseColor("#16a6ae"));
+                        } else if (createOrderModel.getCode() == 2003){
+                            initSnackBar(createOrderModel.getMsg().toString());
                         } else {
                             SnackbarUtils.showShortSnackbar(getWindow().getDecorView(), "请求失败!", Color.WHITE, Color.parseColor("#16a6ae"));
                         }

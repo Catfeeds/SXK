@@ -247,7 +247,7 @@ public class CompletedOrderFC extends Fragment {
                                  RequestStatueModel requestStatueModel = gson.fromJson(response,RequestStatueModel.class);
                                  if (requestStatueModel.getCode() == 1) {
                                      for (int i =0 ; i < DataSouce.size(); i++){
-                                         if (DataSouce.get(i).getRentid() == maintainid){
+                                         if (DataSouce.get(i).getOrderid() == maintainid){
                                              DataSouce.remove(i);
                                          }
                                      }

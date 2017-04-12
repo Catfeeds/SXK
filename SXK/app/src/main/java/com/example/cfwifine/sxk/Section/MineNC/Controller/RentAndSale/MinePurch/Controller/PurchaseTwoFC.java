@@ -124,7 +124,7 @@ public class PurchaseTwoFC extends Fragment {
      * 确认收货
      * @param maintainid
      */
-    private void initConfirmReceiveGoods(int maintainid) {
+    private void initConfirmReceiveGoods(final int maintainid) {
         if (!mineItemAC.isFinishing()){
             mineItemAC.dialog.show();
         }
@@ -160,7 +160,12 @@ public class PurchaseTwoFC extends Fragment {
                         // 审核中
                         RequestStatueModel requestStatueModel = gson.fromJson(response, RequestStatueModel.class);
                         if (requestStatueModel.getCode() == 1) {
-                            initMineData(0,0);
+                            for (int i =0 ; i < DataSouce.size(); i++){
+                                if (DataSouce.get(i).getOrderid() == maintainid){
+                                    DataSouce.remove(i);
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
                             mineItemAC.initSnackBar("收货成功！");
                         } else if (requestStatueModel.getCode() == 0) {
                             mineItemAC.initSnackBar("确认失败！");

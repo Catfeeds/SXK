@@ -33,11 +33,12 @@
                         android:scaleType="centerCrop"/>
 
                     <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="12dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:visibility="gone"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/comment_trangle" />
+                        android:background="@drawable/trangle_down" />
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.BuyerAndSellerOrderDetailAC;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Controller.PayOrderAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MineRent.Adapter.MineHasReceGoodsListAdapter;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.RentAndSale.MineRent.Model.MineItemHasReceGoodsModel;
 import com.google.gson.Gson;
@@ -204,6 +206,11 @@ public class HasReceGoodsFC extends Fragment {
                     // 退回
                     Intent intent = new Intent(getActivity(),ReBackGoodsAC.class);
                     intent.putExtra("ORDERID",maintainid);
+                    startActivity(intent);
+                }else if (i == 2){
+                    Intent intent = new Intent(mineItemAC, BuyerAndSellerOrderDetailAC.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("orderid", maintainid);
                     startActivity(intent);
                 }
             }

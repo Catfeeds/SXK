@@ -75,6 +75,15 @@ public class MineHasReceGoodsListAdapter extends RecyclerView.Adapter<MineHasRec
                 }
             });
         }
+        if (mOnItemClickListener != null){
+            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.OnItemClick(view,classifyDataSource.get(position).getOrderid(),classifyDataSource.get(position).getOddNumber(),2);
+                }
+            });
+        }
+
     }
 
     @Override

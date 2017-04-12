@@ -1,16 +1,18 @@
 package com.example.cfwifine.sxk.Section.WelcomeNC;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.cfwifine.sxk.BaseAC.BaseAC;
+import com.bumptech.glide.Glide;
 import com.example.cfwifine.sxk.BaseAC.MainAC;
 import com.example.cfwifine.sxk.R;
 
@@ -49,6 +51,32 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
         view2 = mLi.inflate(R.layout.guide_page2, null);
         view3 = mLi.inflate(R.layout.guide_page3, null);
         view4 = mLi.inflate(R.layout.guide_page4, null);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        ImageView img1 = (ImageView) view1.findViewById(R.id.imm1);
+        ImageView img2 = (ImageView) view2.findViewById(R.id.imm2);
+        ImageView img3 = (ImageView) view3.findViewById(R.id.imm3);
+        ImageView img4 = (ImageView) view4.findViewById(R.id.imm4);
+        if (img1!=null) {
+
+            Glide.with(WelcomeAC.this).load(R.drawable.welcome_one).into(img1);
+        }
+        if (img2 !=null) {
+
+            Glide.with(WelcomeAC.this).load(R.drawable.welcome_two).into(img2);
+        }
+        if (img3 != null) {
+
+            Glide.with(WelcomeAC.this).load(R.drawable.welcome_three).into(img3);
+        }
+        if (img4 != null) {
+
+            Glide.with(WelcomeAC.this).load(R.drawable.welcome_four).into(img4);
+        }
+//        img1.setImageBitmap(bitmap1);
+//        img2.setImageBitmap(bitmap2);
+//        img3.setImageBitmap(bitmap3);
+//        img4.setImageBitmap(bitmap4);
         // 实例化ViewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         // 实例化ArrayList对象
@@ -137,6 +165,7 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
             case R.id.ok:
                 Intent intent = new Intent(WelcomeAC.this, MainAC.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.point:
                 int position = (Integer)v.getTag();
