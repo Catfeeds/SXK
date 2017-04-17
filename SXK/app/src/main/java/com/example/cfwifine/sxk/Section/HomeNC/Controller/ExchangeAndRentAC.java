@@ -42,7 +42,6 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
     private LinearLayout navi_right_lays;
     private ImageView exchange_img;
     private Button exchange_btn_float;
-    private RelativeLayout activity_exchange_ac;
     private Button exchange_talkbtn_float;
     private int position = -1;
     private UserInfoModel userInfoModel = null;
@@ -122,7 +121,6 @@ public class ExchangeAndRentAC extends AppCompatActivity implements View.OnClick
         navi_right_lays = (LinearLayout) findViewById(R.id.navi_right_lays);
         exchange_img = (ImageView) findViewById(R.id.exchange_img);
         exchange_btn_float = (Button) findViewById(R.id.exchange_btn_float);
-        activity_exchange_ac = (RelativeLayout) findViewById(R.id.activity_exchange_ac);
 
         exchange_talkbtn_float = (Button) findViewById(R.id.exchange_talkbtn_float);
 

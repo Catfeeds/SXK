@@ -567,8 +567,9 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
 
 
     // TODO*********************************点击如何传图**********************************************
-    private void howToPublish() {
+    private void howToPublish(int value) {
         Intent intent = new Intent(this, HowToReleasePicAC.class);
+        intent.putExtra("TYPE",value);
         startActivity(intent);
     }
 
@@ -576,7 +577,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.navi_right_pic_click_lay:
-                howToPublish();
+                howToPublish(1);
                 break;
             case R.id.navi_back:
                 SharedPreferencesUtils.setParam(this, "RESULT", "");
@@ -586,7 +587,7 @@ public class PublishPurchaseAC extends AppCompatActivity implements View.OnClick
                 addPic();
                 break;
             case R.id.publish_publish_howto_pic_imageview:
-                howToPublish();
+                howToPublish(2);
                 break;
             case R.id.publish_category:
                 startActivity(PublishCateoryAC.class, 222);

@@ -321,7 +321,7 @@ public class ReChargeAC extends AppCompatActivity implements View.OnClickListene
         dialogs.setOnBtnClickL(new OnBtnClickL() {
             @Override
             public void onBtnClick() {
-                dialogs.dismiss();
+//                dialogs.dismiss();
                 finish();
             }
         });

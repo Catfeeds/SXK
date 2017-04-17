@@ -26,12 +26,12 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
     //定义一个ArrayList来存放View
     private ArrayList<View> views;
     // 定义各个界面View对象
-    private View view1, view2, view3, view4;
+    private View view1, view2, view3;
     //底部小点的图片
     private ImageView[] points;
     //记录当前选中位置
     private int currentIndex;
-    Button startBt;
+//    Button startBt;
 
 
     @Override
@@ -50,13 +50,13 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
         view1 = mLi.inflate(R.layout.guide_page1, null);
         view2 = mLi.inflate(R.layout.guide_page2, null);
         view3 = mLi.inflate(R.layout.guide_page3, null);
-        view4 = mLi.inflate(R.layout.guide_page4, null);
+//        view4 = mLi.inflate(R.layout.guide_page4, null);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         ImageView img1 = (ImageView) view1.findViewById(R.id.imm1);
         ImageView img2 = (ImageView) view2.findViewById(R.id.imm2);
         ImageView img3 = (ImageView) view3.findViewById(R.id.imm3);
-        ImageView img4 = (ImageView) view4.findViewById(R.id.imm4);
+//        ImageView img4 = (ImageView) view4.findViewById(R.id.imm4);
         if (img1!=null) {
 
             Glide.with(WelcomeAC.this).load(R.drawable.welcome_one).into(img1);
@@ -69,10 +69,35 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
 
             Glide.with(WelcomeAC.this).load(R.drawable.welcome_three).into(img3);
         }
-        if (img4 != null) {
+        img1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WelcomeAC.this, MainAC.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        img2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WelcomeAC.this, MainAC.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        img3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WelcomeAC.this, MainAC.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-            Glide.with(WelcomeAC.this).load(R.drawable.welcome_four).into(img4);
-        }
+//        if (img4 != null) {
+//
+//            Glide.with(WelcomeAC.this).load(R.drawable.welcome_four).into(img4);
+//        }
 //        img1.setImageBitmap(bitmap1);
 //        img2.setImageBitmap(bitmap2);
 //        img3.setImageBitmap(bitmap3);
@@ -84,8 +109,8 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
         // 实例化ViewPager适配器
         vpAdapter = new ViewPagerAdapter(views);
         //实例化开始按钮
-        startBt = (Button) view4.findViewById(R.id.ok);
-        startBt.setOnClickListener(this);
+//        startBt = (Button) view4.findViewById(R.id.ok);
+//        startBt.setOnClickListener(this);
     }
     /**
      * 初始化数据
@@ -99,7 +124,7 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
         views.add(view1);
         views.add(view2);
         views.add(view3);
-        views.add(view4);
+//        views.add(view4);
         vpAdapter.notifyDataSetChanged();
         //初始化底部小点
         initPoint(views.size());
@@ -162,11 +187,11 @@ public class WelcomeAC extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ok:
-                Intent intent = new Intent(WelcomeAC.this, MainAC.class);
-                startActivity(intent);
-                finish();
-                break;
+//            case R.id.img1:
+//                Intent intent = new Intent(WelcomeAC.this, MainAC.class);
+//                startActivity(intent);
+//                finish();
+//                break;
             case R.id.point:
                 int position = (Integer)v.getTag();
                 setCurView(position);

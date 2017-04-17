@@ -21,6 +21,7 @@ import com.example.cfwifine.sxk.BaseAC.BaseInterface;
 import com.example.cfwifine.sxk.R;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Adapter.TagAdapter;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.TagsView.FlowTagLayout;
+import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.TagsView.OnTagClickListener;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Dialog.TagsView.OnTagSelectListener;
 import com.example.cfwifine.sxk.Section.ClassifyNC.MineSearchListDetail.Controller.ClassifySearchDetailAC;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ClassfiyHotBrandModel;
@@ -137,46 +138,60 @@ public class ClassifySearchAC extends AppCompatActivity implements View.OnClickL
         }
 
         mSizeTagAdapter = new TagAdapter<>(this);
-        hot_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+        hot_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_NONE);
         hot_flow_tag.setAdapter(mSizeTagAdapter);
-        hot_flow_tag.setOnTagSelectListener(new OnTagSelectListener() {
+        hot_flow_tag.setOnTagClickListener(new OnTagClickListener() {
             @Override
-            public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
-                if (selectedList != null && selectedList.size() > 0) {
-                    StringBuilder sb = new StringBuilder();
-                    int select = -1;
-                    for (int i : selectedList) {
-                        sb.append(parent.getAdapter().getItem(i));
-                        select = i;
-                    }
-                    Intent intent = new Intent(ClassifySearchAC.this, CateListAC.class);
-                    intent.putExtra("brandid", hotBrandListData.getHotList().get(select).getBrandid());
-                    startActivity(intent);
-                } else {
-                    Snackbar.make(parent, "没有选择标签", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+            public void onItemClick(FlowTagLayout parent, View view, int position) {
+                Intent intent = new Intent(ClassifySearchAC.this, CateListAC.class);
+                intent.putExtra("brandid", hotBrandListData.getHotList().get(position).getBrandid());
+                startActivity(intent);
             }
         });
+//        hot_flow_tag.setOnTagSelectListener(new OnTagSelectListener() {
+//            @Override
+//            public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+//                if (selectedList != null && selectedList.size() > 0) {
+//                    StringBuilder sb = new StringBuilder();
+//                    int select = -1;
+//                    for (int i : selectedList) {
+//                        sb.append(parent.getAdapter().getItem(i));
+//                        select = i;
+//                    }
+//                    Intent intent = new Intent(ClassifySearchAC.this, CateListAC.class);
+//                    intent.putExtra("brandid", hotBrandListData.getHotList().get(select).getBrandid());
+//                    startActivity(intent);
+//                } else {
+//                    Snackbar.make(parent, "没有选择标签", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                }
+//            }
+//        });
 
         initSizeData();
     }
     private void initHistory(){
         mHistoryTagAdapter = new TagAdapter<>(this);
-        history_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+        history_flow_tag.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_NONE);
         history_flow_tag.setAdapter(mHistoryTagAdapter);
-        history_flow_tag.setOnTagSelectListener(new OnTagSelectListener() {
+        history_flow_tag.setOnTagClickListener(new OnTagClickListener() {
             @Override
-            public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
-                if (selectedList != null && selectedList.size() > 0) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i : selectedList) {
-                        sb.append(parent.getAdapter().getItem(i));
-                    }
-                    initSearchData(sb.toString().trim());
-                }
+            public void onItemClick(FlowTagLayout parent, View view, int position) {
+                initSearchData(mArrr.get(position).toString().trim());
             }
         });
+//        history_flow_tag.setOnTagSelectListener(new OnTagSelectListener() {
+//            @Override
+//            public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+//                if (selectedList != null && selectedList.size() > 0) {
+//                    StringBuilder sb = new StringBuilder();
+//                    for (int i : selectedList) {
+//                        sb.append(parent.getAdapter().getItem(i));
+//                    }
+//                    initSearchData(sb.toString().trim());
+//                }
+//            }
+//        });
 
         initHistoryData();
     }
