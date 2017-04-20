@@ -72,7 +72,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
     RecyclerView mRecycles;
     ArrayList<String> applicationName = new ArrayList<>();
     ArrayList<Integer> imageView = new ArrayList<>();
-    String[] applicationNames = {"我的钱包", "我的啵值", "分享奖励", "我的信用", "服务中心", "我的收藏", "联系客服", "设置", "退出登录"};
+    String[] applicationNames = {"我的钱包", "我的啵值", "分享奖励", "服务中心", "我的收藏", "联系客服", "设置", "退出登录"};
     int[] imageViews = {R.drawable.mine_vallet, R.drawable.mine_integral, R.drawable.mine_share,
             R.drawable.mine_credit, R.drawable.mine_service_center,
             R.drawable.mine_collection, R.drawable.mine_customer_service, R.drawable.mine_setting, R.drawable.mine_loginout};
@@ -179,7 +179,7 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
         mCare.setOnClickListener(this);
         mRecognize.setOnClickListener(this);
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             applicationName.add(applicationNames[i]);
             imageView.add(imageViews[i]);
         }
@@ -329,17 +329,17 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
 
     private void jump(int position) {
         // 根据position跳转
-        if (position == 6) {
+        if (position == 5) {
             if (userInfoModel.getUser() != null) {
                 initMeiQiaView();
             }
-        } else if (position == 4) {
+        } else if (position == 3) {
             if (userinfo != null) {
                 Intent intent = new Intent(getActivity(), MineServerCenterAC.class);
                 intent.putExtra("USERINFO", userinfo);
                 startActivity(intent);
             }
-        } else if (position == 5) {
+        } else if (position == 4) {
             startActivity(MineCollectionAC.class, position);
         } else if (position == 2) {
             Intent inte = new Intent(getActivity(), UserPrctocalAC.class);
@@ -353,10 +353,10 @@ public class LoginFC extends Fragment implements View.OnClickListener, PopupWind
             Intent intent = new Intent(getActivity(), MineScoinAC.class);
             intent.putExtra("USERINFO", userinfo);
             startActivity(intent);
-        }else if (position == 7){
+        }else if (position == 6){
             Intent intent = new Intent(getActivity(), UserInfoRecycleViewCommomAC.class);
             startActivity(intent);
-        } else if (position == 8) {
+        } else if (position == 7) {
             SharedPreferencesUtils.setParam(getActivity(), BaseInterface.PHPSESSION, "");
             initView();
         }

@@ -72,11 +72,11 @@ public class ComRecycleViewAdapter extends RecyclerView.Adapter<ComRecycleViewAd
             /**
              * 适配图片的宽高比例
              */
-            int screenWidth = ScreenUtil.getScreenWidth(context);
-            ViewGroup.LayoutParams lp = viewHolder.header_pic.getLayoutParams();
-            lp.width = screenWidth;
-            lp.height = RecyclerView.LayoutParams.WRAP_CONTENT;
-            viewHolder.header_pic.setLayoutParams(lp);
+//            int screenWidth = ScreenUtil.getScreenWidth(context);
+//            ViewGroup.LayoutParams lp = viewHolder.header_pic.getLayoutParams();
+//            lp.width = screenWidth;
+//            lp.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+//            viewHolder.header_pic.setLayoutParams(lp);
 
             Glide.with(context).load(headerPic).placeholder(R.drawable.home_placeholder).fitCenter().into(viewHolder.header_pic);
             // 话题列表的Recycleview

@@ -54,7 +54,7 @@ public class TopicListRecycleAdapter extends RecyclerView.Adapter<TopicListRecyc
                 mOnItemClickListener.OnItemClick(view,datas.get(position).getModuleid());
             }
         });
-        viewHolder.detail.setText(datas.get(position).getName());
+//        viewHolder.detail.setText(datas.get(position).getName());
     }
 
     //获取数据的数量

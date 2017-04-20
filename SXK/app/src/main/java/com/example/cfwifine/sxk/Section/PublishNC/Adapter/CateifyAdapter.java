@@ -48,7 +48,7 @@ public class CateifyAdapter extends RecyclerView.Adapter<CateifyAdapter.ViewHold
 
     public CateifyAdapter setDatas(List<BrandBean> datas,List<ClassfiyBrandModel.BrandListBean> dataSource) {
         mDatas = datas;
-        dataSource = dataSource;
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -60,17 +60,25 @@ public class CateifyAdapter extends RecyclerView.Adapter<CateifyAdapter.ViewHold
     @Override
     public void onBindViewHolder(final CateifyAdapter.ViewHolder holder, final int position) {
         final BrandBean brandBean = mDatas.get(position);
-        String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + dataSource.get(position).getImg();
-        Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.avatar);
-        holder.tvCity.setText(dataSource.get(position).getName());
-        if (mOnItemClickListener != null){
-            holder.frameLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnItemClickListener.OnItemClick(view,dataSource.get(position).getName(),dataSource.get(position).getBrandid());
+        for (int i = 0; i<mDatas.size();i++){
+            if (dataSource.get(i).getName() == mDatas.get(position).getCity()){
+
+                String picUrl = BaseInterface.ClassfiyGetAllHotBrandImgUrl + dataSource.get(i).getImg();
+                Glide.with(mContext).load(picUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(holder.avatar);
+                holder.tvCity.setText(dataSource.get(i).getName());
+                if (mOnItemClickListener != null){
+                    final int finalI = i;
+                    holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mOnItemClickListener.OnItemClick(view,dataSource.get(finalI).getName(),dataSource.get(finalI).getBrandid());
+                        }
+                    });
                 }
-            });
+            }
         }
+
+
     }
 
     @Override

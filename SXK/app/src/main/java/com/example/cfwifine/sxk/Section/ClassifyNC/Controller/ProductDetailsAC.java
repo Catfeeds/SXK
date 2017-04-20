@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductCommentListModel
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.ProductDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.PurchasesDetailModel;
 import com.example.cfwifine.sxk.Section.ClassifyNC.Model.RongTokenModel;
+import com.example.cfwifine.sxk.Section.LoginAC.Controller.LoginUseBoobeAC;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MineCollectionModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineCollection.MinePurchaseListModel;
 import com.example.cfwifine.sxk.Section.MineNC.Controller.MineFollow.Model.FollowListModel;
@@ -121,6 +123,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
     private ImageView kiss;
     private boolean isCollection = false;
     private String BASEURL;
+    private String mPHPSESSION = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +135,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         PORITE = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.PORITA, "");
         NICKNAME = (String) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.NICKNAME, "");
         mineUserId = (int) SharedPreferencesUtils.getParam(ProductDetailsAC.this, BaseInterface.USERID, 0);
+        mPHPSESSION = String.valueOf(SharedPreferencesUtils.getParam(this, BaseInterface.PHPSESSION, ""));
         initView();
         // 产品详情页面分享链接 http://shexiangke.jcq.tbapps.cn/wechat/userpage/getrent/rentid/136
 
@@ -413,7 +417,6 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         initDetailData();
 
 
-
     }
 
     private void initCommentDataSource() {
@@ -540,9 +543,9 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         double dd = rentDetail.getMarketPrice();
         product_money.setText("市场价：¥ " + String.format("%.2f", dd / 100));
         String userNames = rentDetail.getUser().getNickname();
-        if (userNames.toString().trim().length()>=5){
-            username.setText(userNames.substring(0,5)+"...");
-        }else {
+        if (userNames.toString().trim().length() >= 5) {
+            username.setText(userNames.substring(0, 5) + "...");
+        } else {
             username.setText(userNames);
         }
         String picUrl = rentDetail.getUser().getHeadimgurl();
@@ -571,7 +574,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         }
         String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl + rentDetail.getBrand().getStory();
         Glide.with(this).load(brandStory).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_details_brand_pic);
-
+        product_details_brand_content.setText(rentDetail.getBrand().getDescription().toString());
     }
 
     private void setValueForPurchaseView() {
@@ -651,7 +654,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         }
         String brandStory = BaseInterface.ClassfiyGetAllHotBrandImgUrl + purchaseDataSource.getBrand().getStory();
         Glide.with(this).load(brandStory).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.home_placeholder).animate(R.anim.glide_animal).into(product_details_brand_pic);
-
+        product_details_brand_content.setText(purchaseDataSource.getBrand().getDescription().toString());
     }
 
 
@@ -721,25 +724,31 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
 
                 break;
             case R.id.lease_btn:
-                if (Types == 1 && RENTRESPONSE != "") {
-                    SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, rentDetail.getUser().getNickname());
-                    SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, rentDetail.getUser().getHeadimgurl());
-                    Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
-                    intent.putExtra("RENTRESPONSE", RENTRESPONSE);
-                    startActivity(intent);
-                } else if (Types == 2 && PURCHASERESPONSE != "") {
-                    SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, purchaseDataSource.getUser().getNickname());
-                    SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, purchaseDataSource.getUser().getHeadimgurl());
-                    Intent intent = new Intent(ProductDetailsAC.this, PurchasePayOrderAC.class);
-                    intent.putExtra("PURCHASERESPONSE", PURCHASERESPONSE);
-                    startActivity(intent);
-                }
 
+                if (TextUtils.isEmpty(mPHPSESSION)) {
+//                    Intent tss = new Intent(ProductDetailsAC.this, LoginUseBoobeAC.class);
+//                    startActivity(tss);
+                    initSnackBar("请先登录！");
+                } else {
+                    if (Types == 1 && RENTRESPONSE != "") {
+                        SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, rentDetail.getUser().getNickname());
+                        SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, rentDetail.getUser().getHeadimgurl());
+                        Intent intent = new Intent(ProductDetailsAC.this, PayOrderAC.class);
+                        intent.putExtra("RENTRESPONSE", RENTRESPONSE);
+                        startActivity(intent);
+                    } else if (Types == 2 && PURCHASERESPONSE != "") {
+                        SharedPreferencesUtils.setParam(this, BaseInterface.NICKNAMES, purchaseDataSource.getUser().getNickname());
+                        SharedPreferencesUtils.setParam(this, BaseInterface.PORITAS, purchaseDataSource.getUser().getHeadimgurl());
+                        Intent intent = new Intent(ProductDetailsAC.this, PurchasePayOrderAC.class);
+                        intent.putExtra("PURCHASERESPONSE", PURCHASERESPONSE);
+                        startActivity(intent);
+                    }
+                }
                 break;
             case R.id.bo_one:
-                if (isCollection){
+                if (isCollection) {
                     initCancelCollection();
-                }else {
+                } else {
                     initCollection();
                 }
                 break;
@@ -929,6 +938,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
     private void initCancelCollection() {
         JSONObject js = new JSONObject();
         if (Types == 1) {
@@ -938,7 +948,7 @@ public class ProductDetailsAC extends AppCompatActivity implements View.OnClickL
                 e.printStackTrace();
             }
             BASEURL = BaseInterface.CollectionDel;
-        } else if (Types == 2){
+        } else if (Types == 2) {
             try {
                 js.put("purchaseid", purchaseDataSource.getPurchaseid());
             } catch (JSONException e) {
